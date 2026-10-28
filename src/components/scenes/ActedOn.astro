@@ -1,0 +1,229 @@
+---
+// "Can both be acted on?" (phase 3 design §5): muḥkam, mukhtalif al-ḥadīth, naskh, tarjīḥ and tawaqquf
+// (§5.14–5.16) as one decision path, read left to right in Ibn Ḥajar's order (§5.16: harmonise, then abrogation,
+// then preference, then pause). A spine of five questions; the answer that goes on runs along the spine, and the
+// other drops to an outcome card. Four panels of one 1040-wide row, so it carousels in portrait:
+//   1  is it opposed (no: muḥkam), and is the opposer accepted too (no: no effect)
+//   2  can the two be harmonised: the contagion and leper reports (§5.15)
+//   3  is the date known: a timeline, with Burayda's report on visiting graves (§5.16)
+//   4  is there a ground to prefer one: tarjīḥ, else tawaqquf
+// The outcome colour says how many of the two are acted on: both (--ok), one (gold), neither for now (--pause).
+// No narrator figures, so no legend; no views (phase 3 design §13: the jurists' order is not added).
+// Motion: the spine flows, the strike across the abrogated ruling draws once, the scale tips, the "?" blinks. Each
+// resting style is the end state, so with motion.css stopping every animation the strike is drawn and the scale
+// tipped.
+import Defs from "../svg/Defs.astro";
+import Arrow from "../svg/Arrow.astro";
+import Chip from "../svg/Chip.astro";
+import Decision from "../svg/Decision.astro";
+import Glyph from "../svg/Glyph.astro";
+import InfoIcon from "../svg/InfoIcon.astro";
+import Matn from "../svg/Matn.astro";
+import Pill from "../svg/Pill.astro";
+import Scale from "../svg/Scale.astro";
+import Term from "../svg/Term.astro";
+import { f, panelTrigger } from "../svg/geom";
+import { cap, type DiagramProps } from "../../lib/scene";
+import { chipWidth } from "../../lib/kit";
+
+type Props = DiagramProps;
+const { caps, scene } = Astro.props;
+
+const W = 1040, H = 530;
+if (scene.views?.length) throw new Error("ActedOn: expected no views");
+const PANELS = scene.panels ?? [];
+
+// the spine of questions, and the row the outcome cards hang from
+const CY = 100, DH = 60;
+const CARD_Y = 160, TITLE_Y = 190;
+const Q = [
+  { cx: 65, w: 110, lines: ["Does a report", "contradict it?"] },
+  { cx: 195, w: 110, lines: ["Is that report", "accepted too?"] },
+  { cx: 390, w: 124, lines: ["Harmonise both", "without strain?"] },
+  { cx: 650, w: 110, lines: ["Is the date", "known?"] },
+  { cx: 910, w: 110, lines: ["A ground to", "prefer one?"] },
+];
+// the answer that carries on along the spine, labelled inside the panel it arrives in
+const SPINE = [
+  { from: 0, to: 1, text: "yes", lx: 130 },
+  { from: 1, to: 2, text: "yes", lx: 298 },
+  { from: 2, to: 3, text: "no", lx: 562 },
+  { from: 3, to: 4, text: "no", lx: 822 },
+].map((s) => ({ ...s, x1: Q[s.from].cx + Q[s.from].w / 2 + 2, x2: Q[s.to].cx - Q[s.to].w / 2 - 3 }));
+// the answer that drops straight down to a card
+const DROPS = [{ q: 0, text: "no" }, { q: 1, text: "no" }, { q: 2, text: "yes" }, { q: 3, text: "yes" }];
+
+// the outcome cards: [x0, x1, bottom, outcome]
+type Outcome = "ok" | "gold" | "pause" | "none";
+const CARDS: [number, number, number, Outcome][] = [
+  [8, 122, 340, "ok"], // muḥkam
+  [138, 252, 340, "none"], // no effect
+  [270, 510, 510, "ok"], // mukhtalif al-ḥadīth
+  [530, 770, 510, "gold"], // naskh
+  [784, 908, 440, "gold"], // tarjīḥ
+  [916, 1034, 440, "pause"], // tawaqquf
+];
+
+// a card title as a term trigger, in the 15px display face (about 9.2 units per character, as in Support);
+// extra widens (or, negative, narrows) the estimate each side, for titles with wide (m, w) or narrow (i, l, t) letters;
+// panelTrigger checks it sits wholly inside its panel, or the carousel would cut it
+const SUBT_W = 9.2;
+const SUBT = { charW: SUBT_W, half: SUBT_W / 2, gap: 12, top: 17, h: 24, r: 7 };
+function title(slug: string, cx: number, y = TITLE_Y, extra = 0) {
+  const c = cap(caps, slug);
+  return { c, cx, y, ...panelTrigger(c.translit, cx, y, PANELS, { ...SUBT, extra, name: `ActedOn: ${slug}` }) };
+}
+
+// naskh: a time arrow with the earlier and later rulings pinned to it
+const TIME_Y = 240;
+const PIN = { early: 592, late: 710 };
+const PIN_TITLE_Y = 346;
+const KNOWN = [
+  { x: 590, glyph: "text", lines: ["the text", "itself"] },
+  { x: 650, glyph: "companion", lines: ["a Companion", "says so"] },
+  { x: 710, glyph: "clock", lines: ["the", "dates"] },
+] as const;
+
+const TITLES = [
+  title("muhkam", 65, TITLE_Y, 5),
+  title("mukhtalif-al-hadith", 390, TITLE_Y, -12),
+  title("naskh", 650, TITLE_Y, 2),
+  title("mansukh", PIN.early, PIN_TITLE_Y, 5),
+  title("nasikh", PIN.late, PIN_TITLE_Y, 4),
+  title("tarjih", 846, TITLE_Y, 1),
+  title("tawaqquf", 972, TITLE_Y, 4),
+];
+
+const START = "an accepted report";
+const startW = chipWidth(START);
+---
+<svg viewBox={`0 0 ${W} ${H}`} class="acted-on" role="group" aria-label="When two accepted reports seem to clash, Ibn Ḥajar's order, left to right. An unopposed report is muḥkam and acted on; a weak opposer has no effect. If the two can be harmonised, as with the contagion and leper reports, both are acted on: mukhtalif al-ḥadīth. If not, and the date is known, the later abrogates the earlier, as in Burayda's report on visiting graves: naskh. If the date is unknown, one may be preferred: tarjīḥ. Failing that, both are paused, not dropped: tawaqquf.">
+  <Defs />
+  <line class="divider" x1="260" x2="260" y1="12" y2={H - 12} />
+  <line class="divider" x1="520" x2="520" y1="12" y2={H - 12} />
+  <line class="divider" x1="780" x2="780" y1="12" y2={H - 12} />
+
+  {/* ---- the outcome cards, behind everything ---- */}
+  {CARDS.map(([x0, x1, y1, o]) => <rect class={`card ${o}`} x={x0} y={CARD_Y} width={x1 - x0} height={y1 - CARD_Y} rx="8" />)}
+
+  {/* ---- the spine; hidden from screen readers, since the aria-label narrates the path ---- */}
+  <g aria-hidden="true">
+    <Chip x={f(Q[0].cx - startW / 2)} y={34} text={START} w={startW} />
+    <Arrow x1={Q[0].cx} y1={45} x2={Q[0].cx} y2={CY - DH / 2 - 3} />
+    {SPINE.map((s) => (
+      <>
+        <Arrow x1={s.x1} y1={CY} x2={s.x2} y2={CY} />
+        <text class="lbl yn" x={s.lx} y={CY - 8}>{s.text}</text>
+      </>
+    ))}
+    {DROPS.map((d) => (
+      <>
+        <Arrow x1={Q[d.q].cx} y1={CY + DH / 2 + 2} x2={Q[d.q].cx} y2={CARD_Y - 3} />
+        <text class="lbl yn" x={Q[d.q].cx + 8} y={CY + DH / 2 + 20} style="text-anchor:start">{d.text}</text>
+      </>
+    ))}
+    <Arrow x1={Q[4].cx - 10} y1={CY + DH / 2 - 2} x2={846} y2={CARD_Y - 3} bend={-10} />
+    <Arrow x1={Q[4].cx + 10} y1={CY + DH / 2 - 2} x2={975} y2={CARD_Y - 3} bend={10} />
+    <text class="lbl yn" x={862} y={CY + DH / 2 + 12} style="text-anchor:end">yes</text>
+    <text class="lbl yn" x={958} y={CY + DH / 2 + 12} style="text-anchor:start">no</text>
+    {Q.map((q) => <Decision cx={q.cx} cy={CY} w={q.w} h={DH} lines={q.lines} />)}
+  </g>
+
+  {/* ---- panel 1: unopposed, or opposed by a weak report ---- */}
+  <Glyph kind="check" cx={65} cy={250} r={12} />
+  <Pill x={65} y={290} state="accept" text="Acted on" />
+  <text class="lbl" x="65" y="322">examples are many</text>
+
+  <text class="subt plain" x="195" y={TITLE_Y}>No effect</text>
+  <text class="lbl" x="195" y="224">the opposer is</text>
+  <text class="lbl" x="195" y="239">rejected: the strong</text>
+  <text class="lbl" x="195" y="254">is not moved by</text>
+  <text class="lbl" x="195" y="269">the weak</text>
+  <Matn x={150} y={288} w={42} h={28} lines={["strong"]} />
+  <Matn x={204} y={288} w={36} h={28} lines={["weak"]} inactive />
+
+  {/* ---- panel 2: harmonised, both acted on (§5.15) ---- */}
+  <text class="lbl" x="390" y="234">both sound, seemingly at odds</text>
+  <Matn x={284} y={246} w={100} h={74} lines={["“There is no", "contagion or", "evil fortune”"]} />
+  <Matn x={396} y={246} w={100} h={74} lines={["“Flee from a", "leper as you", "would from", "a lion”"]} />
+  <path class="bridge" d="M334 328 Q390 368 446 328" marker-start="url(#ah)" marker-end="url(#ah)" />
+  <text class="lbl" x="390" y="384">the denial stays general;</text>
+  <text class="lbl" x="390" y="399">fleeing guards against</text>
+  <text class="lbl" x="390" y="414">a wrong belief</text>
+  <text class="mq" x="390" y="442">“Then who infected the first?”</text>
+  <Pill x={390} y={478} state="accept" text="Both acted on" />
+
+  {/* ---- panel 3: the date is known; the later abrogates the earlier (§5.16) ---- */}
+  <path class="time" d={`M546 ${TIME_Y} H756`} marker-end="url(#ah)" />
+  <text class="tlbl" x={PIN.early} y={TIME_Y - 9}>earlier</text>
+  <text class="tlbl" x={PIN.late} y={TIME_Y - 9}>later</text>
+  {[PIN.early, PIN.late].map((x) => (
+    <>
+      <line class="stem" x1={x} x2={x} y1={TIME_Y} y2={256} />
+      <circle class="pin" cx={x} cy={TIME_Y} r="4.5" />
+    </>
+  ))}
+  <Matn x={540} y={258} w={104} h={58} lines={["visiting graves", "forbidden"]} inactive />
+  {/* the earlier ruling is lifted: a strike draws across it once */}
+  <path class="strike" pathLength="1" d="M550 306 L634 270" />
+  <Matn x={656} y={258} w={108} h={58} lines={["“Visit them; for", "indeed it reminds", "of the hereafter.”"]} />
+  <text class="lbl" x="650" y="392">Burayda's report, in Muslim</text>
+  <text class="lbl" x="650" y="413">known from</text>
+  {KNOWN.map((k) => (
+    <>
+      <Glyph kind={k.glyph} cx={k.x} cy={430} r={9} />
+      <text class="kn" x={k.x} y={454}>{k.lines[0]}</text>
+      <text class="kn" x={k.x} y={466}>{k.lines[1]}</text>
+    </>
+  ))}
+  <Pill x={650} y={490} state="gold" text="Later acted on" />
+
+  {/* ---- panel 4: the date is unknown; prefer one, or pause (§5.16) ---- */}
+  <Scale x={846} y={252} w={64} pw={50} tilt={-8} left={2} right={1} drop={26} stand={46} />
+  <text class="lbl" x="846" y="324">grounds in the</text>
+  <text class="lbl" x="846" y="339">text or the chain</text>
+  <Pill x={846} y={372} state="gold" text="One acted on" />
+  <text class="lbl" x="846" y="404">the preferred one</text>
+  <text class="lbl" x="846" y="419">is singled out</text>
+
+  <Matn x={932} y={238} w={32} h={28} inactive />
+  <Matn x={986} y={238} w={32} h={28} inactive />
+  <Glyph kind="pause" cx={975} cy={252} r={9} />
+  <text class="unk" x="975" y="302" aria-hidden="true">?</text>
+  <text class="lbl" x="975" y="324">paused, not</text>
+  <text class="lbl" x="975" y="339">dropped</text>
+  <Pill x={975} y={372} state="pause" text="Paused" />
+  <text class="lbl" x="975" y="404">may yet become</text>
+  <text class="lbl" x="975" y="419">clear to another</text>
+
+  {/* ---- the term triggers ---- */}
+  {TITLES.map((t) => (
+    <>
+      <Term slug={t.c.slug} json={t.c.json} label={`${t.c.translit}: ${t.c.en}`} {...t.hit}>
+        <text class="subt" x={t.cx} y={t.y}>{t.c.translit}</text>
+        <InfoIcon {...t.info} />
+      </Term>
+      <text class="title-ar sm" lang="ar" direction="rtl" x={t.cx} y={t.y + 22}>{t.c.ar}</text>
+    </>
+  ))}
+</svg>
+<style>
+  .subt{fill:var(--fg);font:700 15px var(--f-display);text-anchor:middle}
+  .subt.plain{fill:var(--muted)}
+  .yn{font-size:11px}
+  .mq{fill:var(--muted);font:italic 600 11px var(--f-body);text-anchor:middle}
+  .kn{fill:var(--fg);font:600 10.5px var(--f-body);text-anchor:middle}
+  .tlbl{fill:var(--muted);font:600 10.5px var(--f-body);text-anchor:middle;letter-spacing:.04em}
+  .card{fill:var(--surface);stroke:var(--rule);stroke-width:1.2}
+  .card.ok{fill:color-mix(in srgb,var(--ok) 6%,var(--surface));stroke:color-mix(in srgb,var(--ok) 55%,var(--surface))}
+  .card.gold{fill:color-mix(in srgb,var(--gold-b) 9%,var(--surface));stroke:color-mix(in srgb,var(--gold-a) 55%,var(--surface))}
+  .card.pause{fill:color-mix(in srgb,var(--pause) 7%,var(--surface));stroke:color-mix(in srgb,var(--pause) 55%,var(--surface))}
+  .bridge{fill:none;stroke:var(--ok);stroke-width:1.8}
+  .time{fill:none;stroke:var(--muted);stroke-width:1.6}
+  .stem{stroke:var(--muted);stroke-width:1.2}
+  .pin{fill:var(--surface);stroke:var(--fg);stroke-width:1.8}
+  .unk{fill:var(--pause);font:700 22px var(--f-display);text-anchor:middle;animation:blink 2.4s ease-in-out infinite}
+  /* the strike's resting state is drawn; the animation runs from undrawn, once */
+  .strike{fill:none;stroke:var(--gap);stroke-width:2.2;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:0;animation:acted-draw .8s ease-out 1s both}
+  @keyframes acted-draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+</style>

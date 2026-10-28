@@ -98,3 +98,28 @@ test("with motion, the support scene's routes start faint and the lens sweeps th
   await expect.poll(() => last.evaluate((e) => getComputedStyle(e).opacity), { timeout: 10000 }).toBe("1");
   await expect.poll(() => page.locator("svg .lens").evaluate((e) => getComputedStyle(e).transform), { timeout: 10000 }).toBe("none");
 });
+
+test("reduced motion: the acted-on scene shows the abrogated ruling struck and the preference scale tipped", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/al-maqbul/acted-on/");
+  expect(await page.locator("svg .strike").evaluate((e) => Number(getComputedStyle(e).strokeDashoffset.replace("px", "")))).toBe(0);
+  // the preferred report's pan has sunk: the beam tips left
+  const pans = await page.locator("svg .scale .pan").evaluateAll((els) => els.map((e) => new DOMMatrix(getComputedStyle(e).transform).f));
+  expect(pans).toHaveLength(2);
+  expect(pans[0]).toBeGreaterThan(0);
+  expect(pans[1]).toBeLessThan(0);
+});
+
+test("with motion, the acted-on scene's strike draws across the abrogated ruling after a delay", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.goto("/al-maqbul/acted-on/");
+  const strike = page.locator("svg .strike");
+  // the draw is set up with its 1s delay; its current offset isn't checked, since a loaded runner may be past it
+  const anims = await strike.evaluate((e) => e.getAnimations().map((a) => ({
+    name: (a as CSSAnimation).animationName,
+    delay: a.effect?.getTiming().delay,
+  })));
+  expect(anims).toContainEqual({ name: "acted-draw", delay: 1000 });
+  const offset = () => strike.evaluate((e) => Number(getComputedStyle(e).strokeDashoffset.replace("px", "")));
+  await expect.poll(offset, { timeout: 5000 }).toBe(0);
+});

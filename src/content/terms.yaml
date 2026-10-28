@@ -311,6 +311,7 @@
   def: "An accepted report that no other report contradicts."
   section: "§5.14"
   division: al-maqbul
+  scene: acted-on
 - id: mukhtalif-al-hadith
   translit: Mukhtalif al-ḥadīth
   ar: مُخْتَلِفُ الْحَدِيثِ
@@ -318,6 +319,7 @@
   def: "Two accepted reports that seem to clash but can be reconciled without forcing the meaning of either."
   section: "§5.15"
   division: al-maqbul
+  scene: acted-on
 - id: naskh
   translit: Naskh
   ar: نَسْخٌ
@@ -325,6 +327,7 @@
   def: "A later proof of the Law lifting the ruling of an earlier one."
   section: "§5.16"
   division: al-maqbul
+  scene: acted-on
 - id: nasikh
   translit: Nāsikh
   ar: نَاسِخٌ
@@ -332,6 +335,7 @@
   def: "The later report that shows an earlier ruling was lifted, known from the text itself, a Companion's word or the dates."
   section: "§5.16"
   division: al-maqbul
+  scene: acted-on
 - id: mansukh
   translit: Mansūkh
   ar: مَنْسُوخٌ
@@ -339,6 +343,7 @@
   def: "The earlier report whose ruling a later one has lifted."
   section: "§5.16"
   division: al-maqbul
+  scene: acted-on
 - id: tarjih
   translit: Tarjīḥ
   ar: تَرْجِيحٌ
@@ -346,6 +351,7 @@
   def: "When clashing reports cannot be reconciled and their dates are unknown, one is preferred on grounds found in its text or chain."
   section: "§5.16"
   division: al-maqbul
+  scene: acted-on
 - id: tawaqquf
   translit: Tawaqquf
   ar: تَوَقُّفٌ
@@ -353,6 +359,7 @@
   def: "When reconciling, abrogation and preference all fail, neither report is acted on for now; someone may yet see what was hidden."
   section: "§5.16"
   division: al-maqbul
+  scene: acted-on
 
 # 3. al-Mardūd (§5.17–5.39)
 - id: saqt

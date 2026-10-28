@@ -1,4 +1,5 @@
-// layout maths for the small SVG kit parts (Chip, Gauge, Scale) and the iʿtibār sweep, kept pure so it can be unit-tested
+// layout maths for the small SVG kit parts (Chip, Gauge, Scale, Decision) and the iʿtibār sweep, kept pure so
+// it can be unit-tested
 
 // round to 2 decimals, so the built SVG doesn't carry float noise (re-exported by components/svg/geom.ts)
 export const f = (n: number) => +n.toFixed(2);
@@ -54,4 +55,21 @@ export function discRow(n: number, cx: number, gap: number): number[] {
 export function sweepAt(x: number, { x0, x1, t0, t1 }: { x0: number; x1: number; t0: number; t1: number }): number {
   const u = Math.max(0, Math.min(1, (x - x0) / (x1 - x0)));
   return f(t0 + u * (t1 - t0));
+}
+
+// a diamond centred on (cx, cy), w wide and h tall, as an SVG path with each corner rounded: the straight edges
+// stop r units short of every vertex and a quadratic curve turns through it (Decision.astro). r is clamped to
+// half an edge so neighbouring corners never cross; r = 0 gives the sharp diamond.
+export function diamondPath(cx: number, cy: number, w: number, h: number, r: number): string {
+  const v = [[cx, cy - h / 2], [cx + w / 2, cy], [cx, cy + h / 2], [cx - w / 2, cy]];
+  const p = (x: number, y: number) => `${f(x)} ${f(y)}`;
+  if (r <= 0) return `M${v.map(([x, y]) => p(x, y)).join(" L")} Z`;
+  const t = Math.min(r / Math.hypot(w / 2, h / 2), 0.5);
+  const along = (a: number[], b: number[]) => p(a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t);
+  let d = `M${along(v[0], v[1])}`;
+  for (let i = 1; i <= 4; i++) {
+    const [prev, cur, next] = [v[i - 1], v[i % 4], v[(i + 1) % 4]];
+    d += ` L${along(cur, prev)} Q${p(cur[0], cur[1])} ${along(cur, next)}`;
+  }
+  return `${d} Z`;
 }

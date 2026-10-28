@@ -21,9 +21,11 @@ interface Props {
   drop?: number;
   /** stand height from the pivot down to the base */
   stand?: number;
+  /** pan width */
+  pw?: number;
 }
-const { x, y, w, tilt, left, right, crackLeft = false, crackRight = false, drop = 30, stand = 58 } = Astro.props;
-const R = 6, GAP = 14, PW = 58;
+const { x, y, w, tilt, left, right, crackLeft = false, crackRight = false, drop = 30, stand = 58, pw: PW = 58 } = Astro.props;
+const R = 6, GAP = 14;
 const ends = scaleEnds(x, w, tilt);
 const pans = [
   { ...ends.left, n: left, crack: crackLeft },

@@ -291,3 +291,49 @@
     - title: Sorting them by wording
       section: §5.13
       note: "A group of scholars draw the line differently: a report that matches in wording is a mutābiʿ, whether or not it comes from the same Companion, and one that matches in meaning is a shāhid. The two names are also sometimes used for each other. Ibn Ḥajar says the matter is easy. The diagram follows his own definitions, which sort the routes by Companion."
+- id: acted-on
+  division: al-maqbul
+  moons: [3]
+  order: 4
+  title: Can both be acted on?
+  eyebrow: Accepted reports, acted on or not · §5.14–5.16
+  lede: An accepted report that nothing contradicts is acted on, and such reports are many. When two accepted reports seem to clash, Ibn Ḥajar works through a fixed order. First he tries to harmonise them, then he looks for abrogation, then he prefers one, and only then does he pause.
+  source: §5.14 Muḥkam, §5.15 Mukhtalif al-ḥadīth, §5.16 Nāsikh and mansūkh
+  diagram: ActedOn
+  width: 1040
+  captions:
+    - term: muhkam
+      note: "Accepted reports also divide into those acted on and those not. An accepted report that no other report contradicts is muḥkam, and its examples are many. If the report opposing it is a rejected one, the opposition has no effect, since a weak report cannot unsettle a strong one (§5.14)."
+    - term: mukhtalif-al-hadith
+      note: "Two accepted reports of equal standing seem to clash, but their meanings can be harmonised without strain. Ibn al-Ṣalāḥ's example, both sound: “There is no contagion or evil fortune” and “Flee from a leper as you would from a lion”. Ibn Ḥajar's best harmony keeps the denial general, since the Prophet ﷺ asked who infected the first; the order to flee keeps a person from thinking contact made him ill (§5.15)."
+    - term: naskh
+      note: "If harmony fails and the date is known, the later report abrogates the earlier. Naskh is the lifting of a ruling of the Law by a later proof of the Law. A report from a Companion who became Muslim late does not abrogate an earlier one on that ground alone, unless he heard it from the Prophet ﷺ himself and narrated nothing from him before his Islām. Consensus does not abrogate; it only points to abrogation (§5.16)."
+    - term: mansukh
+      note: "The abrogated report: the earlier one, whose ruling was lifted. A Companion may say which came last. Jābir said that the last of the two commands from the Messenger ﷺ was to leave off ablution for what fire has touched, as the compilers of the Sunan record; so the earlier command, to make ablution for it, is the abrogated one. Many cases are known from the dates (§5.16)."
+    - term: nasikh
+      note: "The abrogating report: the one that shows the earlier ruling was lifted. The name is a figure of speech, since the one who truly abrogates is Allah. It is known most clearly from the text itself, as in Burayda's report in Ṣaḥīḥ Muslim: “I had forbidden you to visit graves. Visit them; for indeed it reminds of the hereafter.” It is also known from a Companion's word, or from the dates (§5.16)."
+    - term: tarjih
+      note: "If harmony fails and the date is unknown, one report may be preferred over the other by one of the many means of preference found in its text or its chain. If a preference can be made, the preferred report is singled out. This is what sorting accepted reports into kinds is for: preference when they conflict (§5.13, §5.16)."
+    - term: tawaqquf
+      note: "If no preference can be made, the two are paused upon: neither is acted on for now. Calling them paused is better than calling them dropped, because the failure to prefer one is only the researcher's, at that moment; what is hidden from him may become clear to someone else (§5.16)."
+  panels:
+    - id: steps-1-2
+      label: Steps 1–2
+      x0: 0
+      x1: 260
+    - id: step-3
+      label: Step 3
+      x0: 260
+      x1: 520
+    - id: step-4
+      label: Step 4
+      x0: 520
+      x1: 780
+    - id: step-5
+      label: Step 5
+      x0: 780
+      x1: 1040
+  extra:
+    - title: The contagion reports
+      section: §5.15
+      note: "Ibn al-Ṣalāḥ harmonised the pair this way: illnesses do not infect by their nature, but Allah has made mixing with the ill a cause of a healthy person falling ill, which sometimes does not happen, as with other causes. Ibn Ḥajar prefers to keep the Prophet's ﷺ denial general. When someone said that a sick camel mixes with healthy camels and they fall ill, the Prophet ﷺ asked, “Then who infected the first?”: Allah began the illness in the second as He did in the first. The order to flee from the leper closes the way to a wrong belief, so that someone who mixes with the ill and falls ill does not think contagion caused it. al-Shāfiʿī wrote a book on this type, Ikhtilāf al-ḥadīth, and Ibn Qutayba, al-Ṭaḥāwī and others wrote after him."

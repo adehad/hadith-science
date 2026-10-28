@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { CHIP_CHAR_W, CHIP_PAD, chipRow, chipWidth, discRow, gaugeCells, scaleEnds, sweepAt } from "../../src/lib/kit";
+import { CHIP_CHAR_W, CHIP_PAD, chipRow, chipWidth, diamondPath, discRow, gaugeCells, scaleEnds, sweepAt } from "../../src/lib/kit";
 
 describe("chipWidth", () => {
   it("grows with the text, plus padding", () => {
@@ -90,5 +90,23 @@ describe("sweepAt", () => {
   it("clamps x outside the sweep to its ends", () => {
     expect(sweepAt(0, sweep)).toBe(0.8);
     expect(sweepAt(900, sweep)).toBe(4.8);
+  });
+});
+
+describe("diamondPath", () => {
+  it("is a sharp diamond through the four edge midpoints when r is 0", () => {
+    expect(diamondPath(50, 30, 100, 60, 0)).toBe("M50 0 L100 30 L50 60 L0 30 Z");
+  });
+  it("rounds each corner, starting r along the top-right edge and curving through every vertex", () => {
+    // each edge of an 80 x 60 diamond is 50 long, so r = 10 is a fifth of the way along it
+    const d = diamondPath(40, 30, 80, 60, 10);
+    expect(d.startsWith("M48 6 ")).toBe(true);
+    expect(d).toContain("L72 24 Q80 30 72 36");
+    expect(d).toContain("Q40 60 32 54");
+    expect(d).toContain("Q0 30 8 24");
+    expect(d.endsWith("Q40 0 48 6 Z")).toBe(true);
+  });
+  it("clamps r to half an edge, so the corners never cross", () => {
+    expect(diamondPath(40, 30, 80, 60, 99)).toBe(diamondPath(40, 30, 80, 60, 25));
   });
 });
