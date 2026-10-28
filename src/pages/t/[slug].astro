@@ -1,0 +1,29 @@
+---
+import { loadContent } from "../../lib/content";
+import { targetPath } from "../../lib/terms";
+import { absolute, href } from "../../lib/url";
+export async function getStaticPaths() {
+  const { terms } = await loadContent();
+  return terms.map((t) => ({ params: { slug: t.id }, props: { t } }));
+}
+const { t } = Astro.props;
+const site = Astro.site!.toString();
+const path = targetPath({ slug: t.id, ...t });
+// canonical stays absolute for search engines; the redirect is base-relative so it also works on preview hosts
+const target = absolute(path, site);
+const go = href(path);
+const self = absolute(`t/${t.id}/`, site);
+const title = `${t.translit} (${t.ar}) · Nuzhat al-Naẓar`;
+---
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" /><title>{title}</title>
+<meta name="description" content={t.def} />
+<link rel="canonical" href={target} />
+<meta http-equiv="refresh" content={`0; url=${go}`} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={t.def} />
+<meta property="og:url" content={self} />
+<meta property="og:type" content="article" />
+</head><body><p><a href={go}>{t.translit}</a></p></body></html>

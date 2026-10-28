@@ -10,3 +10,5 @@ a{color:inherit}
 .skip:focus{left:0}
 .stage{background:var(--surface);border:1px solid var(--rule);border-radius:14px;overflow-x:auto}
 .stage svg{display:block;width:100%;height:auto}
+.landing{animation:landing-ring 1.4s ease-out 2}
+@keyframes landing-ring{0%{filter:drop-shadow(0 0 0 var(--gold-b))}40%{filter:drop-shadow(0 0 10px var(--gold-b))}100%{filter:drop-shadow(0 0 0 transparent)}}

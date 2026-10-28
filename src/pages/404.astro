@@ -1,0 +1,29 @@
+---
+import Page from "../layouts/Page.astro";
+import { href } from "../lib/url";
+const base = href("");
+---
+<Page
+  title="Not found · Nuzhat al-Naẓar, visualised"
+  description="That page does not exist."
+  crumbs={[{ label: "Map", path: "" }]}
+>
+  <div>
+    <div class="eyebrow">404</div>
+    <h2>This page is not on the map</h2>
+    <p class="lede">The link may be mistyped or out of date.</p>
+    <p><a class="back" href={href("")}>Back to the map</a></p>
+  </div>
+</Page>
+<script is:inline define:vars={{ BASE: base }}>
+  // unknown /t/<x>/ share links land here: send them to a glossary search (spec §6)
+  var m = location.pathname.match(/\/t\/([^/]+)\/?$/);
+  if (m) {
+    var slug = m[1];
+    try { slug = decodeURIComponent(slug); } catch (e) { /* malformed escape: search for the raw text */ }
+    location.replace(BASE + "terms/?q=" + encodeURIComponent(slug));
+  }
+</script>
+<style>
+  .back{font:600 .9rem var(--f-body);background:var(--surface);border:1px solid var(--rule);border-radius:8px;padding:8px 14px;text-decoration:none;display:inline-block}
+</style>

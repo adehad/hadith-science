@@ -4,7 +4,7 @@
 // showTip/hideTip, made into a dialog that keeps focus.
 import { href } from "../lib/url";
 
-interface TermData { translit: string; ar: string; def: string; section: string; url: string }
+interface TermData { translit: string; ar: string; def: string; section: string }
 
 declare global {
   interface Window { nuzhah?: { openTerm?: (slug: string) => boolean } }
@@ -30,6 +30,9 @@ if (pop) {
   const narrow = matchMedia("(max-width: 640px)");
   const canShare = typeof navigator.share === "function";
   let owner: Element | null = null, data: TermData | null = null, copied = 0;
+
+  // built here, not baked into the page, so previews and the live site each share their own origin
+  const shareUrl = () => new URL(href(`t/${owner!.getAttribute("data-term")}/`), location.origin).href;
 
   function place() {
     if (!owner) return;
@@ -94,17 +97,17 @@ if (pop) {
   close.addEventListener("click", () => hide(true));
 
   copy.addEventListener("click", () => {
-    if (!data) return;
-    navigator.clipboard?.writeText(data.url).then(() => {
+    if (!data || !owner) return;
+    navigator.clipboard?.writeText(shareUrl()).then(() => {
       copy.textContent = "Copied";
       clearTimeout(copied);
       copied = window.setTimeout(() => (copy.textContent = "Copy link"), 2000);
     }).catch(() => {});
   });
   share.addEventListener("click", () => {
-    if (!data) return;
+    if (!data || !owner) return;
     // a cancelled share sheet rejects with AbortError; nothing else to do either way
-    navigator.share({ title: `${data.translit} (${data.ar})`, url: data.url }).catch(() => {});
+    navigator.share({ title: `${data.translit} (${data.ar})`, url: shareUrl() }).catch(() => {});
   });
 
   const follow = () => { if (owner) requestAnimationFrame(place); };
@@ -112,14 +115,30 @@ if (pop) {
   addEventListener("resize", follow);
   narrow.addEventListener("change", follow);
 
-  // for the hash landing code (Task 10) and tests
-  window.nuzhah = {
-    ...window.nuzhah,
-    openTerm(slug: string) {
-      const el = document.querySelector(`[data-term="${CSS.escape(slug)}"][data-term-json]`);
-      if (!el) return false;
-      open(el);
-      return true;
-    },
-  };
+  function openTerm(slug: string) {
+    const el = document.querySelector(`[data-term="${CSS.escape(slug)}"][data-term-json]`);
+    if (!el) return false;
+    open(el);
+    return true;
+  }
+  window.nuzhah = { ...window.nuzhah, openTerm };
+
+  // Phase 2 hook: the carousel snaps to the panel holding el before the landing runs; no-op for now
+  function beforeLand(_el: Element) {}
+
+  // landing on a scene hash: scroll to the term, ring it, open its popover. Glossary articles carry no
+  // data-term-json, so /terms/#slug is handled by glossary.ts alone.
+  function land() {
+    const slug = decodeURIComponent(location.hash.slice(1));
+    if (!slug) return;
+    const el = document.querySelector(`[data-term="${CSS.escape(slug)}"][data-term-json]`);
+    if (!el) return;
+    beforeLand(el);
+    el.scrollIntoView({ block: "center" });
+    el.classList.remove("landing");
+    el.classList.add("landing");
+    el.addEventListener("animationend", () => el.classList.remove("landing"), { once: true });
+    openTerm(slug);
+  }
+  land();
 }

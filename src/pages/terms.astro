@@ -1,0 +1,74 @@
+---
+// glossary (spec §4.2): every term in the inventory, grouped by division, filterable
+import Page from "../layouts/Page.astro";
+import { loadContent } from "../lib/content";
+import { targetPath } from "../lib/terms";
+import { href } from "../lib/url";
+
+const { divisions, terms } = await loadContent();
+const groups = divisions
+  .map((d) => ({ d, items: terms.filter((t) => t.division === d.id) }))
+  .filter((g) => g.items.length > 0);
+---
+<Page
+  title="Glossary · Nuzhat al-Naẓar, visualised"
+  description="Every term of Ibn Ḥajar’s Nuzhat al-Naẓar used on this site, with a short definition and its section."
+  crumbs={[{ label: "Map", path: "" }, { label: "Glossary", path: "terms/" }]}
+>
+  <div>
+    <div class="eyebrow">{terms.length} terms</div>
+    <h2>Glossary</h2>
+    <p class="lede">Each term has a short paraphrase of the section it comes from. Search by transliteration or English; diacritics are optional.</p>
+  </div>
+
+  <div class="filter">
+    <label for="q">Filter terms</label>
+    <input type="search" id="q" name="q" autocomplete="off" spellcheck="false" placeholder="e.g. mursal" />
+    <p id="q-note" class="note" role="status" hidden></p>
+  </div>
+
+  {groups.map(({ d, items }) => (
+    <section class="grp" aria-labelledby={`g-${d.id}`} data-group>
+      <h3 id={`g-${d.id}`}>{d.term} <span class="gen">{d.en}</span></h3>
+      <div class="list">
+        {items.map((t) => (
+          <article id={t.id} data-term={t.id} data-entry>
+            <h4><span class="tr">{t.translit}</span> <span class="ar" lang="ar" dir="rtl">{t.ar}</span></h4>
+            <p class="en">{t.en}</p>
+            <p class="def">{t.def}</p>
+            <p class="meta">
+              <span class="sec">{t.section}</span>
+              {t.scene
+                ? <a href={href(targetPath({ slug: t.id, ...t }))}>See it in the scene</a>
+                : <span>Scene coming soon · <a href={href(`${d.id}/`)}>{d.term}</a></span>}
+            </p>
+          </article>
+        ))}
+      </div>
+    </section>
+  ))}
+
+  <p id="q-empty" class="note" hidden>No terms match.</p>
+</Page>
+<script>
+  import "../islands/glossary.ts";
+</script>
+<style>
+  .filter{display:grid;gap:6px;max-width:420px}
+  .filter label{font-size:.85rem;color:var(--muted);font-weight:600}
+  .filter input{font:inherit;padding:9px 12px;background:var(--surface);color:var(--fg);border:1px solid var(--line);border-radius:8px}
+  .note{margin:0;color:var(--muted);font-size:.95rem}
+  h3{font-family:var(--f-display);font-weight:500;font-size:1.3rem;margin:0 0 10px;padding-bottom:6px;border-bottom:2px solid var(--rule)}
+  .gen{font:400 .9rem var(--f-body);color:var(--muted);margin-inline-start:6px}
+  .list{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+  article{background:var(--surface);border:1px solid var(--rule);border-radius:12px;padding:12px 14px;scroll-margin-top:90px}
+  article[hidden],.grp[hidden]{display:none}
+  h4{margin:0;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;font-family:var(--f-display);font-size:1.15rem;font-weight:700}
+  .ar{font-family:var(--f-ar);font-weight:400;font-size:1.3rem;color:var(--muted)}
+  .en{margin:2px 0 6px;color:var(--muted);font-size:.95rem}
+  .def{margin:0 0 8px}
+  .meta{margin:0;display:flex;flex-wrap:wrap;gap:4px 14px;font-size:.88rem;color:var(--muted)}
+  .sec{font-weight:600}
+  :global(.pulse){animation:gl-pulse 1.4s ease-out 2}
+  @keyframes gl-pulse{0%{box-shadow:0 0 0 0 var(--gold-b);border-color:var(--gold-b)}100%{box-shadow:0 0 0 14px transparent}}
+</style>

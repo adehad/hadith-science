@@ -5,7 +5,6 @@ import Moon from "../components/svg/Moon.astro";
 import Narrator from "../components/svg/Narrator.astro";
 import InfoIcon from "../components/svg/InfoIcon.astro";
 import { loadContent } from "../lib/content";
-import { absolute } from "../lib/url";
 
 type Fig = Omit<import("astro/types").ComponentProps<typeof Narrator>, "x" | "y">;
 // [English, term slug, figure, what it shows, what it shows in words] (mockup CASES)
@@ -26,11 +25,10 @@ const GENERATIONS: [Fig["kind"], string, string][] = [
 ];
 
 const { terms } = await loadContent();
-const site = Astro.site!.toString();
 const cases = CASES.map(([en, slug, fig, lbl, text], i) => {
   const t = terms.find((x) => x.id === slug);
   if (!t) throw new Error(`narrators: no term ${slug} in the inventory`);
-  const json = JSON.stringify({ translit: t.translit, ar: t.ar, def: t.def, section: t.section, url: absolute(`t/${slug}/`, site) });
+  const json = JSON.stringify({ translit: t.translit, ar: t.ar, def: t.def, section: t.section });
   return { en, slug, fig, lbl, text, t, json, x: 80 + i * 100 };
 });
 ---
