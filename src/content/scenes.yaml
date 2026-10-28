@@ -23,3 +23,40 @@
     - { id: aziz, label: ʿAzīz, x0: 255, x1: 425 }
     - { id: mashhur, label: Mashhūr, x0: 425, x1: 605 }
     - { id: mutawatir, label: Mutawātir, x0: 605, x1: 820 }
+- id: breaks
+  division: al-mardud
+  moons: [0]
+  order: 1
+  title: Where does the chain break?
+  eyebrow: Rejected for a break in the chain · §5.18–5.20
+  lede: All four lose narrators from the chain. What tells them apart is where the gap sits and how many links are missing one after another.
+  source: §5.18 Muʿallaq, §5.19 Mursal, §5.20 Muʿḍal and Munqaṭiʿ
+  diagram: Breaks
+  width: 820
+  captions:
+    - term: mursal
+      note: "The drop comes after the Successor: a Successor, senior or junior, says the Prophet ﷺ said or did something, or that it was done in his presence. It is rejected because the missing narrator is unknown. He may be a Companion or another Successor, and a Successor may be weak or sound, and may himself have heard it from yet another Successor."
+    - term: muallaq
+      note: "The collector drops one or more narrators at his own end of the chain and cites someone further up. At the extreme the whole chain goes and he simply says the Messenger of Allah ﷺ said it, or keeps only the Companion, or the Successor and the Companion. It is rejected because the dropped narrator is unknown, but it may be judged sound where the same report appears elsewhere with him named."
+    - term: mudal
+      note: "Two or more narrators dropped one after another. Ibn Ḥajar makes each term wider than the other in one respect. Muʿḍal is the more general on where the drops sit, and it meets muʿallaq when the run of drops is at the collector's end. Muʿallaq is tied to the collector's own act at that end, and needs only one drop (§5.18, §5.20)."
+    - term: munqati
+      note: "Narrators dropped, but not one after another: for example two drops in two separate places. A single drop on its own is also munqaṭiʿ. A run of two or more in a row would make it muʿḍal instead."
+  views:
+    - id: hadith-scholars
+      label: Most hadith scholars
+      scholars: §5.19
+      note: "Even when a Successor is known to drop only trustworthy narrators, most hadith scholars pause (tawaqquf) on his mursal, because the doubt over who is missing remains. This is also one of Aḥmad's two opinions."
+    - id: malikis
+      label: Mālikīs, Kūfīs, Aḥmad (other opinion)
+      scholars: §5.19
+      note: "Aḥmad's other opinion, shared by the Mālikīs and the Kūfīs: the mursal of a Successor who drops only trustworthy narrators is accepted outright."
+    - id: shafii
+      label: al-Shāfiʿī
+      scholars: §5.19
+      note: "al-Shāfiʿī: when another report supports it, whether that one is connected or itself mursal, the balance tips to accepting it and taking the missing narrator to be trustworthy."
+  panels:
+    - { id: mursal, label: Mursal, x0: 0, x1: 215 }
+    - { id: muallaq, label: Muʿallaq, x0: 215, x1: 415 }
+    - { id: mudal, label: Muʿḍal, x0: 415, x1: 615 }
+    - { id: munqati, label: Munqaṭiʿ, x0: 615, x1: 820 }

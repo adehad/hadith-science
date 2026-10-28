@@ -1,0 +1,81 @@
+---
+// "Where does the chain break?" (extends the mockup's SCENES.breaks from two chains to the four omission types,
+// spec §4.3): mursal, muʿallaq, muʿḍal and munqaṭiʿ side by side (§5.18–5.20). Six rows, so that the drops
+// of muʿḍal and munqaṭiʿ sit clear of muʿallaq's at the collector's end. The mursal verdict follows the
+// "Other views" switch (§5.19); the pills outside the default view are built with class="off".
+import Defs from "../svg/Defs.astro";
+import LayerGuides from "../svg/LayerGuides.astro";
+import Chain from "../svg/Chain.astro";
+import Pill from "../svg/Pill.astro";
+import Term from "../svg/Term.astro";
+import InfoIcon from "../svg/InfoIcon.astro";
+import type { Kind } from "../svg/figures";
+import { cap, type Cap } from "../../lib/scene";
+
+interface Props { caps: Record<string, Cap>; scene: { id: string; views?: { id: string }[] } }
+const { caps, scene } = Astro.props;
+
+const W = 820;
+const LAYERS: [string, number][] = [
+  ["Prophet ﷺ", 60], ["Ṣaḥābī", 140], ["Tābiʿī", 215], ["Later", 290], ["Later", 365], ["Collector", 440],
+];
+type PillState = "pause" | "accept" | "support" | "reject";
+// the mursal ruling per view (§5.19), keyed by the scene's view ids
+const MURSAL: Record<string, [PillState, string]> = {
+  "hadith-scholars": ["pause", "Paused (tawaqquf)"],
+  malikis: ["accept", "Accepted"],
+  shafii: ["support", "Accepted if supported"],
+};
+// [term slug, centre, kinds below the moon, always-on labels, verdict pill or undefined for the view pills]
+const COLS: [string, number, Kind[], string[], [PillState, string] | undefined][] = [
+  ["mursal", 115, ["ghost", "tabii", "later", "later", "later"], ["missing"], undefined],
+  // "Rejected unless named elsewhere" overran the 200-unit column (pill width is 6.6 per character + 24)
+  ["muallaq", 315, ["sahabi", "tabii", "later", "ghost", "later"], ["", "", "", "dropped"], ["reject", "Rejected unless named"]],
+  ["mudal", 515, ["sahabi", "ghost", "ghost", "later", "later"], ["", "two in a row"], ["reject", "Rejected"]],
+  ["munqati", 715, ["sahabi", "tabii", "ghost", "later", "later"], ["", "", "one, mid-chain"], ["reject", "Rejected"]],
+];
+const DIVIDERS = [215, 415, 615];
+const PILL_Y = 22;
+const TITLE_Y = 500;
+const f = (n: number) => +n.toFixed(2);
+
+const views = scene.views ?? [];
+const def = views[0]?.id;
+const viewPills = views.map((v) => {
+  const p = MURSAL[v.id];
+  if (!p) throw new Error(`Breaks: no mursal verdict for view ${v.id}`);
+  return { id: v.id, state: p[0], text: p[1], off: v.id !== def };
+});
+
+const cols = COLS.map(([slug, cx, kinds, labels, pill]) => {
+  const c = cap(caps, slug);
+  // title hit area and (i) placement as in Routes.astro: ~11 units per character of the 20px display title
+  const tw = c.translit.length * 11;
+  const info = { cx: f(cx + c.translit.length * 6.4 + 16), cy: TITLE_Y - 6 };
+  const x0 = f(cx - tw / 2 - 6);
+  const hit = { x: x0, y: TITLE_Y - 22, w: f(info.cx + 13 - x0), h: 30 };
+  return { c, cx, kinds, labels, pill, hit, info };
+});
+---
+<svg viewBox={`0 0 ${W} 520`} role="group" aria-label="Four chains from the Prophet ﷺ, each with a gap: mursal after the Successor, muʿallaq next to the collector, muʿḍal two in a row, munqaṭiʿ one in the middle">
+  <Defs />
+  <LayerGuides w={W} layers={LAYERS} />
+  {DIVIDERS.map((x) => <line class="divider" x1={x} x2={x} y1="20" y2={TITLE_Y} />)}
+  {cols.map((col) => (
+    <>
+      <Chain cx={col.cx} layers={LAYERS} kinds={col.kinds} labels={col.labels} />
+      {/* after the chain, so the pill sits over the moon glow */}
+      {col.pill
+        ? <Pill x={col.cx} y={PILL_Y} state={col.pill[0]} text={col.pill[1]} />
+        : viewPills.map((p) => (
+            <g class:list={[{ off: p.off }]} data-view-show={p.id}>
+              <Pill x={col.cx} y={PILL_Y} state={p.state} text={p.text} />
+            </g>
+          ))}
+      <Term slug={col.c.slug} json={col.c.json} label={`${col.c.translit}: ${col.c.en}`} {...col.hit}>
+        <text class="title" x={col.cx} y={TITLE_Y}>{col.c.translit}</text>
+        <InfoIcon {...col.info} />
+      </Term>
+    </>
+  ))}
+</svg>

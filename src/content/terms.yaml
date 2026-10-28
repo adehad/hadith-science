@@ -354,6 +354,7 @@
   def: "The collector drops one or more narrators at his own end of the chain, up to the whole chain, and cites further up."
   section: "§5.18"
   division: al-mardud
+  scene: breaks
 - id: mursal
   translit: Mursal
   ar: مُرْسَلٌ
@@ -361,6 +362,7 @@
   def: "A Successor attributes a saying or act directly to the Prophet ﷺ, dropping whoever stood between them, who may not have been a Companion."
   section: "§5.19"
   division: al-mardud
+  scene: breaks
 - id: mudal
   translit: Muʿḍal
   ar: مُعْضَلٌ
@@ -368,6 +370,7 @@
   def: "Two or more narrators dropped in a row."
   section: "§5.20"
   division: al-mardud
+  scene: breaks
 - id: munqati
   translit: Munqaṭiʿ
   ar: مُنْقَطِعٌ
@@ -375,6 +378,7 @@
   def: "Narrators dropped at separate places in the chain, or a single narrator dropped, never two in a row."
   section: "§5.20"
   division: al-mardud
+  scene: breaks
 - id: mudallas
   translit: Mudallas
   ar: مُدَلَّسٌ
