@@ -1,0 +1,185 @@
+---
+// "Who is who?" (ported from the mockup's namesSvg() and nameTag()): four cells on narrator names (§5.59–5.61).
+// Each cell is its own small SVG in an HTML grid (spec §5), two by two, and one column in portrait. The mockup's
+// 860x560 coordinates are shifted by each cell's origin (430 off x for the right column, 280 off y for the bottom
+// row). The first three cell titles are term triggers; the fourth is Ibn Ḥajar's worked example (§5.61), a
+// heading only, whose explanation is in "Read as text" (scenes.yaml `extra`).
+import Defs from "../svg/Defs.astro";
+import Arrow from "../svg/Arrow.astro";
+import Narrator from "../svg/Narrator.astro";
+import Term from "../svg/Term.astro";
+import InfoIcon from "../svg/InfoIcon.astro";
+import { cap, type Cap } from "../../lib/scene";
+
+interface Props { caps: Record<string, Cap>; scene: { id: string } }
+const { caps } = Astro.props;
+
+const CX = 215;
+const TITLE_Y = 42;
+const f = (n: number) => +n.toFixed(2);
+
+// a cell title as a term trigger. The (i) sits at the mockup's term() spacing (5.6 units per character from the
+// centre, which fits these long titles better than Routes' 6.4), and the hit area runs from the title to the (i).
+function title(slug: string) {
+  const c = cap(caps, slug);
+  const half = c.translit.length * 5.6;
+  const info = { cx: f(CX + half + 16), cy: TITLE_Y - 6 };
+  const x0 = f(CX - half - 6);
+  return { c, info, hit: { x: x0, y: TITLE_Y - 22, w: f(info.cx + 13 - x0), h: 30 } };
+}
+const [muttafiq, mutalif, mutashabih] = ["muttafiq-wa-muftariq", "mutalif-wa-mukhtalif", "mutashabih"].map(title);
+
+// a name tag (the mockup's nameTag()) centred on (CX, y): Arabic over its transliteration, whose middle part,
+// if given, is the <tspan class="diff">. At 56 tall, Amiri's marks above and below the 17px Arabic clear both
+// the rim and the 11px transliteration line.
+interface Tag { y: number; ar: string; tr: [string, string?, string?]; w: number }
+const TAG_H = 56;
+const tag = (t: Tag) => ({ ...t, x: CX - t.w / 2, top: t.y - TAG_H / 2, arY: t.y - 4, trY: t.y + 18 });
+const TAGS1 = ([{ y: 98, ar: "فُلَانُ بْنُ فُلَانٍ", tr: ["same name, same father"], w: 230 }] as Tag[]).map(tag);
+const TAGS3 = ([
+  { y: 98, ar: "مُحَمَّدُ بْنُ عَقِيلٍ", tr: ["Muḥammad ibn ", "ʿAqīl", " · al-Nīsābūrī"], w: 300 },
+  { y: 166, ar: "مُحَمَّدُ بْنُ عُقَيْلٍ", tr: ["Muḥammad ibn ", "ʿUqayl", " · al-Firyābī"], w: 300 },
+] as Tag[]).map(tag);
+
+// one written shape read four ways by its dots (§5.60): [dot offsets, name, letter]
+const GLYPHS: [[number, number][], string, string][] = [
+  [[], "as written", ""],
+  [[[0, 20]], "bāʾ", "ب"],
+  [[[-6, -22], [6, -22]], "tāʾ", "ت"],
+  [[[-6, -22], [6, -22], [0, -31]], "thāʾ", "ث"],
+];
+const glyphs = GLYPHS.map(([dots, name, ar], k) => ({ gx: 80 + k * 90, gy: 128, dots, name, ar }));
+
+// the worked example as a filter box (§5.61): each chip added drops rows. e is the chip a row drops at; 0 is the
+// narrator meant. Chip 3 (al-Anṣārī) drops no one: both Companions left are of the Anṣār.
+const CHIPS = ["ʿAbd Allāh", "ibn Zayd", "al-Anṣārī", "ibn ʿAbd Rabbih"];
+let x = 28;
+const chips = CHIPS.map((t, k) => {
+  const w = f(t.length * 6.4 + 18);
+  const c = { x, w, t, k: k + 1 };
+  x = f(x + w + 6);
+  return c;
+});
+const ROWS: [string, string, number][] = [
+  ["Yazīd ibn ʿAbd Allāh", "", 1],
+  ["ʿAbd Allāh ibn Yazīd · al-Khaṭmī", "Companion", 2],
+  ["ʿAbd Allāh ibn Zayd ibn ʿĀṣim · al-Anṣārī", "Companion · wuḍūʾ", 4],
+  ["ʿAbd Allāh ibn Nujayy", "Successor", 2],
+  ["ʿAbd Allāh ibn Zayd ibn ʿAbd Rabbih · al-Anṣārī", "Companion · adhān", 0],
+  ["al-Aswad ibn Yazīd", "", 1],
+  ["ʿAbd Allāh ibn Yaḥyā", "", 2],
+  ["ʿAbd Allāh ibn Yazīd · al-Qārī", "in ʿĀʾisha's report", 2],
+];
+const rows = ROWS.map(([name, tag, e], k) => ({ name, tag, e, y: 112 + k * 19 }));
+---
+<div class="cells">
+  <svg viewBox="0 0 430 280" role="group" aria-label="One name, so-and-so son of so-and-so, shared by two different men">
+    <Defs />
+    <Term slug={muttafiq.c.slug} json={muttafiq.c.json} label={`${muttafiq.c.translit}: ${muttafiq.c.en}`} {...muttafiq.hit}>
+      <text class="title" x={CX} y={TITLE_Y}>{muttafiq.c.translit}</text>
+      <InfoIcon {...muttafiq.info} />
+    </Term>
+    {TAGS1.map((t) => (
+      <g class="tag">
+        <rect x={t.x} y={t.top} width={t.w} height={TAG_H} rx={TAG_H / 2} />
+        <text class="title-ar" lang="ar" x={CX} y={t.arY} style="font-size:17px">{t.ar}</text>
+        <text class="tr" x={CX} y={t.trY}>{t.tr[0]}{t.tr[1] && <tspan class="diff">{t.tr[1]}</tspan>}{t.tr[2]}</text>
+      </g>
+    ))}
+    <Arrow x1={CX} y1={126} x2={140} y2={168} bend={-12} />
+    <Arrow x1={CX} y1={126} x2={290} y2={168} bend={12} />
+    {/* both plain later narrators: a generation band would say which generation they are, and the name doesn't */}
+    <Narrator x={140} y={192} k={0.9} kind="later" />
+    <Narrator x={290} y={192} k={0.9} kind="later" />
+    <text class="lbl" x="140" y="230">one man</text>
+    <text class="lbl" x="290" y="230">a different man</text>
+    <text class="lbl gap" x={CX} y="260">risk: two people taken as one</text>
+  </svg>
+
+  <svg viewBox="0 0 430 280" role="group" aria-label="One written letter shape, read as bāʾ, tāʾ or thāʾ by its dots">
+    <Term slug={mutalif.c.slug} json={mutalif.c.json} label={`${mutalif.c.translit}: ${mutalif.c.en}`} {...mutalif.hit}>
+      <text class="title" x={CX} y={TITLE_Y}>{mutalif.c.translit}</text>
+      <InfoIcon {...mutalif.info} />
+    </Term>
+    {glyphs.map((g) => (
+      <>
+        <path class="glyph" d={`M${g.gx - 26} ${g.gy - 14} Q${g.gx - 28} ${g.gy + 8} ${g.gx} ${g.gy + 8} Q${g.gx + 28} ${g.gy + 8} ${g.gx + 26} ${g.gy - 14}`} />
+        {g.dots.map(([dx, dy]) => <circle class="ndot" cx={g.gx + dx} cy={g.gy + dy} r="3.6" />)}
+        <text class="lbl" x={g.gx} y={g.gy + 52}>{g.name}</text>
+        {g.ar && <text class="lbl ar" lang="ar" x={g.gx} y={g.gy + 72}>{g.ar}</text>}
+      </>
+    ))}
+    <text class="lbl" x={CX} y="236">the dots (or vowels) decide how it is read</text>
+    <text class="lbl gap" x={CX} y="260">risk: misreading the name</text>
+  </svg>
+
+  <svg viewBox="0 0 430 280" role="group" aria-label="Muḥammad ibn ʿAqīl al-Nīsābūrī and Muḥammad ibn ʿUqayl al-Firyābī, told apart by a vowel and their nisbas">
+    <Term slug={mutashabih.c.slug} json={mutashabih.c.json} label={`${mutashabih.c.translit}: ${mutashabih.c.en}`} {...mutashabih.hit}>
+      <text class="title" x={CX} y={TITLE_Y}>{mutashabih.c.translit}</text>
+      <InfoIcon {...mutashabih.info} />
+    </Term>
+    {TAGS3.map((t) => (
+      <g class="tag">
+        <rect x={t.x} y={t.top} width={t.w} height={TAG_H} rx={TAG_H / 2} />
+        <text class="title-ar" lang="ar" x={CX} y={t.arY} style="font-size:17px">{t.ar}</text>
+        <text class="tr" x={CX} y={t.trY}>{t.tr[0]}{t.tr[1] && <tspan class="diff">{t.tr[1]}</tspan>}{t.tr[2]}</text>
+      </g>
+    ))}
+    <text class="lbl" x={CX} y="222">same generation, both famous</text>
+    <text class="lbl" x={CX} y="242">a vowel and the nisba tell them apart</text>
+  </svg>
+
+  <svg viewBox="0 0 430 280" role="img" aria-label="Worked example, which one is he? Adding ʿAbd Allāh, ibn Zayd, al-Anṣārī and ibn ʿAbd Rabbih narrows eight similar names to ʿAbd Allāh ibn Zayd ibn ʿAbd Rabbih al-Anṣārī, the Companion who reported the call to prayer">
+    <text class="title" x={CX} y={TITLE_Y}>Which one is he?</text>
+    <rect class="searchbox" x="20" y="60" width="390" height="30" rx="8" />
+    {chips.map((c) => (
+      <g class={`chip c${c.k}`}>
+        <rect x={c.x} y="64" width={c.w} height="22" rx="11" />
+        <text x={f(c.x + c.w / 2)} y="79">{c.t}</text>
+      </g>
+    ))}
+    {rows.map((r) => (
+      <>
+        {r.e === 0 && <rect class="win" x="20" y={r.y - 13} width="390" height="18" rx="4" />}
+        <g class={r.e ? `e${r.e}` : undefined}>
+          <text class="row" x="28" y={r.y}>{r.name}</text>
+          <text class="rowtag" x="404" y={r.y}>{r.tag}</text>
+        </g>
+      </>
+    ))}
+    <text class="lbl" x={CX} y="268">both Companions, both Anṣārī: only the grandfather tells them apart</text>
+  </svg>
+</div>
+<style>
+  /* the grid's 1px gaps show its background, drawing var(--rule) lines between the cells */
+  .cells{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--rule)}
+  .cells svg{background:var(--surface)}
+  @media (max-width:640px) and (orientation:portrait){.cells{grid-template-columns:1fr}}
+  .tag rect{fill:var(--surface);stroke:var(--line);stroke-width:1.5}
+  .diff{fill:var(--gap);font-style:normal;font-weight:700;animation:blink 2.4s ease-in-out infinite}
+  .glyph{fill:none;stroke:var(--fg);stroke-width:5;stroke-linecap:round}
+  /* not .dot: InfoIcon draws its "i" with a .dot */
+  .ndot{fill:var(--gap);animation:blink 2.4s ease-in-out infinite}
+  .searchbox{fill:var(--surface);stroke:var(--line);stroke-width:1.5}
+  .chip rect{fill:var(--surface);stroke:var(--gold-a);stroke-width:1.5}
+  .chip text{fill:var(--fg);font:700 11.5px var(--f-body);text-anchor:middle}
+  .row{fill:var(--fg);font:600 11.5px var(--f-body)}
+  .rowtag{fill:var(--muted);font:600 10px var(--f-body);text-anchor:end}
+  .win{fill:color-mix(in srgb,var(--gold-b) 35%,transparent);animation:names-win 10s infinite}
+  /* a 10s loop: chips appear one by one, each fading the rows it rules out, then the answer lights up */
+  .c1{animation:names-c1 10s infinite} .c2{animation:names-c2 10s infinite}
+  .c3{animation:names-c3 10s infinite} .c4{animation:names-c4 10s infinite}
+  .e1{animation:names-e1 10s infinite} .e2{animation:names-e2 10s infinite}
+  .e3{animation:names-e3 10s infinite} .e4{animation:names-e4 10s infinite}
+  @keyframes names-c1{0%,8%{opacity:0}10%,92%{opacity:1}100%{opacity:0}}
+  @keyframes names-c2{0%,28%{opacity:0}30%,92%{opacity:1}100%{opacity:0}}
+  @keyframes names-c3{0%,48%{opacity:0}50%,92%{opacity:1}100%{opacity:0}}
+  @keyframes names-c4{0%,68%{opacity:0}70%,92%{opacity:1}100%{opacity:0}}
+  @keyframes names-e1{0%,13%{opacity:1}17%,92%{opacity:.12}100%{opacity:1}}
+  @keyframes names-e2{0%,33%{opacity:1}37%,92%{opacity:.12}100%{opacity:1}}
+  @keyframes names-e3{0%,53%{opacity:1}57%,92%{opacity:.12}100%{opacity:1}}
+  @keyframes names-e4{0%,73%{opacity:1}77%,92%{opacity:.12}100%{opacity:1}}
+  @keyframes names-win{0%,77%{opacity:0}81%,92%{opacity:1}100%{opacity:0}}
+  /* motion.css stops every animation; show the loop's end state: all chips, the narrowed rows, the answer lit */
+  @media (prefers-reduced-motion: reduce){.e1,.e2,.e3,.e4{opacity:.12}}
+</style>

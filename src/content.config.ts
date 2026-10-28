@@ -52,6 +52,8 @@ const scenes = defineCollection({
     // the first view is the default (Ibn Ḥajar's, spec §5)
     views: z.array(z.object({ id: slug, label: z.string(), scholars: z.string(), note: z.string() })).min(2).optional(),
     panels: z.array(z.object({ id: slug, label: z.string(), x0: z.number(), x1: z.number() })).optional(),
+    // text-only items for "Read as text" that are not terms, like the names scene's worked example
+    extra: z.array(z.object({ title: z.string(), ar: z.string().optional(), section: z.string(), note: z.string().max(900) })).optional(),
   }),
 });
 

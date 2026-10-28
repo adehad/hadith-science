@@ -980,6 +980,7 @@
   def: "Names and fathers' names (or kunya and nisba) match, yet they are different people. Knowing it stops two being taken as one."
   section: "§5.59"
   division: al-asma
+  scene: names
 - id: mutalif-wa-mukhtalif
   translit: al-Muʾtalif wa-l-mukhtalif
   ar: الْمُؤْتَلِفُ وَالْمُخْتَلِفُ
@@ -987,6 +988,7 @@
   def: "Names that look the same on the page but are read differently, by their dots or vowels. Nothing around a name helps, so they must be learned."
   section: "§5.60"
   division: al-asma
+  scene: names
 - id: mutashabih
   translit: al-Mutashābih
   ar: الْمُتَشَابِهُ
@@ -994,6 +996,7 @@
   def: "Names alike in writing and sound but with fathers' names read differently, or the reverse, like Muḥammad ibn ʿAqīl and Muḥammad ibn ʿUqayl."
   section: "§5.61"
   division: al-asma
+  scene: names
 
 # 8. Maʿrifat al-ruwāt (§5.62–5.71)
 - id: tabaqa

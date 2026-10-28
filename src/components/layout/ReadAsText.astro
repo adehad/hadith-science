@@ -1,11 +1,13 @@
 ---
 // collapsible text version of a diagram, for screen readers and search engines (spec §5). Scenes pass their
-// captions (and views); other pages pass neither and put their own list in the slot, reusing the wrapper.
+// captions (and views, and any extra notes); other pages pass none and put their own list in the slot, reusing
+// the wrapper.
 interface Props {
   captions?: { translit: string; ar: string; section: string; note: string }[];
   views?: { label: string; scholars: string; note: string }[];
+  extra?: { title: string; ar?: string; section: string; note: string }[];
 }
-const { captions, views } = Astro.props;
+const { captions, views, extra } = Astro.props;
 ---
 <details class="as-text">
   <summary>Read as text</summary>
@@ -28,6 +30,9 @@ const { captions, views } = Astro.props;
       </ul>
     </>
   )}
+  {extra?.map((x) => (
+    <p><b>{x.title}</b> {x.ar && <span lang="ar" dir="rtl" class="ar">{x.ar}</span>} ({x.section}). {x.note}</p>
+  ))}
   <slot />
 </details>
 <style>
