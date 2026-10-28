@@ -736,3 +736,34 @@ This follows the conventions and content rules of the phase 2 plan: `rtk`, bun o
 12. **Matn Arabic.** The quoted lines (crescent wordings, contagion, leper, graves, Jābir, the munkar and shādhdh reports) need checking against an edition before the build. Should the owner or the implementer do this?
 13. **Extra 2** (the seven ranks by the two Ṣaḥīḥs, §5.9). Include it in Read as text, or leave it out as not a term?
 14. **Scene 3 in portrait.** The moon shows only in panel 1. Is that acceptable, or should panels 2 and 3 carry a small "from the Prophet ﷺ via Ibn ʿUmar" stub label at the top edge?
+
+## 13. Interim decisions for the build
+
+The owner asked for development to continue while they review, so these defaults let the build go ahead. Each can be reversed once the owner rules; the PR description lists them.
+
+- **§5.12, the maʿrūf track:** drawn from Ibn ʿAbbās, as sketched. The "from Abū Isḥāq only" reading goes into `notes/translation-queries.md`.
+- **Translation slips:** all five are added to `notes/translation-queries.md` for a ruling. Where a slip changes meaning, the site uses neutral wording.
+- **Al-Tirmidhī's ḥasan:** kept as the `tirmidhi` Other view, because it is in the translation.
+- **`by-wording` view: dropped.** Ibn Ḥajar calls the matter easy, and whether ʿĀṣim's wording counts as the same is unsettled. A sentence in the scene's Read as text mentions the group that classifies by wording. Scene 3 therefore has no views.
+- **Jurists' order (owner's p.142 note): not added as a view.** It isn't in the translation. It stays listed in §8 as a proposal for the owner.
+- **Owner's annotations:** only the ones already marked "used" go in. "Proposed" ones (p.132 ziyāda example, p.138, p.126–127) wait for approval in `notes/annotation-usage.md`.
+- **Gauges:** they show relative order only. No numbers or percentages appear, so they can't be read as measured data.
+- **Generation colours from general knowledge:** acceptable. Each scene's Read as text names who is a Companion or a Successor, but only where the translation says so.
+- **Arabic quoted from the reports: not shown anywhere.** The translation gives the reports' wording in English only, and the agents must not write Arabic report wording from memory. So the design's "wordings in Arabic" extras (§4.4, and the matn Arabic of §5) are dropped until the owner supplies checked Arabic from a printed edition (open question 12). Term names keep their Arabic.
+- **Seven ranks by the two Ṣaḥīḥs:** included as an `extra` in Read as text if the translation states them in §5.9. Otherwise left out.
+- **Scene 3 moon:** appears only in the first portrait panel. Accepted.
+
+### Deviations in the build
+
+These differ from the sketches above, and are kept for now:
+
+- **Kit, schema and tests folded into each scene commit:** the new kit parts, the content schema changes and the tests went into the commit of the scene that first needed them, rather than being kept as separate tasks.
+- **No concept-artifact mockup:** the mockup step was replaced by this design doc plus the PR preview.
+- **Grades, rung 4 in the al-Tirmidhī view:** no parallel chain chips, and its gauge is hidden. The rung shows his three conditions as dashed tags instead.
+- **View swaps are instant:** no cross-fade between the default and the other view.
+- **Abū Zurʿa** is added to the `ibn-hajar` view's list of masters, as the translation names him.
+- **`FIG.weak` keeps its scroll:** a weak narrator is named, so he keeps his scroll; the seal that vouches for him is cracked.
+- **The Grades shādhdh row is an in-SVG link** to *Who outweighs whom?*, not a term trigger, since the term belongs to that scene.
+- **Reports not acted on are not faded:** in *Can both be acted on?* the weak opposer, the abrogated ruling and the paused stubs are `Matn` cards with `inactive` set, a dashed edge and a muted fill, so their text keeps 4.5:1 contrast in both themes. The strike still draws across the abrogated ruling.
+- **No Jābir extra:** his report on ablution is told in the `mansukh` note, so a Read as text extra would repeat it.
+- **The tarjīḥ card has no `Matn` stubs:** the scale alone stands for the two reports, with narrower pans (`Scale pw`) so it clears the card's edge.
