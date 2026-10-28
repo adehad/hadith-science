@@ -50,6 +50,24 @@ const planets = divisions.map((d, i) => {
       ))}
     </svg>
   </div>
+  <!-- portrait phones: the same divisions as a nested list rooted at the moon, instead of a cramped orbit map -->
+  <div class="tree">
+    <div class="root" aria-hidden="true"><svg viewBox="0 0 80 80"><Moon cx={40} cy={40} k={0.9} /></svg></div>
+    <ol aria-label="Ibn Ḥajar’s eight divisions, in his order">
+      {divisions.map((d) => (
+        <li>
+          <a href={href(`${d.id}/`)} class="div">
+            <span class="dot" style={`background:var(--p${d.order})`} aria-hidden="true"></span>
+            <span class="names">
+              <span class="term">{d.term} <span class="ar" lang="ar" dir="rtl">{d.ar}</span></span>
+              <span class="en">{d.en} · {d.sections}</span>
+            </span>
+          </a>
+          <ul>{d.moons.map((m) => <li>{m}</li>)}</ul>
+        </li>
+      ))}
+    </ol>
+  </div>
   <p class="src">Divisions follow Ibn Ḥajar, <em>Nuzhat al-Naẓar</em> §5.2–5.71 and the summaries at §5.8.2, §5.16.3, §5.38.2 (trans. A. S. Hussain, 2012).</p>
 </Page>
 <script>
@@ -66,6 +84,25 @@ const planets = divisions.map((d, i) => {
   .planet:hover .pbody,.planet:focus-visible .pbody{stroke:var(--fg);stroke-width:2.5}
   .planet:hover .ptitle,.planet:focus-visible .ptitle{fill:var(--fg)}
   .src{margin:0;font-size:.85rem;color:var(--muted)}
+  .tree{display:none}
+  @media (max-width:640px) and (orientation:portrait){
+    .stage{display:none}
+    .tree{display:block}
+  }
+  .tree .root{width:56px;margin:0 0 4px}
+  .tree .root svg{display:block;width:100%;height:auto}
+  .tree ol{list-style:none;margin:0;padding:0 0 0 27px;border-left:2px solid var(--rule);margin-left:27px}
+  .tree ol>li{position:relative;padding:10px 0 6px 16px}
+  .tree ol>li::before{content:"";position:absolute;left:-27px;top:24px;width:34px;border-top:2px solid var(--rule)}
+  .tree .div{display:flex;gap:10px;align-items:flex-start;color:var(--fg);text-decoration:none}
+  .tree .div:hover .term,.tree .div:focus-visible .term{text-decoration:underline}
+  .tree .dot{flex:none;width:18px;height:18px;border-radius:50%;margin-top:3px}
+  .tree .names{display:flex;flex-direction:column;gap:2px}
+  .tree .term{font-weight:600}
+  .tree .term .ar{font-family:var(--f-ar);font-weight:400;margin-left:6px}
+  .tree .en{font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+  .tree ul{margin:6px 0 0 28px;padding-left:16px;color:var(--muted);font-size:.92rem}
+  .tree ul li{margin:2px 0}
   /* HTML stand-in that carries the planet into the division page (view transitions only capture boxed elements) */
   :global(.vt-planet){position:fixed;border-radius:50%;pointer-events:none;z-index:5}
 </style>

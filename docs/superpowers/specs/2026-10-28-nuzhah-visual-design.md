@@ -115,6 +115,8 @@ A missing item shows as an empty slot that blinks.
 | 7 | al-Asmāʾ | Names that look alike | 5.59–5.61 |
 | 8 | Maʿrifat al-ruwāt | Knowing the narrators | 5.62–5.71 |
 
+On portrait phones (under 640px) the orbit map is replaced by a nested list: the moon ﷺ as the root, the eight divisions as coloured planet dots with term, Arabic, English and §, and their sub-divisions as indented bullets (links once scenes exist). Landscape and wider show the orbit map.
+
 Clicking a planet navigates to `/<division>/`, and the view transition (§5) makes this look like a zoom into the planet. That page shows the planet large, with its moons. Clicking a moon opens that scene.
 
 ### 4.2 Routes

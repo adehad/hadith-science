@@ -17,6 +17,9 @@ if (svg) {
 
   let t = 0, last = 0, raf = 0, held = false, gone = false;
   const narrow = matchMedia("(max-width: 640px)");
+  // portrait phones show the nested list instead of the map (index.astro), so don't animate a hidden map
+  const tree = matchMedia("(max-width: 640px) and (orientation: portrait)");
+  const still = matchMedia("(prefers-reduced-motion: reduce)");
 
   function place() {
     for (const p of planets) {
@@ -36,19 +39,20 @@ if (svg) {
     place();
     raf = requestAnimationFrame(tick);
   }
-  function start() { if (!raf && !held && !gone && !document.hidden) { last = 0; raf = requestAnimationFrame(tick); } }
+  function start() { if (!raf && !held && !gone && !document.hidden && !tree.matches && !still.matches) { last = 0; raf = requestAnimationFrame(tick); } }
   function stop() { cancelAnimationFrame(raf); raf = 0; }
 
-  if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    // pause while the reader is pointing at or focused inside the map, so a planet holds still to be chosen
-    const hold = (on: boolean) => { held = on; on ? stop() : start(); };
-    svg.addEventListener("pointerenter", () => hold(true));
-    svg.addEventListener("pointerleave", () => hold(svg.contains(document.activeElement)));
-    svg.addEventListener("focusin", () => hold(true));
-    svg.addEventListener("focusout", (e) => { if (!svg.contains(e.relatedTarget as Node)) hold(svg.matches(":hover")); });
-    document.addEventListener("visibilitychange", () => (document.hidden ? stop() : start()));
-    start();
-  }
+  // start() declines while reduced motion is on, so every listener can stay registered and the setting can change live
+  // pause while the reader is pointing at or focused inside the map, so a planet holds still to be chosen
+  const hold = (on: boolean) => { held = on; on ? stop() : start(); };
+  svg.addEventListener("pointerenter", () => hold(true));
+  svg.addEventListener("pointerleave", () => hold(svg.contains(document.activeElement)));
+  svg.addEventListener("focusin", () => hold(true));
+  svg.addEventListener("focusout", (e) => { if (!svg.contains(e.relatedTarget as Node)) hold(svg.matches(":hover")); });
+  document.addEventListener("visibilitychange", () => (document.hidden ? stop() : start()));
+  tree.addEventListener("change", () => (tree.matches ? stop() : start()));
+  still.addEventListener("change", () => (still.matches ? stop() : start()));
+  start();
 
   // the stand-in: view-transition-name is only captured on boxed elements, never on SVG <a>/<g>
   let chosen: (typeof planets)[number] | null = null;
@@ -93,6 +97,6 @@ if (svg) {
     if (!e.persisted) return;
     document.querySelector(".vt-planet")?.remove();
     chosen = null; gone = false; held = svg.matches(":hover") || svg.contains(document.activeElement);
-    if (!matchMedia("(prefers-reduced-motion: reduce)").matches) start();
+    start();
   });
 }

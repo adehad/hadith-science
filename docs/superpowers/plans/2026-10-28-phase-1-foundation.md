@@ -1092,6 +1092,8 @@ test("planets move with motion allowed", async ({ page }) => {
 });
 ```
 
+- [ ] **Step 4b: map layout test** — in `tests/e2e/motion.spec.ts` (or a new `map.spec.ts`): at 390×844 the `.tree` list is visible with 8 division links and `.stage` is hidden, and no `.planet` `data-angle` changes over 800ms; at 844×390 the orbit map is visible and the list hidden.
+
 - [ ] **Step 5: `tests/e2e/prefs.spec.ts`** — theme toggle sets `data-theme` and survives reload. With `localStorage` throwing (`page.addInitScript(() => Object.defineProperty(window, "localStorage", { get() { throw new Error("blocked"); } }))`), the page still renders with no page errors.
 
 - [ ] **Step 6: Run** `rtk bun run build && rtk playwright test --project=e2e` → all pass. Fix real failures in the code, not by weakening tests. Axe colour-contrast failures mean adjusting tokens.
