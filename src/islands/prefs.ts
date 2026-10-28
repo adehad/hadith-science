@@ -42,3 +42,11 @@ modeBtns.forEach((b) =>
   }),
 );
 applyMode(read("nuzhah-mode") === "labels" ? "labels" : "key");
+
+// CSS can't reach SMIL (the Companion's gold shimmer), so reduced motion pauses it here (spec §3.4)
+const still = matchMedia("(prefers-reduced-motion: reduce)");
+function applyMotion() {
+  document.querySelectorAll("svg").forEach((s) => (still.matches ? s.pauseAnimations() : s.unpauseAnimations()));
+}
+still.addEventListener("change", applyMotion);
+applyMotion();

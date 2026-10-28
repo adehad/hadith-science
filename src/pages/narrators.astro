@@ -1,0 +1,112 @@
+---
+// figure key: how a narrator figure is read (ported from the mockup's "Reading a narrator" scene)
+import Page from "../layouts/Page.astro";
+import Moon from "../components/svg/Moon.astro";
+import Narrator from "../components/svg/Narrator.astro";
+import InfoIcon from "../components/svg/InfoIcon.astro";
+import { loadContent } from "../lib/content";
+import { absolute } from "../lib/url";
+
+type Fig = Omit<import("astro/types").ComponentProps<typeof Narrator>, "x" | "y">;
+// [English, term slug, figure, what it shows, what it shows in words] (mockup CASES)
+const CASES: [string, string, Fig, string, string][] = [
+  ["Reliable", "thiqa", { scroll: "yes", seal: "yes" }, "name + seal", "A name scroll and a seal: his identity is known and someone vouches for him."],
+  ["Unknown", "majhul", { scroll: "yes", seal: "slot" }, "no one vouches", "A name scroll, but the seal slot is empty: he is named, yet no one vouches for him."],
+  ["Unnamed", "mubham", { face: "blank", scroll: "slot", seal: "slot" }, "no name to check", "A blank face and both slots empty: with no name, there is no one to check."],
+  ["Weak", "daif", { scroll: "yes", seal: "crack" }, "cracked seal", "A name scroll and a cracked seal: he is known, but criticised as weak."],
+  ["Liar", "kadhdhab", { face: "mask", scroll: "yes", seal: "void" }, "mask, voided seal", "A mask and a crossed-out seal: he is known as a liar."],
+  ["Memory failed", "mukhtalit", { face: "faded", scroll: "yes", seal: "yes" }, "fading head", "Scroll and seal, but a fading head: he was reliable until his memory failed."],
+  ["Conceals", "mudallis", { face: "hand", scroll: "yes", seal: "yes" }, "hand over mouth", "Scroll and seal, with a hand over his mouth: he hides a gap in what he passes on."],
+  ["Missing link", "saqt", { ghost: true }, "dropped from chain", "A dashed red outline: a narrator dropped from the chain."],
+];
+const GENERATIONS: [Fig["kind"], string, string][] = [
+  ["sahabi", "Companion", "A Companion (ṣaḥābī) is gold, with a shimmer."],
+  ["tabii", "Successor", "A Successor (tābiʿī) is green."],
+  ["later", "Later narrator", "A later narrator is black (light ink in the dark theme)."],
+];
+
+const { terms } = await loadContent();
+const site = Astro.site!.toString();
+const cases = CASES.map(([en, slug, fig, lbl, text], i) => {
+  const t = terms.find((x) => x.id === slug);
+  if (!t) throw new Error(`narrators: no term ${slug} in the inventory`);
+  const json = JSON.stringify({ translit: t.translit, ar: t.ar, def: t.def, section: t.section, url: absolute(`t/${slug}/`, site) });
+  return { en, slug, fig, lbl, text, t, json, x: 80 + i * 100 };
+});
+---
+<Page
+  title="Reading a narrator · Nuzhat al-Naẓar, visualised"
+  description="The figure key: how the narrator figures show identity, vouching, weakness and generation."
+  crumbs={[{ label: "Map", path: "" }, { label: "Figure key", path: "narrators/" }]}
+>
+  <div>
+    <div class="eyebrow">Narrator figures</div>
+    <h2>Reading a narrator</h2>
+    <p class="lede">A name scroll means his identity is known; a seal means someone reliable vouches for him. Anything missing pulses, so the gap catches the eye. Generation is shown by colour and by the row he stands in. Choose a case to see its term.</p>
+  </div>
+  <div class="stage">
+    <svg viewBox="0 0 860 440" role="group" aria-label="Eight narrator cases, then the Prophet ﷺ and three generations, drawn as figures">
+      <defs>
+        <!-- the Companion's shimmering gold, used by Narrator kind="sahabi" -->
+        <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" style="stop-color:var(--gold-a)" />
+          <stop offset=".38" style="stop-color:var(--gold-b)" />
+          <stop offset=".5" style="stop-color:var(--gold-c)" />
+          <stop offset=".62" style="stop-color:var(--gold-b)" />
+          <stop offset="1" style="stop-color:var(--gold-a)" />
+          <animateTransform class="shimmer" attributeName="gradientTransform" type="translate" values="-1 -1;1 1;1 1" keyTimes="0;.6;1" dur="3.2s" repeatCount="indefinite" />
+        </linearGradient>
+      </defs>
+      {cases.map((c) => (
+        <>
+          <g class="term" data-term={c.slug} data-term-json={c.json} aria-label={`${c.en}: ${c.t.translit}`}>
+            <rect class="hit" x={c.x - 48} y="14" width="96" height="56" rx="8" />
+            <text class="colhead" x={c.x} y="34">{c.en}</text>
+            <text class="title-ar" x={c.x} y="60" lang="ar">{c.t.ar}</text>
+            <InfoIcon cx={c.x + 38} cy={54} r={8} />
+          </g>
+          <Narrator x={c.x} y={140} {...c.fig} />
+          <text class="lbl" x={c.x} y="205">{c.lbl}</text>
+        </>
+      ))}
+      <line class="rule" x1="10" x2="850" y1="240" y2="240" />
+      <text class="rowhead" x="12" y="280">Generation</text>
+      <text class="rowsub" x="12" y="298">a reliable narrator of each</text>
+      <Moon cx={230} cy={345} k={0.9} />
+      <text class="lbl" x="230" y="412">The Prophet ﷺ</text>
+      {GENERATIONS.map(([kind, name], k) => (
+        <>
+          <Narrator x={380 + k * 150} y={350} kind={kind} scroll="yes" seal="yes" />
+          <text class="lbl" x={380 + k * 150} y="412">{name}</text>
+        </>
+      ))}
+    </svg>
+  </div>
+  <p class="src">Cases from Ibn Ḥajar, <em>Nuzhat al-Naẓar</em> §5.21 Mudallas, §5.23 grounds of criticism, §5.35–5.36 Jahāla and Mubham, §5.38 Mukhtalaṭ, §5.63 ranks of praise and criticism (trans. A. S. Hussain, 2012).</p>
+  <details class="as-text">
+    <summary>Read as text</summary>
+    <ol>
+      {cases.map((c) => (
+        <li>
+          <b>{c.en}</b> · {c.t.translit} <span class="ar" lang="ar" dir="rtl">{c.t.ar}</span> ({c.t.section}). {c.text}
+        </li>
+      ))}
+    </ol>
+    <p>Generation: the Prophet ﷺ is the full moon at the source of every chain. {GENERATIONS.map(([, , text]) => text).join(" ")}</p>
+  </details>
+</Page>
+<style>
+  .term{cursor:pointer;outline:none}
+  .term .hit{fill:transparent;stroke:none}
+  .term:focus-visible .hit{stroke:var(--gold-b);stroke-width:2}
+  .colhead{fill:var(--fg);font:700 13px var(--f-body);text-anchor:middle}
+  .title-ar{fill:var(--muted);font:400 18px var(--f-ar);text-anchor:middle}
+  .lbl{fill:var(--muted);font:600 12px var(--f-body);text-anchor:middle;stroke:var(--surface);stroke-width:4px;paint-order:stroke;stroke-linejoin:round}
+  .rule{stroke:var(--rule);stroke-width:1}
+  .rowhead{fill:var(--fg);font:700 16px var(--f-display)} .rowsub{fill:var(--muted);font:600 11.5px var(--f-body)}
+  .src{margin:0;font-size:.85rem;color:var(--muted)}
+  .as-text summary{cursor:pointer;font-weight:600}
+  .as-text ol{margin:8px 0;padding-left:1.4em;display:grid;gap:4px}
+  .as-text p{margin:0}
+  .as-text .ar{font-family:var(--f-ar);font-size:1.1rem}
+</style>

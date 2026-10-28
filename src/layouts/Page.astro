@@ -8,6 +8,7 @@ import "../styles/base.css";
 import "../styles/motion.css";
 import Header from "../components/layout/Header.astro";
 import Footer from "../components/layout/Footer.astro";
+import TermPopover from "../components/layout/TermPopover.astro";
 
 interface Props {
   title: string;
@@ -50,9 +51,11 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
     <Header crumbs={crumbs} modes={modes} />
     <main id="main"><div class="wrap"><slot /></div></main>
     <Footer />
+    <TermPopover />
     <script>
       import "../islands/prefs.ts";
       import "../islands/stars.ts";
+      import "../islands/popover.ts";
     </script>
   </body>
 </html>

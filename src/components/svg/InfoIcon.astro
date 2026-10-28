@@ -1,0 +1,15 @@
+---
+// the (i) beside a term in a diagram (ported from the mockup's term()); its parent trigger opens the popover
+interface Props { cx: number; cy: number; r?: number }
+const { cx, cy, r = 9 } = Astro.props;
+---
+<g class="info" aria-hidden="true">
+  <circle cx={cx} cy={cy} r={r} />
+  <text x={cx} y={cy + r * 0.45}>i</text>
+</g>
+<style>
+  .info circle{fill:var(--surface);stroke:var(--muted);stroke-width:1.5}
+  .info text{fill:var(--muted);font:700 italic 12px var(--f-display);text-anchor:middle}
+  :global([data-term]:hover) .info circle,:global([data-term]:focus-visible) .info circle,:global([data-term][aria-expanded="true"]) .info circle{fill:var(--fg);stroke:var(--fg)}
+  :global([data-term]:hover) .info text,:global([data-term]:focus-visible) .info text,:global([data-term][aria-expanded="true"]) .info text{fill:var(--surface)}
+</style>
