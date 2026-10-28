@@ -1,3 +1,5 @@
+import type { loadContent } from "./content";
+
 // what a diagram needs to draw a term trigger: names for the label, and the popover payload
 export interface Cap { slug: string; translit: string; ar: string; en: string; section: string; note: string; json: string }
 
@@ -22,3 +24,6 @@ export function cap(caps: Record<string, Cap>, slug: string): Cap {
   if (!c) throw new Error(`scene caption ${slug} missing`);
   return c;
 }
+
+// the props every scene diagram takes; [scene].astro picks the diagram by the scene's `diagram` field
+export interface DiagramProps { caps: Record<string, Cap>; scene: Awaited<ReturnType<typeof loadContent>>["scenes"][number] }

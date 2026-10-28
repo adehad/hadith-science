@@ -6,10 +6,11 @@
 import Defs from "../svg/Defs.astro";
 import Term from "../svg/Term.astro";
 import InfoIcon from "../svg/InfoIcon.astro";
-import { cap, type Cap } from "../../lib/scene";
+import { f } from "../svg/geom";
+import { cap, type Cap, type DiagramProps } from "../../lib/scene";
 import { FLOOR, STAIR_VIEWS, STEP_W, stepBox, stepFill } from "../../lib/staircase";
 
-interface Props { caps: Record<string, Cap>; scene: { id: string; views?: { id: string }[] } }
+type Props = DiagramProps;
 const { caps, scene } = Astro.props;
 
 type Icon = "speak" | "read" | "listen" | "notify" | "hand" | "face" | "letter" | "an";
@@ -34,7 +35,6 @@ const BASE: [string, string, string][] = [
 ];
 // the rank arrow's dash per step: solid at the top, breaking up further down
 const RANK_DASH = ["none", "14 3", "10 4", "8 5", "6 5", "4 5", "2.5 5", "1 5"];
-const f = (n: number) => +n.toFixed(2);
 
 // the mockup's modeIcon(): a small picture of how the report passed, centred on (x, y)
 function modeIcon(k: Icon, x: number, y: number): string {
@@ -131,7 +131,7 @@ const base = BASE.map(([slug, ar, tr], k) => {
           <Term slug={t.c.slug} json={t.c.json} label={t.label} {...t.hit}>
             {s.lines.slice(t.k0, t.k1 + 1).map(([, ar, tr], j) => (
               <>
-                <text class="title-ar" x={CX} y={Y0 + (t.k0 + j) * LINE} lang="ar" style="font-size:16px">{ar}</text>
+                <text class="title-ar sm" x={CX} y={Y0 + (t.k0 + j) * LINE} lang="ar">{ar}</text>
                 <text class="tr" x={CX} y={Y0 + (t.k0 + j) * LINE + 15}>{j > 0 ? ` ${tr}` : tr}</text>
               </>
             ))}
@@ -156,7 +156,7 @@ const base = BASE.map(([slug, ar, tr], k) => {
   {base.map((b) => (
     <Term slug={b.c.slug} json={b.c.json} label={b.tr} x={b.x} y={516} w={204} h={78}>
       <rect class="basement" x={b.x} y="516" width="204" height="78" rx="8" />
-      <text class="title-ar" x={b.cx} y="550" lang="ar" style="font-size:18px">{b.ar}</text>
+      <text class="title-ar" x={b.cx} y="550" lang="ar">{b.ar}</text>
       <text class="tr" x={b.cx} y="575">{b.tr}</text>
       <InfoIcon {...b.info} />
     </Term>

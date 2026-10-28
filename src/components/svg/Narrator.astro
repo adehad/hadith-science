@@ -3,6 +3,8 @@
 // (ported from the mockup's fig(), BODY and ACC). The scroll means his identity is known, the seal that
 // someone vouches for him; a missing item is an empty slot that blinks (spec §3.2).
 // Sahabi figures fill with url(#gold): the page holding them must include <Defs /> once.
+import { f } from "./geom";
+
 interface Props {
   x: number;
   y: number;
@@ -18,7 +20,6 @@ interface Props {
 }
 const { x, y, kind = "later", face, scroll, seal, ghost = false, k = 1.5, label } = Astro.props;
 const BODY = "M3 43 Q3 23 20 23 Q37 23 37 43 Z";
-const f = (n: number) => +n.toFixed(2);
 const transform = `translate(${f(x - 20 * k)} ${f(y - 22 * k)}) scale(${k})`;
 ---
 {ghost ? (

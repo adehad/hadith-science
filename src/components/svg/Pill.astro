@@ -1,8 +1,9 @@
 ---
 // a verdict pill centred on (x, y) (ported from the mockup's pill()); its width follows the text length
+import { f } from "./geom";
+
 interface Props { x: number; y: number; text: string; state: "pause" | "accept" | "support" | "reject" }
 const { x, y, text, state } = Astro.props;
-const f = (n: number) => +n.toFixed(2);
 const w = f(text.length * 6.6 + 24);
 ---
 <g class={`pill ${state}`}>

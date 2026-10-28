@@ -1,9 +1,10 @@
 ---
 // the (i) beside a term in a diagram (ported from the mockup's term()); its parent trigger opens the popover.
 // The "i" is drawn, not typed: a text glyph would count as visible label text for the trigger (WCAG 2.5.3).
+import { f } from "./geom";
+
 interface Props { cx: number; cy: number; r?: number }
 const { cx, cy, r = 9 } = Astro.props;
-const f = (n: number) => +n.toFixed(2);
 ---
 <g class="info" aria-hidden="true">
   <circle class="ring" cx={cx} cy={cy} r={r} />

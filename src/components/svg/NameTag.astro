@@ -1,0 +1,17 @@
+---
+// a name tag (ported from the mockup's nameTag()) centred on (cx, y): Arabic over its transliteration, whose
+// middle part, if given, is the <tspan class="diff">. At 56 tall, Amiri's marks above and below the 17px Arabic
+// clear both the rim and the 11px transliteration line.
+interface Props { cx: number; y: number; w: number; ar: string; tr: readonly [string, string?, string?] }
+const { cx, y, w, ar, tr } = Astro.props;
+const H = 56;
+---
+<g class="tag">
+  <rect x={cx - w / 2} y={y - H / 2} width={w} height={H} rx={H / 2} />
+  <text class="title-ar md" lang="ar" x={cx} y={y - 4}>{ar}</text>
+  <text class="tr" x={cx} y={y + 18}>{tr[0]}{tr[1] && <tspan class="diff">{tr[1]}</tspan>}{tr[2]}</text>
+</g>
+<style>
+  .tag rect{fill:var(--surface);stroke:var(--line);stroke-width:1.5}
+  .diff{fill:var(--gap);font-style:normal;font-weight:700;animation:blink 2.4s ease-in-out infinite}
+</style>

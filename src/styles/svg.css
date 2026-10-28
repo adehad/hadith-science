@@ -7,6 +7,9 @@ svg .lbl.ar{font:400 15px var(--f-ar)}
 svg .lbl.gap{fill:var(--gap)}
 svg .title{fill:var(--fg);font:700 20px var(--f-display);text-anchor:middle}
 svg .title-ar{fill:var(--muted);font:400 18px var(--f-ar);text-anchor:middle}
+/* smaller Arabic for the delivery steps (sm) and the name tags (md) */
+svg .title-ar.sm{font-size:16px}
+svg .title-ar.md{font-size:17px}
 svg .tr{fill:var(--muted);font:italic 600 11px var(--f-body);text-anchor:middle}
 svg .colhead{fill:var(--fg);font:700 13px var(--f-body);text-anchor:middle}
 svg .layer{fill:var(--muted);font:600 10.5px var(--f-body);letter-spacing:.1em;text-transform:uppercase}

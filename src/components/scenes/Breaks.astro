@@ -10,9 +10,10 @@ import Pill from "../svg/Pill.astro";
 import Term from "../svg/Term.astro";
 import InfoIcon from "../svg/InfoIcon.astro";
 import type { Kind } from "../svg/figures";
-import { cap, type Cap } from "../../lib/scene";
+import { titleTrigger } from "../svg/geom";
+import { cap, type DiagramProps } from "../../lib/scene";
 
-interface Props { caps: Record<string, Cap>; scene: { id: string; views?: { id: string }[] } }
+type Props = DiagramProps;
 const { caps, scene } = Astro.props;
 
 const W = 820;
@@ -37,7 +38,6 @@ const COLS: [string, number, Kind[], string[], [PillState, string] | undefined][
 const DIVIDERS = [215, 415, 615];
 const PILL_Y = 22;
 const TITLE_Y = 500;
-const f = (n: number) => +n.toFixed(2);
 
 const views = scene.views ?? [];
 const def = views[0]?.id;
@@ -49,11 +49,7 @@ const viewPills = views.map((v) => {
 
 const cols = COLS.map(([slug, cx, kinds, labels, pill]) => {
   const c = cap(caps, slug);
-  // title hit area and (i) placement as in Routes.astro: ~11 units per character of the 20px display title
-  const tw = c.translit.length * 11;
-  const info = { cx: f(cx + c.translit.length * 6.4 + 16), cy: TITLE_Y - 6 };
-  const x0 = f(cx - tw / 2 - 6);
-  const hit = { x: x0, y: TITLE_Y - 22, w: f(info.cx + 13 - x0), h: 30 };
+  const { hit, info } = titleTrigger(c.translit, cx, TITLE_Y);
   return { c, cx, kinds, labels, pill, hit, info };
 });
 ---

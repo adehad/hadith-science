@@ -9,9 +9,10 @@ import Arrow from "../svg/Arrow.astro";
 import Term from "../svg/Term.astro";
 import InfoIcon from "../svg/InfoIcon.astro";
 import { FIG, KIND_NAME } from "../svg/figures";
-import { cap, type Cap } from "../../lib/scene";
+import { f, titleTrigger } from "../svg/geom";
+import { cap, type DiagramProps } from "../../lib/scene";
 
-interface Props { caps: Record<string, Cap>; scene: { id: string } }
+type Props = DiagramProps;
 const { caps } = Astro.props;
 
 const W = 820;
@@ -26,7 +27,6 @@ const COLS: [string, number, number, string][] = [
   ["mutawatir", 5, 700, "so many that collusion is impossible"],
 ];
 const TITLE_Y = 440;
-const f = (n: number) => +n.toFixed(2);
 
 const cols = COLS.map(([slug, n, cx, sub]) => {
   const c = cap(caps, slug);
@@ -38,12 +38,9 @@ const cols = COLS.map(([slug, n, cx, sub]) => {
   const arrows = ys.flatMap((y, li) => xs.map((x) => ({ x1: li === 0 ? cx : x, y1: li === 0 ? 98 : ys[li - 1] + 22, x2: x, y2: y - 24 })));
   // Labels-mode kind names go under the first figure of each row only (the mockup's `bare`)
   const figs = ys.flatMap((y, li) => xs.map((x, i) => ({ x, y, kind: KINDS[li], label: i === 0 ? KIND_NAME[KINDS[li]] : undefined })));
-  // text width estimated at 11 units per character; the (i) sits a little wider than the mockup's 5.6 per
-  // half-character so it clears wide titles like Mashhūr, and the hit area runs from the title to the (i)
-  const tw = c.translit.length * 11;
-  const info = { cx: f(cx + c.translit.length * 6.4 + 16), cy: TITLE_Y - 6 };
-  const x0 = f(cx - tw / 2 - 6);
-  const hit = { x: x0, y: TITLE_Y - 22, w: f(info.cx + 13 - x0), h: 30 };
+  // titleTrigger's defaults: 11 units per character, and the (i) a little wider than the mockup's 5.6 per
+  // half-character so it clears wide titles like Mashhūr
+  const { hit, info } = titleTrigger(c.translit, cx, TITLE_Y);
   return { c, cx, sub, k, arrows, figs, hit, info };
 });
 ---

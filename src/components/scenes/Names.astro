@@ -9,37 +9,30 @@ import Arrow from "../svg/Arrow.astro";
 import Narrator from "../svg/Narrator.astro";
 import Term from "../svg/Term.astro";
 import InfoIcon from "../svg/InfoIcon.astro";
-import { cap, type Cap } from "../../lib/scene";
+import NameTag from "../svg/NameTag.astro";
+import { f, titleTrigger } from "../svg/geom";
+import { cap, type DiagramProps } from "../../lib/scene";
 
-interface Props { caps: Record<string, Cap>; scene: { id: string } }
+type Props = DiagramProps;
 const { caps } = Astro.props;
 
 const CX = 215;
 const TITLE_Y = 42;
-const f = (n: number) => +n.toFixed(2);
 
 // a cell title as a term trigger. The (i) sits at the mockup's term() spacing (5.6 units per character from the
 // centre, which fits these long titles better than Routes' 6.4), and the hit area runs from the title to the (i).
 function title(slug: string) {
   const c = cap(caps, slug);
-  const half = c.translit.length * 5.6;
-  const info = { cx: f(CX + half + 16), cy: TITLE_Y - 6 };
-  const x0 = f(CX - half - 6);
-  return { c, info, hit: { x: x0, y: TITLE_Y - 22, w: f(info.cx + 13 - x0), h: 30 } };
+  return { c, ...titleTrigger(c.translit, CX, TITLE_Y, { charW: 11.2, half: 5.6 }) };
 }
 const [muttafiq, mutalif, mutashabih] = ["muttafiq-wa-muftariq", "mutalif-wa-mukhtalif", "mutashabih"].map(title);
 
-// a name tag (the mockup's nameTag()) centred on (CX, y): Arabic over its transliteration, whose middle part,
-// if given, is the <tspan class="diff">. At 56 tall, Amiri's marks above and below the 17px Arabic clear both
-// the rim and the 11px transliteration line.
-interface Tag { y: number; ar: string; tr: [string, string?, string?]; w: number }
-const TAG_H = 56;
-const tag = (t: Tag) => ({ ...t, x: CX - t.w / 2, top: t.y - TAG_H / 2, arY: t.y - 4, trY: t.y + 18 });
-const TAGS1 = ([{ y: 98, ar: "فُلَانُ بْنُ فُلَانٍ", tr: ["same name, same father"], w: 230 }] as Tag[]).map(tag);
-const TAGS3 = ([
+// the name tags of the first and third cells, centred on CX
+const TAGS1 = [{ y: 98, ar: "فُلَانُ بْنُ فُلَانٍ", tr: ["same name, same father"], w: 230 }] as const;
+const TAGS3 = [
   { y: 98, ar: "مُحَمَّدُ بْنُ عَقِيلٍ", tr: ["Muḥammad ibn ", "ʿAqīl", " · al-Nīsābūrī"], w: 300 },
   { y: 166, ar: "مُحَمَّدُ بْنُ عُقَيْلٍ", tr: ["Muḥammad ibn ", "ʿUqayl", " · al-Firyābī"], w: 300 },
-] as Tag[]).map(tag);
+] as const;
 
 // one written shape read four ways by its dots (§5.60): [dot offsets, name, letter]
 const GLYPHS: [[number, number][], string, string][] = [
@@ -79,13 +72,7 @@ const rows = ROWS.map(([name, tag, e], k) => ({ name, tag, e, y: 112 + k * 19 })
       <text class="title" x={CX} y={TITLE_Y}>{muttafiq.c.translit}</text>
       <InfoIcon {...muttafiq.info} />
     </Term>
-    {TAGS1.map((t) => (
-      <g class="tag">
-        <rect x={t.x} y={t.top} width={t.w} height={TAG_H} rx={TAG_H / 2} />
-        <text class="title-ar" lang="ar" x={CX} y={t.arY} style="font-size:17px">{t.ar}</text>
-        <text class="tr" x={CX} y={t.trY}>{t.tr[0]}{t.tr[1] && <tspan class="diff">{t.tr[1]}</tspan>}{t.tr[2]}</text>
-      </g>
-    ))}
+    {TAGS1.map((t) => <NameTag cx={CX} {...t} />)}
     <Arrow x1={CX} y1={126} x2={140} y2={168} bend={-12} />
     <Arrow x1={CX} y1={126} x2={290} y2={168} bend={12} />
     {/* both plain later narrators: a generation band would say which generation they are, and the name doesn't */}
@@ -118,13 +105,7 @@ const rows = ROWS.map(([name, tag, e], k) => ({ name, tag, e, y: 112 + k * 19 })
       <text class="title" x={CX} y={TITLE_Y}>{mutashabih.c.translit}</text>
       <InfoIcon {...mutashabih.info} />
     </Term>
-    {TAGS3.map((t) => (
-      <g class="tag">
-        <rect x={t.x} y={t.top} width={t.w} height={TAG_H} rx={TAG_H / 2} />
-        <text class="title-ar" lang="ar" x={CX} y={t.arY} style="font-size:17px">{t.ar}</text>
-        <text class="tr" x={CX} y={t.trY}>{t.tr[0]}{t.tr[1] && <tspan class="diff">{t.tr[1]}</tspan>}{t.tr[2]}</text>
-      </g>
-    ))}
+    {TAGS3.map((t) => <NameTag cx={CX} {...t} />)}
     <text class="lbl" x={CX} y="222">same generation, both famous</text>
     <text class="lbl" x={CX} y="242">a vowel and the nisba tell them apart</text>
   </svg>
@@ -155,8 +136,6 @@ const rows = ROWS.map(([name, tag, e], k) => ({ name, tag, e, y: 112 + k * 19 })
   .cells{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--rule)}
   .cells svg{background:var(--surface)}
   @media (max-width:640px) and (orientation:portrait){.cells{grid-template-columns:1fr}}
-  .tag rect{fill:var(--surface);stroke:var(--line);stroke-width:1.5}
-  .diff{fill:var(--gap);font-style:normal;font-weight:700;animation:blink 2.4s ease-in-out infinite}
   .glyph{fill:none;stroke:var(--fg);stroke-width:5;stroke-linecap:round}
   /* not .dot: InfoIcon draws its "i" with a .dot */
   .ndot{fill:var(--gap);animation:blink 2.4s ease-in-out infinite}
