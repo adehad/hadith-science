@@ -6,6 +6,7 @@ import Narrator from "../components/svg/Narrator.astro";
 import InfoIcon from "../components/svg/InfoIcon.astro";
 import Term from "../components/svg/Term.astro";
 import Defs from "../components/svg/Defs.astro";
+import ReadAsText from "../components/layout/ReadAsText.astro";
 import { loadContent } from "../lib/content";
 
 type Fig = Omit<import("astro/types").ComponentProps<typeof Narrator>, "x" | "y">;
@@ -73,8 +74,7 @@ const cases = CASES.map(([en, slug, fig, lbl, text], i) => {
     </svg>
   </div>
   <p class="src">Cases from Ibn Ḥajar, <em>Nuzhat al-Naẓar</em> §5.21 Mudallas, §5.23 grounds of criticism, §5.35–5.36 Jahāla and Mubham, §5.38 Mukhtalaṭ, §5.63 ranks of praise and criticism (trans. A. S. Hussain, 2012).</p>
-  <details class="as-text">
-    <summary>Read as text</summary>
+  <ReadAsText>
     <ol>
       {cases.map((c) => (
         <li>
@@ -83,12 +83,5 @@ const cases = CASES.map(([en, slug, fig, lbl, text], i) => {
       ))}
     </ol>
     <p>Generation: the Prophet ﷺ is the full moon at the source of every chain. {GENERATIONS.map(([, , text]) => text).join(" ")}</p>
-  </details>
+  </ReadAsText>
 </Page>
-<style>
-  .src{margin:0;font-size:.85rem;color:var(--muted)}
-  .as-text summary{cursor:pointer;font-weight:600}
-  .as-text ol{margin:8px 0;padding-left:1.4em;display:grid;gap:4px}
-  .as-text p{margin:0}
-  .as-text .ar{font-family:var(--f-ar);font-size:1.1rem}
-</style>

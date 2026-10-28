@@ -5,7 +5,8 @@ import { loadContent } from "../lib/content";
 import { MAP_CENTRE, moonAt, orbitRadii, planetAt, planetRadius, startAngle } from "../lib/orbit";
 import { href } from "../lib/url";
 
-const { divisions } = await loadContent();
+const { divisions, scenes } = await loadContent();
+const scenesFor = (div: string, k: number) => scenes.filter((s) => s.division === div && s.moons.includes(k));
 const [cx, cy] = MAP_CENTRE;
 const fmt = (n: number) => +n.toFixed(2);
 // Astro types <a> as the HTML element; inside an SVG it also takes SVG presentation attributes
@@ -63,7 +64,18 @@ const planets = divisions.map((d, i) => {
               <span class="en">{d.en} · {d.sections}</span>
             </span>
           </a>
-          <ul>{d.moons.map((m) => <li>{m}</li>)}</ul>
+          {/* a moon with scenes links to them after its text; one without stays plain text */}
+          <ul>
+            {d.moons.map((m, k) => {
+              const sc = scenesFor(d.id, k);
+              return (
+                <li>
+                  {m}
+                  {sc.map((s, i) => <>{i ? " · " : " "}<a class="scene" href={href(`${d.id}/${s.id}/`)}>{s.title}</a></>)}
+                </li>
+              );
+            })}
+          </ul>
         </li>
       ))}
     </ol>
@@ -83,7 +95,6 @@ const planets = divisions.map((d, i) => {
   .planet .psub{fill:var(--muted);font:600 9.5px var(--f-body);font-style:normal;letter-spacing:.12em;text-transform:uppercase;stroke:var(--surface);stroke-width:4px;paint-order:stroke;stroke-linejoin:round}
   .planet:hover .pbody,.planet:focus-visible .pbody{stroke:var(--fg);stroke-width:2.5}
   .planet:hover .ptitle,.planet:focus-visible .ptitle{fill:var(--fg)}
-  .src{margin:0;font-size:.85rem;color:var(--muted)}
   .tree{display:none}
   @media (max-width:640px) and (orientation:portrait){
     .stage{display:none}
@@ -103,6 +114,7 @@ const planets = divisions.map((d, i) => {
   .tree .en{font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
   .tree ul{margin:6px 0 0 28px;padding-left:16px;color:var(--muted);font-size:.92rem}
   .tree ul li{margin:2px 0}
+  .tree ul .scene{color:var(--fg);font-weight:600}
   /* HTML stand-in that carries the planet into the division page (view transitions only capture boxed elements) */
   :global(.vt-planet){position:fixed;border-radius:50%;pointer-events:none;z-index:5}
 </style>

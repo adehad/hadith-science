@@ -1,0 +1,82 @@
+---
+// one scene: one diagram (spec §4.3, §5). The diagram component is picked from the scene's `diagram` field.
+import Page from "../../layouts/Page.astro";
+import Legend, { type LegendKind } from "../../components/layout/Legend.astro";
+import ReadAsText from "../../components/layout/ReadAsText.astro";
+import { loadContent } from "../../lib/content";
+import { captionsFor, type Cap } from "../../lib/scene";
+import { href } from "../../lib/url";
+import type { CollectionEntry } from "astro:content";
+
+type Diagram = CollectionEntry<"scenes">["data"]["diagram"];
+
+export async function getStaticPaths() {
+  const { divisions, scenes } = await loadContent();
+  return scenes.map((scene) => {
+    const d = divisions.find((x) => x.id === scene.division)!;
+    // scenes come sorted by division, then order, so neighbours in the same division are prev/next
+    const mine = scenes.filter((s) => s.division === scene.division);
+    const i = mine.indexOf(scene);
+    return { params: { division: d.id, scene: scene.id }, props: { scene, d, prev: mine[i - 1], next: mine[i + 1] } };
+  });
+}
+const { scene, d, prev, next } = Astro.props;
+const { terms } = await loadContent();
+const caps = captionsFor(scene, terms);
+
+// each scene task adds its diagram here; import only components that exist
+// typed by the props every diagram takes, so a misnamed or missing prop fails astro check
+type DiagramProps = { caps: Record<string, Cap>; scene: typeof scene };
+const DIAGRAMS: Partial<Record<Diagram, (p: DiagramProps) => any>> = {};
+const D = DIAGRAMS[scene.diagram];
+if (!D) throw new Error(`no diagram component for ${scene.diagram}`);
+
+// figure scenes have both Key and Labels modes (spec §3.5); the legend lists only the kinds each one draws
+const LEGEND: Partial<Record<Diagram, LegendKind[]>> = {
+  Routes: ["moon", "sahabi", "tabii", "later"],
+  Breaks: ["moon", "sahabi", "tabii", "later", "ghost"],
+  Unknown: ["moon", "sahabi", "tabii", "later", "majhul", "mubham"],
+};
+const kinds = LEGEND[scene.diagram];
+const hasFigures = kinds !== undefined;
+const divPath = `${d.id}/`;
+---
+<Page
+  title={`${scene.title} · Nuzhat al-Naẓar, visualised`}
+  description={scene.lede}
+  crumbs={[{ label: "Map", path: "" }, { label: d.term, path: divPath }, { label: scene.title, path: `${d.id}/${scene.id}/` }]}
+  modes={hasFigures}
+>
+  <div>
+    <div class="eyebrow">
+      {/* the division page's moon dot for this scene carries the same name, so the moon morphs into the scene
+          (spec §5); @view-transition only applies under prefers-reduced-motion: no-preference (motion.css) */}
+      <span class="vt-dot" aria-hidden="true" style={`view-transition-name: scene-${scene.id}; background: var(--p${d.order})`}></span>
+      {scene.eyebrow}
+    </div>
+    <h1>{scene.title}</h1>
+    <p class="lede">{scene.lede}</p>
+  </div>
+
+  {/* Task 5: <ViewSwitch views={scene.views} /> goes here when the scene has views */}
+
+  <div class="stage-wrap">
+    <div class="stage">
+      {/* Task 6: wrap in <Carousel panels={scene.panels} width={scene.width}> when the scene has panels */}
+      <D caps={caps} scene={scene} />
+    </div>
+    {hasFigures && <Legend kinds={kinds} />}
+  </div>
+
+  <p class="src">Ibn Ḥajar, <em>Nuzhat al-Naẓar</em> {scene.source} (trans. A. S. Hussain, 2012).</p>
+
+  <ReadAsText captions={scene.captions.map((c) => caps[c.term])} views={scene.views} />
+
+  <nav class="pn" aria-label="Scenes">
+    {prev ? <a rel="prev" href={href(`${d.id}/${prev.id}/`)}>← {prev.title}</a> : <a href={href(divPath)}>← {d.term}</a>}
+    {next ? <a rel="next" href={href(`${d.id}/${next.id}/`)}>{next.title} →</a> : <a href={href(divPath)}>{d.term} →</a>}
+  </nav>
+</Page>
+<style>
+  .vt-dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:8px;vertical-align:-1px}
+</style>

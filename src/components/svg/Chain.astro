@@ -6,9 +6,8 @@
 import Moon from "./Moon.astro";
 import Narrator from "./Narrator.astro";
 import Arrow from "./Arrow.astro";
-import type { ComponentProps } from "astro/types";
+import { FIG, KIND_NAME, type Kind } from "./figures";
 
-type Kind = "sahabi" | "tabii" | "later" | "majhul" | "mubham" | "ghost";
 interface Props {
   cx: number;
   /** [name, y] per row; row 0 is the moon */
@@ -21,17 +20,6 @@ interface Props {
 }
 const { cx, layers, kinds, labels = [], modeLabels } = Astro.props;
 
-const KIND_NAME: Record<Kind, string> = { sahabi: "Companion", tabii: "Successor", later: "Narrator", majhul: "Unknown", mubham: "Unnamed", ghost: "Missing" };
-// the chain's figures in the narrator-figure language (spec §3.2)
-type Fig = Omit<ComponentProps<typeof Narrator>, "x" | "y">;
-const FIG: Record<Kind, Fig> = {
-  sahabi: { kind: "sahabi" },
-  tabii: { kind: "tabii" },
-  later: { kind: "later" },
-  majhul: { kind: "later", scroll: "yes", seal: "slot" },
-  mubham: { kind: "later", face: "blank", scroll: "slot", seal: "slot" },
-  ghost: { ghost: true },
-};
 const K = 0.9;
 const f = (n: number) => +n.toFixed(2);
 const moonY = layers[0][1];

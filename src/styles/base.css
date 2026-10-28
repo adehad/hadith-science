@@ -10,5 +10,9 @@ a.skip{position:absolute;left:-999px;top:0;z-index:10;background:var(--surface);
 a.skip:focus{left:0}
 .stage{background:var(--surface);border:1px solid var(--rule);border-radius:14px;overflow-x:auto}
 .stage svg{display:block;width:100%;height:auto}
+/* source line under a diagram, and the prev/next buttons at the foot of a page */
+.src{margin:0;font-size:.85rem;color:var(--muted)}
+.pn{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.pn a{font:600 .85rem var(--f-body);background:var(--surface);color:var(--fg);border:1px solid var(--rule);border-radius:8px;padding:7px 12px;text-decoration:none}
 .landing{animation:landing-ring 1.4s ease-out 2}
 @keyframes landing-ring{0%{filter:drop-shadow(0 0 0 var(--gold-b))}40%{filter:drop-shadow(0 0 10px var(--gold-b))}100%{filter:drop-shadow(0 0 0 transparent)}}
