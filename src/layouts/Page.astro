@@ -32,6 +32,10 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/svg+xml" href={href("favicon.svg")} />
+    <link rel="apple-touch-icon" href={href("icons/apple-touch-icon-180x180.png")} />
+    <link rel="manifest" href={href("manifest.webmanifest")} />
+    <meta name="theme-color" content="#141a36" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#090c1b" media="(prefers-color-scheme: dark)" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
@@ -59,6 +63,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
       import "../islands/stars.ts";
       import "../islands/slugquery.ts";
       import "../islands/popover.ts";
+      import "../islands/sw.ts";
     </script>
   </body>
 </html>

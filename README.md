@@ -18,6 +18,7 @@ Live site: <https://adehad.github.io/hadith-science/>
 - **The glossary** (`/terms/`): all 169 terms, each with a paraphrased definition and its § reference. It can be filtered, and you can search without diacritics.
 - **Share links:** `/t/<term>/`, `?<term>` and `?t=<term>` all go to the term. Unknown terms open a glossary search.
 - Light and dark themes, and full support for reduced motion.
+- Installable as an app, and readable offline after the first visit.
 
 No division has its scenes drawn yet, so every term is still marked "scene coming soon". Later phases build the scenes one division at a time.
 
@@ -43,7 +44,7 @@ This project uses [Bun](https://bun.sh) for packages and scripts.
 ```sh
 bun install
 bun run dev           # local dev server
-bun run build         # static build into dist/
+bun run build         # static build into dist/, then the offline service worker
 bun run preview       # serve dist/
 bun run check         # astro check (types)
 bun run test          # unit tests (Vitest)
@@ -53,6 +54,8 @@ bun run test:base     # build under /hadith-science/ and check every link keeps 
 ```
 
 The end-to-end tests run against `bun run preview` on port 4321. If something else is already using that port, set `E2E_PORT` to use a different one. Locally, Playwright drives the system Microsoft Edge. CI installs Playwright's own Chromium instead (`bunx playwright install --with-deps chromium`).
+
+The app icons in `public/icons/` are generated from `public/icons/icon.svg` (a copy of `public/favicon.svg`) by `bunx pwa-assets-generator`; regenerate and commit them if the icon changes.
 
 Pre-commit hooks are run by [prek](https://github.com/j178/prek) (`prek install`). They check whitespace, YAML, spelling, Arabic presentation forms and the source guard, and run the unit tests.
 
