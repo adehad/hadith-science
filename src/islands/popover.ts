@@ -119,8 +119,15 @@ if (pop) {
   }
   window.nuzhah = { ...window.nuzhah, openTerm };
 
-  // Phase 2 hook: the carousel snaps to the panel holding el before the landing runs; no-op for now
-  function beforeLand(_el: Element) {}
+  // before the landing scrolls: switch to the view the term lives in if it isn't the active one, then snap a
+  // portrait carousel to the panel holding it (spec §6 Landing)
+  function beforeLand(el: Element) {
+    const v = el.closest<HTMLElement | SVGElement>("[data-view-show]");
+    // parts outside the active view carry "off" (set by the build for the default view, then by viewswitch.ts).
+    // Untested until the first view-only term exists; targetPath() normally adds ?view= for such a term anyway.
+    if (v?.classList.contains("off")) window.nuzhah?.setView?.(v.dataset.viewShow!.trim().split(/\s+/)[0]);
+    window.nuzhah?.reveal?.(el);
+  }
 
   // landing on a scene hash: scroll to the term, ring it, open its popover. Glossary articles carry no
   // data-term-json, so /terms/#slug is handled by glossary.ts alone.
@@ -130,11 +137,16 @@ if (pop) {
     const el = document.querySelector(`[data-term="${CSS.escape(slug)}"][data-term-json]`);
     if (!el) return;
     beforeLand(el);
-    el.scrollIntoView({ block: "center" });
+    // inline "nearest": reveal has already placed a carousel horizontally, so don't recentre it
+    el.scrollIntoView({ block: "center", inline: "nearest" });
     el.classList.remove("landing");
     el.classList.add("landing");
     el.addEventListener("animationend", () => el.classList.remove("landing"), { once: true });
     openTerm(slug);
   }
-  land();
+  // land() needs setView (viewswitch.ts) and reveal (carousel.ts), which register when their own modules run.
+  // Module scripts all run, in document order, before DOMContentLoaded, so waiting for it makes the landing
+  // independent of the order the islands are included in (a microtask would still run before later modules).
+  if (document.readyState === "complete") land();
+  else addEventListener("DOMContentLoaded", land, { once: true });
 }

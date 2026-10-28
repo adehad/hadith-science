@@ -2,6 +2,7 @@
 // one scene: one diagram (spec §4.3, §5). The diagram component is picked from the scene's `diagram` field.
 import Page from "../../layouts/Page.astro";
 import Legend, { type LegendKind } from "../../components/layout/Legend.astro";
+import Carousel from "../../components/layout/Carousel.astro";
 import ReadAsText from "../../components/layout/ReadAsText.astro";
 import ViewSwitch from "../../components/layout/ViewSwitch.astro";
 import Routes from "../../components/scenes/Routes.astro";
@@ -69,11 +70,16 @@ const divPath = `${d.id}/`;
 
   <div class="stage-wrap">
     <div class="stage">
-      {/* Task 6: wrap in <Carousel panels={scene.panels} width={scene.width}> when the scene has panels */}
-      <D caps={caps} scene={scene} />
+      {/* a scene with panels becomes a swipe carousel in portrait (spec §5) */}
+      {scene.panels ? (
+        <Carousel panels={scene.panels} width={scene.width}><D caps={caps} scene={scene} /></Carousel>
+      ) : (
+        <D caps={caps} scene={scene} />
+      )}
     </div>
     {hasFigures && <Legend kinds={kinds} />}
   </div>
+  {scene.panels && <script>import "../../islands/carousel.ts";</script>}
 
   <p class="src">Ibn Ḥajar, <em>Nuzhat al-Naẓar</em> {scene.source} (trans. A. S. Hussain, 2012).</p>
 

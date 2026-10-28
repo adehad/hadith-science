@@ -10,6 +10,9 @@ a.skip{position:absolute;left:-999px;top:0;z-index:10;background:var(--surface);
 a.skip:focus{left:0}
 .stage{background:var(--surface);border:1px solid var(--rule);border-radius:14px;overflow-x:auto}
 .stage svg{display:block;width:100%;height:auto}
+/* a carousel's own scroller scrolls in portrait, so the stage must not as well (Carousel.astro); clip, not hidden,
+   so the stage is no scroll container and the sticky dots stick to the viewport */
+.stage:has(.carousel){overflow:clip}
 /* source line under a diagram, and the prev/next buttons at the foot of a page */
 .src{margin:0;font-size:.85rem;color:var(--muted)}
 .pn{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}

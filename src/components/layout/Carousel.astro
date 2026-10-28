@@ -1,0 +1,48 @@
+---
+// portrait carousel (spec §5): the one diagram, set wider than the screen in a scroll-snap container. Invisible
+// .snap spans, one per panel and placed from its x-range, give CSS scroll-snap its stops. The dots and prev/next
+// buttons are wired by islands/carousel.ts. Landscape and wider show the whole diagram, with no nav.
+import { stops, trackWidthPct } from "../../lib/panels";
+
+interface Props { panels: { id: string; label: string; x0: number; x1: number }[]; width: number }
+const { panels, width } = Astro.props;
+const pct = trackWidthPct(width, panels);
+const snaps = stops(width, panels).map((s, i) => ({ ...s, label: panels[i].label }));
+---
+<div class="carousel" style={`--track:${pct.toFixed(3)}%`}>
+  <div class="scroller" tabindex="0" role="region" aria-label="Diagram, swipe for more">
+    <div class="track">
+      <slot />
+      {snaps.map((s) => <span class="snap" style={`left:${s.left.toFixed(3)}%;width:${s.w.toFixed(3)}%`} data-label={s.label}></span>)}
+    </div>
+  </div>
+  <div class="cnav">
+    <button type="button" class="cprev" aria-label="Previous panel">‹</button>
+    {snaps.map((s, i) => (
+      <button type="button" class="cdot" aria-label={`Panel ${i + 1}: ${s.label}`} aria-current={i === 0 ? "true" : undefined}></button>
+    ))}
+    <button type="button" class="cnext" aria-label="Next panel">›</button>
+  </div>
+</div>
+<style>
+  .snap,.cnav{display:none}
+  /* the outline would otherwise be clipped by .stage's rounded overflow */
+  .scroller:focus-visible{outline-offset:-2px}
+  @media (max-width: 640px) and (orientation: portrait) {
+    .scroller{overflow-x:auto;scroll-snap-type:x mandatory;overscroll-behavior-x:contain}
+    .track{position:relative;width:var(--track)}
+    /* over the SVG, so they must let taps through to the term triggers; snap areas come from layout alone */
+    .snap{display:block;position:absolute;top:0;bottom:0;scroll-snap-align:center;pointer-events:none}
+    /* sticky, so the dots stay in view while the tall diagram scrolls past */
+    .cnav{display:flex;align-items:center;justify-content:center;gap:2px;padding:4px 4px 8px;position:sticky;bottom:0;background:var(--surface)}
+  }
+  /* without script the buttons do nothing, but swiping still works */
+  :global(html:not(.js)) .cnav{display:none}
+  .cnav button{border:0;background:transparent;color:var(--fg);cursor:pointer;padding:0}
+  .cprev,.cnext{font:600 1.3rem/1 var(--f-body);width:36px;height:32px;border-radius:8px}
+  /* 24px hit area round an 8px dot */
+  .cdot{width:24px;height:24px;display:grid;place-items:center}
+  .cdot::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--muted);opacity:.45}
+  .cdot[aria-current="true"]::before{background:var(--fg);opacity:1}
+  .cnav button:focus-visible{outline:2px solid var(--gold-b);outline-offset:-2px;border-radius:8px}
+</style>
