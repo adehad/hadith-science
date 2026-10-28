@@ -14,11 +14,10 @@ import Moon from "../svg/Moon.astro";
 import Narrator from "../svg/Narrator.astro";
 import Arrow from "../svg/Arrow.astro";
 import Pill from "../svg/Pill.astro";
-import Term from "../svg/Term.astro";
-import InfoIcon from "../svg/InfoIcon.astro";
+import TermTitle from "../svg/TermTitle.astro";
 import Matn from "../svg/Matn.astro";
 import Scale from "../svg/Scale.astro";
-import { FIG, KIND_NAME } from "../svg/figures";
+import { FIG, KIND_NAME, RELIABLE } from "../svg/figures";
 import { f, panelTrigger } from "../svg/geom";
 import { cap, type DiagramProps } from "../../lib/scene";
 
@@ -30,8 +29,6 @@ const VIEW_IDS = ["ibn-hajar", "accept-all"];
 if ((scene.views ?? []).map((v) => v.id).join() !== VIEW_IDS.join()) throw new Error(`Opposition: expected views ${VIEW_IDS.join(", ")}`);
 const PANELS = scene.panels ?? [];
 
-// named narrators are drawn reliable, with scroll and seal, unless the book says otherwise (phase 3 design §1)
-const RELIABLE = { scroll: "yes", seal: "yes" } as const;
 const K = 0.8, KS = 0.7;
 const TITLE_Y = 506;
 
@@ -127,11 +124,7 @@ const PAN_TITLES = [mahfuz, shadhdh, munkar, maruf];
     <text class="lbl" x={BR[1]} y={PILL_Y + 30}>kept without</text>
     <text class="lbl" x={BR[1]} y={PILL_Y + 45}>weighing</text>
   </g>
-  <Term slug={ziyada.c.slug} json={ziyada.c.json} label={`${ziyada.c.translit}: ${ziyada.c.en}`} {...ziyada.hit}>
-    <text class="title" x={ziyada.cx} y={TITLE_Y}>{ziyada.c.translit}</text>
-    <InfoIcon {...ziyada.info} />
-  </Term>
-  <text class="title-ar sm" lang="ar" direction="rtl" x={ziyada.cx} y={TITLE_Y + 24}>{ziyada.c.ar}</text>
+  <TermTitle c={ziyada.c} x={ziyada.cx} y={TITLE_Y} hit={ziyada.hit} info={ziyada.info} ar={{ x: ziyada.cx, y: TITLE_Y + 24, size: "sm" }} />
   <text class="lbl" x="130" y={TITLE_Y + 46}>extra words in a sound or fair report</text>
 
   {/* ---- panels 2 and 3: the shared chain ---- */}
@@ -188,15 +181,7 @@ const PAN_TITLES = [mahfuz, shadhdh, munkar, maruf];
   {/* the scales: one weight per narrator; the heavier side sinks */}
   <Scale x={P2.cx} y={PIVOT_Y} w={160} tilt={-8} left={3} right={1} />
   <Scale x={P3.cx} y={PIVOT_Y} w={160} tilt={8} left={1} right={2} crackLeft />
-  {PAN_TITLES.map((t) => (
-    <>
-      <Term slug={t.c.slug} json={t.c.json} label={`${t.c.translit}: ${t.c.en}`} {...t.hit}>
-        <text class="title" x={t.cx} y={TITLE_Y}>{t.c.translit}</text>
-        <InfoIcon {...t.info} />
-      </Term>
-      <text class="title-ar sm" lang="ar" direction="rtl" x={t.cx} y={TITLE_Y + 24}>{t.c.ar}</text>
-    </>
-  ))}
+  {PAN_TITLES.map((t) => <TermTitle c={t.c} x={t.cx} y={TITLE_Y} hit={t.hit} info={t.info} ar={{ x: t.cx, y: TITLE_Y + 24, size: "sm" }} />)}
   <text class="lbl" x={P2.cx} y={TITLE_Y + 46}>both reliable · numbers decide</text>
   <text class="lbl" x={P3.cx} y={TITLE_Y + 46}>like shādhdh, but the loser is weak</text>
   {/* the reports, paraphrased from the translation, so not in quotation marks */}
@@ -206,8 +191,6 @@ const PAN_TITLES = [mahfuz, shadhdh, munkar, maruf];
   <text class="mq" x={P3.cx} y={TITLE_Y + 80}>fasts and honours guests enters Paradise</text>
 </svg>
 <style>
-  .nm{fill:var(--fg);font:600 11.5px var(--f-body)}
-  .sn{fill:var(--fg);font:600 11px var(--f-body);text-anchor:middle}
   .who{fill:var(--fg);font:700 16px var(--f-display)}
   .q{fill:var(--fg);font:700 12px var(--f-body);text-anchor:middle}
   .mq{fill:var(--muted);font:600 11px var(--f-body);text-anchor:middle}

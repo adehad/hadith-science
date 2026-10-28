@@ -17,12 +17,11 @@ import Arrow from "../svg/Arrow.astro";
 import Chip from "../svg/Chip.astro";
 import Decision from "../svg/Decision.astro";
 import Glyph from "../svg/Glyph.astro";
-import InfoIcon from "../svg/InfoIcon.astro";
 import Matn from "../svg/Matn.astro";
 import Pill from "../svg/Pill.astro";
 import Scale from "../svg/Scale.astro";
-import Term from "../svg/Term.astro";
-import { f, panelTrigger } from "../svg/geom";
+import TermTitle from "../svg/TermTitle.astro";
+import { SUBT_TRIGGER, f, panelTrigger } from "../svg/geom";
 import { cap, type DiagramProps } from "../../lib/scene";
 import { chipWidth } from "../../lib/kit";
 
@@ -64,14 +63,12 @@ const CARDS: [number, number, number, Outcome][] = [
   [916, 1034, 440, "pause"], // tawaqquf
 ];
 
-// a card title as a term trigger, in the 15px display face (about 9.2 units per character, as in Support);
-// extra widens (or, negative, narrows) the estimate each side, for titles with wide (m, w) or narrow (i, l, t) letters;
-// panelTrigger checks it sits wholly inside its panel, or the carousel would cut it
-const SUBT_W = 9.2;
-const SUBT = { charW: SUBT_W, half: SUBT_W / 2, gap: 12, top: 17, h: 24, r: 7 };
+// a card title as a term trigger, in the 15px display face (geom's SUBT_TRIGGER); extra widens (or, negative,
+// narrows) the estimate each side, for titles with wide (m, w) or narrow (i, l, t) letters; panelTrigger checks it
+// sits wholly inside its panel, or the carousel would cut it
 function title(slug: string, cx: number, y = TITLE_Y, extra = 0) {
   const c = cap(caps, slug);
-  return { c, cx, y, ...panelTrigger(c.translit, cx, y, PANELS, { ...SUBT, extra, name: `ActedOn: ${slug}` }) };
+  return { c, cx, y, ...panelTrigger(c.translit, cx, y, PANELS, { ...SUBT_TRIGGER, extra, name: `ActedOn: ${slug}` }) };
 }
 
 // naskh: a time arrow with the earlier and later rulings pinned to it
@@ -197,18 +194,9 @@ const startW = chipWidth(START);
   <text class="lbl" x="975" y="419">clear to another</text>
 
   {/* ---- the term triggers ---- */}
-  {TITLES.map((t) => (
-    <>
-      <Term slug={t.c.slug} json={t.c.json} label={`${t.c.translit}: ${t.c.en}`} {...t.hit}>
-        <text class="subt" x={t.cx} y={t.y}>{t.c.translit}</text>
-        <InfoIcon {...t.info} />
-      </Term>
-      <text class="title-ar sm" lang="ar" direction="rtl" x={t.cx} y={t.y + 22}>{t.c.ar}</text>
-    </>
-  ))}
+  {TITLES.map((t) => <TermTitle c={t.c} x={t.cx} y={t.y} cls="subt" hit={t.hit} info={t.info} ar={{ x: t.cx, y: t.y + 22, size: "sm" }} />)}
 </svg>
 <style>
-  .subt{fill:var(--fg);font:700 15px var(--f-display);text-anchor:middle}
   .subt.plain{fill:var(--muted)}
   .yn{font-size:11px}
   .mq{fill:var(--muted);font:italic 600 11px var(--f-body);text-anchor:middle}

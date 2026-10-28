@@ -34,6 +34,11 @@ export function titleTrigger(
   return { info, hit: { x: x0, y: y - top, w: f(info.cx + 13 - x0), h } };
 }
 
+// the 15px display sub-title as a term trigger (Grades' lifts, Support's brackets, ActedOn's cards): about 9.2
+// units per character, the widest of the phase 3 titles, so every scene estimates their width the same way
+const SUBT_W = 9.2;
+export const SUBT_TRIGGER = { charW: SUBT_W, half: SUBT_W / 2, gap: 12, top: 17, h: 24, r: 7 } as const satisfies TitleTriggerOpts;
+
 export interface RowTriggerOpts {
   /** estimated width per character of the row text (6.7 for 13px bold) */
   charW?: number;

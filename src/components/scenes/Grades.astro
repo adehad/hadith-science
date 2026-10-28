@@ -11,13 +11,12 @@ import Defs from "../svg/Defs.astro";
 import Moon from "../svg/Moon.astro";
 import Narrator from "../svg/Narrator.astro";
 import Arrow from "../svg/Arrow.astro";
-import Term from "../svg/Term.astro";
-import InfoIcon from "../svg/InfoIcon.astro";
+import TermTitle from "../svg/TermTitle.astro";
 import Chip from "../svg/Chip.astro";
 import Gauge from "../svg/Gauge.astro";
 import Glyph from "../svg/Glyph.astro";
-import { FIG, KIND_NAME } from "../svg/figures";
-import { f, rowTrigger, titleTrigger } from "../svg/geom";
+import { FIG, KIND_NAME, RELIABLE } from "../svg/figures";
+import { SUBT_TRIGGER, f, rowTrigger, titleTrigger } from "../svg/geom";
 import { cap, type DiagramProps } from "../../lib/scene";
 import { chipRow } from "../../lib/kit";
 import { stepFill } from "../../lib/staircase";
@@ -30,8 +29,6 @@ const views = scene.views ?? [];
 const VIEW_IDS = ["ibn-hajar", "tirmidhi"];
 if (views.map((v) => v.id).join() !== VIEW_IDS.join()) throw new Error(`Grades: expected views ${VIEW_IDS.join(", ")}`);
 
-// reliable narrators carry scroll and seal (spec §3.2)
-const RELIABLE = { scroll: "yes", seal: "yes" } as const;
 // estimated width per character: 13px bold row text, and the 20px display title (as Routes)
 const ROW_CHAR_W = 6.7;
 
@@ -116,8 +113,8 @@ const LIFTS = [
   { slug: "hasan-li-ghayrihi", cx: 318, lines: ["once its routes multiply,", "it tips towards acceptance"], from: "held back → fair" },
 ].map((l, i) => {
   const c = cap(caps, l.slug);
-  // the 15px display sub-title: about 8.4 units per character
-  return { ...l, c, mastur: i === 1, ...titleTrigger(c.translit, l.cx, SUBT_Y, { charW: 8.4, half: 4.2, gap: 12, top: 18, h: 26, r: 7 }) };
+  // the 15px display sub-title, estimated as in Support and ActedOn
+  return { ...l, c, mastur: i === 1, ...titleTrigger(c.translit, l.cx, SUBT_Y, SUBT_TRIGGER) };
 });
 
 // ---- cell D: ḥasan ṣaḥīḥ ----
@@ -142,10 +139,7 @@ const modeLabel = KIND_NAME.later;
     {aRows.map((r) => (
       <>
         <g style={`--d:${r.delay}`}><Glyph kind={r.glyph} cx={r.gx} cy={r.y - 4} /></g>
-        <Term slug={r.c.slug} json={r.c.json} label={`${r.c.translit}: ${r.c.en}`} {...r.hit}>
-          <text class="rt" x={r.tx} y={r.y}>{r.c.translit}</text>
-          <InfoIcon {...r.info} />
-        </Term>
+        <TermTitle c={r.c} x={r.tx} y={r.y} cls="rt" hit={r.hit} info={r.info} />
         {/* outside the trigger, so its accessible name (translit: en) matches its visible text (axe
             label-content-name-mismatch); a click on the gloss falls through to the hit area under it */}
         <text class="rg gloss" x={GLOSS_X} y={r.y}>{r.gloss}</text>
@@ -159,11 +153,7 @@ const modeLabel = KIND_NAME.later;
           : <text class="rp" x={CHECK_X + 14} y={y}>{t}</text>}
       </>
     ))}
-    <Term slug={aTitle.c.slug} json={aTitle.c.json} label={`${aTitle.c.translit}: ${aTitle.c.en}`} {...aTitle.hit}>
-      <text class="title" x={aTitle.cx} y={TITLE_Y}>{aTitle.c.translit}</text>
-      <InfoIcon {...aTitle.info} />
-    </Term>
-    <text class="title-ar" lang="ar" direction="rtl" x="370" y={TITLE_Y}>{aTitle.c.ar}</text>
+    <TermTitle c={aTitle.c} x={aTitle.cx} y={TITLE_Y} hit={aTitle.hit} info={aTitle.info} ar={{ x: 370, y: TITLE_Y }} />
   </svg>
 
   <svg viewBox="0 0 430 300" role="group" aria-label="Ranks of sound: Ibn Ḥajar's graded chains as a ladder, from the soundest chains down to a chain that is fair only, each ranked below the rung above">
@@ -185,17 +175,11 @@ const modeLabel = KIND_NAME.later;
         <Gauge x={GAUGE.x} y={r.top + 22} w={GAUGE.w} fill={r.gauge} h={10} />
       </>
     ))}
-    <Term slug={asahh.c.slug} json={asahh.c.json} label={`${asahh.c.translit}: ${asahh.c.en}`} {...asahh.hit}>
-      <text class="rt" x={B_X0} y={asahh.y}>{asahh.c.translit}</text>
-      <InfoIcon {...asahh.info} />
-    </Term>
+    <TermTitle c={asahh.c} x={B_X0} y={asahh.y} cls="rt" hit={asahh.hit} info={asahh.info} />
     <line class="divider" x1="8" x2="422" y1={DIVIDE_Y} y2={DIVIDE_Y} />
     <text class="lbl" x="215" y={DIVIDE_Y + 4}>sound above · fair below</text>
     <g data-view-show="ibn-hajar">
-      <Term slug={hasanD.c.slug} json={hasanD.c.json} label={`${hasanD.c.translit}: ${hasanD.c.en}`} {...hasanD.hit}>
-        <text class="rt" x={B_X0} y={hasanD.y}>{hasanD.c.translit}</text>
-        <InfoIcon {...hasanD.info} />
-      </Term>
+      <TermTitle c={hasanD.c} x={B_X0} y={hasanD.y} cls="rt" hit={hasanD.hit} info={hasanD.info} />
       {rungs[3].links.map((l) => <Arrow x1={l.x1 + 2} y1={rungs[3].cy} x2={l.x2 - 3} y2={rungs[3].cy} />)}
       {rungs[3].chips.map((c) => <Chip x={c.x} y={rungs[3].cy} text={c.text} w={c.w} companion={COMPANIONS.has(c.text)} />)}
       <Gauge x={GAUGE.x} y={rungs[3].top + 22} w={GAUGE.w} fill={rungs[3].gauge} h={10} />
@@ -213,10 +197,7 @@ const modeLabel = KIND_NAME.later;
     <line class="divider" x1="215" x2="215" y1="36" y2="282" />
     {LIFTS.map((l) => (
       <>
-        <Term slug={l.c.slug} json={l.c.json} label={`${l.c.translit}: ${l.c.en}`} {...l.hit}>
-          <text class="subt" x={l.cx} y={SUBT_Y}>{l.c.translit}</text>
-          <InfoIcon {...l.info} />
-        </Term>
+        <TermTitle c={l.c} x={l.cx} y={SUBT_Y} cls="subt" hit={l.hit} info={l.info} />
         <g class="liftg"><Arrow x1={l.cx - 80} y1={196} x2={l.cx - 80} y2={84} variant="lift" /></g>
         <Moon cx={l.cx} cy={100} k={0.55} />
         <g class="faint">
@@ -272,11 +253,7 @@ const modeLabel = KIND_NAME.later;
     <text class="rg strong" x={BAR_X - 16} y="151" style="text-anchor:end">ṣaḥīḥ, one route</text>
     <text class="rg" x={BAR_X - 16} y="202" style="text-anchor:end">one route</text>
     <text class="lbl" x={BAR_X} y="254">weaker</text>
-    <Term slug={dTitle.c.slug} json={dTitle.c.json} label={`${dTitle.c.translit}: ${dTitle.c.en}`} {...dTitle.hit}>
-      <text class="title" x={dTitle.cx} y={TITLE_Y}>{dTitle.c.translit}</text>
-      <InfoIcon {...dTitle.info} />
-    </Term>
-    <text class="title-ar" lang="ar" direction="rtl" x="340" y={TITLE_Y}>{dTitle.c.ar}</text>
+    <TermTitle c={dTitle.c} x={dTitle.cx} y={TITLE_Y} hit={dTitle.hit} info={dTitle.info} ar={{ x: 340, y: TITLE_Y }} />
   </svg>
 </div>
 <style>
@@ -284,7 +261,8 @@ const modeLabel = KIND_NAME.later;
   .cells{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--rule)}
   .cells svg{background:var(--surface)}
   @media (max-width:640px) and (orientation:portrait){.cells{grid-template-columns:1fr}}
-  .rt{fill:var(--fg);font:700 13px var(--f-body)}
+  /* :global, since TermTitle renders the row terms' text */
+  .grades :global(.rt){fill:var(--fg);font:700 13px var(--f-body)}
   .rg{fill:var(--muted);font:600 11.5px var(--f-body)}
   .rg.strong{fill:var(--fg)}
   .gloss{pointer-events:none}
@@ -293,7 +271,6 @@ const modeLabel = KIND_NAME.later;
   .xlink:hover .xu,.xlink:focus-visible .xu{text-decoration-color:var(--gold-a)}
   .rp{fill:var(--fg);font:600 12px var(--f-body)}
   .ch{fill:var(--fg);font:700 12px var(--f-body);text-anchor:middle}
-  .subt{fill:var(--fg);font:700 15px var(--f-display);text-anchor:middle}
   .rungno{fill:var(--fg);font:700 15px var(--f-display);text-anchor:middle}
   .verdict{fill:var(--fg);font:italic 600 12.5px var(--f-body);text-anchor:middle}
   .miss{fill:var(--gap);animation:blink 2.4s ease-in-out infinite}

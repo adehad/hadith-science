@@ -15,12 +15,11 @@ import Defs from "../svg/Defs.astro";
 import Moon from "../svg/Moon.astro";
 import Narrator from "../svg/Narrator.astro";
 import Arrow from "../svg/Arrow.astro";
-import Term from "../svg/Term.astro";
-import InfoIcon from "../svg/InfoIcon.astro";
+import TermTitle from "../svg/TermTitle.astro";
 import Chip from "../svg/Chip.astro";
 import Glyph from "../svg/Glyph.astro";
-import { FIG, KIND_NAME, type Kind } from "../svg/figures";
-import { f, panelTrigger } from "../svg/geom";
+import { FIG, KIND_NAME, RELIABLE, type Kind } from "../svg/figures";
+import { SUBT_TRIGGER, f, panelTrigger } from "../svg/geom";
 import { cap, type DiagramProps } from "../../lib/scene";
 import { CHIP_CHAR_W, chipWidth, sweepAt } from "../../lib/kit";
 
@@ -31,11 +30,8 @@ const W = 780, H = 600;
 if (scene.views?.length) throw new Error("Support: expected no views");
 const PANELS = scene.panels ?? [];
 
-// named narrators are drawn reliable, with scroll and seal, unless the book says otherwise (phase 3 design §1)
-const RELIABLE = { scroll: "yes", seal: "yes" } as const;
 const K = 0.7;
 const HALF = 22 * K; // half a figure's height
-const SUBT_W = 9.2;
 
 // rows: the moon, the Companions, then each narrator below; students of Mālik; wording and book chips; brackets
 const MOON = { x: 150, y: 46 };
@@ -97,12 +93,11 @@ const chip = (text: string, cx: number) => {
   return { text, w, x: f(cx - w / 2) };
 };
 
-// a bracket label as a term trigger, in the 15px display face (about 9.2 units per character: these titles run
-// wider than Grades' lifts); panelTrigger checks it sits wholly inside its panel, or the carousel would cut it
-const SUBT = { charW: SUBT_W, half: SUBT_W / 2, gap: 12, top: 17, h: 24, r: 7 };
+// a bracket label as a term trigger, in the 15px display face (geom's SUBT_TRIGGER); panelTrigger checks it sits
+// wholly inside its panel, or the carousel would cut it
 function label(slug: string, cx: number, y: number) {
   const c = cap(caps, slug);
-  return { c, cx, y, ...panelTrigger(c.translit, cx, y, PANELS, { ...SUBT, name: `Support: ${slug}` }) };
+  return { c, cx, y, ...panelTrigger(c.translit, cx, y, PANELS, { ...SUBT_TRIGGER, name: `Support: ${slug}` }) };
 }
 // [slug, bracket x0, x1, row, label centre]; the full follow-up's bracket covers al-Qaʿnabī only, not al-Shāfiʿī
 const BRACKETS: [string, number, number, number, number][] = [
@@ -116,8 +111,8 @@ const brackets = BRACKETS.map(([slug, x0, x1, y, cx]) => ({ x0, x1, by: y, ...la
 // the iʿtibār heading: the lens, then the title; the hit area takes in the lens
 const itibar = (() => {
   const c = cap(caps, "itibar");
-  const cx = f(LENS.x + 18 + (c.translit.length * SUBT_W) / 2), y = LENS.y + 6;
-  return { c, cx, y, ...panelTrigger(c.translit, cx, y, PANELS, { ...SUBT, top: 19, h: 26, x0: LENS.x - 12, name: "Support: itibar" }) };
+  const cx = f(LENS.x + 18 + (c.translit.length * SUBT_TRIGGER.charW) / 2), y = LENS.y + 6;
+  return { c, cx, y, ...panelTrigger(c.translit, cx, y, PANELS, { ...SUBT_TRIGGER, top: 19, h: 26, x0: LENS.x - 12, name: "Support: itibar" }) };
 })();
 
 const qanabiAt = sweepAt(STU.qanabi, SWEEP);
@@ -202,28 +197,17 @@ const lensStyle = `--x0:${SWEEP.x0 - LENS.x}px;--x1:${SWEEP.x1 - LENS.x}px;--dy:
     {brackets.map((b) => (
       <>
         <path class="bracket" d={`M${b.x0} ${b.by - 7} V${b.by} H${b.x1} V${b.by - 7}`} />
-        <Term slug={b.c.slug} json={b.c.json} label={`${b.c.translit}: ${b.c.en}`} {...b.hit}>
-          <text class="subt" x={b.cx} y={b.y}>{b.c.translit}</text>
-          <InfoIcon {...b.info} />
-        </Term>
-        <text class="title-ar sm" lang="ar" direction="rtl" x={b.cx} y={b.y + 20}>{b.c.ar}</text>
+        <TermTitle c={b.c} x={b.cx} y={b.y} cls="subt" hit={b.hit} info={b.info} ar={{ x: b.cx, y: b.y + 20, size: "sm" }} />
       </>
     ))}
   </g>
 
   {/* ---- the iʿtibār heading; its lens sweeps the book row once on load, then rests here ---- */}
-  <Term slug={itibar.c.slug} json={itibar.c.json} label={`${itibar.c.translit}: ${itibar.c.en}`} {...itibar.hit}>
-    <text class="subt" x={itibar.cx} y={itibar.y}>{itibar.c.translit}</text>
-    <InfoIcon {...itibar.info} />
-  </Term>
-  <text class="title-ar sm" lang="ar" direction="rtl" x="722" y={itibar.y}>{itibar.c.ar}</text>
+  <TermTitle c={itibar.c} x={itibar.cx} y={itibar.y} cls="subt" hit={itibar.hit} info={itibar.info} ar={{ x: 722, y: itibar.y, size: "sm" }} />
   <text class="lbl" x="650" y={itibar.y + 17}>searching the collections</text>
   <g class="lens" style={lensStyle}><Glyph kind="lens" cx={LENS.x} cy={LENS.y} r={10} /></g>
 </svg>
 <style>
-  .nm{fill:var(--fg);font:600 11.5px var(--f-body)}
-  .sn{fill:var(--fg);font:600 11px var(--f-body);text-anchor:middle}
-  .subt{fill:var(--fg);font:700 15px var(--f-display);text-anchor:middle}
   .wording :global(.chip text){font-style:italic}
   .bracket{fill:none;stroke:var(--fg);stroke-width:1.4;stroke-linejoin:round}
   /* butt caps, so the strike shows nothing before it starts drawing */

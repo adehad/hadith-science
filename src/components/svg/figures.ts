@@ -17,5 +17,9 @@ export const FIG: Record<Kind, Fig> = {
   ghost: { ghost: true },
 };
 
+// named narrators are drawn reliable, with scroll and seal, unless the book says otherwise (spec §3.2, phase 3
+// design §1)
+export const RELIABLE = { scroll: "yes", seal: "yes" } as const satisfies Fig;
+
 // kind names shown in Labels mode
 export const KIND_NAME: Record<Kind, string> = { sahabi: "Companion", tabii: "Successor", later: "Narrator", majhul: "Unknown", mubham: "Unnamed", weak: "Weak", ghost: "Missing" };
