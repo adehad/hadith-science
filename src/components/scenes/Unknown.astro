@@ -1,0 +1,96 @@
+---
+// "Who is this narrator?" (ported from the mockup's SCENES.unknown): two unbroken chains, each with one narrator
+// who cannot be checked (§5.35–5.36). The mubham is never named, and the narrator below him, on the collector's
+// side, is the one who says "a man told me" (spec §3.3). The majhūl is named but too little known; his two kinds
+// (§5.36) sit beside him as small term triggers.
+import Defs from "../svg/Defs.astro";
+import LayerGuides from "../svg/LayerGuides.astro";
+import Chain from "../svg/Chain.astro";
+import SpeechBubble from "../svg/SpeechBubble.astro";
+import Term from "../svg/Term.astro";
+import InfoIcon from "../svg/InfoIcon.astro";
+import type { Kind } from "../svg/figures";
+import { cap, type Cap } from "../../lib/scene";
+
+interface Props { caps: Record<string, Cap>; scene: { id: string } }
+const { caps } = Astro.props;
+
+const W = 820;
+// the standard five rows (the mockup's LAYERS)
+const LAYERS: [string, number][] = [["Prophet ﷺ", 70], ["Ṣaḥābī", 170], ["Tābiʿī", 260], ["Later", 350], ["Collector", 440]];
+// [term slug, centre, kinds below the moon, always-on labels]
+const COLS: [string, number, Kind[], string[]][] = [
+  ["mubham", 300, ["sahabi", "tabii", "mubham", "later"], []],
+  ["majhul", 660, ["sahabi", "tabii", "majhul", "later"], ["", "", "named, but unknown"]],
+];
+const DIVIDER = 480;
+const TITLE_Y = 500;
+const f = (n: number) => +n.toFixed(2);
+
+const cols = COLS.map(([slug, cx, kinds, labels]) => {
+  const c = cap(caps, slug);
+  // title hit area and (i) placement as in Routes.astro (~11 units per character of the 20px display title),
+  // plus 4 units of half-width per m or w, which are wide enough in "Mubham" to run into the (i)
+  const wide = (c.translit.match(/[mw]/gi) ?? []).length * 4;
+  const tw = c.translit.length * 11 + wide * 2;
+  const info = { cx: f(cx + c.translit.length * 6.4 + wide + 16), cy: TITLE_Y - 6 };
+  const x0 = f(cx - tw / 2 - 6);
+  const hit = { x: x0, y: TITLE_Y - 22, w: f(info.cx + 13 - x0), h: 30 };
+  return { c, cx, kinds, labels, hit, info };
+});
+
+// the majhūl's two kinds (§5.36), one each side of his figure at row 3. Widths are estimated at 6.2 units per
+// character of the 12.5px name and 5.9 of the 11px lines; side -1 reads leftwards from x, +1 rightwards.
+const MAJHUL_X = 660;
+const KIND_Y = LAYERS[3][1] - 16;
+const KINDS: [string, -1 | 1, string[]][] = [
+  ["majhul-al-ayn", -1, ["if only one", "narrates from him"]],
+  ["mastur", 1, ["if two or more do,", "but no one vouches"]],
+];
+const kindNotes = KINDS.map(([slug, side, lines]) => {
+  const c = cap(caps, slug);
+  const x = MAJHUL_X + side * 32;
+  const nameW = c.translit.length * 6.2;
+  const w = Math.max(nameW + 22, ...lines.map((l) => l.length * 5.9));
+  // the (i) sits on the far side of the name from the figure
+  const info = { cx: f(x + side * (nameW + 14)), cy: KIND_Y - 4.5, r: 7 };
+  const hit = { x: f(side < 0 ? x - w - 4 : x - 4), y: KIND_Y - 15, w: f(w + 8), h: 48 };
+  // the label must hold all the visible text (WCAG 2.5.3). The sub-lines are tspans of the name's <text>, each
+  // led by a space, because axe runs separate <text>s together with no space and the label then never matches.
+  const label = [c.translit, ...lines].join(" ");
+  // left-aligned lines start 2.6 units early, so the leading space (about that wide at 11px) doesn't indent them
+  const lineX = side < 0 ? x : f(x - 2.6);
+  return { c, x, lineX, anchor: side < 0 ? "end" : "start", lines, info, hit, label };
+});
+---
+<svg viewBox={`0 0 ${W} 520`} role="group" aria-label="Two connected chains from the Prophet ﷺ: in one a narrator is left unnamed, in the other a narrator is named but too little known to accept">
+  <Defs />
+  <LayerGuides w={W} layers={LAYERS} />
+  <line class="divider" x1={DIVIDER} x2={DIVIDER} y1="20" y2={TITLE_Y} />
+  {cols.map((col) => (
+    <>
+      <Chain cx={col.cx} layers={LAYERS} kinds={col.kinds} labels={col.labels} />
+      <Term slug={col.c.slug} json={col.c.json} label={`${col.c.translit}: ${col.c.en}`} {...col.hit}>
+        <text class="title" x={col.cx} y={TITLE_Y}>{col.c.translit}</text>
+        <InfoIcon {...col.info} />
+      </Term>
+    </>
+  ))}
+  {/* the collector-side narrator below the mubham names no source */}
+  <SpeechBubble x={300} y={LAYERS[4][1]} ar="حَدَّثَنِي رَجُلٌ" en="“a man told me”" />
+  {kindNotes.map((k) => (
+    <Term slug={k.c.slug} json={k.c.json} label={k.label} {...k.hit}>
+      <text class="kname" x={k.x} y={KIND_Y} text-anchor={k.anchor}>{k.c.translit}{k.lines.map((l, i) => (
+        <tspan class="kline" x={k.lineX} dy={i === 0 ? 15 : 13}>{` ${l}`}</tspan>
+      ))}</text>
+      <InfoIcon {...k.info} />
+    </Term>
+  ))}
+</svg>
+<style>
+  .kname,.kline{stroke:var(--surface);stroke-width:4px;paint-order:stroke;stroke-linejoin:round}
+  .kname{fill:var(--fg);font:700 12.5px var(--f-body)}
+  .kline{fill:var(--muted);font:600 11px var(--f-body)}
+  /* at small scale only the name and the (i) show; the branch lines stay in the caption */
+  @media (max-width:640px) and (orientation:portrait){ .kline{display:none} }
+</style>

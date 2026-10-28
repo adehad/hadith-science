@@ -60,3 +60,25 @@
     - { id: muallaq, label: Muʿallaq, x0: 215, x1: 415 }
     - { id: mudal, label: Muʿḍal, x0: 415, x1: 615 }
     - { id: munqati, label: Munqaṭiʿ, x0: 615, x1: 820 }
+- id: unknown
+  division: al-mardud
+  moons: [1]
+  order: 2
+  title: Who is this narrator?
+  eyebrow: Rejected for doubt about a narrator · §5.35–5.36
+  lede: Both chains are unbroken, but in each one narrator cannot be checked. One is never named; the other is named, but too little is known of him.
+  source: §5.35 Jahāla, §5.36 Mubham
+  diagram: Unknown
+  width: 820
+  captions:
+    - term: mubham
+      note: "The one reporting from him leaves him unnamed: “a man told me”, “the shaykh told me”, “the son of so-and-so”. Another chain that names him identifies him; until then the report is not accepted, since an unnamed man’s reliability cannot be known. On the soundest view, that holds even when he is called reliable, as in “a trustworthy man told me”: he may be trustworthy to that narrator but not to others (§5.36)."
+    - term: majhul
+      note: "He is named, but too little is known of him. Ibn Ḥajar gives two causes: he goes by several names, titles or lineages and, cited by an unfamiliar one, is taken for someone else; or he narrates so rarely that few take from him (§5.35). Who narrates from him then sets which kind he is: majhūl al-ʿayn or mastūr (§5.36)."
+    - term: majhul-al-ayn
+      note: "He is named, but only one narrator reports from him. Like the unnamed narrator, he is not accepted unless someone other than that one narrator vouches for him; Ibn Ḥajar calls this the soundest view. He adds that he is accepted, too, when that sole narrator is himself qualified to judge him (§5.36)."
+    - term: mastur
+      note: "Two or more narrate from him, but no one has vouched for him; also called majhūl al-ḥāl. A group accepted his reports outright, but the majority did not. Ibn Ḥajar neither accepts nor rejects: the report is held back until his state is clear, as Imām al-Ḥaramayn held (§5.36)."
+  panels:
+    - { id: mubham, label: Mubham, x0: 0, x1: 480 }
+    - { id: majhul, label: Majhūl, x0: 480, x1: 820 }

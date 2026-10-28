@@ -561,6 +561,7 @@
   def: Named, but no one has vouched for him.
   section: "§5.36"
   division: al-mardud
+  scene: unknown
 - id: wuhdan
   translit: al-Wuḥdān
   ar: الْوُحْدَانُ
@@ -575,13 +576,15 @@
   def: "The narrator is left unnamed, as in ‘a man told me’. Not accepted until a route names him; even ‘a reliable man told me’ is not enough."
   section: "§5.36"
   division: al-mardud
+  scene: unknown
 - id: majhul-al-ayn
   translit: Majhūl al-ʿayn
   ar: مَجْهُولُ الْعَيْنِ
   en: Unknown person
-  def: "Named, but only one narrator reports from him. Rejected unless someone else vouches for him."
+  def: "Named, but only one narrator reports from him. Not accepted unless someone else vouches for him, or that one narrator is himself qualified to judge him."
   section: "§5.36"
   division: al-mardud
+  scene: unknown
 - id: mastur
   translit: Mastūr
   ar: مَسْتُورٌ
@@ -589,6 +592,7 @@
   def: "Two or more narrate from him but no one vouches for him; also called majhūl al-ḥāl. His report is held back until his state is known."
   section: "§5.36"
   division: al-mardud
+  scene: unknown
 - id: bida
   translit: Bidʿa
   ar: بِدْعَةٌ
