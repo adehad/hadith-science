@@ -1,0 +1,7 @@
+# Cloudflare Workers & Pages config: branch previews (production is GitHub Pages)
+name = "hadith-science"
+compatibility_date = "2026-10-28"
+
+[assets]
+directory = "./dist/"
+not_found_handling = "404-page"
