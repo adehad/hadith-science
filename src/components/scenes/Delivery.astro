@@ -1,0 +1,179 @@
+---
+// "How was it received?" (ported from the mockup's stairs() and modeIcon()): Ibn Ḥajar's eight ranks of delivery
+// words as a descending staircase (§5.55), with the weaker ways of receiving below the stairs (§5.57–5.58).
+// Each step is drawn at its place in the default view; data-v-*, data-h-* and data-fill-* hold every view's
+// place, size and colour, and viewswitch.ts eases the steps (and the rank arrows under them) between views.
+import Defs from "../svg/Defs.astro";
+import Term from "../svg/Term.astro";
+import InfoIcon from "../svg/InfoIcon.astro";
+import { cap, type Cap } from "../../lib/scene";
+import { FLOOR, STAIR_VIEWS, STEP_W, stepBox, stepFill } from "../../lib/staircase";
+
+interface Props { caps: Record<string, Cap>; scene: { id: string; views?: { id: string }[] } }
+const { caps, scene } = Astro.props;
+
+type Icon = "speak" | "read" | "listen" | "notify" | "hand" | "face" | "letter" | "an";
+// strongest first: [[term slug, arabic, transliteration] lines, english, icon]. Consecutive lines with the
+// same slug form one trigger.
+const STEPS: [[string, string, string][], string, Icon][] = [
+  [[["samitu", "سَمِعْتُ", "samiʿtu"], ["haddathana", "حَدَّثَنَا", "ḥaddathanā"]], "heard him alone", "speak"],
+  [[["akhbarana", "أَخْبَرَنَا", "akhbaranā"], ["qaratu-alayhi", "قَرَأْتُ عَلَيْهِ", "qaraʾtu ʿalayhi"]], "I read to him", "read"],
+  [[["quria-alayhi", "قُرِئَ عَلَيْهِ", "quriʾa ʿalayhi"], ["quria-alayhi", "وَأَنَا أَسْمَعُ", "wa-ana asmaʿu"]], "read while I listened", "listen"],
+  [[["anbaana", "أَنْبَأَنَا", "anbaʾanā"]], "he notified us", "notify"],
+  [[["nawalana", "نَاوَلَنَا", "nāwalanā"]], "handed to us", "hand"],
+  [[["shafahani", "شَافَهَنِي", "shāfahanī"]], "in person, with ijāza", "face"],
+  [[["kataba-ilayya", "كَتَبَ إِلَيَّ", "kataba ilayya"]], "by letter, with ijāza", "letter"],
+  [[["an", "عَنْ · قَالَ", "ʿan · qāla"], ["an", "ذَكَرَ · رَوَى", "dhakara · rawā"]], "heard? not certain", "an"],
+];
+// below the stairs (§5.57–5.58): [slug, arabic, transliteration · gloss]
+const BASE: [string, string, string][] = [
+  ["wijada", "وِجَادَةٌ", "wijāda · found in his handwriting"],
+  ["wasiyya", "وَصِيَّةٌ", "waṣiyya · books bequeathed"],
+  ["ilam", "إِعْلَامٌ", "iʿlām · told he narrates a book"],
+  ["ijaza-amma", "إِجَازَةٌ عَامَّةٌ", "ijāza ʿāmma · permission to all"],
+];
+// the rank arrow's dash per step: solid at the top, breaking up further down
+const RANK_DASH = ["none", "14 3", "10 4", "8 5", "6 5", "4 5", "2.5 5", "1 5"];
+const f = (n: number) => +n.toFixed(2);
+
+// the mockup's modeIcon(): a small picture of how the report passed, centred on (x, y)
+function modeIcon(k: Icon, x: number, y: number): string {
+  const head = (hx: number, hy: number, r = 4.5) => `<circle class="icof" cx="${f(hx)}" cy="${f(hy)}" r="${r}"/>`;
+  const book = (bx: number, by: number) =>
+    `<path class="ico" d="M${f(bx - 11)} ${by - 6} q5.5 -3 11 0 q5.5 -3 11 0 v13 q-5.5 -3 -11 0 q-5.5 -3 -11 0z M${f(bx)} ${by - 6} v13"/>`;
+  const seal = (sx: number, sy: number) => `<g class="seal"><circle cx="${f(sx)}" cy="${f(sy)}" r="4.5"/></g>`;
+  const waves = (wx: number, wy: number) => `<path class="ico" d="M${f(wx)} ${wy - 4} q4 4 0 8 M${f(wx + 5)} ${wy - 7} q6 7 0 14"/>`;
+  return {
+    speak: head(x - 13, y, 5.5) + waves(x - 5, y) + head(x + 13, y, 3.5),
+    read: book(x - 8, y) + waves(x + 5, y) + head(x + 17, y, 5),
+    listen: head(x - 14, y, 5) + head(x + 2, y - 5, 3) + head(x + 11, y - 5, 3) + head(x + 6.5, y + 4, 3),
+    notify: book(x - 4, y) + seal(x + 12, y + 6),
+    hand: book(x, y - 6) + `<path class="ico" d="M${f(x - 13)} ${y + 7} q13 7 26 0"/>`,
+    face: head(x - 10, y - 2) + head(x + 10, y - 2) + seal(x, y + 10),
+    letter: `<rect class="ico" x="${f(x - 13)}" y="${y - 8}" width="26" height="17" rx="2"/><path class="ico" d="M${f(x - 13)} ${y - 8} l13 9 l13 -9"/>` + seal(x + 12, y + 8),
+    an: `<circle class="ico" cx="${f(x)}" cy="${y}" r="11" style="stroke-dasharray:2 3"/><text class="qmark2" x="${f(x)}" y="${y + 5}">?</text>`,
+  }[k];
+}
+
+const views = scene.views ?? [];
+if (views.length === 0) throw new Error("Delivery: the scene needs its views");
+for (const v of views) if (!(v.id in STAIR_VIEWS)) throw new Error(`Delivery: no staircase for view ${v.id}`);
+const stair = (id: string) => STAIR_VIEWS[id as keyof typeof STAIR_VIEWS];
+const def = stair(views[0].id);
+
+// step-local layout (the mockup's): text centred at CX, line k's Arabic on Y0 + k*LINE, its transliteration 15 below
+const W = STEP_W, CX = W / 2 - 2, Y0 = 82, LINE = 38, ICON_Y = 46;
+// each trigger spans its lines across the step, with a 2-unit gap between neighbours; the (i) sits at the right
+const HIT_X = 2, HIT_W = W - 8, INFO_X = W - 13;
+
+const steps = STEPS.map(([lines, en, icon], i) => {
+  const box = stepBox(def, i);
+  // per-view targets for the step body, its rect and its rank arrow
+  const gAttrs: Record<string, string> = {}, rAttrs: Record<string, string> = {}, aAttrs: Record<string, string> = {};
+  for (const v of views) {
+    const b = stepBox(stair(v.id), i);
+    gAttrs[`data-v-${v.id}`] = `translate(${b.x}px,${b.top}px)`;
+    rAttrs[`data-h-${v.id}`] = `${b.h}px`;
+    rAttrs[`data-fill-${v.id}`] = stepFill(stair(v.id).lvl[i]);
+    aAttrs[`data-v-${v.id}`] = `translate(${b.x}px,0px)`;
+  }
+  const triggers: { c: Cap; k0: number; k1: number; label: string; hit: { x: number; y: number; w: number; h: number }; info: { cx: number; cy: number; r: number } }[] = [];
+  lines.forEach(([slug], k) => {
+    const last = triggers.at(-1);
+    if (last && last.c.slug === slug) last.k1 = k;
+    else triggers.push({ c: cap(caps, slug), k0: k, k1: k, label: "", hit: { x: 0, y: 0, w: 0, h: 0 }, info: { cx: 0, cy: 0, r: 6 } });
+  });
+  for (const t of triggers) {
+    t.hit = { x: HIT_X, y: Y0 + t.k0 * LINE - 18, w: HIT_W, h: (t.k1 - t.k0) * LINE + 36 };
+    t.info = { cx: INFO_X, cy: Y0 + t.k0 * LINE - 5, r: 6 };
+    // the label leads with the visible transliteration (WCAG 2.5.3). ʿan's two lines are one list of words, so
+    // they join with the same " · " the lines use; other two-line triggers read as one phrase.
+    const sep = t.c.slug === "an" ? " · " : " ";
+    t.label = `${lines.slice(t.k0, t.k1 + 1).map((l) => l[2]).join(sep)}: ${t.c.en}`;
+  }
+  return {
+    n: i + 1, box, en, lines, triggers, icon: modeIcon(icon, CX, ICON_Y), gAttrs, rAttrs, aAttrs,
+    fill: stepFill(def.lvl[i]),
+    rank: { w: (4.2 - i * 0.4).toFixed(1), dash: RANK_DASH[i] },
+  };
+});
+
+// "best of all: dictated" sits above step 1 and moves with it; its width is estimated at 5 units per character.
+// That figure comes from the measured width of this line at 12px semibold, not from the ~11 units per character
+// that Routes.astro uses for its 20px display titles.
+const IMLA_TEXT = "best of all: dictated (imlāʾ)";
+const imlaW = f(IMLA_TEXT.length * 5);
+const imla = {
+  c: cap(caps, "imla"),
+  info: { cx: f(HIT_X + imlaW + 10), cy: -12, r: 6 },
+  hit: { x: HIT_X - 4, y: -23, w: f(imlaW + 22), h: 21 },
+};
+
+const base = BASE.map(([slug, ar, tr], k) => {
+  const x = 10 + k * 212;
+  return { c: cap(caps, slug), ar, tr, x, cx: x + 102, info: { cx: x + 190, cy: 530, r: 6 } };
+});
+---
+<svg class="delivery" viewBox="0 0 860 610" role="group" aria-label="Eight delivery words as a descending staircase, with weaker modes below that need permission">
+  <Defs />
+  <text class="rowsub" x="10" y="26">← strongest</text>
+  <text class="rowsub" x="850" y="26" text-anchor="end">weakest →</text>
+  {steps.map((s) => (
+    <>
+      <g class="stepg" style={`transform:translate(${s.box.x}px,${s.box.top}px)`} {...s.gAttrs}>
+        <rect class="step" width={W - 4} rx="6" style={`height:${s.box.h}px;fill:${s.fill}`} {...s.rAttrs} />
+        <text class="stepno" x="10" y="21">{s.n}</text>
+        <g class="mode" aria-hidden="true" set:html={s.icon} />
+        <text class="stepen" x={CX} y={Y0 + s.lines.length * LINE - 2}>{s.en}</text>
+        {/* each line's text sits inside its trigger. axe runs separate <text>s together with no space, so a second
+            line's transliteration leads with one; SVG drops it at the line start, so it doesn't move the text */}
+        {s.triggers.map((t) => (
+          <Term slug={t.c.slug} json={t.c.json} label={t.label} {...t.hit}>
+            {s.lines.slice(t.k0, t.k1 + 1).map(([, ar, tr], j) => (
+              <>
+                <text class="title-ar" x={CX} y={Y0 + (t.k0 + j) * LINE} lang="ar" style="font-size:16px">{ar}</text>
+                <text class="tr" x={CX} y={Y0 + (t.k0 + j) * LINE + 15}>{j > 0 ? ` ${tr}` : tr}</text>
+              </>
+            ))}
+            <InfoIcon {...t.info} />
+          </Term>
+        ))}
+        {s.n === 1 && (
+          <Term slug={imla.c.slug} json={imla.c.json} label={IMLA_TEXT} {...imla.hit}>
+            <text class="lbl" x={HIT_X} y="-8" style="text-anchor:start">{IMLA_TEXT}</text>
+            <InfoIcon {...imla.info} />
+          </Term>
+        )}
+      </g>
+      <g class="stepg" style={`transform:translate(${s.box.x}px,0px)`} {...s.aAttrs}>
+        <path class="rank" d={`M14 ${FLOOR - 14} H${W - 22}`} style={`stroke-width:${s.rank.w};stroke-dasharray:${s.rank.dash}`} marker-end="url(#ah)" />
+      </g>
+    </>
+  ))}
+  <line class="rule" x1="10" x2="850" y1={FLOOR} y2={FLOOR} />
+  <text class="rowhead" x="10" y="491">Below the stairs</text>
+  <text class="rowsub" x="10" y="507">most need permission (ijāza)</text>
+  {base.map((b) => (
+    <Term slug={b.c.slug} json={b.c.json} label={b.tr} x={b.x} y={516} w={204} h={78}>
+      <rect class="basement" x={b.x} y="516" width="204" height="78" rx="8" />
+      <text class="title-ar" x={b.cx} y="550" lang="ar" style="font-size:18px">{b.ar}</text>
+      <text class="tr" x={b.cx} y="575">{b.tr}</text>
+      <InfoIcon {...b.info} />
+    </Term>
+  ))}
+</svg>
+<style>
+  /* ported from the mockup's delivery staircase CSS */
+  .step{stroke:var(--rule)}
+  .stepno{fill:var(--fg);font:700 15px var(--f-display)}
+  .stepen{fill:var(--muted);font:600 10.5px var(--f-body);text-anchor:middle}
+  .rank{fill:none;stroke:var(--line);animation:flow 1.1s linear infinite}
+  .basement{fill:none;stroke:var(--line);stroke-width:1.5;stroke-dasharray:5 4}
+  .mode :global(.ico){fill:none;stroke:var(--fg);stroke-width:1.6;stroke-linejoin:round;stroke-linecap:round}
+  .mode :global(.icof){fill:var(--fg)}
+  .mode :global(.seal circle){fill:var(--seal)}
+  .mode :global(.qmark2){fill:var(--fg);font:700 14px var(--f-display);text-anchor:middle}
+  /* the view switch eases steps to their new place, height and colour (motion.css drops this under reduced motion) */
+  .stepg{transition:transform .6s ease}
+  rect.step{transition:height .6s ease,fill .6s ease}
+</style>
