@@ -21,6 +21,7 @@ import { f, rowTrigger, titleTrigger } from "../svg/geom";
 import { cap, type DiagramProps } from "../../lib/scene";
 import { chipRow } from "../../lib/kit";
 import { stepFill } from "../../lib/staircase";
+import { href } from "../../lib/url";
 
 type Props = DiagramProps;
 const { caps, scene } = Astro.props;
@@ -67,8 +68,12 @@ const aRows = A_ROWS.map(([slug, y, gloss, glyph], i) => {
     ...rowTrigger(c.translit, tx, y, { charW: ROW_CHAR_W, x0: gx - 10, x1: 420, top: 15, h: 24 }),
   };
 });
-// the two conditions that belong to other scenes: plain text, not triggers
-const A_PLAIN: [number, string][] = [[216, "not anomalous (shādhdh)"], [242, "no hidden defect (muʿallal)"]];
+// the two conditions that belong to other scenes: plain text, not triggers; shādhdh links to its scene, named
+// in the link's accessible name since an arrow alone doesn't say where it goes
+const A_PLAIN: [number, string, { to: string; title: string }?][] = [
+  [216, "not anomalous (shādhdh)", { to: "al-maqbul/opposition/", title: "Who outweighs whom?" }],
+  [242, "no hidden defect (muʿallal)"],
+];
 const aTitle = title("sahih-li-dhatihi", 172);
 // the Successor's seal (Narrator draws it at (31, 39) in its 40x44 box), for ʿadl's leader line
 const sealAt = (x: number, y: number) => ({ x: f(x - 20 * A_K + 31 * A_K), y: f(y - 22 * A_K + 39 * A_K) });
@@ -146,10 +151,12 @@ const modeLabel = KIND_NAME.later;
         <text class="rg gloss" x={GLOSS_X} y={r.y}>{r.gloss}</text>
       </>
     ))}
-    {A_PLAIN.map(([y, t], i) => (
+    {A_PLAIN.map(([y, t, to], i) => (
       <>
         <g style={`--d:${((A_ROWS.length + i) * 0.25).toFixed(2)}s`}><Glyph kind="check" cx={CHECK_X} cy={y - 4} /></g>
-        <text class="rp" x={CHECK_X + 14} y={y}>{t}</text>
+        {to
+          ? <a class="xlink" href={href(to.to)} aria-label={`${t}: see ${to.title}`}><text class="rp" x={CHECK_X + 14} y={y}><tspan class="xu">{t}</tspan><tspan dx="5">→</tspan></text></a>
+          : <text class="rp" x={CHECK_X + 14} y={y}>{t}</text>}
       </>
     ))}
     <Term slug={aTitle.c.slug} json={aTitle.c.json} label={`${aTitle.c.translit}: ${aTitle.c.en}`} {...aTitle.hit}>
@@ -281,6 +288,9 @@ const modeLabel = KIND_NAME.later;
   .rg{fill:var(--muted);font:600 11.5px var(--f-body)}
   .rg.strong{fill:var(--fg)}
   .gloss{pointer-events:none}
+  .xlink .xu{text-decoration:underline;text-decoration-color:var(--line)}
+  .xlink:hover text,.xlink:focus-visible text{fill:var(--gold-a)}
+  .xlink:hover .xu,.xlink:focus-visible .xu{text-decoration-color:var(--gold-a)}
   .rp{fill:var(--fg);font:600 12px var(--f-body)}
   .ch{fill:var(--fg);font:700 12px var(--f-body);text-anchor:middle}
   .subt{fill:var(--fg);font:700 15px var(--f-display);text-anchor:middle}

@@ -1,4 +1,4 @@
-// layout maths for the small SVG kit parts (Chip, Gauge), kept pure so it can be unit-tested
+// layout maths for the small SVG kit parts (Chip, Gauge, Scale), kept pure so it can be unit-tested
 
 // round to 2 decimals, so the built SVG doesn't carry float noise (re-exported by components/svg/geom.ts)
 export const f = (n: number) => +n.toFixed(2);
@@ -33,4 +33,18 @@ export function gaugeCells(x: number, w: number, of: number, fill: number, gap =
   const cw = (w - gap * (of - 1)) / of;
   const n = Math.max(0, Math.min(of, fill));
   return Array.from({ length: of }, (_, i) => ({ x: f(x + i * (cw + gap)), w: f(cw), on: i < n }));
+}
+
+// a balance beam w units wide, pivoting at px and tilted by `tilt` degrees (CSS rotate: positive is clockwise,
+// so the right end goes down). Each end's x and how far it moves in y from level; the pans hang from the ends,
+// so they translate by dy and stay level rather than rotating with the beam.
+export function scaleEnds(px: number, w: number, tilt: number) {
+  const a = (tilt * Math.PI) / 180;
+  const dx = (w / 2) * Math.cos(a), dy = (w / 2) * Math.sin(a);
+  return { left: { x: f(px - dx), dy: f(-dy) || 0 }, right: { x: f(px + dx), dy: f(dy) || 0 } };
+}
+
+// the centres of n weight discs in a row, centred on cx and gap apart
+export function discRow(n: number, cx: number, gap: number): number[] {
+  return Array.from({ length: n }, (_, i) => f(cx + (i - (n - 1) / 2) * gap));
 }

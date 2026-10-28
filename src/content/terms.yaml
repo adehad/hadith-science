@@ -231,6 +231,7 @@
   def: "Extra wording from a sound or fair narrator. Accepted if it clashes with nothing; if it clashes with a weightier narration, the stronger wins."
   section: "§5.10"
   division: al-maqbul
+  scene: opposition
 - id: shadhdh
   translit: Shādhdh
   ar: شَاذٌّ
@@ -238,6 +239,7 @@
   def: "An acceptable narrator's report that goes against a weightier one, weightier by accuracy, by numbers or by some other ground."
   section: "§5.11"
   division: al-maqbul
+  scene: opposition
 - id: mahfuz
   translit: Maḥfūẓ
   ar: مَحْفُوظٌ
@@ -245,6 +247,7 @@
   def: "The weightier report that wins when an acceptable narrator goes against it. The losing one is shādhdh."
   section: "§5.11"
   division: al-maqbul
+  scene: opposition
 - id: munkar
   translit: Munkar
   ar: مُنْكَرٌ
@@ -252,6 +255,7 @@
   def: "A weak narrator's report that goes against a stronger one. Some also use it for any report of a narrator with gross errors, negligence or open sin (§5.26)."
   section: "§5.12"
   division: al-maqbul
+  scene: opposition
 - id: maruf
   translit: Maʿrūf
   ar: مَعْرُوفٌ
@@ -259,6 +263,7 @@
   def: "The stronger report that wins when a weak narrator goes against it. The losing one is munkar."
   section: "§5.12"
   division: al-maqbul
+  scene: opposition
 - id: mutabi
   translit: Mutābiʿ
   ar: مُتَابِعٌ

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { CHIP_CHAR_W, CHIP_PAD, chipRow, chipWidth, gaugeCells } from "../../src/lib/kit";
+import { CHIP_CHAR_W, CHIP_PAD, chipRow, chipWidth, discRow, gaugeCells, scaleEnds } from "../../src/lib/kit";
 
 describe("chipWidth", () => {
   it("grows with the text, plus padding", () => {
@@ -46,5 +46,33 @@ describe("gaugeCells", () => {
   it("orders gauges: more fill means more cells on", () => {
     const on = (n: number) => gaugeCells(0, 40, 5, n).filter((c) => c.on).length;
     expect([5, 4, 3, 2].map(on)).toEqual([5, 4, 3, 2]);
+  });
+});
+
+describe("scaleEnds", () => {
+  it("puts the ends half the beam either side of the pivot when level", () => {
+    expect(scaleEnds(390, 180, 0)).toEqual({ left: { x: 300, dy: 0 }, right: { x: 480, dy: 0 } });
+  });
+  it("a negative tilt lowers the left end and raises the right by the same amount", () => {
+    const { left, right } = scaleEnds(390, 180, -8);
+    expect(left.dy).toBeCloseTo(90 * Math.sin((8 * Math.PI) / 180), 2);
+    expect(right.dy).toBe(-left.dy);
+    // the pans hang from the beam's ends, which move in a little as it tilts
+    expect(left.x).toBeGreaterThan(300);
+    expect(right.x).toBeLessThan(480);
+  });
+  it("a positive tilt lowers the right end (CSS rotate is clockwise)", () => {
+    const { left, right } = scaleEnds(0, 100, 8);
+    expect(right.dy).toBeGreaterThan(0);
+    expect(left.dy).toBeLessThan(0);
+  });
+});
+
+describe("discRow", () => {
+  it("centres n discs on cx, gap apart", () => {
+    expect(discRow(3, 100, 14)).toEqual([86, 100, 114]);
+    expect(discRow(2, 0, 10)).toEqual([-5, 5]);
+    expect(discRow(1, 50, 10)).toEqual([50]);
+    expect(discRow(0, 50, 10)).toEqual([]);
   });
 });

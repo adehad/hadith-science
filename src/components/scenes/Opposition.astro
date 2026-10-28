@@ -1,0 +1,217 @@
+---
+// "Who outweighs whom?" (phase 3 design §3): what happens when narrators disagree (§5.10–5.12), in three panels
+// of one 780-wide row, so it carousels in portrait.
+//   1  added words: two reliable students of one teacher, one with extra words; a fork asks whether they clash
+//   2  shādhdh and maḥfūẓ: Ibn ʿUyayna and the others against Ḥammād ibn Zayd, both sides reliable (§5.11)
+//   3  munkar and maʿrūf: the weak Ḥubayyib ibn Ḥabīb against the reliable narrators (§5.12)
+// Panels 2 and 3 share one layout, so the reader sees that the two pairs share the opposition and differ in the
+// narrator who lost. The "Other views" switch (§5.10) changes only panel 1's clash branch: weigh them (default),
+// or accept the addition outright; the group outside the default view is built with class="off".
+// The reliable narrators' version in panel 3 stops at Ibn ʿAbbās (phase 3 design §13: the translation's "from
+// Abū Isḥāq only" is queried in notes/translation-queries.md).
+import Defs from "../svg/Defs.astro";
+import Moon from "../svg/Moon.astro";
+import Narrator from "../svg/Narrator.astro";
+import Arrow from "../svg/Arrow.astro";
+import Pill from "../svg/Pill.astro";
+import Term from "../svg/Term.astro";
+import InfoIcon from "../svg/InfoIcon.astro";
+import Matn from "../svg/Matn.astro";
+import Scale from "../svg/Scale.astro";
+import { FIG, KIND_NAME } from "../svg/figures";
+import { f, panelTrigger } from "../svg/geom";
+import { cap, type DiagramProps } from "../../lib/scene";
+
+type Props = DiagramProps;
+const { caps, scene } = Astro.props;
+
+const W = 780, H = 600;
+const VIEW_IDS = ["ibn-hajar", "accept-all"];
+if ((scene.views ?? []).map((v) => v.id).join() !== VIEW_IDS.join()) throw new Error(`Opposition: expected views ${VIEW_IDS.join(", ")}`);
+const PANELS = scene.panels ?? [];
+
+// named narrators are drawn reliable, with scroll and seal, unless the book says otherwise (phase 3 design §1)
+const RELIABLE = { scroll: "yes", seal: "yes" } as const;
+const K = 0.8, KS = 0.7;
+const TITLE_Y = 506;
+
+// a term trigger under a pan or a panel; it must sit wholly inside its panel, or the carousel would cut it
+function title(slug: string, cx: number) {
+  const c = cap(caps, slug);
+  return { c, cx, ...panelTrigger(c.translit, cx, TITLE_Y, PANELS, { name: `Opposition: ${slug}` }) };
+}
+
+// ---- panel 1: added words ----
+const T = { x: 130, y: 70 };
+const STU = [{ x: 70, name: "A" }, { x: 190, name: "B" }];
+const STU_Y = 150;
+const FORK = { x: 130, y: 300 };
+const PILL_Y = 362;
+const BR = [70, 190];
+const TO_SCALES = { x0: 160, x1: 255, y: PILL_Y + 74 };
+const ziyada = title("ziyadat-al-thiqa", 124);
+
+// ---- panels 2 and 3: a chain from the moon, fanning out to the students who disagree ----
+const CHAIN_YS = [130, 198, 266];
+const SY = 334; // students
+const PIVOT_Y = 412;
+interface Student { x: number; lines: [string, string]; fig: "later" | "weak"; faint?: boolean; track?: "b" }
+const P2 = {
+  cx: 390,
+  names: [["Ibn ʿAbbās"], ["ʿAwsaja"], ["ʿAmr ibn Dīnār"]],
+  kinds: ["sahabi", "tabii", "tabii"] as const,
+  students: [
+    { x: 286, lines: ["Ibn", "ʿUyayna"], fig: "later" },
+    { x: 332, lines: ["Ibn", "Jurayj"], fig: "later" },
+    { x: 378, lines: ["and", "others"], fig: "later", faint: true },
+    { x: 470, lines: ["Ḥammād", "ibn Zayd"], fig: "later" },
+  ] as Student[],
+};
+const P3 = {
+  cx: 650,
+  names: [["Ibn ʿAbbās"], ["al-ʿAyzār", "ibn Ḥurayth"], ["Abū Isḥāq"]],
+  kinds: ["sahabi", "tabii", "tabii"] as const,
+  students: [
+    { x: 572, lines: ["Ḥubayyib", "ibn Ḥabīb"], fig: "weak" },
+    { x: 690, lines: ["", ""], fig: "later", track: "b" },
+    { x: 740, lines: ["", ""], fig: "later", track: "b" },
+  ] as Student[],
+};
+// the reliable narrators' track runs beside the shared chain, clear of the figures and their Labels-mode
+// names, from under a stop bar
+const TB = P3.cx + 34;
+const STOP_Y = 106;
+const mahfuz = title("mahfuz", 310);
+const shadhdh = title("shadhdh", 444);
+const munkar = title("munkar", 572);
+const maruf = title("maruf", 710);
+const PAN_TITLES = [mahfuz, shadhdh, munkar, maruf];
+---
+<svg viewBox={`0 0 ${W} ${H}`} role="group" aria-label="Three panels. An added phrase that clashes with nothing is accepted; when versions clash they are weighed. Ibn ʿUyayna and others outweigh Ḥammād ibn Zayd by number: maḥfūẓ against shādhdh. The reliable narrators outweigh the weak Ḥubayyib ibn Ḥabīb: maʿrūf against munkar.">
+  <Defs />
+  <line class="divider" x1="260" x2="260" y1="12" y2={H - 12} />
+  <line class="divider" x1="520" x2="520" y1="12" y2={H - 12} />
+
+  {/* ---- panel 1 ---- */}
+  <text class="colhead" x="130" y="24">Added words</text>
+  <Arrow x1={T.x - 8} y1={T.y + 18} x2={STU[0].x + 6} y2={STU_Y - 20} bend={-6} />
+  <Arrow x1={T.x + 8} y1={T.y + 18} x2={STU[1].x - 6} y2={STU_Y - 20} bend={6} />
+  <Narrator x={T.x} y={T.y} k={K} {...FIG.later} {...RELIABLE} label={KIND_NAME.later} />
+  <text class="nm" x={T.x + 22} y={T.y + 4}>one teacher</text>
+  {STU.map((s, i) => (
+    <>
+      <Narrator x={s.x} y={STU_Y} k={K} {...FIG.later} {...RELIABLE} label={KIND_NAME.later} />
+      <text class="who" x={i === 0 ? s.x - 22 : s.x + 22} y={STU_Y + 6} style={`text-anchor:${i === 0 ? "end" : "start"}`}>{s.name}</text>
+    </>
+  ))}
+  <Matn x={20} y={192} w={100} h={60} lines={["the shared", "wording"]} />
+  <Matn x={136} y={192} w={110} h={60} lines={["the shared", "wording", ""]} added="+ added words" />
+  <text class="q" x={FORK.x} y={FORK.y - 10}>Do B's extra words clash?</text>
+  <path class="fork" d={`M${FORK.x - 6} ${FORK.y} L${BR[0] + 4} ${PILL_Y - 16}`} marker-end="url(#ah)" />
+  <path class="fork" d={`M${FORK.x + 6} ${FORK.y} L${BR[1] - 4} ${PILL_Y - 16}`} marker-end="url(#ah)" />
+  <text class="lbl" x={BR[0] + 12} y={FORK.y + 26}>no</text>
+  <text class="lbl" x={BR[1] - 12} y={FORK.y + 26}>yes</text>
+  <Pill x={BR[0]} y={PILL_Y} state="accept" text="Accepted" />
+  <text class="lbl" x={BR[0]} y={PILL_Y + 30}>like a report he</text>
+  <text class="lbl" x={BR[0]} y={PILL_Y + 45}>gives alone</text>
+  <g data-view-show="ibn-hajar">
+    <Pill x={BR[1]} y={PILL_Y} state="pause" text="Weigh them" />
+    <text class="lbl" x={BR[1]} y={PILL_Y + 30}>the weightier</text>
+    <text class="lbl" x={BR[1]} y={PILL_Y + 45}>is kept</text>
+    {/* on to the scales in panels 2 and 3; it ends inside panel 1, so the portrait carousel doesn't cut it */}
+    <text class="lbl" x={TO_SCALES.x0 + (TO_SCALES.x1 - TO_SCALES.x0) / 2} y={TO_SCALES.y - 8}>to the scales</text>
+    <path class="fork" d={`M${TO_SCALES.x0} ${TO_SCALES.y} H${TO_SCALES.x1}`} marker-end="url(#ah)" />
+  </g>
+  <g class="off" data-view-show="accept-all">
+    <Pill x={BR[1]} y={PILL_Y} state="accept" text="Accepted" />
+    <text class="lbl" x={BR[1]} y={PILL_Y + 30}>kept without</text>
+    <text class="lbl" x={BR[1]} y={PILL_Y + 45}>weighing</text>
+  </g>
+  <Term slug={ziyada.c.slug} json={ziyada.c.json} label={`${ziyada.c.translit}: ${ziyada.c.en}`} {...ziyada.hit}>
+    <text class="title" x={ziyada.cx} y={TITLE_Y}>{ziyada.c.translit}</text>
+    <InfoIcon {...ziyada.info} />
+  </Term>
+  <text class="title-ar sm" lang="ar" direction="rtl" x={ziyada.cx} y={TITLE_Y + 24}>{ziyada.c.ar}</text>
+  <text class="lbl" x="130" y={TITLE_Y + 46}>extra words in a sound or fair report</text>
+
+  {/* ---- panels 2 and 3: the shared chain ---- */}
+  <text class="colhead" x={P2.cx} y="24">Both reliable</text>
+  <text class="colhead" x={P3.cx} y="24">One of them weak</text>
+  {[P2, P3].map((p) => (
+    <>
+      <Moon cx={p.cx} cy={62} k={0.7} />
+      <Arrow x1={p.cx} y1={80} x2={p.cx} y2={CHAIN_YS[0] - 19} />
+      <Arrow x1={p.cx} y1={CHAIN_YS[0] + 18} x2={p.cx} y2={CHAIN_YS[1] - 19} />
+      <Arrow x1={p.cx} y1={CHAIN_YS[1] + 18} x2={p.cx} y2={CHAIN_YS[2] - 19} />
+      {p.students.filter((s) => !s.track).map((s) => (
+        <Arrow x1={f(p.cx + (s.x - p.cx) * 0.08)} y1={CHAIN_YS[2] + 18} x2={s.x} y2={SY - 18} bend={(s.x - p.cx) / 10} />
+      ))}
+      {CHAIN_YS.map((y, i) => (
+        <>
+          <Narrator x={p.cx} y={y} k={K} {...FIG[p.kinds[i]]} {...RELIABLE} label={KIND_NAME[p.kinds[i]]} />
+          {p.names[i].map((n, j) => (
+            <text class="nm" x={p.cx - 22} y={y + 4 + (j - (p.names[i].length - 1) / 2) * 14} style="text-anchor:end">{n}</text>
+          ))}
+        </>
+      ))}
+      {p.students.map((s) => (
+        <>
+          <g class:list={[{ faint: s.faint }]}>
+            {s.fig === "weak"
+              ? <Narrator x={s.x} y={SY} k={KS} {...FIG.weak} />
+              : <Narrator x={s.x} y={SY} k={KS} {...FIG.later} {...RELIABLE} />}
+          </g>
+          {s.lines[0] && <text class="sn" x={s.x} y={SY + 28}>{s.lines[0]}</text>}
+          {s.lines[1] && <text class="sn" x={s.x} y={SY + 41}>{s.lines[1]}</text>}
+        </>
+      ))}
+    </>
+  ))}
+
+  {/* panel 2: Ḥammād's version leaves out Ibn ʿAbbās */}
+  <Arrow x1={P2.cx + 9} y1={78} x2={P2.cx + 16} y2={CHAIN_YS[1] - 14} bend={60} variant="skip" />
+  <text class="lbl gap" x="472" y="140">Ḥammād:</text>
+  <text class="lbl gap" x="472" y="154">no Ibn ʿAbbās</text>
+
+  {/* panel 3: Ḥubayyib carries it up to the Prophet ﷺ; the reliable narrators' version stops at Ibn ʿAbbās */}
+  <line class="stopbar" x1={TB - 10} x2={TB + 10} y1={STOP_Y} y2={STOP_Y} />
+  <path class="flow" d={`M${TB} ${STOP_Y + 3} V${CHAIN_YS[2] + 20}`} />
+  {P3.students.filter((s) => s.track).map((s) => (
+    <Arrow x1={TB} y1={CHAIN_YS[2] + 20} x2={s.x} y2={SY - 18} bend={(s.x - TB) / 10} />
+  ))}
+  <text class="nm" x={TB + 13} y={STOP_Y - 4}>stops short of</text>
+  <text class="nm" x={TB + 13} y={STOP_Y + 10}>the Prophet ﷺ</text>
+  <text class="lbl gap" x="572" y={SY + 54}>weak</text>
+  <text class="sn" x="715" y={SY + 28}>reliable</text>
+  <text class="sn" x="715" y={SY + 41}>narrators</text>
+
+  {/* the scales: one weight per narrator; the heavier side sinks */}
+  <Scale x={P2.cx} y={PIVOT_Y} w={160} tilt={-8} left={3} right={1} />
+  <Scale x={P3.cx} y={PIVOT_Y} w={160} tilt={8} left={1} right={2} crackLeft />
+  {PAN_TITLES.map((t) => (
+    <>
+      <Term slug={t.c.slug} json={t.c.json} label={`${t.c.translit}: ${t.c.en}`} {...t.hit}>
+        <text class="title" x={t.cx} y={TITLE_Y}>{t.c.translit}</text>
+        <InfoIcon {...t.info} />
+      </Term>
+      <text class="title-ar sm" lang="ar" direction="rtl" x={t.cx} y={TITLE_Y + 24}>{t.c.ar}</text>
+    </>
+  ))}
+  <text class="lbl" x={P2.cx} y={TITLE_Y + 46}>both reliable · numbers decide</text>
+  <text class="lbl" x={P3.cx} y={TITLE_Y + 46}>like shādhdh, but the loser is weak</text>
+  {/* the reports, paraphrased from the translation, so not in quotation marks */}
+  <text class="mq" x={P2.cx} y={TITLE_Y + 66}>a man died leaving no heir</text>
+  <text class="mq" x={P2.cx} y={TITLE_Y + 80}>but a slave he had freed</text>
+  <text class="mq" x={P3.cx} y={TITLE_Y + 66}>whoever prays, gives zakāt, makes ḥajj,</text>
+  <text class="mq" x={P3.cx} y={TITLE_Y + 80}>fasts and honours guests enters Paradise</text>
+</svg>
+<style>
+  .nm{fill:var(--fg);font:600 11.5px var(--f-body)}
+  .sn{fill:var(--fg);font:600 11px var(--f-body);text-anchor:middle}
+  .who{fill:var(--fg);font:700 16px var(--f-display)}
+  .q{fill:var(--fg);font:700 12px var(--f-body);text-anchor:middle}
+  .mq{fill:var(--muted);font:600 11px var(--f-body);text-anchor:middle}
+  .fork{fill:none;stroke:var(--line);stroke-width:1.5}
+  .stopbar{stroke:var(--fg);stroke-width:3.5;stroke-linecap:round}
+  .faint{opacity:.6}
+</style>

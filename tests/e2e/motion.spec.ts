@@ -60,3 +60,17 @@ test.describe("map layout", () => {
     await expect(page.locator(".tree")).toBeHidden();
   });
 });
+
+test("reduced motion: the opposition scales rest tipped, not level", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/al-maqbul/opposition/");
+  const beams = await page.locator("svg .scale .beam").evaluateAll((els) => els.map((e) => getComputedStyle(e).transform));
+  expect(beams).toHaveLength(2);
+  for (const t of beams) expect(t).not.toBe("none");
+  // the heavier pan has sunk: panel 2 tips left (maḥfūẓ), panel 3 right (maʿrūf)
+  const pans = await page.locator("svg .scale .pan").evaluateAll((els) => els.map((e) => new DOMMatrix(getComputedStyle(e).transform).f));
+  expect(pans[0]).toBeGreaterThan(0);
+  expect(pans[1]).toBeLessThan(0);
+  expect(pans[2]).toBeLessThan(0);
+  expect(pans[3]).toBeGreaterThan(0);
+});

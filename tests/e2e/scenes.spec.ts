@@ -37,7 +37,7 @@ async function expectLanded(page: Page, slug: string, scene: string) {
 
 test("every scene term is counted", () => {
   expect(built.length).toBeGreaterThanOrEqual(30);
-  expect(panelScenes.size).toBe(4);
+  expect(panelScenes.size).toBe(5);
 });
 
 test.describe("landing, desktop", () => {
@@ -152,6 +152,22 @@ test.describe("views", () => {
     await expect(pill("shafii")).toHaveText("Accepted if supported");
     await expect(pill("hadith-scholars")).toBeHidden();
     await expect(pill("malikis")).toBeHidden();
+    await expectNoAxeViolations(page);
+  });
+
+  test("accept-all swaps the clash branch's Weigh them for Accepted; the scales stay", async ({ page }) => {
+    await page.goto("/al-maqbul/opposition/");
+    const branch = (id: string) => page.locator(`svg [data-view-show="${id}"]`);
+    await expect(branch("ibn-hajar")).toContainText("Weigh them");
+    await expect(branch("accept-all")).toBeHidden();
+    await page.locator('.views button[data-v="accept-all"]').click();
+    await expect(page).toHaveURL(/[?&]view=accept-all\b/);
+    await expect(branch("accept-all")).toBeVisible();
+    await expect(branch("accept-all")).toContainText("Accepted");
+    await expect(branch("ibn-hajar")).toBeHidden();
+    // panels 2 and 3 show opposition in general, which both views recognise
+    await expect(page.locator("svg .scale")).toHaveCount(2);
+    for (const slug of ["shadhdh", "mahfuz", "munkar", "maruf"]) await expect(trigger(page, slug)).toBeVisible();
     await expectNoAxeViolations(page);
   });
 });

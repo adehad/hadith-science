@@ -212,3 +212,53 @@
     - title: Ranks by the two Ṣaḥīḥs
       section: §5.9
       note: "Ibn Ḥajar ranks sound reports by where they are found: first what al-Bukhārī and Muslim both record; then what al-Bukhārī alone records; then what Muslim alone records; then what meets both their conditions; then what meets al-Bukhārī's condition; then what meets Muslim's. A seventh type meets neither. A stronger factor can override this order: a mashhūr report in Muslim that yields knowledge outranks one al-Bukhārī records alone, and a soundest chain such as Mālik from Nāfiʿ from Ibn ʿUmar, recorded by neither, outranks a report only one of them records, especially when that one's chain holds a narrator in doubt."
+- id: opposition
+  division: al-maqbul
+  moons: [1]
+  order: 2
+  title: Who outweighs whom?
+  eyebrow: Accepted reports, when narrators disagree · §5.10–5.12
+  lede: One narrator may add words to a report, or tell it differently from others. An addition that clashes with nothing is accepted; when two versions clash, the weightier is kept. What the winner and the loser are called depends on whether the narrator who lost was reliable or weak.
+  source: §5.10 Ziyādat al-thiqa, §5.11 Shādhdh and maḥfūẓ, §5.12 Maʿrūf and munkar
+  diagram: Opposition
+  width: 780
+  captions:
+    - term: ziyadat-al-thiqa
+      note: "Extra words that a narrator of a sound or fair report gives and others leave out. If they clash with nothing, they are accepted, like a report a reliable narrator gives alone. If accepting them would mean rejecting the other version, the two are weighed: the weightier is accepted and the other rejected. None of the early masters is known to have accepted additions outright (§5.10)."
+    - term: mahfuz
+      note: "The weightier version, which wins. Ibn ʿUyayna gave the report of a man who died leaving no heir but a slave he had freed from ʿAmr ibn Dīnār, from ʿAwsaja, from Ibn ʿAbbās, and Ibn Jurayj and others gave it the same way. Ibn Abī Ḥātim judged Ibn ʿUyayna's version maḥfūẓ (§5.11)."
+    - term: shadhdh
+      note: "An acceptable narrator goes against one who is weightier: by firmer accuracy, by numbers, or on some other ground. Ḥammād ibn Zayd, accurate and trustworthy, gave the same report from ʿAmr ibn Dīnār, from ʿAwsaja, without Ibn ʿAbbās. His version lost because the other side had more narrators. Ibn Ḥajar calls this the settled sense of the term (§5.11)."
+    - term: munkar
+      note: "A weak narrator goes against a stronger one. Ḥubayyib ibn Ḥabīb, brother of Ḥamza al-Zayyāt, gave from Abū Isḥāq, from al-ʿAyzār ibn Ḥurayth, from Ibn ʿAbbās, as the Prophet's ﷺ words: whoever prays, gives zakāt, makes the ḥajj, fasts and honours his guest enters Paradise. Ibn Abī Ḥātim called it munkar (§5.12)."
+    - term: maruf
+      note: "The stronger version, which wins against a weak narrator. Reliable narrators gave the same report from Abū Isḥāq without carrying it up to the Prophet ﷺ, and Ibn Abī Ḥātim called theirs maʿrūf. Shādhdh and munkar share the opposition but differ in the narrator, reliable in one and weak in the other; Ibn Ḥajar calls treating them as one ignorance (§5.12)."
+  views:
+    - id: ibn-hajar
+      label: Ibn Ḥajar and the early masters
+      scholars: §5.10
+      note: "Weigh an addition when it clashes. Examining additions is reported from ʿAbd al-Raḥmān ibn Mahdī, Yaḥyā al-Qaṭṭān, Aḥmad, Ibn Maʿīn, ʿAlī ibn al-Madīnī, al-Bukhārī, Abū Zurʿa al-Rāzī, al-Nasāʾī, al-Dāraquṭnī and others; none of them is known to have accepted it outright. al-Shāfiʿī's own words point the same way."
+    - id: accept-all
+      label: Accept every addition
+      scholars: §5.10
+      note: "A well-known opinion accepts a reliable narrator's addition outright, without weighing. Ibn Ḥajar finds it surprising from hadith scholars who make “not being shādhdh” a condition of the sound and the fair, and more surprising from some Shāfiʿīs who hold it, since al-Shāfiʿī said a longer version that goes against the memorisers can harm a report."
+  panels:
+    - id: added-words
+      label: Added words
+      x0: 0
+      x1: 260
+    - id: shadhdh
+      label: Shādhdh · maḥfūẓ
+      x0: 260
+      x1: 520
+    - id: munkar
+      label: Munkar · maʿrūf
+      x0: 520
+      x1: 780
+  extra:
+    - title: The freed slave's report
+      section: §5.11
+      note: "The report in the shādhdh example: a man died in the Prophet's ﷺ time and left no heir but a slave he had freed. al-Tirmidhī, al-Nasāʾī and Ibn Māja recorded it through Ibn ʿUyayna, whose version names Ibn ʿAbbās; Ḥammād ibn Zayd's leaves him out."
+    - title: The Paradise report
+      section: §5.12
+      note: "The report in the munkar example: whoever prays, gives zakāt, makes the ḥajj, fasts and honours his guest enters Paradise. Ḥubayyib ibn Ḥabīb carried it up to the Prophet ﷺ; the reliable narrators did not."
