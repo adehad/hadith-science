@@ -5,7 +5,7 @@
   --green:#21825a; --ink:#1b1d29; --ink-edge:transparent;
   --moon:#fff4cf; --glow:#ffd77a; --gap:#c2412d; --hole:#fbfcfe; --moon-ink:#7a5c12;
   --p1:#6c8cd5; --p2:#3fa37a; --p3:#d08b4a; --p4:#c25b5b; --p5:#9a7bd1; --p6:#4fa3b8; --p7:#b59a4a; --p8:#8a94a8; --pause:#b7790a; --ok:#21825a; --seal:#c0353d;
-  --f-display:"Fraunces Variable",Georgia,serif; --f-body:"Source Sans 3 Variable",system-ui,sans-serif; --f-ar:"Amiri","Times New Roman",serif;
+  --f-display:"Fraunces Variable",Georgia,"Amiri",serif; --f-body:"Source Sans 3 Variable","Amiri",system-ui,sans-serif; --f-ar:"Amiri","Times New Roman",serif;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
   --bg:#0d1020; --surface:#151a2e; --fg:#e7e9f2; --muted:#9ba1ba; --line:#6d7493; --rule:#262c45;
