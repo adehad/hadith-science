@@ -1,7 +1,7 @@
 # Nuzhat al-Naẓar, visualised: design
 
 Date: 2026-10-28
-Status: phase 1 (foundation) and phase 2 (the five mocked scenes) are built; phase 3 not started
+Status: phase 1 (foundation) and phase 2 (the five mocked scenes) are built; phase 3 has begun, and division 2 (al-Maqbūl) is built
 Concept mockup: https://claude.ai/artifact/8V78csjQ1dFRqbjoWoZza1 (reference for look and motion; not production code)
 
 ## 1. Goal
@@ -156,7 +156,16 @@ The figure key from the mockup's "Reading a narrator" becomes `/narrators/`.
 
 **Phase 3 onwards** adds the rest of the sub-divisions, one division at a time, in planet order.
 
-- Each division gets its own short design pass: a mockup in the concept artifact for the owner to review, then a plan, then the build.
+**Phase 3: division 2** (al-Maqbūl), designed in `docs/superpowers/specs/2026-10-28-phase-3-maqbul-design.md`:
+
+| Scene | § | Form | Views |
+|---|---|---|---|
+| How sound is it? (`grades`) | 5.9–5.10 | Four cells: the conditions of the sound as a checklist, a ladder of chains from soundest down, many routes lifting a grade, and al-Tirmidhī's "ḥasan ṣaḥīḥ" | Ibn Ḥajar; al-Tirmidhī, in his book |
+| Who outweighs whom? (`opposition`) | 5.10–5.12 | Three panels: added words on two text cards, then two balance scales for shādhdh against maḥfūẓ and munkar against maʿrūf | Ibn Ḥajar and the early masters; accept every addition |
+| Does anyone else carry it? (`support`) | 5.13 | The crescent-moon report as a tree of routes, swept by the iʿtibār lens; brackets mark full and partial follow-ups and the shāhid | none |
+| Can both be acted on? (`acted-on`) | 5.14–5.16 | A decision path of five questions in Ibn Ḥajar's order, each answer dropping to an outcome card: muḥkam, mukhtalif al-ḥadīth, naskh, tarjīḥ, tawaqquf | none |
+
+- Each division gets its own short design pass, written as a design doc in `docs/superpowers/specs/`. It is then built on its own branch and reviewed through its PR preview. At the owner's request, to keep development moving, this replaces the earlier step of a mockup in the concept artifact.
 - Design rules for every scene:
   - Prefer a real worked example from the book over a generic one.
   - Pick the diagram form that fits the idea (staircase, filter box, fork, etc.) rather than forcing every idea into a chain.
@@ -234,10 +243,12 @@ Until a division is built, its planet still shows on the map, and its moons are 
 src/
   components/
     svg/          Moon, Narrator, Chain, Arrow, SpeechBubble, Pill, Term, LayerGuides,
-                  InfoIcon, Defs, NameTag; figures.ts (FIG / KIND_NAME), geom.ts (f, titleTrigger)
+                  InfoIcon, Defs, NameTag, Chip, Gauge, Glyph, Scale, Matn, Decision;
+                  figures.ts (FIG / KIND_NAME), geom.ts (f, titleTrigger, rowTrigger, panelTrigger)
     layout/       Header, Footer, Breadcrumb, Starfield, ThemeToggle, KeyToggle,
                   ViewSwitch, ReadAsText, TermPopover, Legend, Carousel
-    scenes/       Routes, Breaks, Unknown, Delivery, Names (one diagram per scene)
+    scenes/       Routes, Breaks, Unknown, Delivery, Names, Grades, Opposition, Support,
+                  ActedOn (one diagram per scene)
   content/
     divisions.yaml  the eight divisions (term, Arabic, English, §, order, moons)
     scenes.yaml     every scene (see 7.3)
@@ -247,6 +258,7 @@ src/
     terms.ts      slug → target path; ?t= / bare ?slug parsing
     views.ts      read/write ?view=
     staircase.ts  delivery step boxes per view
+    kit.ts        pure layout maths for the kit parts (chip widths and rows, gauge cells, scale ends, disc rows, the sweep timing, diamond path)
     panels.ts     carousel track width and snap stops
     orbit.ts      map orbit maths
     scene.ts      caption lookup, popover JSON, DiagramProps
@@ -362,7 +374,7 @@ Content and drawing are separate:
    - Term inventory for the whole book; terms in unbuilt divisions are marked `pending`.
    - Glossary, figure key, share-link system.
 2. **Mocked scenes.** The five scenes in §4.3, ported from the mockup into components and content files, with tests and screenshots.
-3. **One phase per remaining division,** in planet order. Each phase starts with a mockup review in the concept artifact.
+3. **One phase per remaining division,** in planet order. Each phase starts with a design doc in `docs/superpowers/specs/`, then is built on its own branch and reviewed through its PR preview (§4.3).
 
 Each phase has its own implementation plan.
 
