@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { CHIP_CHAR_W, CHIP_PAD, chipRow, chipWidth, discRow, gaugeCells, scaleEnds } from "../../src/lib/kit";
+import { CHIP_CHAR_W, CHIP_PAD, chipRow, chipWidth, discRow, gaugeCells, scaleEnds, sweepAt } from "../../src/lib/kit";
 
 describe("chipWidth", () => {
   it("grows with the text, plus padding", () => {
@@ -74,5 +74,21 @@ describe("discRow", () => {
     expect(discRow(2, 0, 10)).toEqual([-5, 5]);
     expect(discRow(1, 50, 10)).toEqual([50]);
     expect(discRow(0, 50, 10)).toEqual([]);
+  });
+});
+
+describe("sweepAt", () => {
+  const sweep = { x0: 40, x1: 740, t0: 0.8, t1: 4.8 };
+  it("is t0 at x0 and t1 at x1", () => {
+    expect(sweepAt(40, sweep)).toBe(0.8);
+    expect(sweepAt(740, sweep)).toBe(4.8);
+  });
+  it("moves at a steady speed in between", () => {
+    expect(sweepAt(390, sweep)).toBe(2.8);
+    expect(sweepAt(132, sweep)).toBe(1.33);
+  });
+  it("clamps x outside the sweep to its ends", () => {
+    expect(sweepAt(0, sweep)).toBe(0.8);
+    expect(sweepAt(900, sweep)).toBe(4.8);
   });
 });

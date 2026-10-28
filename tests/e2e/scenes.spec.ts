@@ -37,7 +37,7 @@ async function expectLanded(page: Page, slug: string, scene: string) {
 
 test("every scene term is counted", () => {
   expect(built.length).toBeGreaterThanOrEqual(30);
-  expect(panelScenes.size).toBe(5);
+  expect(panelScenes.size).toBe(6);
 });
 
 test.describe("landing, desktop", () => {

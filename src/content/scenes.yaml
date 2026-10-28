@@ -262,3 +262,32 @@
     - title: The Paradise report
       section: §5.12
       note: "The report in the munkar example: whoever prays, gives zakāt, makes the ḥajj, fasts and honours his guest enters Paradise. Ḥubayyib ibn Ḥabīb carried it up to the Prophet ﷺ; the reliable narrators did not."
+- id: support
+  division: al-maqbul
+  moons: [2]
+  order: 3
+  title: Does anyone else carry it?
+  eyebrow: Accepted reports, corroboration · §5.13
+  lede: A report thought to rest on one narrator may turn out to have company, either another route to the same Companion or a matching text from a different Companion. Searching the collections is how they are found.
+  source: §5.13 Mutābiʿ, shāhid and iʿtibār
+  diagram: Support
+  width: 780
+  captions:
+    - term: itibar
+      note: "Going through the chains in the collections, the jāmiʿs, musnads and juzʾs, to learn whether a report thought to be solitary has a follow-up. Ibn al-Ṣalāḥ's heading, “Knowing the iʿtibār, the mutābaʿāt and the shawāhid”, led some to take it for a kind beside the other two. It is not: it is the way both are found (§5.13)."
+    - term: mutabi
+      note: "A report first thought to be solitary, a relative gharīb (fard nisbī), turns out to have others agreeing with it; the agreeing route is a mutābiʿ, and its benefit is strength. Full or partial, it need not repeat the exact words, since the same meaning is enough, but it must come from the same Companion (§5.13)."
+    - term: mutabaa-tamma
+      note: "Full follow-up: the agreement is with the narrator himself. al-Shāfiʿī gave Mālik's report with “complete the period [of] thirty” in al-Umm, and a group took it for one of his gharīb reports, since Mālik's other students have “count for it”. But al-Qaʿnabī also gave it from Mālik, as al-Bukhārī records (§5.13)."
+    - term: mutabaa-qasira
+      note: "Partial follow-up: the agreement is with the narrator's teacher, or joins further along the chain. For the same report, Ibn Khuzayma's Ṣaḥīḥ has ʿĀṣim ibn Muḥammad, from his father Muḥammad ibn Zayd, from ʿAbd Allāh ibn ʿUmar: “complete thirty”. Muslim's Ṣaḥīḥ has ʿUbayd Allāh ibn ʿUmar, from Nāfiʿ, from Ibn ʿUmar: “count thirty” (§5.13)."
+    - term: shahid
+      note: "A text narrated from another Companion that resembles the report in wording and meaning, or in meaning alone. In wording: al-Nasāʾī's version through Muḥammad ibn Jubayr from Ibn ʿAbbās, like ʿAbd Allāh ibn Dīnār's from Ibn ʿUmar. In meaning: al-Bukhārī's through Muḥammad ibn Ziyād from Abū Hurayra, “complete the period of Shaʿbān thirty” (§5.13)."
+  panels:
+    - { id: lone, label: The lone route and a full follow-up, x0: 0, x1: 260 }
+    - { id: partial, label: Partial follow-ups, x0: 260, x1: 520 }
+    - { id: witness, label: Witnesses, x0: 520, x1: 780 }
+  extra:
+    - title: Sorting them by wording
+      section: §5.13
+      note: "A group of scholars draw the line differently: a report that matches in wording is a mutābiʿ, whether or not it comes from the same Companion, and one that matches in meaning is a shāhid. The two names are also sometimes used for each other. Ibn Ḥajar says the matter is easy. The diagram follows his own definitions, which sort the routes by Companion."

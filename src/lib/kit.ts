@@ -1,4 +1,4 @@
-// layout maths for the small SVG kit parts (Chip, Gauge, Scale), kept pure so it can be unit-tested
+// layout maths for the small SVG kit parts (Chip, Gauge, Scale) and the iʿtibār sweep, kept pure so it can be unit-tested
 
 // round to 2 decimals, so the built SVG doesn't carry float noise (re-exported by components/svg/geom.ts)
 export const f = (n: number) => +n.toFixed(2);
@@ -47,4 +47,11 @@ export function scaleEnds(px: number, w: number, tilt: number) {
 // the centres of n weight discs in a row, centred on cx and gap apart
 export function discRow(n: number, cx: number, gap: number): number[] {
   return Array.from({ length: n }, (_, i) => f(cx + (i - (n - 1) / 2) * gap));
+}
+
+// when a sweep moving at a steady speed from x0 (at t0 seconds) to x1 (at t1) reaches x; x outside the sweep
+// clamps to its ends. Support.astro times each route's lighting to the iʿtibār lens passing its book.
+export function sweepAt(x: number, { x0, x1, t0, t1 }: { x0: number; x1: number; t0: number; t1: number }): number {
+  const u = Math.max(0, Math.min(1, (x - x0) / (x1 - x0)));
+  return f(t0 + u * (t1 - t0));
 }

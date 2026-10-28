@@ -271,6 +271,7 @@
   def: "Another route, from the same Companion, that turns up for a report first thought solitary. It strengthens the report."
   section: "§5.13"
   division: al-maqbul
+  scene: support
 - id: mutabaa-tamma
   translit: Mutābaʿa tāmma
   ar: مُتَابَعَةٌ تَامَّةٌ
@@ -278,13 +279,15 @@
   def: "Another narrator shares the report with the narrator himself, taking it from the same teacher."
   section: "§5.13"
   division: al-maqbul
+  scene: support
 - id: mutabaa-qasira
   translit: Mutābaʿa qāṣira
   ar: مُتَابَعَةٌ قَاصِرَةٌ
   en: Partial follow-up
-  def: "The support joins the chain higher up, at the narrator's teacher or someone above him."
+  def: "The support joins the chain at the narrator's teacher, or further along it, rather than at the narrator himself."
   section: "§5.13"
   division: al-maqbul
+  scene: support
 - id: shahid
   translit: Shāhid
   ar: شَاهِدٌ
@@ -292,6 +295,7 @@
   def: "A text from a different Companion that matches in wording and meaning, or in meaning alone."
   section: "§5.13"
   division: al-maqbul
+  scene: support
 - id: itibar
   translit: Iʿtibār
   ar: اِعْتِبَارٌ
@@ -299,6 +303,7 @@
   def: "Combing the collections and chains to see whether a seemingly solitary report has a follow-up or witness. A method, not a category."
   section: "§5.13"
   division: al-maqbul
+  scene: support
 - id: muhkam
   translit: Muḥkam
   ar: مُحْكَمٌ

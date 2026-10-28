@@ -74,3 +74,27 @@ test("reduced motion: the opposition scales rest tipped, not level", async ({ pa
   expect(pans[2]).toBeLessThan(0);
   expect(pans[3]).toBeGreaterThan(0);
 });
+
+test("reduced motion: the support scene shows the iʿtibār sweep's end state", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/al-maqbul/support/");
+  // the lens rests at its heading, not on the book row where the sweep starts
+  expect(await page.locator("svg .lens").evaluate((e) => getComputedStyle(e).transform)).toBe("none");
+  // every found route is lit, the brackets are in, and "alone?" is struck through
+  const ops = await page.locator("svg .route, svg .brk").evaluateAll((els) => els.map((e) => getComputedStyle(e).opacity));
+  expect(ops).toHaveLength(6);
+  for (const o of ops) expect(o).toBe("1");
+  expect(await page.locator("svg .strike").evaluate((e) => Number(getComputedStyle(e).strokeDashoffset.replace("px", "")))).toBe(0);
+});
+
+test("with motion, the support scene's routes start faint and the lens sweeps the book row", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.goto("/al-maqbul/support/");
+  const last = page.locator("svg .route").last();
+  expect(Number(await last.evaluate((e) => getComputedStyle(e).opacity))).toBeLessThan(0.5);
+  // the brackets wait for the sweep, but start half in, so a visitor landing on ?mutabi can see the bracket
+  expect(Number(await page.locator("svg .brk").evaluate((e) => getComputedStyle(e).opacity))).toBeGreaterThanOrEqual(0.5);
+  expect(await page.locator("svg .lens").evaluate((e) => getComputedStyle(e).transform)).not.toBe("none");
+  await expect.poll(() => last.evaluate((e) => getComputedStyle(e).opacity), { timeout: 10000 }).toBe("1");
+  await expect.poll(() => page.locator("svg .lens").evaluate((e) => getComputedStyle(e).transform), { timeout: 10000 }).toBe("none");
+});
