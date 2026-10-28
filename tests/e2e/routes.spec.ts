@@ -8,9 +8,10 @@ const routes = sitemaps
   .flatMap((f) => [...readFileSync(`dist/${f}`, "utf8").matchAll(/<loc>[^<]*?\/\/[^/]+(\/[^<]*)<\/loc>/g)].map((m) => m[1]))
   .filter((r) => !r.startsWith("/t/") && r.endsWith("/"));
 
-test("sitemap lists the map, divisions, narrators and glossary", () => {
-  expect(routes).toEqual(expect.arrayContaining(["/", "/narrators/", "/terms/"]));
-  expect(routes.length).toBeGreaterThanOrEqual(11);
+test("sitemap lists the map, divisions, scenes, narrators and glossary", () => {
+  expect(routes).toEqual(expect.arrayContaining(["/", "/narrators/", "/terms/", "/al-mardud/breaks/"]));
+  // map, 8 divisions, narrators and glossary, plus the 5 phase 2 scenes
+  expect(routes.length).toBeGreaterThanOrEqual(16);
 });
 
 for (const theme of ["light", "dark"] as const) {
