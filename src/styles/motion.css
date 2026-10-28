@@ -1,0 +1,9 @@
+@keyframes flow{to{stroke-dashoffset:-12}}
+@keyframes blink{50%{opacity:.35}}
+@keyframes pulse{50%{transform:scale(1.15);opacity:.15}}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition { navigation: auto; }
+}

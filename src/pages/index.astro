@@ -1,3 +1,18 @@
 ---
+import Page from "../layouts/Page.astro";
+import { loadContent } from "../lib/content";
+
+// runs the build-time content checks
+await loadContent();
 ---
-<html lang="en"><head><meta charset="utf-8" /><title>Nuzhat al-Naẓar</title></head><body><h1>Nuzhat al-Naẓar</h1></body></html>
+<Page
+  title="Nuzhat al-Naẓar, visualised"
+  description="Ibn Ḥajar al-ʿAsqalānī’s map of the hadith sciences, drawn out."
+  crumbs={[{ label: "Map", path: "" }]}
+>
+  <div>
+    <div class="eyebrow">Map</div>
+    <h2>Nuzhat al-Naẓar</h2>
+    <p class="lede">The map of the eight divisions is coming soon.</p>
+  </div>
+</Page>

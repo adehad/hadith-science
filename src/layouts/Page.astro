@@ -1,0 +1,58 @@
+---
+import "@fontsource-variable/fraunces";
+import "@fontsource-variable/source-sans-3";
+import "@fontsource/amiri/400.css";
+import "@fontsource/amiri/700.css";
+import "../styles/tokens.css";
+import "../styles/base.css";
+import "../styles/motion.css";
+import Header from "../components/layout/Header.astro";
+import Footer from "../components/layout/Footer.astro";
+
+interface Props {
+  title: string;
+  description: string;
+  crumbs: { label: string; path: string }[];
+  ogUrl?: string;
+  /** show the Key/Labels toggle; only pages with figures that have both modes opt in */
+  modes?: boolean;
+}
+const { title, description, crumbs, ogUrl, modes = false } = Astro.props;
+// Astro.url.pathname already includes the base, so it must not go through href()/absolute()
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={ogUrl ?? canonical} />
+    <script is:inline>
+      document.documentElement.classList.add("js");
+      try {
+        var t = localStorage.getItem("nuzhah-theme");
+        if (t === "light" || t === "dark") document.documentElement.dataset.theme = t;
+        var m = localStorage.getItem("nuzhah-mode");
+        document.documentElement.dataset.mode = m === "labels" ? "labels" : "key";
+      } catch (e) {
+        document.documentElement.dataset.mode = "key";
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <Header crumbs={crumbs} modes={modes} />
+    <main id="main"><div class="wrap"><slot /></div></main>
+    <Footer />
+    <script>
+      import "../islands/prefs.ts";
+      import "../islands/stars.ts";
+    </script>
+  </body>
+</html>

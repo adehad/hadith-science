@@ -1,0 +1,11 @@
+---
+---
+<div class="viewtoggle" role="group" aria-label="Show narrators with">
+  <button type="button" class="pill" data-mode="key" aria-pressed="true">Key</button>
+  <button type="button" class="pill" data-mode="labels" aria-pressed="false">Labels</button>
+</div>
+<style>
+  .viewtoggle{display:inline-flex;gap:8px}
+  .pill{font:600 .85rem var(--f-body);color:var(--sky-fg);background:transparent;border:1px solid rgba(238,240,251,.3);border-radius:999px;padding:6px 14px;cursor:pointer}
+  .pill[aria-pressed="true"]{background:var(--sky-fg);color:var(--sky);border-color:var(--sky-fg)}
+</style>

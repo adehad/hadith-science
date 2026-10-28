@@ -1,0 +1,33 @@
+---
+import { href } from "../../lib/url";
+import Starfield from "./Starfield.astro";
+import Breadcrumb from "./Breadcrumb.astro";
+import KeyToggle from "./KeyToggle.astro";
+import ThemeToggle from "./ThemeToggle.astro";
+interface Props { crumbs: { label: string; path: string }[]; modes?: boolean }
+const { crumbs, modes = false } = Astro.props;
+---
+<header>
+  <Starfield />
+  <div class="wrap">
+    <div class="brand">
+      <a class="title" href={href("")}><span class="h1">Nuzhat al-Naẓar</span></a>
+      <span class="ar" lang="ar" dir="rtl">نُزْهَةُ النَّظَرِ</span>
+      <small>Ibn Ḥajar al-ʿAsqalānī’s map of the hadith sciences, drawn out</small>
+    </div>
+    <Breadcrumb crumbs={crumbs} />
+    <div class="controls">{modes && <KeyToggle />}<ThemeToggle /></div>
+  </div>
+</header>
+<style>
+  header{background:radial-gradient(ellipse at 85% 0%,var(--sky2),var(--sky) 70%);color:var(--sky-fg);position:relative;overflow:hidden}
+  header .wrap{padding-block:22px 18px;display:grid;gap:14px;position:relative}
+  .brand{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+  .title{text-decoration:none;color:inherit}
+  .h1{font-family:var(--f-display);font-weight:700;font-size:1.7rem;letter-spacing:.01em}
+  .ar{font-family:var(--f-ar);font-size:1.6rem;opacity:.85}
+  small{opacity:.7;font-size:.85rem;flex-basis:100%}
+  .controls{display:flex;gap:8px;flex-wrap:wrap}
+  /* every control needs script: hide them without it (the head script adds .js) */
+  :global(html:not(.js)) .controls{display:none}
+</style>

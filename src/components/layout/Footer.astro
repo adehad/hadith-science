@@ -1,0 +1,18 @@
+---
+import { href } from "../../lib/url";
+---
+<footer>
+  <div class="wrap">
+    <span>Ibn Ḥajar al-ʿAsqalānī, <em>Nuzhat al-Naẓar</em>. Text on this site is paraphrased from the English translation (A. S. Hussain, 2012); § numbers refer to it.</span>
+    <nav aria-label="Site">
+      <a href={href("terms/")}>Glossary</a>
+      <a href={href("narrators/")}>Figure key</a>
+      <a href="https://github.com/adehad/hadith-science">GitHub</a>
+    </nav>
+  </div>
+</footer>
+<style>
+  footer{border-top:1px solid var(--rule)}
+  footer .wrap{padding-block:16px 26px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center;font-size:.85rem;color:var(--muted)}
+  nav{display:flex;gap:14px}
+</style>
