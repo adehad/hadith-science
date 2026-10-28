@@ -1,0 +1,33 @@
+---
+// small drawn icons centred on (cx, cy) in a 2r box (phase 3 design §7): no text glyphs, for the same reason
+// as InfoIcon (WCAG 2.5.3). memory: a head with a mark inside it; book: an open book; check: a tick in a box.
+// The tick is a .tick path, so a scene can draw it in with a stroke-dash animation.
+import { f } from "./geom";
+
+interface Props { kind: "memory" | "book" | "check"; cx: number; cy: number; r?: number }
+const { kind, cx, cy, r = 7 } = Astro.props;
+const p = (dx: number, dy: number) => `${f(cx + dx * r)} ${f(cy + dy * r)}`;
+---
+<g class={`glyph-${kind}`} aria-hidden="true">
+  {kind === "check" && (
+    <>
+      <rect class="gbox" x={f(cx - r)} y={f(cy - r)} width={f(2 * r)} height={f(2 * r)} rx={f(r * 0.3)} />
+      <path class="tick" pathLength="1" d={`M${p(-0.55, 0)} L${p(-0.12, 0.45)} L${p(0.6, -0.5)}`} />
+    </>
+  )}
+  {kind === "memory" && (
+    <>
+      <path class="gline" d={`M${p(-0.5, 1)} L${p(-0.5, 0.45)} Q${p(-0.95, 0.1)} ${p(-0.85, -0.3)} Q${p(-0.7, -1)} ${p(0.05, -1)} Q${p(0.8, -1)} ${p(0.85, -0.2)} L${p(1, 0.25)} L${p(0.75, 0.3)} L${p(0.7, 1)}`} />
+      <circle class="gdot" cx={f(cx + 0.02 * r)} cy={f(cy - 0.3 * r)} r={f(r * 0.24)} />
+    </>
+  )}
+  {kind === "book" && (
+    <path class="gline" d={`M${p(0, -0.55)} Q${p(-0.5, -0.85)} ${p(-1, -0.55)} L${p(-1, 0.75)} Q${p(-0.5, 0.45)} ${p(0, 0.75)} Q${p(0.5, 0.45)} ${p(1, 0.75)} L${p(1, -0.55)} Q${p(0.5, -0.85)} ${p(0, -0.55)} Z M${p(0, -0.55)} L${p(0, 0.75)}`} />
+  )}
+</g>
+<style>
+  .gbox{fill:var(--surface);stroke:var(--line);stroke-width:1.3}
+  .tick{fill:none;stroke:var(--green);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+  .gline{fill:none;stroke:var(--fg);stroke-width:1.4;stroke-linejoin:round;stroke-linecap:round}
+  .gdot{fill:var(--fg)}
+</style>

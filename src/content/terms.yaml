@@ -143,6 +143,7 @@
   def: "Upright, fully accurate narrators, an unbroken chain, and no anomaly or hidden defect. The highest of the four accepted grades."
   section: "§5.9"
   division: al-maqbul
+  scene: grades
 - id: adl
   translit: ʿAdl
   ar: عَدْلٌ
@@ -150,6 +151,7 @@
   def: "A narrator whose settled character holds him to piety and decent conduct, keeping clear of idolatry, open sin and innovation."
   section: "§5.9"
   division: al-maqbul
+  scene: grades
 - id: dabt
   translit: Ḍabṭ
   ar: ضَبْطٌ
@@ -157,6 +159,7 @@
   def: "A narrator's precision in keeping what he heard, either in memory or in his written copy."
   section: "§5.9"
   division: al-maqbul
+  scene: grades
 - id: dabt-sadr
   translit: Ḍabṭ al-ṣadr
   ar: ضَبْطُ الصَّدْرِ
@@ -164,6 +167,7 @@
   def: "Memory so sure that he can recite what he heard at any time he chooses."
   section: "§5.9"
   division: al-maqbul
+  scene: grades
 - id: dabt-kitab
   translit: Ḍabṭ al-kitāb
   ar: ضَبْطُ الْكِتَابِ
@@ -171,6 +175,7 @@
   def: "He keeps his written copy safe, where no one can alter it, from the day he heard and checked it until he narrates from it."
   section: "§5.9"
   division: al-maqbul
+  scene: grades
 - id: ittisal
   translit: Ittiṣāl al-sanad
   ar: اِتِّصَالُ السَّنَدِ
@@ -178,6 +183,7 @@
   def: "Every narrator in the chain heard the report from the one above him, with no one dropped."
   section: "§5.9"
   division: al-maqbul
+  scene: grades
 - id: sahih-li-ghayrihi
   translit: Ṣaḥīḥ li-ghayrihi
   ar: صَحِيحٌ لِغَيْرِهِ
@@ -185,6 +191,7 @@
   def: "Falls short of the top grade, but something makes up the gap, such as several routes, so it is graded sound."
   section: "§5.9"
   division: al-maqbul
+  scene: grades
 - id: hasan-li-ghayrihi
   translit: Ḥasan li-ghayrihi
   ar: حَسَنٌ لِغَيْرِهِ
@@ -192,6 +199,7 @@
   def: "A held-back report, such as a mastūr's, a mursal, a mudallas or one from failing memory, raised to accepted when an equal or stronger route backs it (§5.39)."
   section: "§5.9"
   division: al-maqbul
+  scene: grades
 - id: asahh-al-asanid
   translit: Aṣaḥḥ al-asānīd
   ar: أَصَحُّ الْأَسَانِيدِ
@@ -199,6 +207,7 @@
   def: "Chains some imams named the very best, such as Mālik from Nāfiʿ from Ibn ʿUmar. Ibn Ḥajar prefers not to crown any single one."
   section: "§5.9"
   division: al-maqbul
+  scene: grades
 - id: hasan-li-dhatihi
   translit: Ḥasan li-dhātihi
   ar: حَسَنٌ لِذَاتِهِ
@@ -206,6 +215,7 @@
   def: "Meets every condition of sound except that the narrator's accuracy is a little lighter. Used as proof like sound, but ranked below it."
   section: "§5.10"
   division: al-maqbul
+  scene: grades
 - id: hasan-sahih
   translit: Ḥasan ṣaḥīḥ
   ar: حَسَنٌ صَحِيحٌ
@@ -213,6 +223,7 @@
   def: "al-Tirmidhī's double grade: for a lone route, doubt between the two verdicts; where there are two routes, one sound and one fair."
   section: "§5.10"
   division: al-maqbul
+  scene: grades
 - id: ziyadat-al-thiqa
   translit: Ziyādat al-thiqa
   ar: زِيَادَةُ الثِّقَةِ

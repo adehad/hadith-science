@@ -163,3 +163,52 @@
       ar: عَبْدُ اللَّهِ بْنُ زَيْدٍ
       section: §5.61
       note: "Many narrators bear this name. Two are Companions, both of the Anṣār: one reported the hadith on the call to prayer (adhān), and his grandfather was ʿAbd Rabbih; the other reported the hadith on ablution (wuḍūʾ), and his grandfather was ʿĀṣim. ʿAbd Allāh ibn Yazīd, one letter more in the father's name, is a second crowd, among them the Companion al-Khaṭmī and al-Qārī, named in ʿĀʾisha's report. Close by are ʿAbd Allāh ibn Yaḥyā, ʿAbd Allāh ibn Nujayy (a Successor who reported from ʿAlī), and names in swapped order: Yazīd ibn ʿAbd Allāh against ʿAbd Allāh ibn Yazīd, al-Aswad ibn Yazīd against Yazīd ibn al-Aswad. In the diagram each name part added, ʿAbd Allāh, ibn Zayd, al-Anṣārī, then ibn ʿAbd Rabbih, narrows the list until only the Companion of the adhān is left."
+- id: grades
+  division: al-maqbul
+  moons: [0]
+  order: 1
+  title: How sound is it?
+  eyebrow: Accepted reports, the four grades · §5.9–5.10
+  lede: Ibn Ḥajar sorts accepted reports into four grades by asking two questions. Are the qualities that make a report acceptable all present at their fullest? If not, does something outside the report make up the gap?
+  source: §5.9 Ṣaḥīḥ, §5.10 Ḥasan
+  diagram: Grades
+  width: 860
+  captions:
+    - term: sahih-li-dhatihi
+      note: "A report carried by upright narrators of complete accuracy, through a connected chain, with no anomaly (shādhdh) and no hidden defect (muʿallal). It is the first of the four accepted grades, where every quality of acceptance is present at its highest. Calling it sound in itself sets it apart from a report graded sound because of something outside it (§5.9)."
+    - term: adl
+      note: "Upright: a settled quality that holds the narrator to piety (taqwā) and decent conduct. Piety here means keeping away from evil deeds: associating partners with Allah, immorality and innovation. The word “upright” in the definition shuts out reports carried by narrators who are not upright (§5.9)."
+    - term: dabt
+      note: "Accuracy, of two kinds: of memory and of the book. The definition asks for complete accuracy, to mark the higher rank. When accuracy is a little lighter but every other condition holds, the report is fair in itself (ḥasan li-dhātihi) instead (§5.9, §5.10)."
+    - term: dabt-sadr
+      note: "Accuracy of memory: he keeps what he heard so firmly that he can bring it out whenever he wishes (§5.9)."
+    - term: dabt-kitab
+      note: "Accuracy of the book: he guards his written copy, keeping it safe where no one can alter it, from the time he heard it and checked it until he narrates from it (§5.9)."
+    - term: ittisal
+      note: "A connected chain is free of any drop: every man in it heard the report from the shaykh he names. A chain with a drop fails this condition; the kinds of drop are set out later, under rejected reports (§5.9, §5.17)."
+    - term: asahh-al-asanid
+      note: "Sound reports differ in rank with the strength of their narrators. At the top are chains some imams named the soundest: al-Zuhrī from Sālim from his father Ibn ʿUmar; Ibn Sīrīn from ʿUbayda from ʿAlī; al-Nakhaʿī from ʿAlqama from Ibn Masʿūd. Ibn Ḥajar's settled view is to crown no single chain, though those they named rank above the rest (§5.9)."
+    - term: hasan-li-dhatihi
+      note: "Every condition of the sound holds, but the narrator's accuracy is lighter. It is used as proof like the sound, though ranked below it, and it too has ranks. Ibn Ḥajar's examples of chains that are fair only: Muḥammad ibn Isḥāq from ʿĀṣim ibn ʿUmar from Jābir, and ʿAmr ibn Shuʿayb from his father from his grandfather (§5.9, §5.10)."
+    - term: sahih-li-ghayrihi
+      note: "Sound, but not in itself. The report's qualities fall short of the highest, and something makes up the shortfall, such as many routes. Ibn Ḥajar's case: a chain that is fair in itself is called sound when its routes multiply, because together they have a strength that makes up for its narrator's lighter accuracy (§5.9, §5.10)."
+    - term: hasan-li-ghayrihi
+      note: "Fair, but not in itself. A report that had been held back is raised to fair when an indication tips it towards acceptance. Ibn Ḥajar's example is the report of a mastūr, a narrator whose state is not known, once its routes multiply (§5.9, §5.10)."
+    - term: hasan-sahih
+      note: "al-Tirmidhī and others sometimes call one report “ḥasan ṣaḥīḥ”. With one route it records doubt: ḥasan to some, ṣaḥīḥ to others, as if “or” had been dropped, so it ranks below plain ṣaḥīḥ. With two routes it means one is ṣaḥīḥ and the other ḥasan, so it ranks above a ṣaḥīḥ with only one route, since more routes strengthen (§5.10)."
+  views:
+    - id: ibn-hajar
+      label: Ibn Ḥajar
+      scholars: §5.10
+      note: "Fair in itself: every condition of the sound, with the narrator's accuracy a little lighter. It ranks below sound, and many routes raise it to sound."
+    - id: tirmidhi
+      label: al-Tirmidhī, in his book
+      scholars: §5.10
+      note: "al-Tirmidhī calls a report ḥasan when no narrator in it is accused of lying, it comes by more than one such route, and it is not anomalous. Ibn Ḥajar points out that he gave this definition for his own book (“according to us”), and only for the plain grade."
+  extra:
+    - title: Ḥasan in al-Tirmidhī's book
+      section: §5.10
+      note: "al-Tirmidhī defined ḥasan for his own book, and only for the plain grade: no narrator accused of lying, more than one such route, and not anomalous. He said “according to us”, so his “ḥasan gharīb” (“we do not know of it except by this path”) does not contradict that definition, which never covered the compound grades. He left those, like plain ṣaḥīḥ and gharīb, undefined, seemingly because the people of the field already knew them."
+    - title: Ranks by the two Ṣaḥīḥs
+      section: §5.9
+      note: "Ibn Ḥajar ranks sound reports by where they are found: first what al-Bukhārī and Muslim both record; then what al-Bukhārī alone records; then what Muslim alone records; then what meets both their conditions; then what meets al-Bukhārī's condition; then what meets Muslim's. A seventh type meets neither. A stronger factor can override this order: a mashhūr report in Muslim that yields knowledge outranks one al-Bukhārī records alone, and a soundest chain such as Mālik from Nāfiʿ from Ibn ʿUmar, recorded by neither, outranks a report only one of them records, especially when that one's chain holds a narrator in doubt."

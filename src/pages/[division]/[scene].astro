@@ -10,6 +10,7 @@ import Breaks from "../../components/scenes/Breaks.astro";
 import Unknown from "../../components/scenes/Unknown.astro";
 import Delivery from "../../components/scenes/Delivery.astro";
 import Names from "../../components/scenes/Names.astro";
+import Grades from "../../components/scenes/Grades.astro";
 import { loadContent } from "../../lib/content";
 import { captionsFor, type DiagramProps } from "../../lib/scene";
 import { href } from "../../lib/url";
@@ -33,7 +34,7 @@ const caps = captionsFor(scene, terms);
 
 // each scene task adds its diagram here; import only components that exist
 // typed by the props every diagram takes, so a misnamed or missing prop fails astro check
-const DIAGRAMS: Partial<Record<Diagram, (p: DiagramProps) => any>> = { Routes, Breaks, Unknown, Delivery, Names };
+const DIAGRAMS: Partial<Record<Diagram, (p: DiagramProps) => any>> = { Routes, Breaks, Unknown, Delivery, Names, Grades };
 const D = DIAGRAMS[scene.diagram];
 if (!D) throw new Error(`no diagram component for ${scene.diagram}`);
 
@@ -42,6 +43,8 @@ const LEGEND: Partial<Record<Diagram, LegendKind[]>> = {
   Routes: ["moon", "sahabi", "tabii", "later"],
   Breaks: ["moon", "sahabi", "tabii", "later", "ghost"],
   Unknown: ["moon", "sahabi", "tabii", "later", "majhul", "mubham"],
+  // the mastūr in cell C is the majhūl figure: scroll, empty seal slot
+  Grades: ["moon", "sahabi", "tabii", "later", "majhul"],
 };
 const kinds = LEGEND[scene.diagram];
 const hasFigures = kinds !== undefined;

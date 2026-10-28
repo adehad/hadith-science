@@ -1,10 +1,16 @@
 ---
-// a transmission arrow, in the direction of narration (spec §3.4), ported from the mockup's arrow().
-// skip draws the red dashed arrow that jumps a dropped narrator; bend pushes the curve sideways.
-// Needs <Defs /> on the page for the #ah / #ahg markers; .flow and .skip live in styles/svg.css.
-interface Props { x1: number; y1: number; x2: number; y2: number; skip?: boolean; bend?: number }
+// an arrow, ported from the mockup's arrow(). variant:
+//   flow (default)  a transmission arrow, in the direction of narration (spec §3.4)
+//   skip            the red dashed arrow that jumps a dropped narrator (the skip boolean is an alias)
+//   lift            a thick gold arrow, not animated, for a grade raised by support; a different stroke from
+//                   narration, so it can't be read as transmission (phase 3 design §7)
+// bend pushes the curve sideways. Needs <Defs /> on the page for the #ah / #ahg / #ahl markers; the classes
+// live in styles/svg.css.
+interface Props { x1: number; y1: number; x2: number; y2: number; skip?: boolean; bend?: number; variant?: "flow" | "skip" | "lift" }
 const { x1, y1, x2, y2, skip = false, bend = 0 } = Astro.props;
+const variant = Astro.props.variant ?? (skip ? "skip" : "flow");
+const MARKER = { flow: "ah", skip: "ahg", lift: "ahl" } as const;
 const mx = (x1 + x2) / 2 + bend;
 const my = (y1 + y2) / 2;
 ---
-<path class={skip ? "skip" : "flow"} d={`M${x1} ${y1} Q${mx} ${my} ${x2} ${y2}`} marker-end={`url(#${skip ? "ahg" : "ah"})`} />
+<path class={variant} d={`M${x1} ${y1} Q${mx} ${my} ${x2} ${y2}`} marker-end={`url(#${MARKER[variant]})`} />

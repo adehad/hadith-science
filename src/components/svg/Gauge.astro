@@ -1,0 +1,16 @@
+---
+// a row of `of` cells, `fill` of them solid (phase 3 design §7). It shows relative order only, never a measure,
+// so it carries no numbers and is hidden from assistive tech: the caption note says what it means.
+import { gaugeCells } from "../../lib/kit";
+
+interface Props { x: number; y: number; w: number; of?: number; fill: number; h?: number }
+const { x, y, w, of = 5, fill, h = 8 } = Astro.props;
+const cells = gaugeCells(x, w, of, fill);
+---
+<g class="gauge" aria-hidden="true">
+  {cells.map((c) => <rect class:list={[{ on: c.on }]} x={c.x} y={y - h / 2} width={c.w} height={h} rx="1.5" />)}
+</g>
+<style>
+  .gauge rect{fill:var(--surface);stroke:var(--line);stroke-width:1}
+  .gauge rect.on{fill:var(--fg);stroke:var(--fg)}
+</style>
