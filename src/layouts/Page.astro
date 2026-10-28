@@ -9,6 +9,7 @@ import "../styles/motion.css";
 import Header from "../components/layout/Header.astro";
 import Footer from "../components/layout/Footer.astro";
 import TermPopover from "../components/layout/TermPopover.astro";
+import { href } from "../lib/url";
 
 interface Props {
   title: string;
@@ -30,6 +31,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href={href("favicon.svg")} />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />

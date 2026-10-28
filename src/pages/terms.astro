@@ -17,7 +17,7 @@ const groups = divisions
 >
   <div>
     <div class="eyebrow">{terms.length} terms</div>
-    <h2>Glossary</h2>
+    <h1>Glossary</h1>
     <p class="lede">Each term has a short paraphrase of the section it comes from. Search by transliteration or English; diacritics are optional.</p>
   </div>
 
@@ -29,11 +29,11 @@ const groups = divisions
 
   {groups.map(({ d, items }) => (
     <section class="grp" aria-labelledby={`g-${d.id}`} data-group>
-      <h3 id={`g-${d.id}`}>{d.term} <span class="gen">{d.en}</span></h3>
+      <h2 id={`g-${d.id}`}>{d.term} <span class="gen">{d.en}</span></h2>
       <div class="list">
         {items.map((t) => (
           <article id={t.id} data-term={t.id} data-entry>
-            <h4><span class="tr">{t.translit}</span> <span class="ar" lang="ar" dir="rtl">{t.ar}</span></h4>
+            <h3><span class="tr">{t.translit}</span> <span class="ar" lang="ar" dir="rtl">{t.ar}</span></h3>
             <p class="en">{t.en}</p>
             <p class="def">{t.def}</p>
             <p class="meta">
@@ -58,12 +58,12 @@ const groups = divisions
   .filter label{font-size:.85rem;color:var(--muted);font-weight:600}
   .filter input{font:inherit;padding:9px 12px;background:var(--surface);color:var(--fg);border:1px solid var(--line);border-radius:8px}
   .note{margin:0;color:var(--muted);font-size:.95rem}
-  h3{font-family:var(--f-display);font-weight:500;font-size:1.3rem;margin:0 0 10px;padding-bottom:6px;border-bottom:2px solid var(--rule)}
+  h2{font-family:var(--f-display);font-weight:500;font-size:1.3rem;margin:0 0 10px;padding-bottom:6px;border-bottom:2px solid var(--rule)}
   .gen{font:400 .9rem var(--f-body);color:var(--muted);margin-inline-start:6px}
   .list{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
   article{background:var(--surface);border:1px solid var(--rule);border-radius:12px;padding:12px 14px;scroll-margin-top:90px}
   article[hidden],.grp[hidden]{display:none}
-  h4{margin:0;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;font-family:var(--f-display);font-size:1.15rem;font-weight:700}
+  h3{margin:0;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;font-family:var(--f-display);font-size:1.15rem;font-weight:700}
   .ar{font-family:var(--f-ar);font-weight:400;font-size:1.3rem;color:var(--muted)}
   .en{margin:2px 0 6px;color:var(--muted);font-size:.95rem}
   .def{margin:0 0 8px}

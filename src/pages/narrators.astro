@@ -39,7 +39,7 @@ const cases = CASES.map(([en, slug, fig, lbl, text], i) => {
 >
   <div>
     <div class="eyebrow">Narrator figures</div>
-    <h2>Reading a narrator</h2>
+    <h1>Reading a narrator</h1>
     <p class="lede">A name scroll means his identity is known; a seal means someone reliable vouches for him. Anything missing pulses, so the gap catches the eye. Generation is shown by colour and by the row he stands in. Choose a case to see its term.</p>
   </div>
   <div class="stage">
@@ -55,12 +55,13 @@ const cases = CASES.map(([en, slug, fig, lbl, text], i) => {
           <animateTransform class="shimmer" attributeName="gradientTransform" type="translate" values="-1 -1;1 1;1 1" keyTimes="0;.6;1" dur="3.2s" repeatCount="indefinite" />
         </linearGradient>
       </defs>
+      {/* the Arabic heading is aria-hidden: the trigger is named by its aria-label (English + transliteration) */}
       {cases.map((c) => (
         <>
           <g class="term" data-term={c.slug} data-term-json={c.json} aria-label={`${c.en}: ${c.t.translit}`}>
             <rect class="hit" x={c.x - 48} y="14" width="96" height="56" rx="8" />
-            <text class="colhead" x={c.x} y="34">{c.en}</text>
-            <text class="title-ar" x={c.x} y="60" lang="ar">{c.t.ar}</text>
+            <text class="colhead" x={c.x} y="34">{c.en}</text>{" "}
+            <text class="title-ar" x={c.x} y="60" lang="ar" aria-hidden="true">{c.t.ar}</text>
             <InfoIcon cx={c.x + 38} cy={54} r={8} />
           </g>
           <Narrator x={c.x} y={140} {...c.fig} />

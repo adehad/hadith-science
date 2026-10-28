@@ -35,14 +35,14 @@ const sats = d.moons.map((_, k) => {
     </div>
     <div>
       <div class="eyebrow">Division {d.order} of 8 · {d.sections}</div>
-      <h2>{d.term}</h2>
+      <h1>{d.term}</h1>
       <p class="ar" lang="ar" dir="rtl">{d.ar}</p>
       <p class="lede">{d.en}</p>
     </div>
   </div>
 
   <section aria-labelledby="moons">
-    <h3 id="moons">Moons</h3>
+    <h2 id="moons">Moons</h2>
     <ul class="captions">
       {d.moons.map((m) => (
         <li class="cap">
@@ -55,7 +55,7 @@ const sats = d.moons.map((_, k) => {
 
   {mine.length > 0 && (
     <section aria-labelledby="terms">
-      <h3 id="terms">Terms in this division</h3>
+      <h2 id="terms">Terms in this division</h2>
       <ul class="terms">
         {mine.map((t) => (
           <li>
@@ -82,7 +82,7 @@ const sats = d.moons.map((_, k) => {
   .pbody{stroke:none}
   .sat{fill:var(--muted)}
   .ar{font-family:var(--f-ar);font-size:1.6rem;color:var(--muted);margin:0 0 4px;text-align:left}
-  h3{font-family:var(--f-display);font-weight:500;font-size:1.3rem;margin:0 0 10px}
+  h2{font-family:var(--f-display);font-weight:500;font-size:1.3rem;margin:0 0 10px}
   ul{list-style:none;margin:0;padding:0}
   .captions{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
   .cap{min-width:0;border-top:2px solid var(--rule);padding-top:10px}

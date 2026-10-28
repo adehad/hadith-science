@@ -23,7 +23,7 @@ const planets = divisions.map((d, i) => {
 >
   <div>
     <div class="eyebrow">The whole book · Ibn Ḥajar’s divisions</div>
-    <h2>Map of the book</h2>
+    <h1>Map of the book</h1>
     <p class="lede">Each planet is one of Ibn Ḥajar’s divisions, in his order, circling the Prophet ﷺ as the source. Its moons are the sub-divisions under it. Choose a planet to open its page.</p>
   </div>
   <div class="stage">
@@ -44,7 +44,7 @@ const planets = divisions.map((d, i) => {
         >
           <circle class="pbody" r={r} style={`fill:var(--p${d.order})`} />
           {sats.map(([sx, sy]) => <circle class="sat" r="3" cx={sx} cy={sy} />)}
-          <text class="ptitle" y={r + 20}>{d.term}</text>
+          <text class="ptitle" y={r + 20}>{d.term}</text>{" "}
           <text class="psub" y={r + 34}>{d.en}</text>
         </a>
       ))}

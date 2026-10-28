@@ -1,15 +1,20 @@
 ---
-// the (i) beside a term in a diagram (ported from the mockup's term()); its parent trigger opens the popover
+// the (i) beside a term in a diagram (ported from the mockup's term()); its parent trigger opens the popover.
+// The "i" is drawn, not typed: a text glyph would count as visible label text for the trigger (WCAG 2.5.3).
 interface Props { cx: number; cy: number; r?: number }
 const { cx, cy, r = 9 } = Astro.props;
+const f = (n: number) => +n.toFixed(2);
 ---
 <g class="info" aria-hidden="true">
-  <circle cx={cx} cy={cy} r={r} />
-  <text x={cx} y={cy + r * 0.45}>i</text>
+  <circle class="ring" cx={cx} cy={cy} r={r} />
+  <circle class="dot" cx={f(cx + r * 0.12)} cy={f(cy - r * 0.42)} r={f(r * 0.15)} />
+  <line class="stem" x1={f(cx + r * 0.06)} y1={f(cy - r * 0.12)} x2={f(cx - r * 0.08)} y2={f(cy + r * 0.48)} stroke-width={f(r * 0.26)} />
 </g>
 <style>
-  .info circle{fill:var(--surface);stroke:var(--muted);stroke-width:1.5}
-  .info text{fill:var(--muted);font:700 italic 12px var(--f-display);text-anchor:middle}
-  :global([data-term]:hover) .info circle,:global([data-term]:focus-visible) .info circle,:global([data-term][aria-expanded="true"]) .info circle{fill:var(--fg);stroke:var(--fg)}
-  :global([data-term]:hover) .info text,:global([data-term]:focus-visible) .info text,:global([data-term][aria-expanded="true"]) .info text{fill:var(--surface)}
+  .info .ring{fill:var(--surface);stroke:var(--muted);stroke-width:1.5}
+  .info .dot{fill:var(--muted)}
+  .info .stem{stroke:var(--muted);stroke-linecap:round}
+  :global([data-term]:hover) .info .ring,:global([data-term]:focus-visible) .info .ring,:global([data-term][aria-expanded="true"]) .info .ring{fill:var(--fg);stroke:var(--fg)}
+  :global([data-term]:hover) .info .dot,:global([data-term]:focus-visible) .info .dot,:global([data-term][aria-expanded="true"]) .info .dot{fill:var(--surface)}
+  :global([data-term]:hover) .info .stem,:global([data-term]:focus-visible) .info .stem,:global([data-term][aria-expanded="true"]) .info .stem{stroke:var(--surface)}
 </style>
