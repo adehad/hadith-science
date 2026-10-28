@@ -1,0 +1,575 @@
+<title>Nuzhah Visualised</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Source+Sans+3:wght@400;600&family=Amiri:wght@400;700&display=swap">
+<style>
+/* Layout: night-sky header band, one centred "stage" for the diagram, quiet footer with prev/next + source */
+:root{
+  --bg:#eceff5; --surface:#fbfcfe; --fg:#1b1d29; --muted:#5b6176; --line:#8a90a6; --rule:#d5d9e4;
+  --sky:#141a36; --sky2:#232c5a; --sky-fg:#eef0fb;
+  --gold-a:#9a6b00; --gold-b:#f3c64d; --gold-c:#fff2b8;
+  --green:#21825a; --ink:#1b1d29; --ink-edge:transparent;
+  --moon:#fff4cf; --glow:#ffd77a; --gap:#c2412d; --hole:#fbfcfe; --moon-ink:#7a5c12;
+  --p1:#6c8cd5; --p2:#3fa37a; --p3:#d08b4a; --p4:#c25b5b; --p5:#9a7bd1; --p6:#4fa3b8; --p7:#b59a4a; --p8:#8a94a8; --pause:#b7790a; --ok:#21825a; --seal:#c0353d;
+  --f-display:"Fraunces",Georgia,serif; --f-body:"Source Sans 3",system-ui,sans-serif; --f-ar:"Amiri","Times New Roman",serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0d1020; --surface:#151a2e; --fg:#e7e9f2; --muted:#9ba1ba; --line:#6d7493; --rule:#262c45;
+  --sky:#090c1b; --sky2:#1a2147; --gold-a:#b88a1c; --gold-b:#ffd45e; --gold-c:#fff6cf;
+  --green:#3cc184; --ink:#04050b; --ink-edge:#8f96b3; --gap:#ff6a52; --hole:#151a2e; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0d1020; --surface:#151a2e; --fg:#e7e9f2; --muted:#9ba1ba; --line:#6d7493; --rule:#262c45;
+  --sky:#090c1b; --sky2:#1a2147; --gold-a:#b88a1c; --gold-b:#ffd45e; --gold-c:#fff6cf;
+  --green:#3cc184; --ink:#04050b; --ink-edge:#8f96b3; --gap:#ff6a52; --hole:#151a2e; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:16px;line-height:1.55}
+.wrap{max-width:1040px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header{background:radial-gradient(ellipse at 85% 0%,var(--sky2),var(--sky) 70%);color:var(--sky-fg);position:relative;overflow:hidden}
+header .wrap{padding-block:22px 18px;display:grid;gap:14px;position:relative}
+.stars{position:absolute;inset:0;pointer-events:none}
+.brand{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.brand h1{font-family:var(--f-display);font-weight:700;font-size:1.7rem;margin:0;letter-spacing:.01em}
+.brand .ar{font-family:var(--f-ar);font-size:1.6rem;opacity:.85}
+.brand small{opacity:.7;font-size:.85rem;flex-basis:100%}
+nav{display:flex;gap:8px;flex-wrap:wrap}
+nav button{font:600 .85rem var(--f-body);color:var(--sky-fg);background:transparent;border:1px solid rgba(238,240,251,.3);border-radius:999px;padding:6px 14px;cursor:pointer}
+nav button[aria-current="true"]{background:var(--sky-fg);color:var(--sky);border-color:var(--sky-fg)}
+nav button:focus-visible,.pn button:focus-visible{outline:2px solid var(--gold-b);outline-offset:2px}
+main .wrap{padding-block:26px 30px;display:grid;gap:18px}
+.eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:.75rem;color:var(--muted);font-weight:600}
+h2{font-family:var(--f-display);font-weight:500;font-size:1.9rem;margin:2px 0 4px;text-wrap:balance}
+.lede{max-width:65ch;color:var(--muted);margin:0}
+.stage{background:var(--surface);border:1px solid var(--rule);border-radius:14px;overflow-x:auto}
+.stage svg{display:block;width:100%;min-width:620px;height:auto}
+.captions{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.cap{min-width:0;border-top:2px solid var(--rule);padding-top:10px}
+.cap b{font-family:var(--f-display);font-size:1.15rem;font-weight:700}
+.cap .ar{font-family:var(--f-ar);font-size:1.2rem;margin-left:6px;color:var(--muted)}
+.cap p{margin:4px 0 0;color:var(--muted);font-size:.95rem}
+.viewbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.seg{display:inline-flex;border:1px solid var(--rule);border-radius:999px;padding:2px;background:var(--surface)}
+.seg button{font:600 .85rem var(--f-body);border:0;background:transparent;color:var(--muted);padding:5px 14px;border-radius:999px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--fg);color:var(--surface)}
+.seg button:focus-visible{outline:2px solid var(--gold-b);outline-offset:2px}
+.stage-wrap{position:relative}
+.legend{position:absolute;top:10px;right:10px;display:grid;grid-template-columns:repeat(2,auto);gap:4px 16px;padding:10px 12px;font-size:.82rem;color:var(--muted);background:color-mix(in srgb,var(--surface) 92%,transparent);border:1px solid var(--rule);border-radius:10px;box-shadow:0 4px 14px rgba(0,0,0,.08)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend svg{width:24px;height:24px}
+@media (max-width:640px){.legend{position:static;margin-top:10px;box-shadow:none}}
+footer{border-top:1px solid var(--rule)}
+footer .wrap{padding-block:16px 26px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center;font-size:.85rem;color:var(--muted)}
+.pn{display:flex;gap:8px}
+.pn button{font:600 .85rem var(--f-body);background:var(--surface);color:var(--fg);border:1px solid var(--rule);border-radius:8px;padding:7px 12px;cursor:pointer}
+
+/* diagram marks */
+.n{stroke-width:1.5}
+.sahabi{fill:url(#gold);stroke:var(--gold-a)}
+.tabii{fill:var(--green);stroke:var(--green)}
+.later{fill:var(--ink);stroke:var(--ink-edge)}
+.ghost{fill:none;stroke:var(--gap);stroke-dasharray:4 3;animation:blink 2.4s ease-in-out infinite}
+.mubham{fill:var(--ink);stroke:var(--ink-edge)}
+.qmark{fill:var(--hole);font:700 17px var(--f-display);text-anchor:middle}
+.lbl{fill:var(--muted);font:600 12px var(--f-body);text-anchor:middle;stroke:var(--surface);stroke-width:4px;paint-order:stroke;stroke-linejoin:round}
+.lbl.ar{font:400 15px var(--f-ar)}
+.lbl.gap{fill:var(--gap)}
+.title{fill:var(--fg);font:700 20px var(--f-display);text-anchor:middle}
+.title-ar{fill:var(--muted);font:400 18px var(--f-ar);text-anchor:middle}
+.layer{fill:var(--muted);font:600 10.5px var(--f-body);letter-spacing:.1em;text-transform:uppercase}
+.rule{stroke:var(--rule);stroke-width:1}
+.flow{fill:none;stroke:var(--line);stroke-width:2;stroke-dasharray:6 6;animation:flow 1.1s linear infinite}
+.skip{fill:none;stroke:var(--gap);stroke-width:2;stroke-dasharray:6 6;animation:flow 1.1s linear infinite}
+.arrowhead{fill:var(--line)} .arrowhead.gap{fill:var(--gap)}
+.moon{fill:var(--moon)} .moonglow{fill:var(--glow);opacity:.35;animation:pulse 3.5s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+.crater{fill:var(--glow);opacity:.35}
+.divider{stroke:var(--rule);stroke-width:1.5;stroke-dasharray:2 5}
+.pbuh{fill:var(--moon-ink);font-family:var(--f-ar);text-anchor:middle;dominant-baseline:central}
+.orbit{fill:none;stroke:var(--rule);stroke-width:1}
+.planet .psub{fill:var(--muted);font:600 9.5px var(--f-body);font-style:normal;letter-spacing:.12em;text-transform:uppercase;stroke:var(--surface);stroke-width:4px;paint-order:stroke;stroke-linejoin:round}
+.pill rect{stroke-width:1.5}
+.pill text{font:700 11.5px var(--f-body);text-anchor:middle;letter-spacing:.02em}
+.pill.pause rect{fill:color-mix(in srgb,var(--pause) 16%,var(--surface));stroke:var(--pause)} .pill.pause text{fill:var(--pause)}
+.pill.accept rect{fill:color-mix(in srgb,var(--ok) 16%,var(--surface));stroke:var(--ok)} .pill.accept text{fill:var(--ok)}
+.pill.support rect{fill:color-mix(in srgb,var(--ok) 10%,var(--surface));stroke:var(--ok);stroke-dasharray:4 3} .pill.support text{fill:var(--ok)}
+.pill.reject rect{fill:color-mix(in srgb,var(--gap) 12%,var(--surface));stroke:var(--gap)} .pill.reject text{fill:var(--gap)}
+.bubble path{fill:var(--surface);stroke:var(--line);stroke-width:1.5}
+/* narrator figure accessories */
+.scroll rect{fill:var(--moon);stroke:var(--moon-ink);stroke-width:.8}
+.ink{stroke:var(--moon-ink);stroke-width:.9;fill:none;stroke-linecap:round}
+.seal circle{fill:var(--seal)} .seal .sealin{fill:none;stroke:var(--moon);stroke-width:.7;opacity:.7}
+.seal.void circle{fill:var(--muted)}
+.slot{fill:none;stroke:var(--muted);stroke-width:.9;stroke-dasharray:1.6 1.4;animation:blink 2.4s ease-in-out infinite}
+.crack{fill:none;stroke:var(--surface);stroke-width:1.2;stroke-linejoin:round}
+.cross{stroke:var(--gap);stroke-width:1.8;stroke-linecap:round}
+.mask{fill:var(--moon);stroke:var(--moon-ink);stroke-width:.6} .maskeye{fill:var(--ink)}
+.hand{fill:var(--moon);stroke:var(--moon-ink);stroke-width:.6}
+.arm-o{fill:none;stroke:var(--surface);stroke-width:5.5;stroke-linecap:round} .arm{fill:none;stroke:var(--ink);stroke-width:3.5;stroke-linecap:round}
+.colhead{fill:var(--fg);font:700 13px var(--f-body);text-anchor:middle}
+/* delivery staircase + names */
+.step{stroke:var(--rule)} .stepno{fill:var(--fg);font:700 15px var(--f-display)}
+.stepen{fill:var(--muted);font:600 10.5px var(--f-body);text-anchor:middle}
+.tr{fill:var(--muted);font:italic 600 11px var(--f-body);text-anchor:middle}
+.rank{fill:none;stroke:var(--line);animation:flow 1.1s linear infinite}
+.basement{fill:none;stroke:var(--line);stroke-width:1.5;stroke-dasharray:5 4}
+.ico{fill:none;stroke:var(--fg);stroke-width:1.6;stroke-linejoin:round;stroke-linecap:round} .icof{fill:var(--fg)}
+.qmark2{fill:var(--fg);font:700 14px var(--f-display);text-anchor:middle}
+.tag rect{fill:var(--surface);stroke:var(--line);stroke-width:1.5}
+.diff{fill:var(--gap);font-style:normal;font-weight:700;animation:blink 2.4s ease-in-out infinite}
+.glyph{fill:none;stroke:var(--fg);stroke-width:5;stroke-linecap:round} .dot{fill:var(--gap);animation:blink 2.4s ease-in-out infinite}
+.chip rect{fill:var(--surface);stroke:var(--gold-a);stroke-width:1.5} .chip text{fill:var(--fg);font:700 11.5px var(--f-body);text-anchor:middle}
+.c1{animation:c1 10s infinite} .c2{animation:c2 10s infinite} .c3{animation:c3 10s infinite} .c4{animation:c4 10s infinite}
+.e1{animation:e1 10s infinite} .e2{animation:e2 10s infinite} .e3{animation:e3 10s infinite} .e4{animation:e4 10s infinite}
+@keyframes c1{0%,8%{opacity:0}10%,92%{opacity:1}100%{opacity:0}}
+@keyframes c2{0%,28%{opacity:0}30%,92%{opacity:1}100%{opacity:0}}
+@keyframes c3{0%,48%{opacity:0}50%,92%{opacity:1}100%{opacity:0}}
+@keyframes c4{0%,68%{opacity:0}70%,92%{opacity:1}100%{opacity:0}}
+@keyframes e1{0%,13%{opacity:1}17%,92%{opacity:.12}100%{opacity:1}}
+@keyframes e2{0%,33%{opacity:1}37%,92%{opacity:.12}100%{opacity:1}}
+@keyframes e3{0%,53%{opacity:1}57%,92%{opacity:.12}100%{opacity:1}}
+.searchbox rect{fill:var(--surface);stroke:var(--line);stroke-width:1.5}
+.row{fill:var(--fg);font:600 11.5px var(--f-body)} .rowtag{fill:var(--muted);font:600 10px var(--f-body);text-anchor:end}
+.win{fill:color-mix(in srgb,var(--gold-b) 35%,transparent);animation:win 10s infinite}
+@keyframes win{0%,77%{opacity:0}81%,92%{opacity:1}100%{opacity:0}}
+@keyframes e4{0%,73%{opacity:1}77%,92%{opacity:.12}100%{opacity:1}}
+.rowhead{fill:var(--fg);font:700 16px var(--f-display)} .rowsub{fill:var(--muted);font:600 11.5px var(--f-body)}
+.views{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.views .seg{flex-wrap:wrap;border-radius:16px;min-width:0}
+.views .note{color:var(--muted);font-size:.9rem;flex-basis:100%;max-width:65ch}
+.planet .pbody{stroke:none}
+.planet.live .pbody{stroke:var(--gold-b);stroke-width:2.5}
+.planet .sat{fill:var(--muted)}
+.planet .ptitle{font:600 12px var(--f-body);font-style:normal;fill:var(--fg);stroke:var(--surface);stroke-width:4px;paint-order:stroke;stroke-linejoin:round}
+.planet:hover .pbody,.planet:focus-visible .pbody,.planet[aria-expanded="true"] .pbody{stroke:var(--fg);stroke-width:2.5}
+.planet:hover .ptitle,.planet:focus-visible .ptitle,.planet[aria-expanded="true"] .ptitle{fill:var(--fg)}
+.info{cursor:pointer;outline:none}
+.info circle{fill:var(--surface);stroke:var(--muted);stroke-width:1.5}
+.info text{fill:var(--muted);font:700 italic 12px var(--f-display);text-anchor:middle}
+.info:hover circle,.info:focus-visible circle,.info[aria-expanded="true"] circle{fill:var(--fg);stroke:var(--fg)}
+.info:hover text,.info:focus-visible text,.info[aria-expanded="true"] text{fill:var(--surface)}
+.tip{position:fixed;z-index:20;max-width:min(300px,calc(100vw - 32px));background:var(--fg);color:var(--bg);border-radius:10px;padding:10px 12px;font-size:.9rem;line-height:1.45;box-shadow:0 8px 24px rgba(0,0,0,.25);pointer-events:none}
+.tip b{font-family:var(--f-display);font-size:1.05rem}
+.tip .ar{font-family:var(--f-ar);margin-left:6px;opacity:.75}
+.tip p{margin:4px 0 0}
+@keyframes flow{to{stroke-dashoffset:-12}}
+@keyframes blink{50%{opacity:.35}}
+@keyframes pulse{50%{transform:scale(1.15);opacity:.15}}
+.stepg{transition:transform .6s ease} rect.step{transition:height .6s ease,fill .6s ease}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" style="stop-color:var(--gold-a)"/>
+      <stop offset=".38" style="stop-color:var(--gold-b)"/>
+      <stop offset=".5" style="stop-color:var(--gold-c)"/>
+      <stop offset=".62" style="stop-color:var(--gold-b)"/>
+      <stop offset="1" style="stop-color:var(--gold-a)"/>
+      <animateTransform attributeName="gradientTransform" type="translate" values="-1 -1;1 1;1 1" keyTimes="0;.6;1" dur="3.2s" repeatCount="indefinite"/>
+    </linearGradient>
+    <symbol id="person" viewBox="0 0 40 44"><circle cx="20" cy="11" r="8.5"/><path d="M3 43 Q3 23 20 23 Q37 23 37 43 Z"/></symbol>
+    <symbol id="companion" viewBox="0 0 40 44"><circle cx="20" cy="11" r="8.5"/><path d="M3 43 Q3 23 20 23 Q37 23 37 43 Z"/><path d="M33 0 L34.6 3.4 L38 5 L34.6 6.6 L33 10 L31.4 6.6 L28 5 L31.4 3.4Z"/></symbol>
+    <symbol id="successor" viewBox="0 0 40 44"><circle cx="20" cy="11" r="8.5"/><path d="M3 43 Q3 23 20 23 Q37 23 37 43 Z"/><path d="M6 34 L34 34" style="stroke:var(--hole);stroke-width:3;fill:none"/></symbol>
+    <symbol id="faceless" viewBox="0 0 40 44"><circle cx="20" cy="11" r="8.5"/><path d="M3 43 Q3 23 20 23 Q37 23 37 43 Z"/><circle cx="20" cy="11" r="4.5" style="fill:var(--hole);stroke:none"/></symbol>
+    <marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="arrowhead" d="M0 0 L10 5 L0 10 z"/></marker>
+    <marker id="ahg" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="arrowhead gap" d="M0 0 L10 5 L0 10 z"/></marker>
+  </defs>
+</svg>
+
+<header>
+  <canvas class="stars" aria-hidden="true"></canvas>
+  <div class="wrap">
+    <div class="brand">
+      <h1>Nuzhat al-Naẓar</h1><span class="ar" lang="ar" dir="rtl">نُزْهَةُ النَّظَرِ</span>
+      <small>Ibn Ḥajar al-ʿAsqalānī's map of the hadith sciences, drawn out · concept mockup</small>
+    </div>
+    <nav aria-label="Sample scenes"></nav>
+  </div>
+</header>
+
+<main><div class="wrap">
+  <div>
+    <div class="eyebrow" id="eyebrow"></div>
+    <h2 id="title"></h2>
+    <p class="lede" id="lede"></p>
+  </div>
+  <div class="viewbar"><span class="eyebrow">Show narrators with</span><div class="seg"><button type="button" data-mode="key">Key</button><button type="button" data-mode="labels">Labels</button></div></div>
+  <div class="views" id="views" hidden><span class="eyebrow">Other views</span><div class="seg"></div><span class="note" id="viewnote"></span></div>
+  <div class="stage-wrap"><div class="stage" id="stage"></div><div class="legend" id="legend" role="note" aria-label="Key"></div></div>
+  <div class="tip" id="tip" role="tooltip" hidden></div>
+</div></main>
+
+<footer><div class="wrap">
+  <span id="source"></span>
+  <div class="pn"><button id="prev" type="button">← Previous</button><button id="next" type="button">Next →</button></div>
+</div></footer>
+
+<script>
+const NS="http://www.w3.org/2000/svg";
+const LAYERS=[["Prophet ﷺ",70],["Ṣaḥābī",170],["Tābiʿī",260],["Later",350],["Collector",440]];
+
+function moon(cx,cy,k=1){return `<g><circle class="moonglow" cx="${cx}" cy="${cy}" r="${34*k}"/><circle class="moon" cx="${cx}" cy="${cy}" r="${24*k}"/>
+  <circle class="crater" cx="${cx-15*k}" cy="${cy+10*k}" r="${3*k}"/><circle class="crater" cx="${cx+16*k}" cy="${cy-9*k}" r="${2.2*k}"/>
+  <text class="pbuh" x="${cx}" y="${cy+1*k}" style="font-size:${22*k}px">ﷺ</text></g>`}
+// each kind differs by shape as well as colour: star, band, plain, ?, blank face, dashed outline
+const KIND_NAME={sahabi:"Companion",tabii:"Successor",later:"Narrator",majhul:"Unknown",mubham:"Unnamed",ghost:"Missing"};
+let mode="key";try{mode=localStorage.getItem("nuzhah-mode")||"key"}catch(e){}
+function person(cx,cy,kind,label,bare){
+  const w=36,h=40,x=cx-w/2,y=cy-h/2;
+  const sym={sahabi:"companion",tabii:"successor",mubham:"faceless"}[kind]||"person";
+  let s=`<use href="#${sym}" class="n ${kind==="majhul"?"later":kind}" x="${x}" y="${y}" width="${w}" height="${h}"/>`;
+  if(kind==="majhul") s+=`<text class="qmark" x="${cx}" y="${cy+17}">?</text>`;
+  if(bare) return s;
+  if(!label&&mode==="labels") label=KIND_NAME[kind];
+  if(label) s+=`<text class="lbl${kind==="ghost"?" gap":""}" x="${cx}" y="${cy+34}">${label}</text>`;
+  return s;
+}
+function arrow(x1,y1,x2,y2,skip,bend=0){
+  const mx=(x1+x2)/2+bend, my=(y1+y2)/2;
+  return `<path class="${skip?"skip":"flow"}" d="M${x1} ${y1} Q${mx} ${my} ${x2} ${y2}" marker-end="url(#${skip?"ahg":"ah"})"/>`;
+}
+// diagram name with an (i) button; caps index i holds the tooltip text
+function term(x,y,i,t){const dx=x+t.length*5.6+16;
+  return `<text class="title" x="${x}" y="${y}">${t}</text><g class="info" tabindex="0" role="button" aria-label="About ${t}" aria-expanded="false" data-cap="${i}"><circle cx="${dx}" cy="${y-6}" r="9"/><text x="${dx}" y="${y-2}">i</text></g>`}
+// narrator figures in the 40x44 person space, drawn at 1.5x; missing items pulse
+// o = {gen, face: blank|faded|mask|hand, scroll: yes|slot, seal: yes|slot|crack|void, ghost}
+const BODY="M3 43 Q3 23 20 23 Q37 23 37 43 Z";
+const ACC={
+  scroll:`<g class="scroll"><rect x="11" y="29" width="18" height="7" rx="1.5"/><rect x="9.5" y="28" width="3" height="9" rx="1.5"/><rect x="27.5" y="28" width="3" height="9" rx="1.5"/><path d="M14 31.4h12M14 33.7h8" class="ink"/></g>`,
+  scrollSlot:`<rect class="slot" x="9.5" y="28" width="21" height="9" rx="1.5"/>`,
+  seal:{yes:`<g class="seal"><circle cx="31" cy="39" r="4.6"/><circle class="sealin" cx="31" cy="39" r="2.4"/></g>`,
+        slot:`<circle class="slot" cx="31" cy="39" r="4.6"/>`,
+        crack:`<g class="seal"><circle cx="31" cy="39" r="4.6"/></g><path class="crack" d="M28 35.5 L31.2 38.6 L29.6 40.4 L33.6 43"/>`,
+        void:`<g class="seal void"><circle cx="31" cy="39" r="4.6"/></g><path class="cross" d="M28.4 36.4l5.2 5.2M33.6 36.4l-5.2 5.2"/>`},
+  mask:`<path class="mask" d="M11.2 8 Q20 4.5 28.8 8 L27.8 13.6 Q20 16.2 12.2 13.6Z"/><circle class="maskeye" cx="16.5" cy="10.4" r="1.5"/><circle class="maskeye" cx="23.5" cy="10.4" r="1.5"/>`,
+  hand:`<path class="arm-o" d="M31 33 Q31 21 22 16"/><path class="arm" d="M31 33 Q31 21 22 16"/><ellipse class="hand" cx="20.5" cy="15.6" rx="4.6" ry="2.7"/>`};
+function fig(x,y,o){
+  const c=o.gen||"later",T=`transform="translate(${x-30} ${y-33}) scale(1.5)"`;
+  if(o.ghost)return `<g ${T}><circle class="n ghost" cx="20" cy="11" r="8.5"/><path class="n ghost" d="${BODY}"/></g>`;
+  let s=`<path class="n ${c}" d="${BODY}"/>`;
+  s+=o.face==="faded"?`<circle class="n ${c}" cx="20" cy="11" r="8.5" style="opacity:.3;stroke:var(--muted);stroke-dasharray:2 1.5"/>`:`<circle class="n ${c}" cx="20" cy="11" r="8.5"/>`;
+  if(o.face==="blank")s+=`<circle cx="20" cy="11" r="4.5" style="fill:var(--hole)"/>`;
+  if(o.face==="mask")s+=ACC.mask;
+  if(o.scroll==="yes")s+=ACC.scroll;else if(o.scroll==="slot")s+=ACC.scrollSlot;
+  if(o.seal)s+=ACC.seal[o.seal];
+  if(o.face==="hand")s+=ACC.hand;
+  return `<g ${T}>${s}</g>`}
+// [English, Arabic, figure, what it shows]
+const CASES=[
+ ["Reliable","ثِقَةٌ",{scroll:"yes",seal:"yes"},"name + seal"],
+ ["Unknown","مَجْهُولٌ",{scroll:"yes",seal:"slot"},"no one vouches"],
+ ["Unnamed","مُبْهَمٌ",{face:"blank",scroll:"slot",seal:"slot"},"no name to check"],
+ ["Weak","ضَعِيفٌ",{scroll:"yes",seal:"crack"},"cracked seal"],
+ ["Liar","كَذَّابٌ",{face:"mask",scroll:"yes",seal:"void"},"mask, voided seal"],
+ ["Memory failed","مُخْتَلِطٌ",{face:"faded",scroll:"yes",seal:"yes"},"fading head"],
+ ["Conceals","مُدَلِّسٌ",{face:"hand",scroll:"yes",seal:"yes"},"hand over mouth"],
+ ["Missing link","سَقْطٌ",{ghost:true},"dropped from chain"]];
+// speech bubble to the right of the figure at (x,y): what that narrator says about his source
+function speech(x,y,ar,en){const bx=x+30,by=y-46;
+  return `<g class="bubble"><path d="M${bx+10} ${by} h124 q8 0 8 8 v30 q0 8 -8 8 h-112 l-14 14 l2 -14 q-8 0 -8 -8 v-30 q0 -8 8 -8z"/><text class="lbl ar" x="${bx+72}" y="${by+20}">${ar}</text><text class="lbl" x="${bx+72}" y="${by+38}">${en}</text></g>`}
+function pill(x,y,t,state){const w=t.length*6.6+24;return `<g class="pill ${state}"><rect x="${x-w/2}" y="${y-12}" width="${w}" height="24" rx="12"/><text x="${x}" y="${y+4}">${t}</text></g>`}
+function layerGuides(w){return LAYERS.map(([n,y])=>`<line class="rule" x1="90" x2="${w-10}" y1="${y}" y2="${y}"/><text class="layer" x="10" y="${y+4}">${n}</text>`).join("")}
+
+// a single vertical chain; kinds top→bottom (after moon). Transmission flows down from the Prophet ﷺ.
+function chain(cx,kinds,labels,skips={}){
+  const ys=LAYERS.slice(1).map(l=>l[1]);
+  let s=moon(cx,LAYERS[0][1]);
+  let prevY=LAYERS[0][1]+28, prevIdx=-1;
+  kinds.forEach((k,i)=>{
+    s+=person(cx,ys[i],k,labels[i]||(mode==="labels"&&i===kinds.length-1?"Collector":""));
+    if(k!=="ghost"){
+      const fromY=prevIdx<0?prevY:ys[prevIdx]+22, jumped=i-prevIdx>1;
+      s+=jumped?arrow(cx-2,fromY,cx-2,ys[i]-24,true,-70):arrow(cx,fromY,cx,ys[i]-24,false);
+      prevIdx=i;
+    }
+  });
+  return s;
+}
+
+// Ibn Ḥajar's own division of the khabar, in his order: planets are his top-level divisions,
+// moons their sub-divisions [name, term count]. [name, arabic, sections, moons, scene id if drawn]
+const GROUPS=[
+ ["Number of routes","عَدَدُ الطُّرُقِ","§5.2–5.8",[["Mutawātir",1],["Āḥād: mashhūr, ʿazīz, gharīb (muṭlaq or nisbī)",4]],"counts"],
+ ["Accepted","الْمَقْبُولُ","§5.9–5.16",[["Four grades: ṣaḥīḥ and ḥasan, each li-dhātihi or li-ghayrihi",4],["Opposition: shādhdh and maḥfūẓ, munkar and maʿrūf",4],["Corroboration: mutābiʿ, shāhid, iʿtibār",3],["Acted on or not: muḥkam, mukhtalif, nāsikh and mansūkh, tarjīḥ, tawaqquf",5]]],
+ ["Rejected","الْمَرْدُودُ","§5.17–5.39",[["Omission (saqṭ): muʿallaq, mursal, muʿḍal, munqaṭiʿ; hidden: mudallas, mursal khafī",6],["Criticism (ṭaʿn), ten causes: mawḍūʿ, matrūk, munkar, muʿallal, mukhālafa (mudraj, maqlūb, mazīd, muḍṭarib, muṣaḥḥaf), jahāla, bidʿa, sūʾ al-ḥifẓ",10]],"breaks"],
+ ["Where the chain ends","مُنْتَهَى الْإِسْنَادِ","§5.40–5.44",[["Marfūʿ: reaches the Prophet ﷺ",1],["Mawqūf: stops at a Companion",1],["Maqṭūʿ: stops at a Successor or later",1],["Musnad",1]]],
+ ["Features of the chain","لَطَائِفُ الْإِسْنَادِ","§5.45–5.54",[["ʿUluww and nuzūl: muwāfaqa, badal, musāwāh, muṣāfaḥa",4],["Who narrates from whom: aqrān, mudabbaj, seniors from juniors, sons from fathers, sābiq and lāḥiq",5],["Muhmal; one who narrated then forgot; musalsal",3]]],
+ ["Delivery","صِيَغُ الْأَدَاءِ","§5.55–5.58",[["Eight ranks of delivery words",8],["Muʿanʿan",1],["Ways of receiving: munāwala, kitāba, wijāda, waṣiyya, iʿlām, ijāza",6]]],
+ ["Names","الْأَسْمَاءُ","§5.59–5.61",[["Muttafiq and muftariq",2],["Muʾtalif and mukhtalif",2],["Mutashābih",1]]],
+ ["Things to know","مَا يَنْبَغِي مَعْرِفَتُهُ","§5.62–5.71",[["Generations, dates, homelands",3],["Ranks and rules of jarḥ and taʿdīl",2],["Names, kunyas, laqabs",3],["Etiquette, ages, writing, travel",4],["Kinds of books; reasons behind a hadith",2]]]];
+// planets carry Ibn Ḥajar's own term with a plain-English name beneath, so both travel with the planet
+const PLANET=["ʿAdad al-ṭuruq","al-Maqbūl","al-Mardūd","Muntahā al-isnād","Laṭāʾif al-isnād","Ṣiyagh al-adāʾ","al-Asmāʾ","Maʿrifat al-ruwāt"];
+const ORBIT=["How it reached us","Accepted reports","Breaks in the chain · criticism of narrators","Where the chain ends","Features of the chain","How it was passed on","Names that look alike","Knowing the narrators"];
+const MAP_C=[410,270];
+const orbitR=i=>[96+i*39,(96+i*39)*.4];
+const terms=g=>g[3].reduce((n,m)=>n+m[1],0);
+
+// eight stages of delivery words (§5.55), strongest first: [[arabic, translit] lines, english, icon]
+const DELIVERY=[
+ [[["سَمِعْتُ","samiʿtu"],["حَدَّثَنَا","ḥaddathanā"]],"heard him alone","speak"],
+ [[["أَخْبَرَنَا","akhbaranā"],["قَرَأْتُ عَلَيْهِ","qaraʼtu ʿalayhi"]],"I read to him","read"],
+ [[["قُرِئَ عَلَيْهِ","quriʼa ʿalayhi"],["وَأَنَا أَسْمَعُ","wa-ana asmaʿu"]],"read while I listened","listen"],
+ [[["أَنْبَأَنَا","anbaʼanā"]],"he notified us","notify"],
+ [[["نَاوَلَنَا","nāwalanā"]],"handed to us","hand"],
+ [[["شَافَهَنِي","shāfahanī"]],"in person, with ijāza","face"],
+ [[["كَتَبَ إِلَيَّ","kataba ilayya"]],"by letter, with ijāza","letter"],
+ [[["عَنْ · قَالَ","ʿan · qāla"],["ذَكَرَ · رَوَى","dhakara · rawā"]],"heard? not certain","an"]];
+// below the stairs: count only with permission (§5.57–5.58)
+const BASE=[["وِجَادَةٌ","wijāda · found in his handwriting"],["وَصِيَّةٌ","waṣiyya · books bequeathed"],["إِعْلَامٌ","iʿlām · told he narrates a book"],["إِجَازَةٌ عَامَّةٌ","ijāza ʿāmma · to all, unnamed, unborn"]];
+const RANK_DASH=["none","14 3","10 4","8 5","6 5","4 5","2.5 5","1 5"];
+function modeIcon(k,x,y){
+  const head=(hx,hy,r=4.5)=>`<circle class="icof" cx="${hx}" cy="${hy}" r="${r}"/>`,
+    book=(bx,by)=>`<path class="ico" d="M${bx-11} ${by-6} q5.5 -3 11 0 q5.5 -3 11 0 v13 q-5.5 -3 -11 0 q-5.5 -3 -11 0z M${bx} ${by-6} v13"/>`,
+    seal=(sx,sy)=>`<g class="seal"><circle cx="${sx}" cy="${sy}" r="4.5"/></g>`,
+    waves=(wx,wy)=>`<path class="ico" d="M${wx} ${wy-4} q4 4 0 8 M${wx+5} ${wy-7} q6 7 0 14"/>`;
+  return {speak:head(x-13,y,5.5)+waves(x-5,y)+head(x+13,y,3.5),
+    read:book(x-8,y)+waves(x+5,y)+head(x+17,y,5),
+    listen:head(x-14,y,5)+head(x+2,y-5,3)+head(x+11,y-5,3)+head(x+6.5,y+4,3),
+    notify:book(x-4,y)+seal(x+12,y+6),
+    hand:book(x,y-6)+`<path class="ico" d="M${x-13} ${y+7} q13 7 26 0"/>`,
+    face:head(x-10,y-2)+head(x+10,y-2)+seal(x,y+10),
+    letter:`<rect class="ico" x="${x-13}" y="${y-8}" width="26" height="17" rx="2"/><path class="ico" d="M${x-13} ${y-8} l13 9 l13 -9"/>`+seal(x+12,y+8),
+    an:`<circle class="ico" cx="${x}" cy="${y}" r="11" style="stroke-dasharray:2 3"/><text class="qmark2" x="${x}" y="${y+5}">?</text>`}[k]}
+const info=(x,y,i,t)=>`<g class="info" tabindex="0" role="button" aria-label="About ${t}" aria-expanded="false" data-cap="${i}"><circle cx="${x}" cy="${y}" r="9"/><text x="${x}" y="${y+4}">i</text></g>`;
+// a view moves steps between columns (col) and heights (lvl). Steps are drawn where the previous
+// view had them (data-* holds the target) and slideStairs() eases them into place
+const stepFill=l=>`color-mix(in srgb,var(--gold-b) ${30-l*3.5}%,var(--surface))`;
+function stairs(v){const views=SCENES.find(s=>s.id==="delivery").views,V=views[v],P=views[prevView]||V,W=105;
+  let s=`<svg viewBox="0 0 860 610" role="img" aria-label="Eight delivery words as a descending staircase, with weaker modes below that need permission">
+    <text class="rowsub" x="10" y="26">← strongest</text><text class="rowsub" x="850" y="26" text-anchor="end">weakest →</text>`;
+  DELIVERY.forEach(([lines,en,ico],i)=>{const x=10+V.col[i]*W,top=60+V.lvl[i]*32,x0=10+P.col[i]*W,top0=60+P.lvl[i]*32,cx=W/2-2,y0=82;
+    // step body in local coords; the rect is stretched so its foot stays on the baseline
+    s+=`<g class="stepg" style="transform:translate(${x0}px,${top0}px)" data-to="translate(${x}px,${top}px)">
+      <rect class="step" width="${W-4}" rx="6" style="height:${470-top0}px;fill:${stepFill(P.lvl[i])}" data-h="${470-top}px" data-fill="${stepFill(V.lvl[i])}"/>
+      <text class="stepno" x="10" y="21">${i+1}</text>${info(W-20,16,i,lines[0][1])}${modeIcon(ico,cx,46)}`;
+    lines.forEach(([ar,tr],k)=>s+=`<text class="title-ar" x="${cx}" y="${y0+k*38}" style="font-size:16px">${ar}</text><text class="tr" x="${cx}" y="${y0+k*38+15}">${tr}</text>`);
+    s+=`<text class="stepen" x="${cx}" y="${y0+lines.length*38-2}">${en}</text>`;
+    if(i===0)s+=`<text class="lbl" x="${cx}" y="-8">best of all: dictated (imlāʼ)</text>`;
+    s+=`</g><g class="stepg" style="transform:translate(${x0}px,0px)" data-to="translate(${x}px,0px)">
+      <path class="rank" d="M14 456 H${W-22}" style="stroke-width:${(4.2-i*.4).toFixed(1)};stroke-dasharray:${RANK_DASH[i]}" marker-end="url(#ah)"/></g>`});
+  s+=`<line class="rule" x1="10" x2="850" y1="470" y2="470"/><text class="rowhead" x="10" y="503">Below the stairs</text><text class="rowsub" x="152" y="503">these count only if the teacher also gave permission (ijāza)</text>`;
+  BASE.forEach(([ar,t],k)=>{const x=10+k*212,cx=x+102;
+    s+=`<rect class="basement" x="${x}" y="516" width="204" height="78" rx="8"/>${info(x+186,532,8+k,ar)}
+      <text class="title-ar" x="${cx}" y="550" style="font-size:18px">${ar}</text><text class="tr" x="${cx}" y="575">${t}</text>`});
+  return s+"</svg>"}
+// names: a tag, the dotted letter skeleton, and a crowd that narrows as name parts are added
+function nameTag(x,y,ar,tr,w=230){return `<g class="tag"><rect x="${x-w/2}" y="${y-24}" width="${w}" height="48" rx="24"/><text class="title-ar" x="${x}" y="${y-1}" style="font-size:17px">${ar}</text><text class="tr" x="${x}" y="${y+16}">${tr}</text></g>`}
+function namesSvg(){let s=`<svg viewBox="0 0 860 560" role="img" aria-label="Four panels on narrator names: one name for two people, letters told apart by dots, names differing by a vowel, and name parts narrowing a crowd">
+    <line class="divider" x1="430" x2="430" y1="16" y2="544"/><line class="divider" x1="16" x2="844" y1="280" y2="280"/>`;
+  // muttafiq: one tag forks to two people
+  s+=term(215,42,0,"Muttafiq · muftariq")+nameTag(215,98,"فُلَانُ بْنُ فُلَانٍ","same name, same father")
+    +arrow(215,124,140,168,false,-12)+arrow(215,124,290,168,false,12)+person(140,192,"tabii","",true)+person(290,192,"later","",true)
+    +`<text class="lbl" x="140" y="230">one man</text><text class="lbl" x="290" y="230">a different man</text><text class="lbl gap" x="215" y="260">risk: two people taken as one</text>`;
+  // muʼtalif: one written shape, read by its dots
+  s+=term(645,42,1,"Muʼtalif · mukhtalif");
+  [[[],"as written",""],[[[0,20]],"bāʼ","ب"],[[[-6,-22],[6,-22]],"tāʼ","ت"],[[[-6,-22],[6,-22],[0,-31]],"thāʼ","ث"]].forEach(([dots,n,ar],k)=>{const gx=510+k*90,gy=128;
+    s+=`<path class="glyph" d="M${gx-26} ${gy-14} Q${gx-28} ${gy+8} ${gx} ${gy+8} Q${gx+28} ${gy+8} ${gx+26} ${gy-14}"/>`+dots.map(([dx,dy])=>`<circle class="dot" cx="${gx+dx}" cy="${gy+dy}" r="3.6"/>`).join("")
+      +`<text class="lbl" x="${gx}" y="${gy+52}">${n}</text>`+(ar?`<text class="lbl ar" x="${gx}" y="${gy+72}">${ar}</text>`:"")});
+  s+=`<text class="lbl" x="645" y="236">one written shape: the dots decide the name</text><text class="lbl gap" x="645" y="260">risk: misreading the name</text>`;
+  // mutashābih: same name, father's name read differently
+  s+=term(215,322,2,"Mutashābih")
+    +nameTag(215,378,"مُحَمَّدُ بْنُ عَقِيلٍ",`Muḥammad ibn <tspan class="diff">ʿAqīl</tspan> · al-Nīsābūrī`,300)
+    +nameTag(215,446,"مُحَمَّدُ بْنُ عُقَيْلٍ",`Muḥammad ibn <tspan class="diff">ʿUqayl</tspan> · al-Firyābī`,300)
+    +`<text class="lbl" x="215" y="502">same generation, both famous</text><text class="lbl" x="215" y="522">a vowel and the nisba tell them apart</text>`;
+  // worked example as a filter box: each name part added drops rows (e = step it drops at, 0 = the one meant)
+  s+=term(645,322,3,"Which one is he?")+`<g class="searchbox"><rect x="450" y="340" width="390" height="30" rx="8"/></g>`;
+  let cx0=458;["ʿAbd Allāh","ibn Zayd","al-Anṣārī","ibn ʿAbd Rabbih"].forEach((t,k)=>{const w=t.length*6.4+18;
+    s+=`<g class="chip c${k+1}"><rect x="${cx0}" y="344" width="${w}" height="22" rx="11"/><text x="${cx0+w/2}" y="359">${t}</text></g>`;cx0+=w+6});
+  [["Yazīd ibn ʿAbd Allāh","",1],["ʿAbd Allāh ibn Yazīd · al-Khaṭmī","Companion",2],["ʿAbd Allāh ibn Zayd ibn ʿĀṣim · al-Anṣārī","Companion · wuḍūʼ",4],
+   ["ʿAbd Allāh ibn Nujayy","Successor",2],["ʿAbd Allāh ibn Zayd ibn ʿAbd Rabbih · al-Anṣārī","Companion · adhān",0],["al-Aswad ibn Yazīd","",1],
+   ["ʿAbd Allāh ibn Yaḥyā","",2],["ʿAbd Allāh ibn Yazīd · al-Qārī","in ʿĀʼisha's report",2]].forEach(([n,t,e],k)=>{const y=392+k*19;
+    if(!e)s+=`<rect class="win" x="450" y="${y-13}" width="390" height="18" rx="4"/>`;
+    s+=`<g class="${e?"e"+e:""}"><text class="row" x="458" y="${y}">${n}</text><text class="rowtag" x="834" y="${y}">${t}</text></g>`});
+  return s+`<text class="lbl" x="645" y="548">both Companions, both Anṣārī: only the grandfather tells them apart</text></svg>`}
+const I8=[0,1,2,3,4,5,6,7];
+function slideStairs(){requestAnimationFrame(()=>requestAnimationFrame(()=>{
+  stage.querySelectorAll(".stepg").forEach(g=>g.style.transform=g.dataset.to);
+  stage.querySelectorAll("rect.step").forEach(r=>{r.style.height=r.dataset.h;r.style.fill=r.dataset.fill})}))}
+
+const SCENES=[
+ {id:"map",eyebrow:"The whole book · Ibn Ḥajar's divisions",title:"Map of the book",
+  lede:"Each planet is one of Ibn Ḥajar's divisions, in his order, circling the Prophet ﷺ as the source. Its moons are the sub-divisions under it. Hover or tap a planet to see them; the gold-ringed ones open a scene.",
+  source:"Divisions follow Ibn Ḥajar, Nuzhat al-Naẓar §5.2–5.71 and the summaries at §5.8.2, §5.16.3, §5.38.2 (trans. A. S. Hussain, 2012)",
+  svg:()=>{let s=`<svg viewBox="0 0 820 540" role="img" aria-label="Eight planets for Ibn Ḥajar's divisions orbiting a full moon">`;
+    GROUPS.forEach((g,i)=>{const [rx,ry]=orbitR(i),[cx,cy]=MAP_C;
+      s+=`<ellipse class="orbit" cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}"/>`});
+    s+=moon(MAP_C[0],MAP_C[1],1.3);
+    GROUPS.forEach((g,i)=>{const r=Math.min(20,8+terms(g)*.6);
+      s+=`<g class="info planet${g[4]?" live":""}" tabindex="0" role="button" aria-label="${PLANET[i]}: ${ORBIT[i]}" aria-expanded="false" data-cap="${i}" data-i="${i}"${g[4]?` data-go="${g[4]}"`:""}>
+        <circle class="pbody" r="${r}" style="fill:var(--p${i+1})"/>${g[3].map(m=>`<circle class="sat" r="${2.2+Math.min(m[1],8)*.35}"/>`).join("")}
+        <text class="ptitle" y="${r+20}">${PLANET[i]}</text><text class="psub" y="${r+34}">${ORBIT[i]}</text></g>`});
+    return s+"</svg>"},
+  caps:GROUPS.map((g,i)=>[PLANET[i],g[1],`${ORBIT[i]} · ${g[2]}<ul style="margin:6px 0 0;padding-left:18px">${g[3].map(m=>`<li>${m[0]}</li>`).join("")}</ul>${g[4]?"Click to open.":""}`])},
+ {id:"breaks",eyebrow:"Rejected for a break in the chain · §5.18–5.19",title:"Where does the chain break?",
+  lede:"Both reports lose a narrator. What separates them is which end of the chain is missing.",
+  source:"Ibn Ḥajar, Nuzhat al-Naẓar §5.18 Muʿallaq, §5.19 Mursal (trans. A. S. Hussain, 2012)",
+  // the ruling on mursal differs by school; the verdict pill follows the selected view
+  views:[{label:"Most hadith scholars",state:"pause",verdict:"Paused (tawaqquf)",note:"The dropped link may be a weak Successor, so judgement is held back."},
+         {label:"Mālik, Abū Ḥanīfa, Aḥmad (one report)",state:"accept",verdict:"Accepted",note:"A trusted Successor would not drop a link he could not stand behind."},
+         {label:"al-Shāfiʿī",state:"support",verdict:"Accepted if supported",note:"Accepted when backed: by a connected chain, another mursal, a Companion's fatwa, or scholars acting on it."}],
+  svg:(v=0)=>{const W=820,vw=SCENES.find(s=>s.id==="breaks").views[v];return `<svg viewBox="0 0 ${W} 520" role="img" aria-label="Two chains side by side: mursal missing the Companion, muʿallaq missing the narrators next to the collector">
+    ${layerGuides(W)}<line class="divider" x1="480" x2="480" y1="20" y2="500"/>
+    ${pill(300,22,vw.verdict,vw.state)}${pill(660,22,"Rejected unless connected elsewhere","reject")}
+    ${term(300,500,0,"Mursal")}
+    ${term(660,500,1,"Muʿallaq")}
+    ${chain(300,["ghost","tabii","later","later"],["missing Companion","Successor","",""])}
+    ${chain(660,["sahabi","tabii","ghost","later"],["Companion","Successor","dropped",""])}
+  </svg>`},
+  caps:[["Mursal","مُرْسَلٌ","A Successor says qāla rasūlu-llāh ﷺ (قَالَ رَسُولُ اللَّهِ ﷺ, “the Messenger of Allah ﷺ said”) and skips the Companion he heard it from. The gap sits at the top, next to the Prophet ﷺ."],
+        ["Muʿallaq","مُعَلَّقٌ","The collector drops one or more narrators at his own end and cites further up. The gap sits at the bottom, next to the collector."]]},
+ {id:"counts",eyebrow:"How a report reached us · §5.2–5.6",title:"How many routes carry it?",
+  lede:"Reports are sorted by the fewest narrators found at any one generation of the chain.",
+  source:"Ibn Ḥajar, Nuzhat al-Naẓar §5.3 Mutawātir, §5.4 Mashhūr, §5.5 ʿAzīz, §5.6 Gharīb (trans. A. S. Hussain, 2012)",
+  svg:()=>{const W=820, cols=[["Gharīb",1,170],["ʿAzīz",2,340],["Mashhūr",3,510],["Mutawātir",5,700]];
+    const ys=[170,260,350];const kinds=["sahabi","tabii","later"];
+    let s=`<svg viewBox="0 0 ${W} 520" role="img" aria-label="Four trees from one moon: one, two, three and many narrators per generation">${LAYERS.slice(0,4).map(([n,y])=>`<line class="rule" x1="90" x2="${W-10}" y1="${y}" y2="${y}"/><text class="layer" x="10" y="${y+4}">${n}</text>`).join("")}`;
+    cols.forEach(([nm,n,cx],ci)=>{
+      s+=moon(cx,70);
+      const sp=n===1?0:Math.min(30,120/(n-1));
+      const xs=Array.from({length:n},(_,i)=>cx+(i-(n-1)/2)*sp);
+      ys.forEach((y,li)=>{xs.forEach((x,i)=>{
+        const fy=li===0?98:ys[li-1]+22, fx=li===0?cx:x;
+        s+=arrow(fx,fy,x,y-24,false);
+        s+=`<g transform="translate(${x} ${y}) scale(${n>3?.75:1}) translate(${-x} ${-y})">${person(x,y,kinds[li],"",i!==0)}</g>`;
+      })});
+      s+=`${term(cx,440,ci,nm)}<text class="lbl" x="${cx}" y="462">${n===5?"so many that collusion is impossible":n===3?"three or more":n===2?"at least two":"one, at some point"}</text>`;
+    });
+    return s+"</svg>"},
+  caps:[["Gharīb","غَرِيبٌ","One narrator alone carries it at some stage."],["ʿAzīz","عَزِيزٌ","Never fewer than two at any stage."],["Mashhūr","مَشْهُورٌ","Three or more at every stage, short of mass transmission."],["Mutawātir","مُتَوَاتِرٌ","So many at every stage that agreeing on a lie is inconceivable. Gives certain knowledge."]]},
+ {id:"unknown",eyebrow:"Rejected for doubt about a narrator · §5.35–5.36",title:"Who is this narrator?",
+  lede:"Both chains are connected, but one link cannot be vouched for.",
+  source:"Ibn Ḥajar, Nuzhat al-Naẓar §5.35 Jahāla, §5.36 Mubham (trans. A. S. Hussain, 2012)",
+  svg:()=>{const W=820;return `<svg viewBox="0 0 ${W} 520" role="img" aria-label="Two connected chains; one has an unnamed narrator, the other a named but unknown narrator">
+    ${layerGuides(W)}<line class="divider" x1="480" x2="480" y1="20" y2="500"/>
+    ${term(300,500,0,"Mubham")}${term(660,500,1,"Majhūl")}
+    ${chain(300,["sahabi","tabii","mubham","later"],["","","",""])}${speech(300,440,"حَدَّثَنِي رَجُلٌ","“a man told me”")}
+    ${chain(660,["sahabi","tabii","majhul","later"],["","","named, but unknown",""])}
+  </svg>`},
+  caps:[["Mubham","مُبْهَمٌ","The narrator is left unnamed: rajulun (رَجُلٌ, “a man”) or shaykhun (شَيْخٌ, “an elder”). No name, so no way to check him."],["Majhūl","مَجْهُولٌ","The narrator has a name, but too little is known of him (one student, or no one vouching) to accept him."]]},
+ {id:"figures",plain:true,eyebrow:"Narrator figures",title:"Reading a narrator",
+  lede:"A name scroll means his identity is known; a seal means someone reliable vouches for him. Anything missing pulses, so the gap catches the eye. Generation is shown by colour and by the row he stands in.",
+  source:"Cases from Ibn Ḥajar, Nuzhat al-Naẓar §5.21 Mudallas, §5.23 grounds of criticism, §5.35–5.36 Jahāla and Mubham, §5.38 Mukhtalaṭ (trans. A. S. Hussain, 2012)",
+  svg:()=>{const xs=CASES.map((_,i)=>80+i*100);let s=`<svg viewBox="0 0 860 440" role="img" aria-label="Eight narrator cases and three generations drawn as figures">`;
+    CASES.forEach((c,i)=>{s+=`<text class="colhead" x="${xs[i]}" y="34">${c[0]}</text><text class="title-ar" x="${xs[i]}" y="60" style="font-size:18px">${c[1]}</text>`+fig(xs[i],140,c[2])+`<text class="lbl" x="${xs[i]}" y="205">${c[3]}</text>`});
+    s+=`<line class="rule" x1="10" x2="850" y1="240" y2="240"/><text class="rowhead" x="12" y="280">Generation</text><text class="rowsub" x="12" y="298">a reliable narrator of each</text>`;
+    [["sahabi","Companion"],["tabii","Successor"],["later","Later narrator"]].forEach(([g,n],k)=>{const x=380+k*150;
+      s+=fig(x,350,{gen:g,scroll:"yes",seal:"yes"})+`<text class="lbl" x="${x}" y="412">${n}</text>`});
+    return s+`</svg>`},
+  caps:[]},
+ {id:"delivery",plain:true,eyebrow:"Delivery · §5.55–5.58",title:"How was it received?",
+  lede:"Ibn Ḥajar ranks, in eight stages, the words a narrator uses to say how he received a report. Higher steps mean closer, surer contact with the teacher. The arrow on each step is the style that word gets in every chain diagram.",
+  source:"Ibn Ḥajar, Nuzhat al-Naẓar §5.55 Ṣiyagh al-adāʼ, §5.57 Wijāda and waṣiyya, §5.58 Iʿlām (trans. A. S. Hussain, 2012)",
+  views:[{label:"Ibn Ḥajar's ranking",col:I8,lvl:I8,note:"Hearing the teacher's own words ranks first; reading to him second."},
+         {label:"Some scholars of Madīna",col:[1,0,2,3,4,5,6,7],lvl:[1,0,2,3,4,5,6,7],note:"Mālik and the scholars of Madīna strongly defended reading to the teacher; some went as far as ranking it above hearing him."},
+         {label:"al-Bukhārī and many others",col:I8,lvl:[0,0,2,3,4,5,6,7],note:"Hearing the teacher and reading to him are equal in authenticity and strength."}],
+  svg:v=>stairs(v),after:slideStairs,
+  caps:[["Samiʿtu · ḥaddathanā","سَمِعْتُ · حَدَّثَنَا","He heard it alone, from the teacher's own words. Samiʿtu is the clearest; ḥaddathanā is sometimes misused by a concealer for a mere permission. Best of all is dictation (imlāʼ), when the teacher recites from memory and students write. The plural (samiʿnā) usually means others were there; sometimes it is the ‘we’ of respect."],
+        ["Akhbaranā · qaraʼtu ʿalayhi","أَخْبَرَنَا · قَرَأْتُ عَلَيْهِ","The student read to the teacher. Saying qaraʼtu ʿalayhi is better than akhbaranā because it says exactly what happened. Some in Iraq denied that reading to the teacher counts; Ibn Ḥajar calls that far from right."],
+        ["Quriʼa ʿalayhi wa-ana asmaʿu","قُرِئَ عَلَيْهِ وَأَنَا أَسْمَعُ","Someone else read to the teacher while he listened. A plural akhbaranā or qaraʼnā belongs here too. Al-Nasāʼī used this wording for a teacher who had sent him away, so he only listened."],
+        ["Anbaʼanā","أَنْبَأَنَا","For the early scholars, the same as akhbaranā. Later scholars use it for permission (ijāza), like ʿan."],
+        ["Nāwalanā","نَاوَلَنَا","The teacher hands over his manuscript, or a checked copy, and says ‘narrate this from me’. With permission, and with the student keeping it, this is the highest form of ijāza. Without permission most scholars do not count it."],
+        ["Shāfahanī","شَافَهَنِي","Permission given by word of mouth, face to face (mushāfaḥa)."],
+        ["Kataba ilayya","كَتَبَ إِلَيَّ","Permission given in writing (mukātaba). Ijāzas are still requested and sent by letter today."],
+        ["ʿAn · qāla · dhakara · rawā","عَنْ · قَالَ · ذَكَرَ · رَوَى","Words that could mean he heard it, had permission, or did not hear it at all. ʿAn is also quick to write, so the fuller wording may survive elsewhere; ʿan in al-Bukhārī is not by itself concealment."],
+        ["Wijāda","وِجَادَةٌ","He finds reports in a scholar's known handwriting and says wajadtu bi-khaṭṭi fulānin (وَجَدْتُ بِخَطِّ فُلَانٍ, “I found in the handwriting of so-and-so”). He may not say akhbaranā unless he also has permission."],
+        ["Waṣiyya","وَصِيَّةٌ","A teacher bequeaths his books to someone at his death or before a journey. Some early imams allowed narrating on that alone; most require permission as well."],
+        ["Iʿlām","إِعْلَامٌ","The teacher only tells a student that he narrates a certain book. It counts only with permission."],
+        ["Ijāza ʿāmma and others","إِجَازَةٌ عَامَّةٌ","Permission to all Muslims, to an unnamed person, to the not-yet-born, or ‘if so-and-so wishes’. Ibn al-Ṣalāḥ called these a disliked leniency, far below hearing; still better than a muʿḍal."]]},
+ {id:"names",plain:true,eyebrow:"Names · §5.59–5.61",title:"Who is who?",
+  lede:"Narrators are checked by name, so names that collide or look alike are a field of their own.",
+  source:"Ibn Ḥajar, Nuzhat al-Naẓar §5.59 Muttafiq and muftariq, §5.60 Muʼtalif and mukhtalif, §5.61 Mutashābih (trans. A. S. Hussain, 2012)",
+  svg:namesSvg,
+  caps:[["Muttafiq and muftariq","مُتَّفِقٌ وَمُفْتَرِقٌ","The names, their fathers' names and further back (or kunya and nisba) match, but they are different people. Knowing this stops two people being taken as one. The mirror case is muhmal, where one person may be taken as two."],
+        ["Muʼtalif and mukhtalif","مُؤْتَلِفٌ وَمُخْتَلِفٌ","Names written alike but read differently, by their dots or their shape. ʿAlī ibn al-Madīnī said most misreadings happen in names, since nothing around a name helps you guess it. Scholars would spell out the confusable letter beside the name."],
+        ["Mutashābih","مُتَشَابِهٌ","The names match in writing and sound, but the fathers' names are written alike and read differently, like Muḥammad ibn ʿAqīl and Muḥammad ibn ʿUqayl. Or the reverse: Shurayḥ and Surayj, both ibn al-Nuʿmān. A differing nisba counts too."],
+        ["Worked example: ʿAbd Allāh ibn Zayd","عَبْدُ اللَّهِ بْنُ زَيْدٍ","Ibn Ḥajar's own case (§5.61): two Companions, both Anṣārī, both ʿAbd Allāh ibn Zayd. One reported the call to prayer, his grandfather ʿAbd Rabbih; the other the ablution, his grandfather ʿĀṣim. Note too how close Zayd and Yazīd look when written. A full name stacks ism, nasab (ibn …), kunya (Abū …), laqab and nisba; each part added narrows who is meant."],
+        ["Parts of a name","اِسْمٌ · نَسَبٌ · كُنْيَةٌ · نِسْبَةٌ","A full name stacks parts: ism (given name), nasab (ibn …), kunya (Abū …), laqab (title) and nisba (origin). Each part added narrows who is meant."]]}
+];
+
+// planets move along their orbits; motion pauses while a tooltip is open
+let mapT=0,mapLast=0,mapRaf=0;
+function placePlanets(){document.querySelectorAll(".planet").forEach(g=>{
+  const i=+g.dataset.i,[rx,ry]=orbitR(i),a=i*2.3+mapT*(2*Math.PI)/(50*Math.pow(rx/110,1.5));
+  g.setAttribute("transform",`translate(${MAP_C[0]+rx*Math.cos(a)} ${MAP_C[1]+ry*Math.sin(a)})`);
+  const sats=g.querySelectorAll(".sat"),R=+g.querySelector(".pbody").getAttribute("r")+9;
+  sats.forEach((c,k)=>{const b=k/sats.length*2*Math.PI+mapT*.5;c.setAttribute("cx",R*Math.cos(b));c.setAttribute("cy",R*.5*Math.sin(b))})})}
+function mapTick(now){const dt=Math.min(.1,(now-(mapLast||now))/1000);mapLast=now;
+  if(!tipFor)mapT+=dt;placePlanets();mapRaf=requestAnimationFrame(mapTick)}
+
+const LEGEND=[["sahabi","Companion (ṣaḥābī)"],["tabii","Successor (tābiʿī)"],["later","Later narrator"],["majhul","Unknown (majhūl)"],["mubham","Unnamed (mubham)"],["ghost","Missing link"]];
+document.getElementById("legend").innerHTML=
+  `<span><svg viewBox="0 0 40 40">${moon(20,20,.6)}</svg>The Prophet ﷺ</span>`+
+  LEGEND.map(([k,t])=>`<span><svg viewBox="-20 -24 40 48">${person(0,0,k,"",true)}</svg>${t}</span>`).join("");
+
+const nav=document.querySelector("nav");
+let cur=0;
+SCENES.forEach((s,i)=>{const b=document.createElement("button");b.type="button";b.textContent=s.title;b.onclick=()=>show(i);nav.append(b)});
+let view=0,prevView=0;
+function show(i){
+  const next=(i+SCENES.length)%SCENES.length;if(next!==cur)view=prevView=0;
+  cur=next;const s=SCENES[cur];
+  ["eyebrow","title","lede","source"].forEach(k=>document.getElementById(k).textContent=s[k]);
+  document.getElementById("stage").innerHTML=s.svg(view);s.after?.();prevView=view;
+  hideTip();
+  // "Other views" switch: Ibn Ḥajar's framing by default, other positions where the book gives them
+  const vb=document.getElementById("views");vb.hidden=!s.views;
+  if(s.views){vb.querySelector(".seg").innerHTML=s.views.map((v,j)=>`<button type="button" aria-pressed="${j===view}" data-v="${j}">${v.label}</button>`).join("");
+    document.getElementById("viewnote").textContent=s.views[view].note}
+  const isMap=s.id==="map",plain=isMap||s.plain;if(isMap)vb.hidden=true;
+  document.querySelector(".viewbar").hidden=plain;document.getElementById("legend").hidden=plain||mode!=="key";
+  cancelAnimationFrame(mapRaf);
+  if(isMap){placePlanets();if(!matchMedia("(prefers-reduced-motion: reduce)").matches){mapLast=0;mapRaf=requestAnimationFrame(mapTick)}}
+  [...nav.children].forEach((b,j)=>b.setAttribute("aria-current",j===cur));
+  try{history.replaceState(null,"","#"+s.id)}catch(e){}
+}
+// tooltips: hover, keyboard focus, or tap to toggle
+const tip=document.getElementById("tip"),stage=document.getElementById("stage");let tipFor=null;
+function showTip(g){const [t,a,p]=SCENES[cur].caps[g.dataset.cap];
+  tip.innerHTML=`<b>${t}</b><span class="ar" lang="ar">${a}</span><p>${p}</p>`;tip.hidden=false;
+  if(tipFor&&tipFor!==g)tipFor.setAttribute("aria-expanded","false");tipFor=g;g.setAttribute("aria-expanded","true");
+  const r=g.getBoundingClientRect(),tw=tip.offsetWidth,th=tip.offsetHeight;
+  const left=Math.min(Math.max(16,r.left+r.width/2-tw/2),innerWidth-tw-16);
+  tip.style.left=left+"px";tip.style.top=(r.top-th-10<8?r.bottom+10:r.top-th-10)+"px"}
+function hideTip(){tip.hidden=true;if(tipFor)tipFor.setAttribute("aria-expanded","false");tipFor=null}
+stage.addEventListener("pointerover",e=>{const g=e.target.closest(".info");if(g&&e.pointerType==="mouse")showTip(g)});
+stage.addEventListener("pointerout",e=>{const g=e.target.closest(".info");if(g&&e.pointerType==="mouse"&&!g.contains(e.relatedTarget))hideTip()});
+// a planet with a scene opens on click; on touch the first tap shows its tooltip, the second opens it
+const goTo=id=>show(SCENES.findIndex(s=>s.id===id));
+stage.addEventListener("click",e=>{const g=e.target.closest(".info");if(!g)return;
+  if(g.dataset.go&&(e.pointerType==="mouse"||tipFor===g)){goTo(g.dataset.go);return}
+  tipFor===g&&e.pointerType!=="mouse"?hideTip():showTip(g)});
+stage.addEventListener("focusin",e=>{const g=e.target.closest(".info");if(g)showTip(g)});
+stage.addEventListener("focusout",hideTip);
+stage.addEventListener("keydown",e=>{const g=e.target.closest(".info");if(g&&(e.key==="Enter"||e.key===" ")){e.preventDefault();g.dataset.go?goTo(g.dataset.go):showTip(g)}if(e.key==="Escape")hideTip()});
+document.addEventListener("pointerdown",e=>{if(!e.target.closest(".info"))hideTip()});
+addEventListener("scroll",hideTip,true);addEventListener("resize",hideTip);
+document.getElementById("views").addEventListener("click",e=>{const b=e.target.closest("button[data-v]");if(b){view=+b.dataset.v;show(cur)}});
+document.getElementById("prev").onclick=()=>show(cur-1);
+document.getElementById("next").onclick=()=>show(cur+1);
+// Key = overlay legend; Labels = name written under each figure
+const segBtns=document.querySelectorAll(".seg button");
+function setMode(m){mode=m;try{localStorage.setItem("nuzhah-mode",m)}catch(e){}
+  segBtns.forEach(b=>b.setAttribute("aria-pressed",b.dataset.mode===m));
+  document.getElementById("legend").hidden=m!=="key";show(cur)}
+segBtns.forEach(b=>b.onclick=()=>setMode(b.dataset.mode));
+const h=location.hash.slice(1);cur=Math.max(0,SCENES.findIndex(s=>s.id===h));setMode(mode==="labels"?"labels":"key");
+
+// starfield in header
+const cv=document.querySelector(".stars"),cx=cv.getContext("2d");
+// stars drift slowly down; each fades out and a new one glows into place elsewhere
+const still=matchMedia("(prefers-reduced-motion: reduce)").matches;
+let W=0,H=0,field=[];
+function star(age){return{x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.3+.25,a:.3+Math.random()*.6,
+  vy:2+Math.random()*5,life:9+Math.random()*10,age:age??0}}
+function sizeField(){const r=cv.getBoundingClientRect(),d=devicePixelRatio||1;W=r.width;H=r.height;cv.width=W*d;cv.height=H*d;cx.setTransform(d,0,0,d,0,0);
+  field=Array.from({length:Math.round(W/9)},()=>{const s=star();s.age=Math.random()*s.life;return s})}
+function draw(){cx.clearRect(0,0,W,H);
+  for(const s of field){const t=s.age,fadeIn=Math.min(1,t/1.6),fadeOut=Math.min(1,(s.life-t)/2.2),k=still?1:Math.max(0,Math.min(fadeIn,fadeOut));
+    if(!still&&t<1.6){const g=cx.createRadialGradient(s.x,s.y,0,s.x,s.y,s.r*7);g.addColorStop(0,`rgba(255,226,150,${.45*(1-t/1.6)})`);g.addColorStop(1,"rgba(255,226,150,0)");
+      cx.fillStyle=g;cx.beginPath();cx.arc(s.x,s.y,s.r*7,0,7);cx.fill()}
+    cx.fillStyle=`rgba(238,240,251,${s.a*k})`;cx.beginPath();cx.arc(s.x,s.y,s.r,0,7);cx.fill()}}
+let last=0;
+function tick(now){const dt=Math.min(.1,(now-(last||now))/1000);last=now;
+  field.forEach((s,i)=>{s.age+=dt;s.y+=s.vy*dt;if(s.age>=s.life||s.y>H+4)field[i]=star()});
+  draw();requestAnimationFrame(tick)}
+sizeField();draw();if(!still)requestAnimationFrame(tick);
+addEventListener("resize",()=>{sizeField();draw()});
+</script>

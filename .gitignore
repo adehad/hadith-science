@@ -1,0 +1,13 @@
+# copyrighted source material: never commit (spec §2)
+source/
+*.pdf
+nuzhah*.txt
+annotations*.txt
+
+node_modules/
+dist/
+dist-*/
+.astro/
+test-results/
+playwright-report/
+.vitest/
