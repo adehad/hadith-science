@@ -317,6 +317,7 @@ Content and drawing are separate:
 
 - A web app manifest (name, icons incl. maskable, `display: standalone`, night-sky theme colour) with relative `start_url` and `scope`, so it installs from both GitHub Pages (`/hadith-science/`) and previews (`/`).
 - A service worker generated after the build by Workbox (`generateSW`) precaches the built pages, styles, scripts, fonts and icons (not the `/t/` redirects), so the site reads offline after the first visit. Precached pages are served from the cache; each deploy changes their revisions and the new worker takes over immediately (the first navigation after a deploy may still show the old page). Pages outside the precache are network-first with a cache fallback. Outdated caches are cleaned on update.
+- Query strings are ignored when matching the precache, so `?view=` and `?slug` links read offline.
 - Registered only in production builds, scoped to the base path.
 - Tests: manifest validity and icons, service worker registration, offline navigation to cached pages.
 

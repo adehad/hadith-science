@@ -35,11 +35,16 @@ test("the service worker registers and serves cached pages offline", async ({ pa
 
   await context.setOffline(true);
   try {
-    for (const route of ["/terms/", "/al-mardud/"]) {
+    // query strings are ignored when matching the precache, so ?view= links read offline too
+    for (const route of ["/terms/", "/al-mardud/", "/siyagh-al-ada/delivery/?view=madinah"]) {
       await page.goto(route);
       await expect(page.locator("main")).toBeVisible();
       await expect(page.locator("h1")).not.toBeEmpty();
     }
+    // a bare ?slug share link: slugquery.ts reads the precached terms-index.json and moves on to the scene
+    await page.goto("/?mursal");
+    await expect(page).toHaveURL(/\/al-mardud\/breaks\/#mursal$/);
+    await expect(page.locator("main")).toBeVisible();
     // control: something never cached really is unreachable, so the pages above came from the cache
     await expect(page.goto("/sitemap-index.xml")).rejects.toThrow();
   } finally {
