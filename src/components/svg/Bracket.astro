@@ -1,0 +1,21 @@
+---
+// a bracket that groups things (phase 3 turuq design §8): a line with a tick at each end, horizontal from x0 to x1
+// at y (ticks up or down), or with `vertical` from y0 to y1 at x (ticks left or right). arrow adds an open
+// arrowhead beyond one end (start is x0 or y0), pointing away: the isnād bracket's "towards the matn". The path is
+// lib/kit.ts bracketPath; its .bracket class lives in styles/svg.css.
+import { bracketPath } from "../../lib/kit";
+
+interface Props {
+  x0?: number; x1?: number; y?: number;
+  y0?: number; y1?: number; x?: number;
+  vertical?: boolean;
+  ticks?: "up" | "down" | "left" | "right";
+  arrow?: "start" | "end";
+}
+const { x0, x1, y, y0, y1, x, vertical = false, ticks, arrow } = Astro.props;
+const [a0, a1, at] = vertical ? [y0, y1, x] : [x0, x1, y];
+if (a0 === undefined || a1 === undefined || at === undefined) {
+  throw new Error(vertical ? "Bracket: a vertical bracket needs y0, y1 and x" : "Bracket: a horizontal bracket needs x0, x1 and y");
+}
+---
+<path class="bracket" d={bracketPath(a0, a1, at, { vertical, ticks, arrow })} />

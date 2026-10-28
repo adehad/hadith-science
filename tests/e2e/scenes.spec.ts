@@ -129,8 +129,68 @@ test.describe("views", () => {
     await expect(trigger(page, "hasan-li-dhatihi")).toBeVisible();
   });
 
+  test("report: each view moves the two rings and shows its own names; the four triggers stay", async ({ page }) => {
+    await page.goto("/adad-al-turuq/report/");
+    const ids = ["same", "apart", "nested"];
+    const part = (id: string) => page.locator(`svg [data-view-show="${id}"]`);
+    const rings = page.locator("svg .vring");
+    await expect(rings).toHaveCount(2);
+    for (const id of ids) {
+      if (id !== "same") {
+        await page.locator(`.views button[data-v="${id}"]`).click();
+        await expect(page).toHaveURL(new RegExp(`[?&]view=${id}\\b`));
+      }
+      await expect(page.locator(`.views button[data-v="${id}"]`)).toHaveAttribute("aria-pressed", "true");
+      await expect(part(id)).toBeVisible();
+      for (const other of ids.filter((x) => x !== id)) await expect(part(other)).toBeHidden();
+      // reduced motion: each ring sits at once where this view puts it
+      for (const r of await rings.all()) expect(await r.evaluate((e, v) => (e as SVGElement).style.transform.replace(/\s/g, "") === e.getAttribute(`data-v-${v}`)!.replace(/\s/g, ""), id)).toBe(true);
+      for (const slug of ["khabar", "hadith", "isnad", "matn"]) await expect(trigger(page, slug)).toBeVisible();
+      await expectNoAxeViolations(page);
+    }
+    // only the "two kinds" view says where reports come from, so only it draws the moon and figures in cell B
+    await expect(part("apart").locator(".moon-g")).toHaveCount(1);
+    await expect(part("same").locator(".moon-g")).toHaveCount(0);
+    await expect(part("nested").locator(".moon-g")).toHaveCount(0);
+  });
+
+  test("?view=nested opens the report scene on that view, and opening khabar there keeps it", async ({ page }) => {
+    await page.goto("/adad-al-turuq/report/?view=nested");
+    await expect(page.locator('.views button[data-v="nested"]')).toHaveAttribute("aria-pressed", "true");
+    await trigger(page, "khabar").click();
+    await expect(page.locator("#term-pop")).toBeVisible();
+    await expect(page).toHaveURL(/[?&]view=nested\b/);
+    await expect(page.locator('svg [data-view-show="nested"]')).toBeVisible();
+  });
+
+  test("a report URL carrying ?view=nested and a term stays on nested", async ({ page }) => {
+    // two params, so the bare-term redirect leaves it alone: the page opens on the nested view
+    await page.goto("/adad-al-turuq/report/?view=nested&khabar");
+    await expect(page).toHaveURL(/\/adad-al-turuq\/report\/\?view=nested&khabar$/);
+    await expect(page.locator('.views button[data-v="nested"]')).toHaveAttribute("aria-pressed", "true");
+    await expect(page.locator('svg [data-view-show="nested"]')).toBeVisible();
+    // the landing form, ?view=nested#khabar: the term opens, and the view stays on nested, since khabar shows in it
+    await page.goto("/adad-al-turuq/report/?view=nested#khabar");
+    await expect(trigger(page, "khabar")).toHaveAttribute("aria-expanded", "true");
+    await expect(page.locator("#term-pop")).toBeVisible();
+    await expect(page).toHaveURL(/[?&]view=nested\b/);
+    await expect(page.locator('.views button[data-v="nested"]')).toHaveAttribute("aria-pressed", "true");
+    await expect(page.locator('svg [data-view-show="nested"]')).toBeVisible();
+  });
+
   test.describe("with motion", () => {
     test.use({ contextOptions: { reducedMotion: "no-preference" } });
+
+    test("report: the rings slide to the nested view and end inside one another", async ({ page }) => {
+      await page.goto("/adad-al-turuq/report/");
+      await page.locator('.views button[data-v="nested"]').click();
+      // the ḥadīth ring ends inside the khabar ring once the transition finishes
+      const inside = () => page.locator("svg .vring circle").evaluateAll((els) => {
+        const [k, h] = els.map((e) => e.getBoundingClientRect());
+        return h.width < k.width * 0.6 && h.left > k.left && h.right < k.right && h.top > k.top && h.bottom < k.bottom;
+      });
+      await expect.poll(inside, { timeout: 5000 }).toBe(true);
+    });
 
     test("switching views updates the URL and the steps end at their targets", async ({ page }) => {
       await page.goto("/siyagh-al-ada/delivery/");
@@ -199,11 +259,11 @@ test.describe("carousel", () => {
   });
 });
 
-// the Names pattern: the names scene and the grades scene are both grids of cells
+// the Names pattern: the names, grades and report scenes are all grids of cells
 test.describe("names grid", () => {
   const lefts = (page: Page) => page.locator(".cells > svg").evaluateAll((els) => els.map((e) => Math.round(e.getBoundingClientRect().left)));
 
-  for (const path of ["/al-asma/names/", "/al-maqbul/grades/"]) {
+  for (const path of ["/al-asma/names/", "/al-maqbul/grades/", "/adad-al-turuq/report/"]) {
     test(`portrait: ${path} stacks its cells in one column`, async ({ page }) => {
       await page.setViewportSize(PORTRAIT);
       await page.goto(path);
@@ -240,6 +300,14 @@ test("Key and Labels modes swap the legend for labels, and the choice survives a
 test("scene prev/next: breaks leads on to unknown", async ({ page }) => {
   await page.goto("/al-mardud/breaks/");
   await expect(page.locator('.pn a[rel="next"]')).toHaveAttribute("href", /\/al-mardud\/unknown\/$/);
+});
+
+test("scene prev/next: the report scene opens its division and leads on to routes", async ({ page }) => {
+  await page.goto("/adad-al-turuq/report/");
+  await expect(page.locator('.pn a[rel="prev"]')).toHaveCount(0);
+  await expect(page.locator('.pn a[rel="next"]')).toHaveAttribute("href", /\/adad-al-turuq\/routes\/$/);
+  await page.goto("/adad-al-turuq/routes/");
+  await expect(page.locator('.pn a[rel="prev"]')).toHaveAttribute("href", /\/adad-al-turuq\/report\/$/);
 });
 
 // al-mardud has a scene on both moons; the other divisions also have moons still to come

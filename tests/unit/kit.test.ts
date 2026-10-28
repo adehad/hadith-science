@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { CHIP_CHAR_W, CHIP_PAD, chipRow, chipWidth, diamondPath, discRow, gaugeCells, scaleEnds, sweepAt } from "../../src/lib/kit";
+import { CHIP_CHAR_W, CHIP_PAD, bracketPath, chipRow, chipWidth, diamondPath, discRow, gaugeCells, scaleEnds, sweepAt } from "../../src/lib/kit";
 
 describe("chipWidth", () => {
   it("grows with the text, plus padding", () => {
@@ -108,5 +108,27 @@ describe("diamondPath", () => {
   });
   it("clamps r to half an edge, so the corners never cross", () => {
     expect(diamondPath(40, 30, 80, 60, 99)).toBe(diamondPath(40, 30, 80, 60, 25));
+  });
+});
+
+describe("bracketPath", () => {
+  it("draws Support's horizontal bracket: ticks up from each end of a line", () => {
+    expect(bracketPath(110, 158, 474)).toBe("M110 467 V474 H158 V467");
+  });
+  it("turns its ticks down", () => {
+    expect(bracketPath(10, 50, 100, { ticks: "down" })).toBe("M10 107 V100 H50 V107");
+  });
+  it("draws a vertical bracket, ticks left by default, and right on request", () => {
+    expect(bracketPath(106, 334, 200, { vertical: true })).toBe("M193 106 H200 V334 H193");
+    expect(bracketPath(106, 334, 200, { vertical: true, ticks: "right" })).toBe("M207 106 H200 V334 H207");
+  });
+  it("adds an open arrowhead beyond the chosen end, pointing away from the bracket", () => {
+    // the spine runs on 10 past the end, and a chevron 4 each side, 5 deep, opens back towards the bracket
+    expect(bracketPath(106, 334, 200, { vertical: true, arrow: "start" })).toBe("M193 106 H200 V334 H193 M200 106 V96 M196 101 L200 96 L204 101");
+    expect(bracketPath(10, 50, 100, { arrow: "end" })).toBe("M10 93 V100 H50 V93 M50 100 H60 M55 96 L60 100 L55 104");
+  });
+  it("rejects ticks that don't fit its orientation", () => {
+    expect(() => bracketPath(0, 10, 0, { ticks: "left" })).toThrow();
+    expect(() => bracketPath(0, 10, 0, { vertical: true, ticks: "up" })).toThrow();
   });
 });

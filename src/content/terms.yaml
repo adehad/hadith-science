@@ -8,16 +8,18 @@
   translit: Khabar
   ar: خَبَرٌ
   en: Report
-  def: "Any report. For most scholars it means the same as hadith; others keep hadith for the Prophet ﷺ and khabar for everyone else."
+  def: "Any report. For the scholars of this field it means the same as hadith; others keep hadith for the Prophet ﷺ and khabar for everyone else."
   section: "§5.2"
   division: adad-al-turuq
+  scene: report
 - id: hadith
   translit: Ḥadīth
   ar: حَدِيثٌ
   en: Hadith
-  def: "What comes from the Prophet ﷺ. Some set it against khabar; others say every hadith is a khabar, but not every khabar a hadith."
+  def: "A report. For the scholars of this field the same as khabar; some keep it for what comes from the Prophet ﷺ, and others say every hadith is a khabar, but not every khabar a hadith."
   section: "§5.2"
   division: adad-al-turuq
+  scene: report
 - id: isnad
   translit: Isnād
   ar: إِسْنَادٌ
@@ -25,6 +27,7 @@
   def: "The line of narrators that carries a report down to its wording."
   section: "§5.2"
   division: adad-al-turuq
+  scene: report
 - id: matn
   translit: Matn
   ar: مَتْنٌ
@@ -32,6 +35,7 @@
   def: "The wording of the report itself, where the chain of narrators ends."
   section: "§5.2"
   division: adad-al-turuq
+  scene: report
 - id: mutawatir
   translit: Mutawātir
   ar: مُتَوَاتِرٌ

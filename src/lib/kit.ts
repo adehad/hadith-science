@@ -73,3 +73,34 @@ export function diamondPath(cx: number, cy: number, w: number, h: number, r: num
   }
   return `${d} Z`;
 }
+
+export interface BracketOpts {
+  /** a vertical bracket runs down from a0 to a1 at x = at; a horizontal one (the default) across at y = at */
+  vertical?: boolean;
+  /** which way the end ticks point: up (the default) or down when horizontal, left (the default) or right when
+   *  vertical */
+  ticks?: "up" | "down" | "left" | "right";
+  /** an open arrowhead beyond one end (a0 is the start), pointing away from the bracket */
+  arrow?: "start" | "end";
+  /** the ticks' length */
+  tick?: number;
+}
+
+// a bracket (Bracket.astro) as one SVG path: a spine from a0 to a1 with a tick at each end, and optionally the spine
+// running on past one end to an open chevron (the isnād bracket's "towards the matn")
+export function bracketPath(a0: number, a1: number, at: number, { vertical = false, ticks, arrow, tick = 7 }: BracketOpts = {}): string {
+  const dir = ticks ?? (vertical ? "left" : "up");
+  if (vertical !== (dir === "left" || dir === "right")) throw new Error(`bracketPath: ticks ${dir} don't fit a ${vertical ? "vertical" : "horizontal"} bracket`);
+  const t = f(at + (dir === "up" || dir === "left" ? -tick : tick));
+  const AR = 10, HW = 4, HD = 5;
+  // p(along, across) writes a point in the bracket's own frame
+  const p = (a: number, c: number) => (vertical ? `${f(c)} ${f(a)}` : `${f(a)} ${f(c)}`);
+  let d = vertical ? `M${t} ${f(a0)} H${f(at)} V${f(a1)} H${t}` : `M${f(a0)} ${t} V${f(at)} H${f(a1)} V${t}`;
+  if (arrow) {
+    const end = arrow === "start" ? a0 : a1;
+    const s = (arrow === "start") === a0 < a1 ? -1 : 1; // away from the bracket
+    const tip = end + s * AR, back = tip - s * HD;
+    d += ` M${p(end, at)} ${vertical ? "V" : "H"}${f(tip)} M${p(back, at - HW)} L${p(tip, at)} L${p(back, at + HW)}`;
+  }
+  return d;
+}

@@ -1,8 +1,40 @@
 # Scenes (phase 2 plan). Each caption note is our own paraphrase of the cited §.
-- id: routes
+- id: report
   division: adad-al-turuq
   moons: [0, 1]
   order: 1
+  title: What is a report?
+  eyebrow: How a report reached us, its parts and names · §5.2
+  lede: A report reaches us as a chain of narrators leading to its words, the isnād and the matn. Before he counts chains, Ibn Ḥajar defines both, and sets out three ways scholars relate the names khabar and ḥadīth.
+  source: §5.2 Khabar, ḥadīth, isnād and matn; §5.5 the Intentions report
+  diagram: Report
+  width: 860
+  captions:
+    - term: isnad
+      note: "The isnād is an account of the path that leads to the matn. A report's ṭuruq, its routes, are its chains, and many chains is one of the conditions of mutawātir. The chain drawn here is the Intentions report: ʿAlqama alone from ʿUmar, Muḥammad ibn Ibrāhīm alone from ʿAlqama, and Yaḥyā ibn Saʿīd alone from him. Ibn Rushayd points out that it is the first report in al-Bukhārī's Ṣaḥīḥ (§5.2, §5.5)."
+    - term: matn
+      note: "The matn is the text in which the chain ends: the words themselves, which the chain leads to. Here it is the saying “actions are judged by intentions”, which ʿUmar narrated, and which ʿAlqama, Muḥammad ibn Ibrāhīm and Yaḥyā ibn Saʿīd passed on, one after another (§5.2, §5.5)."
+    - term: khabar
+      note: "For the scholars of this field, khabar means the same as ḥadīth. Some say ḥadīth is what comes from the Prophet ﷺ and khabar what comes from others; one who studies history and the like is called an akhbārī, and one who studies ḥadīth a muḥaddith. Others say every ḥadīth is a khabar, but not every khabar a ḥadīth. Ibn Ḥajar's text speaks of khabar because it covers more (§5.2)."
+    - term: hadith
+      note: "The other of the two names. Taken as a synonym, it means just what khabar means. On the view that sets them apart, ḥadīth is what comes from the Prophet ﷺ, and khabar what comes from anyone else. On the view that nests them, ḥadīth is the narrower name: every ḥadīth is a khabar, but not every khabar is a ḥadīth (§5.2)."
+  views:
+    - id: same
+      label: One meaning
+      scholars: The scholars of this field, §5.2
+      note: "Khabar and ḥadīth are two names for one thing."
+    - id: apart
+      label: Two kinds
+      scholars: "“It is said”, §5.2"
+      note: "Ḥadīth is what comes from the Prophet ﷺ and khabar what comes from others. One who studies history and the like is called an akhbārī, and one who studies ḥadīth a muḥaddith."
+    - id: nested
+      label: General and particular
+      scholars: "“It is said”, §5.2"
+      note: "The two relate as general and particular: every ḥadīth is a khabar, but not every khabar is a ḥadīth. Ibn Ḥajar's text speaks of khabar because it covers more."
+- id: routes
+  division: adad-al-turuq
+  moons: [0, 1]
+  order: 2
   title: How many routes carry it?
   eyebrow: How a report reached us · §5.2–5.6
   lede: Reports are sorted by the fewest narrators found at any one generation of the chain.

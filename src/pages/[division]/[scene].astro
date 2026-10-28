@@ -14,6 +14,7 @@ import Grades from "../../components/scenes/Grades.astro";
 import Opposition from "../../components/scenes/Opposition.astro";
 import Support from "../../components/scenes/Support.astro";
 import ActedOn from "../../components/scenes/ActedOn.astro";
+import Report from "../../components/scenes/Report.astro";
 import { loadContent } from "../../lib/content";
 import { captionsFor, type DiagramProps } from "../../lib/scene";
 import { href } from "../../lib/url";
@@ -37,7 +38,7 @@ const caps = captionsFor(scene, terms);
 
 // each scene task adds its diagram here; import only components that exist
 // typed by the props every diagram takes, so a misnamed or missing prop fails astro check
-const DIAGRAMS: Partial<Record<Diagram, (p: DiagramProps) => any>> = { Routes, Breaks, Unknown, Delivery, Names, Grades, Opposition, Support, ActedOn };
+const DIAGRAMS: Partial<Record<Diagram, (p: DiagramProps) => any>> = { Routes, Breaks, Unknown, Delivery, Names, Grades, Opposition, Support, ActedOn, Report };
 const D = DIAGRAMS[scene.diagram];
 if (!D) throw new Error(`no diagram component for ${scene.diagram}`);
 
@@ -52,6 +53,8 @@ const LEGEND: Partial<Record<Diagram, LegendKind[]>> = {
   Opposition: ["moon", "sahabi", "tabii", "later", "weak"],
   // the crescent-moon chains: every named narrator is drawn reliable; the dotted elided lines are not figures
   Support: ["moon", "sahabi", "tabii", "later"],
+  // the Intentions chain; the "two kinds" view adds a Companion and a plain narrator for "others"
+  Report: ["moon", "sahabi", "tabii", "later"],
   // ActedOn draws no narrator figures, so it has no legend and no Key/Labels switch (phase 3 design §1)
 };
 const kinds = LEGEND[scene.diagram];
