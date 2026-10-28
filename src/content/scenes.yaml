@@ -1,2 +1,25 @@
 # Scenes (phase 2 plan). Each caption note is our own paraphrase of the cited §.
-[]
+- id: routes
+  division: adad-al-turuq
+  moons: [0, 1]
+  order: 1
+  title: How many routes carry it?
+  eyebrow: How a report reached us · §5.2–5.6
+  lede: Reports are sorted by the fewest narrators found at any one generation of the chain.
+  source: §5.3 Mutawātir, §5.4 Mashhūr, §5.5 ʿAzīz, §5.6 Gharīb
+  diagram: Routes
+  width: 820
+  captions:
+    - term: gharib
+      note: "A single narrator alone carries it at some stage, and it does not matter where in the chain that happens; Ibn Ḥajar later splits it into absolute and relative gharīb. With mashhūr and ʿazīz it is one of the āḥād: reports that fall short of the conditions of mutawātir."
+    - term: aziz
+      note: "Never fewer than two at any stage: at least two narrate it from two. The name means either rare or strengthened, since a second route strengthens it. Being ʿazīz is not a condition for a sound (ṣaḥīḥ) report, against those who claimed it was."
+    - term: mashhur
+      note: "Carried by a limited number above two, so three or more at every stage, without meeting the conditions of mutawātir. It is named for being well known, and a group of jurists call it mustafīḍ. In common speech mashhūr also means any famous saying, even one with a single chain or none."
+    - term: mutawatir
+      note: "Carried at every stage by so many that, by experience, they could not have colluded on a lie or agreed on one by chance, and the last of them reports what was seen or heard. No fixed number is required. It gives certain knowledge (ʿilm yaqīnī), so its narrators are not investigated."
+  panels:
+    - { id: gharib, label: Gharīb, x0: 0, x1: 255 }
+    - { id: aziz, label: ʿAzīz, x0: 255, x1: 425 }
+    - { id: mashhur, label: Mashhūr, x0: 425, x1: 605 }
+    - { id: mutawatir, label: Mutawātir, x0: 605, x1: 820 }

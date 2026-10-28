@@ -38,6 +38,7 @@
   def: Carried by so many at every level that agreement on a lie is impossible.
   section: "§5.3"
   division: adad-al-turuq
+  scene: routes
 - id: ilm-yaqini
   translit: al-ʿIlm al-yaqīnī
   ar: الْعِلْمُ الْيَقِينِيُّ
@@ -59,6 +60,7 @@
   def: "Three or more at every stage, short of mass transmission. In common speech the word also covers any famous saying, even one without a chain."
   section: "§5.4"
   division: adad-al-turuq
+  scene: routes
 - id: mustafid
   translit: Mustafīḍ
   ar: مُسْتَفِيضٌ
@@ -73,6 +75,7 @@
   def: "Never fewer than two at any stage. Being ʿazīz is not a condition for a report to be sound."
   section: "§5.5"
   division: adad-al-turuq
+  scene: routes
 - id: gharib
   translit: Gharīb
   ar: غَرِيبٌ
@@ -80,6 +83,7 @@
   def: "One narrator alone carries it at some stage, wherever in the chain that happens."
   section: "§5.6"
   division: adad-al-turuq
+  scene: routes
 - id: ahad
   translit: Āḥād
   ar: آحَادٌ
