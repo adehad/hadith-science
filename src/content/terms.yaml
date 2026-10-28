@@ -1,3 +1,36 @@
+# Term inventory for the whole book (spec §6, §9). Every def is our own
+# paraphrase of the cited § of the Nuzhah; no translation text is reproduced.
+# No term has a scene yet, so all are pending until their division is built.
+
+# 1. ʿAdad al-ṭuruq (§5.2–5.8)
+- id: khabar
+  translit: Khabar
+  ar: خَبَرٌ
+  en: Report
+  def: "Any report. For most scholars it means the same as hadith; others keep hadith for the Prophet ﷺ and khabar for everyone else."
+  section: "§5.2"
+  division: adad-al-turuq
+- id: hadith
+  translit: Ḥadīth
+  ar: حَدِيثٌ
+  en: Hadith
+  def: "What comes from the Prophet ﷺ. Some set it against khabar; others say every hadith is a khabar, but not every khabar a hadith."
+  section: "§5.2"
+  division: adad-al-turuq
+- id: isnad
+  translit: Isnād
+  ar: إِسْنَادٌ
+  en: Chain
+  def: "The line of narrators that carries a report down to its wording."
+  section: "§5.2"
+  division: adad-al-turuq
+- id: matn
+  translit: Matn
+  ar: مَتْنٌ
+  en: Text
+  def: "The wording of the report itself, where the chain of narrators ends."
+  section: "§5.2"
+  division: adad-al-turuq
 - id: mutawatir
   translit: Mutawātir
   ar: مُتَوَاتِرٌ
@@ -5,17 +38,1158 @@
   def: Carried by so many at every level that agreement on a lie is impossible.
   section: "§5.3"
   division: adad-al-turuq
+- id: ilm-yaqini
+  translit: al-ʿIlm al-yaqīnī
+  ar: الْعِلْمُ الْيَقِينِيُّ
+  en: Certain knowledge
+  def: "Knowledge that compels belief with no reasoning needed, so even a layperson gains it. Mass transmission gives it."
+  section: "§5.3"
+  division: adad-al-turuq
+- id: ilm-nazari
+  translit: al-ʿIlm al-naẓarī
+  ar: الْعِلْمُ النَّظَرِيُّ
+  en: Reasoned knowledge
+  def: "Knowledge reached only by weighing evidence, so only someone able to reason gains it. Some single-route reports with supporting signs give it."
+  section: "§5.3"
+  division: adad-al-turuq
+- id: mashhur
+  translit: Mashhūr
+  ar: مَشْهُورٌ
+  en: Well-known
+  def: "Three or more at every stage, short of mass transmission. In common speech the word also covers any famous saying, even one without a chain."
+  section: "§5.4"
+  division: adad-al-turuq
+- id: mustafid
+  translit: Mustafīḍ
+  ar: مُسْتَفِيضٌ
+  en: Widespread
+  def: "A jurists' name for mashhūr. Some keep it for a report whose numbers are the same from the start of the chain to its end."
+  section: "§5.4"
+  division: adad-al-turuq
+- id: aziz
+  translit: ʿAzīz
+  ar: عَزِيزٌ
+  en: Scarce
+  def: "Never fewer than two at any stage. Being ʿazīz is not a condition for a report to be sound."
+  section: "§5.5"
+  division: adad-al-turuq
+- id: gharib
+  translit: Gharīb
+  ar: غَرِيبٌ
+  en: Rare
+  def: "One narrator alone carries it at some stage, wherever in the chain that happens."
+  section: "§5.6"
+  division: adad-al-turuq
+- id: ahad
+  translit: Āḥād
+  ar: آحَادٌ
+  en: Single-route reports
+  def: "Every report short of mass transmission: the mashhūr, ʿazīz and gharīb. Each is also called khabar al-wāḥid."
+  section: "§5.6"
+  division: adad-al-turuq
+- id: maqbul
+  translit: Maqbūl
+  ar: مَقْبُولٌ
+  en: Accepted
+  def: "A single-route report whose narrator is shown to be truthful. The majority hold that it must be acted on."
+  section: "§5.7"
+  division: adad-al-turuq
+- id: mardud
+  translit: Mardūd
+  ar: مَرْدُودٌ
+  en: Rejected
+  def: "A report whose narrator is not shown to be truthful. One held back only for want of proof is treated like it, without being proven false."
+  section: "§5.7"
+  division: adad-al-turuq
+- id: muhtaff-bil-qarain
+  translit: al-Khabar al-muḥtaff bi-l-qarāʾin
+  ar: الْخَبَرُ الْمُحْتَفُّ بِالْقَرَائِنِ
+  en: Report with supporting signs
+  def: "A single-route report backed by signs, such as being in both Ṣaḥīḥs, having several clean routes, or a chain of great imams, so it gives reasoned knowledge."
+  section: "§5.7"
+  division: adad-al-turuq
+- id: fard
+  translit: Fard
+  ar: فَرْدٌ
+  en: Solitary
+  def: "Means the same as gharīb, but in practice is used mostly for the absolute kind."
+  section: "§5.8"
+  division: adad-al-turuq
+- id: gharib-mutlaq
+  translit: Gharīb muṭlaq
+  ar: غَرِيبٌ مُطْلَقٌ
+  en: Absolutely rare
+  def: "The report is solitary at its root, the Companion's end of the chain. Usually called fard muṭlaq."
+  section: "§5.8"
+  division: adad-al-turuq
+- id: gharib-nisbi
+  translit: Gharīb nisbī
+  ar: غَرِيبٌ نِسْبِيٌّ
+  en: Relatively rare
+  def: "Several carry it from the Companion, but later one narrator is alone, or alone from a given person. The hadith itself may be well known."
+  section: "§5.8"
+  division: adad-al-turuq
+
+# 2. al-Maqbūl (§5.9–5.16)
+- id: sahih-li-dhatihi
+  translit: Ṣaḥīḥ li-dhātihi
+  ar: صَحِيحٌ لِذَاتِهِ
+  en: Sound in itself
+  def: "Upright, fully accurate narrators, an unbroken chain, and no anomaly or hidden defect. The highest of the four accepted grades."
+  section: "§5.9"
+  division: al-maqbul
+- id: adl
+  translit: ʿAdl
+  ar: عَدْلٌ
+  en: Upright
+  def: "A narrator whose settled character holds him to piety and decent conduct, keeping clear of idolatry, open sin and innovation."
+  section: "§5.9"
+  division: al-maqbul
+- id: dabt
+  translit: Ḍabṭ
+  ar: ضَبْطٌ
+  en: Accuracy
+  def: "A narrator's precision in keeping what he heard, either in memory or in his written copy."
+  section: "§5.9"
+  division: al-maqbul
+- id: dabt-sadr
+  translit: Ḍabṭ al-ṣadr
+  ar: ضَبْطُ الصَّدْرِ
+  en: Accuracy of memory
+  def: "Memory so sure that he can recite what he heard at any time he chooses."
+  section: "§5.9"
+  division: al-maqbul
+- id: dabt-kitab
+  translit: Ḍabṭ al-kitāb
+  ar: ضَبْطُ الْكِتَابِ
+  en: Accuracy of the book
+  def: "He keeps his written copy safe, where no one can alter it, from the day he heard and checked it until he narrates from it."
+  section: "§5.9"
+  division: al-maqbul
+- id: ittisal
+  translit: Ittiṣāl al-sanad
+  ar: اِتِّصَالُ السَّنَدِ
+  en: Connected chain
+  def: "Every narrator in the chain heard the report from the one above him, with no one dropped."
+  section: "§5.9"
+  division: al-maqbul
+- id: sahih-li-ghayrihi
+  translit: Ṣaḥīḥ li-ghayrihi
+  ar: صَحِيحٌ لِغَيْرِهِ
+  en: Sound through support
+  def: "Falls short of the top grade, but something makes up the gap, such as several routes, so it is graded sound."
+  section: "§5.9"
+  division: al-maqbul
+- id: hasan-li-ghayrihi
+  translit: Ḥasan li-ghayrihi
+  ar: حَسَنٌ لِغَيْرِهِ
+  en: Fair through support
+  def: "A held-back report, such as a mastūr's, a mursal, a mudallas or one from failing memory, raised to accepted when an equal or stronger route backs it (§5.39)."
+  section: "§5.9"
+  division: al-maqbul
+- id: asahh-al-asanid
+  translit: Aṣaḥḥ al-asānīd
+  ar: أَصَحُّ الْأَسَانِيدِ
+  en: Soundest chains
+  def: "Chains some imams named the very best, such as Mālik from Nāfiʿ from Ibn ʿUmar. Ibn Ḥajar prefers not to crown any single one."
+  section: "§5.9"
+  division: al-maqbul
+- id: hasan-li-dhatihi
+  translit: Ḥasan li-dhātihi
+  ar: حَسَنٌ لِذَاتِهِ
+  en: Fair in itself
+  def: "Meets every condition of sound except that the narrator's accuracy is a little lighter. Used as proof like sound, but ranked below it."
+  section: "§5.10"
+  division: al-maqbul
+- id: hasan-sahih
+  translit: Ḥasan ṣaḥīḥ
+  ar: حَسَنٌ صَحِيحٌ
+  en: Fair and sound
+  def: "al-Tirmidhī's double grade: for a lone route, doubt between the two verdicts; where there are two routes, one sound and one fair."
+  section: "§5.10"
+  division: al-maqbul
+- id: ziyadat-al-thiqa
+  translit: Ziyādat al-thiqa
+  ar: زِيَادَةُ الثِّقَةِ
+  en: Reliable narrator's addition
+  def: "Extra wording from a sound or fair narrator. Accepted if it clashes with nothing; if it clashes with a weightier narration, the stronger wins."
+  section: "§5.10"
+  division: al-maqbul
+- id: shadhdh
+  translit: Shādhdh
+  ar: شَاذٌّ
+  en: Anomalous
+  def: "An acceptable narrator's report that goes against a weightier one, weightier by accuracy, by numbers or by some other ground."
+  section: "§5.11"
+  division: al-maqbul
+- id: mahfuz
+  translit: Maḥfūẓ
+  ar: مَحْفُوظٌ
+  en: Preserved
+  def: "The weightier report that wins when an acceptable narrator goes against it. The losing one is shādhdh."
+  section: "§5.11"
+  division: al-maqbul
+- id: munkar
+  translit: Munkar
+  ar: مُنْكَرٌ
+  en: Denounced
+  def: "A weak narrator's report that goes against a stronger one. Some also use it for any report of a narrator with gross errors, negligence or open sin (§5.26)."
+  section: "§5.12"
+  division: al-maqbul
+- id: maruf
+  translit: Maʿrūf
+  ar: مَعْرُوفٌ
+  en: Recognised
+  def: "The stronger report that wins when a weak narrator goes against it. The losing one is munkar."
+  section: "§5.12"
+  division: al-maqbul
+- id: mutabi
+  translit: Mutābiʿ
+  ar: مُتَابِعٌ
+  en: Follow-up route
+  def: "Another route, from the same Companion, that turns up for a report first thought solitary. It strengthens the report."
+  section: "§5.13"
+  division: al-maqbul
+- id: mutabaa-tamma
+  translit: Mutābaʿa tāmma
+  ar: مُتَابَعَةٌ تَامَّةٌ
+  en: Full follow-up
+  def: "Another narrator shares the report with the narrator himself, taking it from the same teacher."
+  section: "§5.13"
+  division: al-maqbul
+- id: mutabaa-qasira
+  translit: Mutābaʿa qāṣira
+  ar: مُتَابَعَةٌ قَاصِرَةٌ
+  en: Partial follow-up
+  def: "The support joins the chain higher up, at the narrator's teacher or someone above him."
+  section: "§5.13"
+  division: al-maqbul
+- id: shahid
+  translit: Shāhid
+  ar: شَاهِدٌ
+  en: Witness report
+  def: "A text from a different Companion that matches in wording and meaning, or in meaning alone."
+  section: "§5.13"
+  division: al-maqbul
+- id: itibar
+  translit: Iʿtibār
+  ar: اِعْتِبَارٌ
+  en: Search for support
+  def: "Combing the collections and chains to see whether a seemingly solitary report has a follow-up or witness. A method, not a category."
+  section: "§5.13"
+  division: al-maqbul
+- id: muhkam
+  translit: Muḥkam
+  ar: مُحْكَمٌ
+  en: Unopposed
+  def: "An accepted report that no other report contradicts."
+  section: "§5.14"
+  division: al-maqbul
+- id: mukhtalif-al-hadith
+  translit: Mukhtalif al-ḥadīth
+  ar: مُخْتَلِفُ الْحَدِيثِ
+  en: Reconcilable conflict
+  def: "Two accepted reports that seem to clash but can be reconciled without forcing the meaning of either."
+  section: "§5.15"
+  division: al-maqbul
+- id: naskh
+  translit: Naskh
+  ar: نَسْخٌ
+  en: Abrogation
+  def: "A later proof of the Law lifting the ruling of an earlier one."
+  section: "§5.16"
+  division: al-maqbul
+- id: nasikh
+  translit: Nāsikh
+  ar: نَاسِخٌ
+  en: Abrogating
+  def: "The later report that shows an earlier ruling was lifted, known from the text itself, a Companion's word or the dates."
+  section: "§5.16"
+  division: al-maqbul
+- id: mansukh
+  translit: Mansūkh
+  ar: مَنْسُوخٌ
+  en: Abrogated
+  def: "The earlier report whose ruling a later one has lifted."
+  section: "§5.16"
+  division: al-maqbul
+- id: tarjih
+  translit: Tarjīḥ
+  ar: تَرْجِيحٌ
+  en: Preference
+  def: "When clashing reports cannot be reconciled and their dates are unknown, one is preferred on grounds found in its text or chain."
+  section: "§5.16"
+  division: al-maqbul
+- id: tawaqquf
+  translit: Tawaqquf
+  ar: تَوَقُّفٌ
+  en: Holding back
+  def: "When reconciling, abrogation and preference all fail, neither report is acted on for now; someone may yet see what was hidden."
+  section: "§5.16"
+  division: al-maqbul
+
+# 3. al-Mardūd (§5.17–5.39)
+- id: saqt
+  translit: Saqṭ
+  ar: سَقْطٌ
+  en: Omission
+  def: "A narrator missing from the chain: at the collector's end, after the Successor, or elsewhere. The gap may be plain or hidden."
+  section: "§5.17"
+  division: al-mardud
+- id: tan
+  translit: Ṭaʿn
+  ar: طَعْنٌ
+  en: Criticism
+  def: "A charge against a narrator's integrity or accuracy; with omission, one of the two grounds for rejecting a report."
+  section: "§5.17"
+  division: al-mardud
+- id: muallaq
+  translit: Muʿallaq
+  ar: مُعَلَّقٌ
+  en: Suspended
+  def: "The collector drops one or more narrators at his own end of the chain, up to the whole chain, and cites further up."
+  section: "§5.18"
+  division: al-mardud
 - id: mursal
   translit: Mursal
   ar: مُرْسَلٌ
   en: Hurried
-  def: A Successor reports from the Prophet ﷺ without naming the Companion.
-  section: "§5.18"
+  def: "A Successor attributes a saying or act directly to the Prophet ﷺ, dropping whoever stood between them, who may not have been a Companion."
+  section: "§5.19"
+  division: al-mardud
+- id: mudal
+  translit: Muʿḍal
+  ar: مُعْضَلٌ
+  en: Problematic
+  def: "Two or more narrators dropped in a row."
+  section: "§5.20"
+  division: al-mardud
+- id: munqati
+  translit: Munqaṭiʿ
+  ar: مُنْقَطِعٌ
+  en: Broken
+  def: "Narrators dropped at separate places in the chain, or a single narrator dropped, never two in a row."
+  section: "§5.20"
+  division: al-mardud
+- id: mudallas
+  translit: Mudallas
+  ar: مُدَلَّسٌ
+  en: Concealed
+  def: "A narrator uses a vague word like ʿan or qāla to pass on what he did not hear from a teacher he did meet, hiding the gap."
+  section: "§5.21"
+  division: al-mardud
+- id: mursal-khafi
+  translit: Mursal khafī
+  ar: مُرْسَلٌ خَفِيٌّ
+  en: Hidden mursal
+  def: "A narrator reports from a contemporary he is not known to have met, with someone hidden between them."
+  section: "§5.22"
+  division: al-mardud
+- id: kadhib
+  translit: Kadhib
+  ar: كَذِبٌ
+  en: Lying
+  def: "The gravest ground of criticism: the narrator deliberately attributed to the Prophet ﷺ what he did not say."
+  section: "§5.23"
+  division: al-mardud
+- id: tuhma-bil-kadhib
+  translit: Tuhma bi-l-kadhib
+  ar: تُهْمَةٌ بِالْكَذِبِ
+  en: Suspected of lying
+  def: "Only he carries a report that clashes with known principles, or he lies in everyday speech though no lie in hadith is proven."
+  section: "§5.23"
+  division: al-mardud
+- id: fuhsh-al-ghalat
+  translit: Fuḥsh al-ghalaṭ
+  ar: فُحْشُ الْغَلَطِ
+  en: Gross errors
+  def: "The narrator's mistakes are many and glaring."
+  section: "§5.23"
+  division: al-mardud
+- id: ghafla
+  translit: Ghafla
+  ar: غَفْلَةٌ
+  en: Negligence
+  def: "A naive carelessness about accuracy in what he passes on."
+  section: "§5.23"
+  division: al-mardud
+- id: fisq
+  translit: Fisq
+  ar: فِسْقٌ
+  en: Open sin
+  def: "Sinful deeds or words short of disbelief. Lying is a kind of it, listed on its own because it does hadith the most harm."
+  section: "§5.23"
+  division: al-mardud
+- id: wahm
+  translit: Wahm
+  ar: وَهْمٌ
+  en: Mistaken impression
+  def: "The narrator reports on a mistaken impression. When gathering the routes exposes it, the report is muʿallal."
+  section: "§5.23"
+  division: al-mardud
+- id: mukhalafa
+  translit: Mukhālafa
+  ar: مُخَالَفَةٌ
+  en: Going against the reliable
+  def: "The narrator departs from reliable narrators. Its forms are mudraj, maqlūb, mazīd, muḍṭarib and muṣaḥḥaf."
+  section: "§5.23"
+  division: al-mardud
+- id: mawdu
+  translit: Mawḍūʿ
+  ar: مَوْضُوعٌ
+  en: Fabricated
+  def: "A report from a narrator who lied about the Prophet ﷺ. Judged on strong evidence, such as a confession or a text against the Qurʾan."
+  section: "§5.24"
+  division: al-mardud
+- id: matruk
+  translit: Matrūk
+  ar: مَتْرُوكٌ
+  en: Abandoned
+  def: "A report whose narrator is accused of lying."
+  section: "§5.25"
+  division: al-mardud
+- id: muallal
+  translit: Muʿallal
+  ar: مُعَلَّلٌ
+  en: Defective
+  def: "A report with a hidden flaw, such as a broken chain passed off as connected, found only by gathering its routes. Few experts master it."
+  section: "§5.27"
+  division: al-mardud
+- id: mudraj
+  translit: Mudraj
+  ar: مُدْرَجٌ
+  en: Interpolated
+  def: "A chain or text altered by slipping in what does not belong there, without marking it."
+  section: "§5.28"
+  division: al-mardud
+- id: mudraj-al-isnad
+  translit: Mudraj al-isnād
+  ar: مُدْرَجُ الْإِسْنَادِ
+  en: Interpolated chain
+  def: "Chains run together: several routes merged into one, or one text given another text's chain."
+  section: "§5.28"
+  division: al-mardud
+- id: mudraj-al-matn
+  translit: Mudraj al-matn
+  ar: مُدْرَجُ الْمَتْنِ
+  en: Interpolated text
+  def: "Someone else's words, a Companion's or a later narrator's, run into the Prophet's ﷺ without a break, most often at the end."
+  section: "§5.28"
+  division: al-mardud
+- id: maqlub
+  translit: Maqlūb
+  ar: مَقْلُوبٌ
+  en: Inverted
+  def: "Something swapped round, such as Murra ibn Kaʿb given as Kaʿb ibn Murra, or the right and left hands reversed in a text."
+  section: "§5.29"
+  division: al-mardud
+- id: mazid
+  translit: al-Mazīd fī muttaṣil al-asānīd
+  ar: الْمَزِيدُ فِي مُتَّصِلِ الْأَسَانِيدِ
+  en: Added narrator
+  def: "One version adds a narrator inside a connected chain, while the more reliable version, which clearly heard directly, has no such link."
+  section: "§5.30"
+  division: al-mardud
+- id: mudtarib
+  translit: Muḍṭarib
+  ar: مُضْطَرِبٌ
+  en: Inconsistent
+  def: "Versions swap a narrator, or the wording, with no way to prefer one. Mostly in the chain, rarely in the text."
+  section: "§5.31"
+  division: al-mardud
+- id: musahhaf
+  translit: Muṣaḥḥaf
+  ar: مُصَحَّفٌ
+  en: Misdotted
+  def: "A word or name changed by its dots while the outline of the letters stays the same."
+  section: "§5.32"
+  division: al-mardud
+- id: muharraf
+  translit: Muḥarraf
+  ar: مُحَرَّفٌ
+  en: Misvowelled
+  def: "A word or name changed in its vowelling while the outline of the letters stays the same."
+  section: "§5.32"
+  division: al-mardud
+- id: ikhtisar-al-hadith
+  translit: Ikhtiṣār al-ḥadīth
+  ar: اِخْتِصَارُ الْحَدِيثِ
+  en: Shortening a hadith
+  def: "Cutting part of a hadith. Most allow it only for an expert, who leaves out nothing that the rest depends on."
+  section: "§5.33"
+  division: al-mardud
+- id: riwaya-bil-mana
+  translit: al-Riwāya bi-l-maʿnā
+  ar: الرِّوَايَةُ بِالْمَعْنَى
+  en: Narrating by meaning
+  def: "Passing on a hadith in other words. Most allow it for a scholar who knows how words carry meaning, though the exact wording is always better."
+  section: "§5.33"
+  division: al-mardud
+- id: gharib-al-hadith
+  translit: Gharīb al-ḥadīth
+  ar: غَرِيبُ الْحَدِيثِ
+  en: Rare words
+  def: "Uncommon words in a hadith, explained in dedicated books; Ibn al-Athīr's al-Nihāya is the easiest to consult."
+  section: "§5.34"
+  division: al-mardud
+- id: jahala
+  translit: Jahāla
+  ar: جَهَالَةٌ
+  en: Being unknown
+  def: "Doubt over who a narrator is or what he is like, because he goes by many names or because few narrate from him."
+  section: "§5.35"
   division: al-mardud
 - id: majhul
   translit: Majhūl
   ar: مَجْهُولٌ
   en: Unknown narrator
   def: Named, but no one has vouched for him.
+  section: "§5.36"
+  division: al-mardud
+- id: wuhdan
+  translit: al-Wuḥdān
+  ar: الْوُحْدَانُ
+  en: Single-student narrators
+  def: "Narrators from whom only one person narrates, even when they are named. Muslim and others listed them."
   section: "§5.35"
   division: al-mardud
+- id: mubham
+  translit: Mubham
+  ar: مُبْهَمٌ
+  en: Unnamed
+  def: "The narrator is left unnamed, as in ‘a man told me’. Not accepted until a route names him; even ‘a reliable man told me’ is not enough."
+  section: "§5.36"
+  division: al-mardud
+- id: majhul-al-ayn
+  translit: Majhūl al-ʿayn
+  ar: مَجْهُولُ الْعَيْنِ
+  en: Unknown person
+  def: "Named, but only one narrator reports from him. Rejected unless someone else vouches for him."
+  section: "§5.36"
+  division: al-mardud
+- id: mastur
+  translit: Mastūr
+  ar: مَسْتُورٌ
+  en: Of hidden standing
+  def: "Two or more narrate from him but no one vouches for him; also called majhūl al-ḥāl. His report is held back until his state is known."
+  section: "§5.36"
+  division: al-mardud
+- id: bida
+  translit: Bidʿa
+  ar: بِدْعَةٌ
+  en: Innovation
+  def: "A belief against what is established from the Prophet ﷺ. Rejected only if he denies a mass-transmitted, self-evident matter; otherwise accepted unless he promotes it or narrates what supports it."
+  section: "§5.37"
+  division: al-mardud
+- id: su-al-hifz
+  translit: Sūʾ al-ḥifẓ
+  ar: سُوءُ الْحِفْظِ
+  en: Poor memory
+  def: "The narrator's mistakes outweigh what he gets right, either all his life or from some point on."
+  section: "§5.38"
+  division: al-mardud
+- id: mukhtalit
+  translit: Mukhtaliṭ
+  ar: مُخْتَلِطٌ
+  en: Memory failed
+  def: "Memory that failed later, through age, blindness or lost books. What he narrated before is accepted if it can be told apart."
+  section: "§5.38"
+  division: al-mardud
+
+# 4. Muntahā al-isnād (§5.40–5.44)
+- id: marfu
+  translit: Marfūʿ
+  ar: مَرْفُوعٌ
+  en: Raised
+  def: "A report that ends at the Prophet ﷺ: his words, acts or silent approval, stated or implied, whether the chain is connected or not."
+  section: "§5.40"
+  division: muntaha-al-isnad
+- id: marfu-hukmi
+  translit: Marfūʿ ḥukman
+  ar: مَرْفُوعٌ حُكْمًا
+  en: Raised by implication
+  def: "A Companion's words that reasoning could not produce, like news of the unseen, or a phrase like ‘it is the sunna’, count as from the Prophet ﷺ."
+  section: "§5.40"
+  division: muntaha-al-isnad
+- id: sahabi
+  translit: Ṣaḥābī
+  ar: صَحَابِيٌّ
+  en: Companion
+  def: "Someone who met the Prophet ﷺ believing in him and died a Muslim, even if he left Islam for a time in between."
+  section: "§5.41"
+  division: muntaha-al-isnad
+- id: tabii
+  translit: Tābiʿī
+  ar: تَابِعِيٌّ
+  en: Successor
+  def: "Someone who met a Companion while believing in the Prophet ﷺ and died a Muslim."
+  section: "§5.42"
+  division: muntaha-al-isnad
+- id: mukhadram
+  translit: Mukhaḍram
+  ar: مُخَضْرَمٌ
+  en: Spanning both eras
+  def: "Someone who lived before Islam and into it but never saw the Prophet ﷺ. Ibn Ḥajar counts them as senior Successors."
+  section: "§5.42"
+  division: muntaha-al-isnad
+- id: mawquf
+  translit: Mawqūf
+  ar: مَوْقُوفٌ
+  en: Stopped
+  def: "A report that ends at a Companion."
+  section: "§5.43"
+  division: muntaha-al-isnad
+- id: maqtu
+  translit: Maqṭūʿ
+  ar: مَقْطُوعٌ
+  en: Cut off
+  def: "A report that ends at a Successor or someone later. Not to be confused with munqaṭiʿ, which describes the chain."
+  section: "§5.43"
+  division: muntaha-al-isnad
+- id: athar
+  translit: Athar
+  ar: أَثَرٌ
+  en: Trace
+  def: "A shared name for mawqūf and maqṭūʿ reports."
+  section: "§5.43"
+  division: muntaha-al-isnad
+- id: musnad
+  translit: Musnad
+  ar: مُسْنَدٌ
+  en: Supported
+  def: "A report a Companion raises to the Prophet ﷺ through a chain that looks connected."
+  section: "§5.44"
+  division: muntaha-al-isnad
+
+# 5. Laṭāʾif al-isnād (§5.45–5.54)
+- id: uluww
+  translit: ʿUluww
+  ar: عُلُوٌّ
+  en: Elevation
+  def: "A chain with fewer narrators than other routes of the same hadith, prized as nearer the source and less open to error."
+  section: "§5.45"
+  division: lataif-al-isnad
+- id: uluww-mutlaq
+  translit: ʿUluww muṭlaq
+  ar: عُلُوٌّ مُطْلَقٌ
+  en: Absolute elevation
+  def: "Fewer narrators all the way to the Prophet ﷺ than another route of the same hadith."
+  section: "§5.45"
+  division: lataif-al-isnad
+- id: uluww-nisbi
+  translit: ʿUluww nisbī
+  ar: عُلُوٌّ نِسْبِيٌّ
+  en: Relative elevation
+  def: "Fewer narrators up to a leading imam such as Mālik or al-Bukhārī, even if the chain beyond him is long."
+  section: "§5.45"
+  division: lataif-al-isnad
+- id: muwafaqa
+  translit: Muwāfaqa
+  ar: مُوَافَقَةٌ
+  en: Meeting point
+  def: "Reaching a collector's own teacher by a route that bypasses the collector, often with fewer links."
+  section: "§5.46"
+  division: lataif-al-isnad
+- id: badal
+  translit: Badal
+  ar: بَدَلٌ
+  en: Substitute
+  def: "Reaching the teacher of a collector's teacher by another route, so a different link stands in for the usual one."
+  section: "§5.46"
+  division: lataif-al-isnad
+- id: musawah
+  translit: Musāwāt
+  ar: مُسَاوَاةٌ
+  en: Equal count
+  def: "Our chain to the Prophet ﷺ has as many links as a collector's own chain for that hadith."
+  section: "§5.47"
+  division: lataif-al-isnad
+- id: musafaha
+  translit: Muṣāfaḥa
+  ar: مُصَافَحَةٌ
+  en: Handshake
+  def: "Our chain matches the count of a collector's student, as if we had met the collector and shaken his hand."
+  section: "§5.47"
+  division: lataif-al-isnad
+- id: nuzul
+  translit: Nuzūl
+  ar: نُزُولٌ
+  en: Descent
+  def: "The opposite of elevation: more narrators in the chain. Each kind of elevation has a matching kind of descent."
+  section: "§5.47"
+  division: lataif-al-isnad
+- id: aqran
+  translit: Riwāyat al-aqrān
+  ar: رِوَايَةُ الْأَقْرَانِ
+  en: Peers' narration
+  def: "A narrator reports from a peer, someone close to him in age or in the teachers they share."
+  section: "§5.48"
+  division: lataif-al-isnad
+- id: mudabbaj
+  translit: Mudabbaj
+  ar: مُدَبَّجٌ
+  en: Mutual narration
+  def: "Two peers each narrate from the other. Every mudabbaj is a peers' narration, but not the reverse."
+  section: "§5.48"
+  division: lataif-al-isnad
+- id: akabir-an-asaghir
+  translit: Riwāyat al-akābir ʿan al-aṣāghir
+  ar: رِوَايَةُ الْأَكَابِرِ عَنِ الْأَصَاغِرِ
+  en: Seniors from juniors
+  def: "Someone narrates from a person younger, lower in rank or later to the teachers, like a father from his son or a Companion from a Successor."
+  section: "§5.49"
+  division: lataif-al-isnad
+- id: abna-an-aba
+  translit: Riwāyat al-abnāʾ ʿan al-ābāʾ
+  ar: رِوَايَةُ الْأَبْنَاءِ عَنِ الْآبَاءِ
+  en: Sons from fathers
+  def: "A narrator reports from his father, often on from his grandfather; such family chains can run to fourteen fathers."
+  section: "§5.50"
+  division: lataif-al-isnad
+- id: sabiq-wa-lahiq
+  translit: al-Sābiq wa-l-lāḥiq
+  ar: السَّابِقُ وَاللَّاحِقُ
+  en: Early and late
+  def: "Two narrators share a teacher, but one dies long before the other, often because the younger heard him late in life and lived long."
+  section: "§5.51"
+  division: lataif-al-isnad
+- id: muhmal
+  translit: Muhmal
+  ar: مُهْمَلٌ
+  en: Unspecified
+  def: "A narrator named only as, say, ‘Aḥmad’ when two of his teachers share that name. Harmless if both are reliable."
+  section: "§5.52"
+  division: lataif-al-isnad
+- id: man-haddatha-wa-nasiya
+  translit: Man ḥaddatha wa-nasiya
+  ar: مَنْ حَدَّثَ وَنَسِيَ
+  en: Narrated, then forgot
+  def: "A teacher denies a report passed on from him. A flat denial sinks the report without discrediting either; ‘I don't recall’ leaves it accepted."
+  section: "§5.53"
+  division: lataif-al-isnad
+- id: musalsal
+  translit: Musalsal
+  ar: مُسَلْسَلٌ
+  en: Chained
+  def: "Every narrator in the chain repeats the same delivery words, phrase or act, such as handing over a date or holding his beard."
+  section: "§5.54"
+  division: lataif-al-isnad
+
+# 6. Ṣiyagh al-adāʾ (§5.55–5.58)
+- id: samitu
+  translit: Samiʿtu
+  ar: سَمِعْتُ
+  en: I heard
+  def: "First rank: he heard the teacher's own words, alone. The clearest delivery word, since it leaves no room for a hidden link."
+  section: "§5.55"
+  division: siyagh-al-ada
+- id: haddathana
+  translit: Ḥaddathanā
+  ar: حَدَّثَنَا
+  en: He told us
+  def: "First rank, with samiʿtu. The plural usually means others were there; a concealer sometimes misuses it for a mere permission."
+  section: "§5.55"
+  division: siyagh-al-ada
+- id: akhbarana
+  translit: Akhbaranā
+  ar: أَخْبَرَنَا
+  en: He informed us
+  def: "Second rank: the student read to the teacher. Eastern scholars reserve it for that; for most western scholars it equals ḥaddathanā."
+  section: "§5.55"
+  division: siyagh-al-ada
+- id: qaratu-alayhi
+  translit: Qaraʾtu ʿalayhi
+  ar: قَرَأْتُ عَلَيْهِ
+  en: I read to him
+  def: "Second rank: he read to the teacher himself. Better than akhbaranā because it says exactly what happened."
+  section: "§5.55"
+  division: siyagh-al-ada
+- id: quria-alayhi
+  translit: Quriʾa ʿalayhi wa-ana asmaʿu
+  ar: قُرِئَ عَلَيْهِ وَأَنَا أَسْمَعُ
+  en: Read to him as I listened
+  def: "Third rank: someone else read to the teacher while he listened. A plural akhbaranā or qaraʾnā belongs here too."
+  section: "§5.55"
+  division: siyagh-al-ada
+- id: anbaana
+  translit: Anbaʾanā
+  ar: أَنْبَأَنَا
+  en: He notified us
+  def: "Fourth rank. For the early scholars, the same as akhbaranā; later scholars use it for permission (ijāza), like ʿan."
+  section: "§5.55"
+  division: siyagh-al-ada
+- id: nawalana
+  translit: Nāwalanā
+  ar: نَاوَلَنَا
+  en: He handed us
+  def: "Fifth rank: the teacher handed over his book (munāwala)."
+  section: "§5.55"
+  division: siyagh-al-ada
+- id: shafahani
+  translit: Shāfahanī
+  ar: شَافَهَنِي
+  en: He told me in person
+  def: "Sixth rank: permission (ijāza) given by word of mouth, face to face (mushāfaha)."
+  section: "§5.55"
+  division: siyagh-al-ada
+- id: kataba-ilayya
+  translit: Kataba ilayya
+  ar: كَتَبَ إِلَيَّ
+  en: He wrote to me
+  def: "Seventh rank: permission (ijāza) given in writing (mukātaba)."
+  section: "§5.55"
+  division: siyagh-al-ada
+- id: an
+  translit: ʿAn
+  ar: عَنْ
+  en: From
+  def: "Eighth rank, with qāla, dhakara and rawā: words that could mean he heard it, had permission, or did not hear it at all."
+  section: "§5.55"
+  division: siyagh-al-ada
+- id: imla
+  translit: Imlāʾ
+  ar: إِمْلَاءٌ
+  en: Dictation
+  def: "The teacher recites from memory while students write. The best kind of hearing, since it adds care and accuracy."
+  section: "§5.55"
+  division: siyagh-al-ada
+- id: munawala
+  translit: Munāwala
+  ar: مُنَاوَلَةٌ
+  en: Handing over
+  def: "The teacher gives his manuscript or a checked copy and says ‘narrate this from me’. With permission, and the student keeping it, the highest ijāza."
+  section: "§5.55"
+  division: siyagh-al-ada
+- id: mukataba
+  translit: Mukātaba (kitāba)
+  ar: مُكَاتَبَةٌ
+  en: Correspondence
+  def: "Receiving by letter. Early scholars meant a teacher writing out hadith for a student; later ones also use it for a written permission alone."
+  section: "§5.55"
+  division: siyagh-al-ada
+- id: ijaza
+  translit: Ijāza
+  ar: إِجَازَةٌ
+  en: Permission
+  def: "A teacher's licence to narrate his reports, given in person or by letter. Several weaker ways of receiving count only with it."
+  section: "§5.55"
+  division: siyagh-al-ada
+- id: ijaza-muayyana
+  translit: Ijāza muʿayyana
+  ar: إِجَازَةٌ مُعَيَّنَةٌ
+  en: Specific permission
+  def: "Permission to narrate a named book of the teacher's, with the way of narrating it specified."
+  section: "§5.55"
+  division: siyagh-al-ada
+- id: muanan
+  translit: Muʿanʿan
+  ar: مُعَنْعَنٌ
+  en: Chain of ʿan
+  def: "A chain linked by ʿan. It counts as heard between contemporaries, not from a concealer; Ibn Ḥajar also wants proof they met at least once."
+  section: "§5.56"
+  division: siyagh-al-ada
+- id: wijada
+  translit: Wijāda
+  ar: وِجَادَةٌ
+  en: Finding
+  def: "Finding reports in a known scholar's handwriting. He may say ‘I found in his hand’, but not akhbaranā unless he also has permission."
+  section: "§5.57"
+  division: siyagh-al-ada
+- id: wasiyya
+  translit: Waṣiyya
+  ar: وَصِيَّةٌ
+  en: Bequest
+  def: "A teacher bequeaths his books to someone at his death or before a journey. Some early imams allowed narrating on that alone; most require permission."
+  section: "§5.57"
+  division: siyagh-al-ada
+- id: ilam
+  translit: Iʿlām
+  ar: إِعْلَامٌ
+  en: Notice
+  def: "The teacher only tells a student that he narrates a certain book. It counts only with permission."
+  section: "§5.58"
+  division: siyagh-al-ada
+- id: ijaza-amma
+  translit: Ijāza ʿāmma
+  ar: إِجَازَةٌ عَامَّةٌ
+  en: General permission
+  def: "Permission to all Muslims, to all one's contemporaries or to a whole region. Ibn al-Ṣalāḥ called such forms a disliked leniency, still better than a muʿḍal."
+  section: "§5.58"
+  division: siyagh-al-ada
+- id: ijaza-majhul
+  translit: Ijāza li-l-majhūl
+  ar: إِجَازَةٌ لِلْمَجْهُولِ
+  en: Permission to the unidentified
+  def: "Permission naming an unidentified person or book. Not valid; even al-Khaṭīb, lenient on the other forms, rejected it."
+  section: "§5.58"
+  division: siyagh-al-ada
+- id: ijaza-madum
+  translit: Ijāza li-l-maʿdūm
+  ar: إِجَازَةٌ لِلْمَعْدُومِ
+  en: Permission to the unborn
+  def: "Permission to someone not yet born, such as ‘whoever will be born to you’. Ibn Ḥajar holds it invalid."
+  section: "§5.58"
+  division: siyagh-al-ada
+- id: ijaza-muallaqa
+  translit: Ijāza muʿallaqa
+  ar: إِجَازَةٌ مُعَلَّقَةٌ
+  en: Conditional permission
+  def: "Permission that hangs on someone else's wish, as in ‘if so-and-so wishes’. Invalid, unlike ‘if you wish’."
+  section: "§5.58"
+  division: siyagh-al-ada
+
+# 7. al-Asmāʾ (§5.59–5.61)
+- id: muttafiq-wa-muftariq
+  translit: al-Muttafiq wa-l-muftariq
+  ar: الْمُتَّفِقُ وَالْمُفْتَرِقُ
+  en: Same name, different people
+  def: "Names and fathers' names (or kunya and nisba) match, yet they are different people. Knowing it stops two being taken as one."
+  section: "§5.59"
+  division: al-asma
+- id: mutalif-wa-mukhtalif
+  translit: al-Muʾtalif wa-l-mukhtalif
+  ar: الْمُؤْتَلِفُ وَالْمُخْتَلِفُ
+  en: Written alike, read differently
+  def: "Names that look the same on the page but are read differently, by their dots or vowels. Nothing around a name helps, so they must be learned."
+  section: "§5.60"
+  division: al-asma
+- id: mutashabih
+  translit: al-Mutashābih
+  ar: الْمُتَشَابِهُ
+  en: Look-alike names
+  def: "Names alike in writing and sound but with fathers' names read differently, or the reverse, like Muḥammad ibn ʿAqīl and Muḥammad ibn ʿUqayl."
+  section: "§5.61"
+  division: al-asma
+
+# 8. Maʿrifat al-ruwāt (§5.62–5.71)
+- id: tabaqa
+  translit: Ṭabaqa
+  ar: طَبَقَةٌ
+  en: Generation
+  def: "A group of narrators close in age and in the teachers they met. Knowing it prevents confusion and helps expose concealment."
+  section: "§5.62"
+  division: marifat-al-ruwat
+- id: mawalid-wa-wafayat
+  translit: al-Mawālīd wa-l-wafayāt
+  ar: الْمَوَالِيدُ وَالْوَفَيَاتُ
+  en: Birth and death dates
+  def: "Narrators' birth and death dates, which expose false claims to have met someone."
+  section: "§5.62"
+  division: marifat-al-ruwat
+- id: awtan
+  translit: al-Buldān wa-l-awṭān
+  ar: الْبُلْدَانُ وَالْأَوْطَانُ
+  en: Homelands
+  def: "Narrators' towns and lands, which keep apart two similar names from different places."
+  section: "§5.62"
+  division: marifat-al-ruwat
+- id: jarh
+  translit: Jarḥ
+  ar: جَرْحٌ
+  en: Discrediting
+  def: "Faulting a narrator's integrity or accuracy. Taken only from a reliable, informed critic, never from one driven by prejudice."
+  section: "§5.64"
+  division: marifat-al-ruwat
+- id: tadil
+  translit: Taʿdīl
+  ar: تَعْدِيلٌ
+  en: Accrediting
+  def: "Declaring a narrator reliable. One informed critic is enough, since it works like a verdict rather than testimony."
+  section: "§5.64"
+  division: marifat-al-ruwat
+- id: maratib-al-jarh
+  translit: Marātib al-jarḥ
+  ar: مَرَاتِبُ الْجَرْحِ
+  en: Ranks of discrediting
+  def: "Words of criticism graded from the worst, superlatives like akdhab al-nās, down to the mildest, like layyin."
+  section: "§5.63"
+  division: marifat-al-ruwat
+- id: maratib-al-tadil
+  translit: Marātib al-taʿdīl
+  ar: مَرَاتِبُ التَّعْدِيلِ
+  en: Ranks of accrediting
+  def: "Words of praise graded from the highest, superlatives like awthaq al-nās, down to the mildest, like shaykh."
+  section: "§5.63"
+  division: marifat-al-ruwat
+- id: akdhab-al-nas
+  translit: Akdhab al-nās
+  ar: أَكْذَبُ النَّاسِ
+  en: Greatest of liars
+  def: "Worst rank of criticism: superlatives like this, or ‘the pillar of lying’."
+  section: "§5.63"
+  division: marifat-al-ruwat
+- id: kadhdhab
+  translit: Kadhdhāb
+  ar: كَذَّابٌ
+  en: Liar
+  def: "Next rank of criticism, with dajjāl and waḍḍāʿ: intensive forms, but short of the superlatives."
+  section: "§5.63"
+  division: marifat-al-ruwat
+- id: munkar-al-hadith
+  translit: Munkar al-ḥadīth
+  ar: مُنْكَرُ الْحَدِيثِ
+  en: His hadith is denounced
+  def: "A middle rank of criticism, with matrūk, sāqiṭ and fāḥish al-ghalaṭ; harsher than ḍaʿīf."
+  section: "§5.63"
+  division: marifat-al-ruwat
+- id: daif
+  translit: Ḍaʿīf
+  ar: ضَعِيفٌ
+  en: Weak
+  def: "A lighter word of criticism, with laysa bi-l-qawī; less severe than munkar al-ḥadīth."
+  section: "§5.63"
+  division: marifat-al-ruwat
+- id: layyin
+  translit: Layyin
+  ar: لَيِّنٌ
+  en: Soft
+  def: "Among the mildest words of criticism, with sayyiʾ al-ḥifẓ and fīhi maqāl."
+  section: "§5.63"
+  division: marifat-al-ruwat
+- id: awthaq-al-nas
+  translit: Awthaq al-nās
+  ar: أَوْثَقُ النَّاسِ
+  en: Most reliable of people
+  def: "Top rank of praise: superlatives like this, athbat al-nās, or ‘the last word in reliability’."
+  section: "§5.63"
+  division: marifat-al-ruwat
+- id: thiqa
+  translit: Thiqa
+  ar: ثِقَةٌ
+  en: Reliable
+  def: "A word of praise. Repeated (thiqa thiqa) or paired with another, like ʿadl ḍābiṭ, it marks the rank just below the superlatives."
+  section: "§5.63"
+  division: marifat-al-ruwat
+- id: shaykh
+  translit: Shaykh
+  ar: شَيْخٌ
+  en: Elder
+  def: "Among the mildest words of praise, with yurwā ḥadīthuhu and yuʿtabaru bihi."
+  section: "§5.63"
+  division: marifat-al-ruwat
+- id: jarh-mufassar
+  translit: Jarḥ mufassar
+  ar: جَرْحٌ مُفَسَّرٌ
+  en: Explained criticism
+  def: "Criticism whose reason an expert states. It outweighs praise; unexplained criticism cannot unseat a narrator already shown to be upright."
+  section: "§5.64"
+  division: marifat-al-ruwat
+- id: kunya
+  translit: Kunya
+  ar: كُنْيَةٌ
+  en: Kunya (Abū …)
+  def: "A name of the form Abū or Umm so-and-so. Knowing narrators' kunyas stops one person, named two ways, being taken for two."
+  section: "§5.65"
+  division: marifat-al-ruwat
+- id: laqab
+  translit: Laqab
+  ar: لَقَبٌ
+  en: Nickname
+  def: "A by-name, sometimes from a flaw, like al-Aʿmash (the bleary-eyed), sometimes from a trade."
+  section: "§5.65"
+  division: marifat-al-ruwat
+- id: nisba
+  translit: Nisba
+  ar: نِسْبَةٌ
+  en: Attribution
+  def: "A name tying a narrator to a tribe, place or trade. Some mislead: al-Ḥadhdhāʾ (the cobbler) only kept cobblers' company."
+  section: "§5.65"
+  division: marifat-al-ruwat
+- id: mawla
+  translit: Mawlā
+  ar: مَوْلًى
+  en: Client
+  def: "A narrator tied to a tribe by having been freed, by alliance, or by accepting Islam through it. One word covers all, so context decides."
+  section: "§5.65"
+  division: marifat-al-ruwat
+- id: mufradat
+  translit: al-Asmāʾ al-mufrada
+  ar: الْأَسْمَاءُ الْمُفْرَدَةُ
+  en: Unique names
+  def: "Names, kunyas or nicknames borne by only one narrator, like Sandar."
+  section: "§5.65"
+  division: marifat-al-ruwat
+- id: ikhwa
+  translit: al-Ikhwa wa-l-akhawāt
+  ar: الْإِخْوَةُ وَالْأَخَوَاتُ
+  en: Siblings
+  def: "Knowing which narrators are brothers and sisters; early scholars such as ʿAlī ibn al-Madīnī wrote on it."
+  section: "§5.65"
+  division: marifat-al-ruwat
+- id: adab-al-shaykh-wa-al-talib
+  translit: Ādāb al-shaykh wa-l-ṭālib
+  ar: آدَابُ الشَّيْخِ وَالطَّالِبِ
+  en: Etiquette of teacher and student
+  def: "Both need sincere intent and good character. The teacher narrates with dignity and stops when memory fails; the student honours him and records carefully."
+  section: "§5.66"
+  division: marifat-al-ruwat
+- id: tahammul
+  translit: Taḥammul
+  ar: تَحَمُّلٌ
+  en: Receiving
+  def: "Taking in hadith, soundest from the age of understanding. A non-Muslim or sinner may receive and narrate later, once Muslim or reformed."
+  section: "§5.67"
+  division: marifat-al-ruwat
+- id: ada
+  translit: Adāʾ
+  ar: أَدَاءٌ
+  en: Delivering
+  def: "Passing hadith on. There is no set age; what counts is need and ability. Mālik narrated younger than the age some scholars proposed."
+  section: "§5.67"
+  division: marifat-al-ruwat
+- id: kitabat-al-hadith
+  translit: Kitābat al-ḥadīth
+  ar: كِتَابَةُ الْحَدِيثِ
+  en: Writing hadith
+  def: "Writing clearly, marking the vowels and dots of hard words, and adding missed text in the right-hand margin if there is room."
+  section: "§5.68"
+  division: marifat-al-ruwat
+- id: ard
+  translit: ʿArḍ
+  ar: عَرْضٌ
+  en: Checking a copy
+  def: "Comparing one's written copy against the source, with the teacher, a reliable person, or alone, piece by piece."
+  section: "§5.68"
+  division: marifat-al-ruwat
+- id: rihla
+  translit: Riḥla
+  ar: رِحْلَةٌ
+  en: Travel for hadith
+  def: "Travelling for hadith after first gathering everything in one's own town. The aim is more reports, not more teachers."
+  section: "§5.69"
+  division: marifat-al-ruwat
+- id: masanid
+  translit: al-Masānīd
+  ar: الْمَسَانِيدُ
+  en: Musnad collections
+  def: "Books gathering each Companion's reports together, ordered by precedence in Islam or alphabetically."
+  section: "§5.70"
+  division: marifat-al-ruwat
+- id: abwab
+  translit: al-Abwāb
+  ar: الْأَبْوَابُ
+  en: Topical chapters
+  def: "Books arranged by legal or other topics. Best kept to sound and fair reports; any weak ones should be flagged."
+  section: "§5.70"
+  division: marifat-al-ruwat
+- id: ilal
+  translit: al-ʿIlal
+  ar: الْعِلَلُ
+  en: Books of hidden flaws
+  def: "Books giving each text with its routes and how they differ, to show hidden flaws; best arranged by chapter."
+  section: "§5.70"
+  division: marifat-al-ruwat
+- id: atraf
+  translit: al-Aṭrāf
+  ar: الْأَطْرَافُ
+  en: Hadith indexes
+  def: "Books citing just enough of each hadith to call the rest to mind, then gathering its chains."
+  section: "§5.70"
+  division: marifat-al-ruwat
+- id: asbab-al-hadith
+  translit: Asbāb al-ḥadīth
+  ar: أَسْبَابُ الْحَدِيثِ
+  en: Reasons behind a hadith
+  def: "The occasions that prompted a hadith. Abū Ḥafṣ al-ʿUkbarī wrote a book on them."
+  section: "§5.71"
+  division: marifat-al-ruwat
