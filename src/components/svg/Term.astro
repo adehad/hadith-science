@@ -1,0 +1,15 @@
+---
+// an SVG term trigger: popover.ts makes any [data-term][data-term-json] a button (role, tabindex, keys).
+// x, y, w, h give the hit rectangle in SVG units; the caller puts the visible text and an <InfoIcon> in the slot.
+interface Props { slug: string; json: string; label: string; x: number; y: number; w: number; h: number }
+const { slug, json, label, x, y, w, h } = Astro.props;
+---
+<g class="term" data-term={slug} data-term-json={json} aria-label={label}>
+  <rect class="hit" x={x} y={y} width={w} height={h} rx="8" />
+  <slot />
+</g>
+<style>
+  .term{cursor:pointer;outline:none}
+  .term .hit{fill:transparent;stroke:none}
+  .term:focus-visible .hit{stroke:var(--gold-b);stroke-width:2}
+</style>

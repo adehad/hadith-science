@@ -1,0 +1,67 @@
+---
+// a single vertical chain from the moon, ported from the mockup's chain(). Row 0 of layers is the Prophet ﷺ;
+// kinds gives one figure per row after it, top to bottom. Transmission flows down (spec §3.4): each figure
+// is joined to the previous one that isn't a ghost, with a red skip arrow when rows were jumped.
+// Needs <Defs /> on the page for the gold gradient and the arrowheads.
+import Moon from "./Moon.astro";
+import Narrator from "./Narrator.astro";
+import Arrow from "./Arrow.astro";
+import type { ComponentProps } from "astro/types";
+
+type Kind = "sahabi" | "tabii" | "later" | "majhul" | "mubham" | "ghost";
+interface Props {
+  cx: number;
+  /** [name, y] per row; row 0 is the moon */
+  layers: [string, number][];
+  kinds: Kind[];
+  /** content labels that always show (e.g. "dropped"); an empty string falls back to the mode label */
+  labels?: string[];
+  /** kind names shown only in Labels mode; defaults to KIND_NAME, with the last figure named "Collector" */
+  modeLabels?: string[];
+}
+const { cx, layers, kinds, labels = [], modeLabels } = Astro.props;
+
+const KIND_NAME: Record<Kind, string> = { sahabi: "Companion", tabii: "Successor", later: "Narrator", majhul: "Unknown", mubham: "Unnamed", ghost: "Missing" };
+// the chain's figures in the narrator-figure language (spec §3.2)
+type Fig = Omit<ComponentProps<typeof Narrator>, "x" | "y">;
+const FIG: Record<Kind, Fig> = {
+  sahabi: { kind: "sahabi" },
+  tabii: { kind: "tabii" },
+  later: { kind: "later" },
+  majhul: { kind: "later", scroll: "yes", seal: "slot" },
+  mubham: { kind: "later", face: "blank", scroll: "slot", seal: "slot" },
+  ghost: { ghost: true },
+};
+const K = 0.9;
+const f = (n: number) => +n.toFixed(2);
+const moonY = layers[0][1];
+const ys = layers.slice(1).map((l) => l[1]);
+const rowCount = ys.length;
+if (kinds.length > rowCount) throw new Error(`Chain: ${kinds.length} kinds for ${rowCount} rows`);
+
+let prevIdx = -1;
+const rows = kinds.map((kind, i) => {
+  const y = ys[i];
+  const label = labels[i] || "";
+  const modeLabel = label ? undefined : (modeLabels?.[i] ?? (i === kinds.length - 1 ? "Collector" : KIND_NAME[kind]));
+  let arrow: { x1: number; y1: number; x2: number; y2: number; skip: boolean; bend: number } | undefined;
+  if (kind !== "ghost") {
+    const fromY = prevIdx < 0 ? moonY + 28 : ys[prevIdx] + 22;
+    const jumped = i - prevIdx > 1;
+    arrow = jumped
+      ? { x1: cx - 2, y1: fromY, x2: cx - 2, y2: y - 24, skip: true, bend: -70 }
+      : { x1: cx, y1: fromY, x2: cx, y2: y - 24, skip: false, bend: 0 };
+    prevIdx = i;
+  }
+  return { kind, y, label, modeLabel, arrow };
+});
+---
+<Moon cx={cx} cy={moonY} />
+{/* arrows first, so the labels' surface halo sits over an arrow that passes behind them */}
+{rows.map((r) => r.arrow && <Arrow {...r.arrow} />)}
+{rows.map((r) => (
+  <>
+    <Narrator x={cx} y={r.y} k={K} label={r.modeLabel} {...FIG[r.kind]} />
+    {r.label && <text class={`lbl${r.kind === "ghost" ? " gap" : ""}`} x={r.kind === "ghost" ? cx + 6 : cx} y={f(r.y + 22 * K + 14)}>{r.label}</text>}
+  </>
+))}

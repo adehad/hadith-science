@@ -1,0 +1,11 @@
+---
+// generation rows behind a chain diagram (ported from the mockup's layerGuides()): a rule and a name per row
+interface Props { w: number; layers: [string, number][] }
+const { w, layers } = Astro.props;
+---
+{layers.map(([name, y]) => (
+  <>
+    <line class="rule" x1="90" x2={w - 10} y1={y} y2={y} />
+    <text class="layer" x="10" y={y + 4}>{name}</text>
+  </>
+))}

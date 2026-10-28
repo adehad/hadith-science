@@ -4,6 +4,8 @@ import Page from "../layouts/Page.astro";
 import Moon from "../components/svg/Moon.astro";
 import Narrator from "../components/svg/Narrator.astro";
 import InfoIcon from "../components/svg/InfoIcon.astro";
+import Term from "../components/svg/Term.astro";
+import Defs from "../components/svg/Defs.astro";
 import { loadContent } from "../lib/content";
 
 type Fig = Omit<import("astro/types").ComponentProps<typeof Narrator>, "x" | "y">;
@@ -44,26 +46,15 @@ const cases = CASES.map(([en, slug, fig, lbl, text], i) => {
   </div>
   <div class="stage">
     <svg viewBox="0 0 860 440" role="group" aria-label="Eight narrator cases, then the Prophet ﷺ and three generations, drawn as figures">
-      <defs>
-        <!-- the Companion's shimmering gold, used by Narrator kind="sahabi" -->
-        <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" style="stop-color:var(--gold-a)" />
-          <stop offset=".38" style="stop-color:var(--gold-b)" />
-          <stop offset=".5" style="stop-color:var(--gold-c)" />
-          <stop offset=".62" style="stop-color:var(--gold-b)" />
-          <stop offset="1" style="stop-color:var(--gold-a)" />
-          <animateTransform class="shimmer" attributeName="gradientTransform" type="translate" values="-1 -1;1 1;1 1" keyTimes="0;.6;1" dur="3.2s" repeatCount="indefinite" />
-        </linearGradient>
-      </defs>
+      <Defs />
       {/* the Arabic heading is aria-hidden: the trigger is named by its aria-label (English + transliteration) */}
       {cases.map((c) => (
         <>
-          <g class="term" data-term={c.slug} data-term-json={c.json} aria-label={`${c.en}: ${c.t.translit}`}>
-            <rect class="hit" x={c.x - 48} y="14" width="96" height="56" rx="8" />
+          <Term slug={c.slug} json={c.json} label={`${c.en}: ${c.t.translit}`} x={c.x - 48} y={14} w={96} h={56}>
             <text class="colhead" x={c.x} y="34">{c.en}</text>{" "}
             <text class="title-ar" x={c.x} y="60" lang="ar" aria-hidden="true">{c.t.ar}</text>
             <InfoIcon cx={c.x + 38} cy={54} r={8} />
-          </g>
+          </Term>
           <Narrator x={c.x} y={140} {...c.fig} />
           <text class="lbl" x={c.x} y="205">{c.lbl}</text>
         </>
@@ -95,14 +86,6 @@ const cases = CASES.map(([en, slug, fig, lbl, text], i) => {
   </details>
 </Page>
 <style>
-  .term{cursor:pointer;outline:none}
-  .term .hit{fill:transparent;stroke:none}
-  .term:focus-visible .hit{stroke:var(--gold-b);stroke-width:2}
-  .colhead{fill:var(--fg);font:700 13px var(--f-body);text-anchor:middle}
-  .title-ar{fill:var(--muted);font:400 18px var(--f-ar);text-anchor:middle}
-  .lbl{fill:var(--muted);font:600 12px var(--f-body);text-anchor:middle;stroke:var(--surface);stroke-width:4px;paint-order:stroke;stroke-linejoin:round}
-  .rule{stroke:var(--rule);stroke-width:1}
-  .rowhead{fill:var(--fg);font:700 16px var(--f-display)} .rowsub{fill:var(--muted);font:600 11.5px var(--f-body)}
   .src{margin:0;font-size:.85rem;color:var(--muted)}
   .as-text summary{cursor:pointer;font-weight:600}
   .as-text ol{margin:8px 0;padding-left:1.4em;display:grid;gap:4px}
