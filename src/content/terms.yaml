@@ -1,0 +1,21 @@
+- id: mutawatir
+  translit: Mutawātir
+  ar: مُتَوَاتِرٌ
+  en: Mass-transmitted
+  def: Carried by so many at every level that agreement on a lie is impossible.
+  section: "§5.3"
+  division: adad-al-turuq
+- id: mursal
+  translit: Mursal
+  ar: مُرْسَلٌ
+  en: Hurried
+  def: A Successor reports from the Prophet ﷺ without naming the Companion.
+  section: "§5.18"
+  division: al-mardud
+- id: majhul
+  translit: Majhūl
+  ar: مَجْهُولٌ
+  en: Unknown narrator
+  def: Named, but no one has vouched for him.
+  section: "§5.35"
+  division: al-mardud

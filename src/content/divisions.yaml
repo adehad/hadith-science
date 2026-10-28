@@ -1,0 +1,82 @@
+- id: adad-al-turuq
+  order: 1
+  term: ʿAdad al-ṭuruq
+  ar: عَدَدُ الطُّرُقِ
+  en: How it reached us
+  sections: §5.2–5.8
+  moons:
+    - Mutawātir
+    - "Āḥād: mashhūr, ʿazīz, gharīb (muṭlaq or nisbī)"
+- id: al-maqbul
+  order: 2
+  term: al-Maqbūl
+  ar: الْمَقْبُولُ
+  en: Accepted reports
+  sections: §5.9–5.16
+  moons:
+    - "Four grades: ṣaḥīḥ and ḥasan, each li-dhātihi or li-ghayrihi"
+    - "Opposition: shādhdh and maḥfūẓ, munkar and maʿrūf"
+    - "Corroboration: mutābiʿ, shāhid, iʿtibār"
+    - "Acted on or not: muḥkam, mukhtalif, nāsikh and mansūkh, tarjīḥ, tawaqquf"
+- id: al-mardud
+  order: 3
+  term: al-Mardūd
+  ar: الْمَرْدُودُ
+  en: Breaks in the chain · criticism of narrators
+  sections: §5.17–5.39
+  moons:
+    - "Omission (saqṭ): muʿallaq, mursal, muʿḍal, munqaṭiʿ; hidden: mudallas, mursal khafī"
+    - "Criticism (ṭaʿn), ten causes: mawḍūʿ, matrūk, munkar, muʿallal, mukhālafa (mudraj, maqlūb, mazīd, muḍṭarib, muṣaḥḥaf), jahāla, bidʿa, sūʾ al-ḥifẓ"
+- id: muntaha-al-isnad
+  order: 4
+  term: Muntahā al-isnād
+  ar: مُنْتَهَى الْإِسْنَادِ
+  en: Where the chain ends
+  sections: §5.40–5.44
+  moons:
+    - "Marfūʿ: reaches the Prophet ﷺ"
+    - "Mawqūf: stops at a Companion"
+    - "Maqṭūʿ: stops at a Successor or later"
+    - Musnad
+- id: lataif-al-isnad
+  order: 5
+  term: Laṭāʾif al-isnād
+  ar: لَطَائِفُ الْإِسْنَادِ
+  en: Features of the chain
+  sections: §5.45–5.54
+  moons:
+    - "ʿUluww and nuzūl: muwāfaqa, badal, musāwāh, muṣāfaḥa"
+    - "Who narrates from whom: aqrān, mudabbaj, seniors from juniors, sons from fathers, sābiq and lāḥiq"
+    - Muhmal; one who narrated then forgot; musalsal
+- id: siyagh-al-ada
+  order: 6
+  term: Ṣiyagh al-adāʾ
+  ar: صِيَغُ الْأَدَاءِ
+  en: How it was passed on
+  sections: §5.55–5.58
+  moons:
+    - Eight ranks of delivery words
+    - Muʿanʿan
+    - "Ways of receiving: munāwala, kitāba, wijāda, waṣiyya, iʿlām, ijāza"
+- id: al-asma
+  order: 7
+  term: al-Asmāʾ
+  ar: الْأَسْمَاءُ
+  en: Names that look alike
+  sections: §5.59–5.61
+  moons:
+    - Muttafiq and muftariq
+    - Muʾtalif and mukhtalif
+    - Mutashābih
+- id: marifat-al-ruwat
+  order: 8
+  term: Maʿrifat al-ruwāt
+  ar: مَعْرِفَةُ الرُّوَاةِ
+  en: Knowing the narrators
+  sections: §5.62–5.71
+  moons:
+    - Generations, dates, homelands
+    - Ranks and rules of jarḥ and taʿdīl
+    - Names, kunyas, laqabs
+    - Etiquette, ages, writing, travel
+    - Kinds of books; reasons behind a hadith
