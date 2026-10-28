@@ -1,6 +1,7 @@
 # Term inventory for the whole book (spec §6, §9). Every def is our own
 # paraphrase of the cited § of the Nuzhah; no translation text is reproduced.
-# No term has a scene yet, so all are pending until their division is built.
+# Terms with scene: are drawn in that scene;
+# the rest are pending until their division is built.
 
 # 1. ʿAdad al-ṭuruq (§5.2–5.8)
 - id: khabar
@@ -38,6 +39,7 @@
   def: Carried by so many at every level that agreement on a lie is impossible.
   section: "§5.3"
   division: adad-al-turuq
+  scene: routes
 - id: ilm-yaqini
   translit: al-ʿIlm al-yaqīnī
   ar: الْعِلْمُ الْيَقِينِيُّ
@@ -59,6 +61,7 @@
   def: "Three or more at every stage, short of mass transmission. In common speech the word also covers any famous saying, even one without a chain."
   section: "§5.4"
   division: adad-al-turuq
+  scene: routes
 - id: mustafid
   translit: Mustafīḍ
   ar: مُسْتَفِيضٌ
@@ -73,6 +76,7 @@
   def: "Never fewer than two at any stage. Being ʿazīz is not a condition for a report to be sound."
   section: "§5.5"
   division: adad-al-turuq
+  scene: routes
 - id: gharib
   translit: Gharīb
   ar: غَرِيبٌ
@@ -80,6 +84,7 @@
   def: "One narrator alone carries it at some stage, wherever in the chain that happens."
   section: "§5.6"
   division: adad-al-turuq
+  scene: routes
 - id: ahad
   translit: Āḥād
   ar: آحَادٌ
@@ -350,6 +355,7 @@
   def: "The collector drops one or more narrators at his own end of the chain, up to the whole chain, and cites further up."
   section: "§5.18"
   division: al-mardud
+  scene: breaks
 - id: mursal
   translit: Mursal
   ar: مُرْسَلٌ
@@ -357,6 +363,7 @@
   def: "A Successor attributes a saying or act directly to the Prophet ﷺ, dropping whoever stood between them, who may not have been a Companion."
   section: "§5.19"
   division: al-mardud
+  scene: breaks
 - id: mudal
   translit: Muʿḍal
   ar: مُعْضَلٌ
@@ -364,6 +371,7 @@
   def: "Two or more narrators dropped in a row."
   section: "§5.20"
   division: al-mardud
+  scene: breaks
 - id: munqati
   translit: Munqaṭiʿ
   ar: مُنْقَطِعٌ
@@ -371,6 +379,7 @@
   def: "Narrators dropped at separate places in the chain, or a single narrator dropped, never two in a row."
   section: "§5.20"
   division: al-mardud
+  scene: breaks
 - id: mudallas
   translit: Mudallas
   ar: مُدَلَّسٌ
@@ -553,6 +562,7 @@
   def: Named, but no one has vouched for him.
   section: "§5.36"
   division: al-mardud
+  scene: unknown
 - id: wuhdan
   translit: al-Wuḥdān
   ar: الْوُحْدَانُ
@@ -567,13 +577,15 @@
   def: "The narrator is left unnamed, as in ‘a man told me’. Not accepted until a route names him; even ‘a reliable man told me’ is not enough."
   section: "§5.36"
   division: al-mardud
+  scene: unknown
 - id: majhul-al-ayn
   translit: Majhūl al-ʿayn
   ar: مَجْهُولُ الْعَيْنِ
   en: Unknown person
-  def: "Named, but only one narrator reports from him. Rejected unless someone else vouches for him."
+  def: "Named, but only one narrator reports from him. Not accepted unless someone else vouches for him, or that one narrator is himself qualified to judge him."
   section: "§5.36"
   division: al-mardud
+  scene: unknown
 - id: mastur
   translit: Mastūr
   ar: مَسْتُورٌ
@@ -581,6 +593,7 @@
   def: "Two or more narrate from him but no one vouches for him; also called majhūl al-ḥāl. His report is held back until his state is known."
   section: "§5.36"
   division: al-mardud
+  scene: unknown
 - id: bida
   translit: Bidʿa
   ar: بِدْعَةٌ
@@ -790,6 +803,7 @@
   def: "First rank: he heard the teacher's own words, alone. The clearest delivery word, since it leaves no room for a hidden link."
   section: "§5.55"
   division: siyagh-al-ada
+  scene: delivery
 - id: haddathana
   translit: Ḥaddathanā
   ar: حَدَّثَنَا
@@ -797,6 +811,7 @@
   def: "First rank, with samiʿtu. The plural usually means others were there; a concealer sometimes misuses it for a mere permission."
   section: "§5.55"
   division: siyagh-al-ada
+  scene: delivery
 - id: akhbarana
   translit: Akhbaranā
   ar: أَخْبَرَنَا
@@ -804,6 +819,7 @@
   def: "Second rank: the student read to the teacher. Eastern scholars reserve it for that; for most western scholars it equals ḥaddathanā."
   section: "§5.55"
   division: siyagh-al-ada
+  scene: delivery
 - id: qaratu-alayhi
   translit: Qaraʾtu ʿalayhi
   ar: قَرَأْتُ عَلَيْهِ
@@ -811,6 +827,7 @@
   def: "Second rank: he read to the teacher himself. Better than akhbaranā because it says exactly what happened."
   section: "§5.55"
   division: siyagh-al-ada
+  scene: delivery
 - id: quria-alayhi
   translit: Quriʾa ʿalayhi wa-ana asmaʿu
   ar: قُرِئَ عَلَيْهِ وَأَنَا أَسْمَعُ
@@ -818,6 +835,7 @@
   def: "Third rank: someone else read to the teacher while he listened. A plural akhbaranā or qaraʾnā belongs here too."
   section: "§5.55"
   division: siyagh-al-ada
+  scene: delivery
 - id: anbaana
   translit: Anbaʾanā
   ar: أَنْبَأَنَا
@@ -825,6 +843,7 @@
   def: "Fourth rank. For the early scholars, the same as akhbaranā; later scholars use it for permission (ijāza), like ʿan."
   section: "§5.55"
   division: siyagh-al-ada
+  scene: delivery
 - id: nawalana
   translit: Nāwalanā
   ar: نَاوَلَنَا
@@ -832,6 +851,7 @@
   def: "Fifth rank: the teacher handed over his book (munāwala)."
   section: "§5.55"
   division: siyagh-al-ada
+  scene: delivery
 - id: shafahani
   translit: Shāfahanī
   ar: شَافَهَنِي
@@ -839,6 +859,7 @@
   def: "Sixth rank: permission (ijāza) given by word of mouth, face to face (mushāfaha)."
   section: "§5.55"
   division: siyagh-al-ada
+  scene: delivery
 - id: kataba-ilayya
   translit: Kataba ilayya
   ar: كَتَبَ إِلَيَّ
@@ -846,6 +867,7 @@
   def: "Seventh rank: permission (ijāza) given in writing (mukātaba)."
   section: "§5.55"
   division: siyagh-al-ada
+  scene: delivery
 - id: an
   translit: ʿAn
   ar: عَنْ
@@ -853,6 +875,7 @@
   def: "Eighth rank, with qāla, dhakara and rawā: words that could mean he heard it, had permission, or did not hear it at all."
   section: "§5.55"
   division: siyagh-al-ada
+  scene: delivery
 - id: imla
   translit: Imlāʾ
   ar: إِمْلَاءٌ
@@ -860,6 +883,7 @@
   def: "The teacher recites from memory while students write. The best kind of hearing, since it adds care and accuracy."
   section: "§5.55"
   division: siyagh-al-ada
+  scene: delivery
 - id: munawala
   translit: Munāwala
   ar: مُنَاوَلَةٌ
@@ -902,6 +926,7 @@
   def: "Finding reports in a known scholar's handwriting. He may say ‘I found in his hand’, but not akhbaranā unless he also has permission."
   section: "§5.57"
   division: siyagh-al-ada
+  scene: delivery
 - id: wasiyya
   translit: Waṣiyya
   ar: وَصِيَّةٌ
@@ -909,6 +934,7 @@
   def: "A teacher bequeaths his books to someone at his death or before a journey. Some early imams allowed narrating on that alone; most require permission."
   section: "§5.57"
   division: siyagh-al-ada
+  scene: delivery
 - id: ilam
   translit: Iʿlām
   ar: إِعْلَامٌ
@@ -916,6 +942,7 @@
   def: "The teacher only tells a student that he narrates a certain book. It counts only with permission."
   section: "§5.58"
   division: siyagh-al-ada
+  scene: delivery
 - id: ijaza-amma
   translit: Ijāza ʿāmma
   ar: إِجَازَةٌ عَامَّةٌ
@@ -923,6 +950,7 @@
   def: "Permission to all Muslims, to all one's contemporaries or to a whole region. Ibn al-Ṣalāḥ called such forms a disliked leniency, still better than a muʿḍal."
   section: "§5.58"
   division: siyagh-al-ada
+  scene: delivery
 - id: ijaza-majhul
   translit: Ijāza li-l-majhūl
   ar: إِجَازَةٌ لِلْمَجْهُولِ
@@ -953,6 +981,7 @@
   def: "Names and fathers' names (or kunya and nisba) match, yet they are different people. Knowing it stops two being taken as one."
   section: "§5.59"
   division: al-asma
+  scene: names
 - id: mutalif-wa-mukhtalif
   translit: al-Muʾtalif wa-l-mukhtalif
   ar: الْمُؤْتَلِفُ وَالْمُخْتَلِفُ
@@ -960,6 +989,7 @@
   def: "Names that look the same on the page but are read differently, by their dots or vowels. Nothing around a name helps, so they must be learned."
   section: "§5.60"
   division: al-asma
+  scene: names
 - id: mutashabih
   translit: al-Mutashābih
   ar: الْمُتَشَابِهُ
@@ -967,6 +997,7 @@
   def: "Names alike in writing and sound but with fathers' names read differently, or the reverse, like Muḥammad ibn ʿAqīl and Muḥammad ibn ʿUqayl."
   section: "§5.61"
   division: al-asma
+  scene: names
 
 # 8. Maʿrifat al-ruwāt (§5.62–5.71)
 - id: tabaqa

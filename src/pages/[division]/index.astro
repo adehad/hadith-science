@@ -10,8 +10,11 @@ export async function getStaticPaths() {
   }));
 }
 const { d, prev, next } = Astro.props;
-const { terms } = await loadContent();
+const { terms, scenes } = await loadContent();
 const mine = terms.filter((t) => t.division === d.id);
+// the scenes under each moon; a scene can cover several moons, but only its first listed moon's dot carries
+// its view-transition-name, so names stay unique on the page
+const moonScenes = d.moons.map((_, k) => scenes.filter((s) => s.division === d.id && s.moons.includes(k)));
 // the planet drawn large: moons ride a flattened ring around it, as on the map
 const R = 56, ring: [number, number] = [R + 30, (R + 30) * 0.5];
 const sats = d.moons.map((_, k) => {
@@ -44,10 +47,28 @@ const sats = d.moons.map((_, k) => {
   <section aria-labelledby="moons">
     <h2 id="moons">Moons</h2>
     <ul class="captions">
-      {d.moons.map((m) => (
+      {d.moons.map((m, k) => (
         <li class="cap">
           <b>{m}</b>
-          <p>Coming soon</p>
+          {moonScenes[k].length === 0 ? (
+            <p>Coming soon</p>
+          ) : (
+            <ul class="scenes">
+              {moonScenes[k].map((s) => (
+                <li>
+                  <a href={href(`${d.id}/${s.id}/`)}>
+                    {/* morphs into the scene page's header dot (spec §5) */}
+                    <span
+                      class="mdot"
+                      aria-hidden="true"
+                      style={`background:var(--p${d.order})${s.moons[0] === k ? `; view-transition-name: scene-${s.id}` : ""}`}
+                    ></span>
+                    {s.title}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )}
         </li>
       ))}
     </ul>
@@ -88,11 +109,12 @@ const sats = d.moons.map((_, k) => {
   .cap{min-width:0;border-top:2px solid var(--rule);padding-top:10px}
   .cap b{font-family:var(--f-display);font-size:1.15rem;font-weight:700}
   .cap p{margin:4px 0 0;color:var(--muted);font-size:.95rem}
+  .scenes{margin-top:6px;display:grid;gap:4px}
+  .scenes a{display:inline-flex;align-items:center;gap:8px;font-weight:600}
+  .mdot{flex:none;width:14px;height:14px;border-radius:50%}
   .terms{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:6px 18px}
   .terms li{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 8px;padding:4px 0;border-bottom:1px solid var(--rule)}
   .terms a{font-weight:600}
   .tar{font-family:var(--f-ar);font-size:1.1rem;color:var(--muted)}
   .ten,.tsec{color:var(--muted);font-size:.9rem}
-  .pn{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
-  .pn a{font:600 .85rem var(--f-body);background:var(--surface);color:var(--fg);border:1px solid var(--rule);border-radius:8px;padding:7px 12px;text-decoration:none}
 </style>

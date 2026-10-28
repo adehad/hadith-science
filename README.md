@@ -20,12 +20,37 @@ Live site: <https://adehad.github.io/hadith-science/>
 - Light and dark themes, and full support for reduced motion.
 - Installable as an app, and readable offline after the first visit.
 
-No division has its scenes drawn yet, so every term is still marked "scene coming soon". Later phases build the scenes one division at a time.
+- **Five scenes** (below), each one diagram whose terms open a popover and have their own share link.
+
+Terms without a scene yet are marked "scene coming soon" in the glossary. Later phases draw the rest, one division at a time.
 
 | | Light | Dark |
 |---|---|---|
 | Figure key | ![Figure key, light](docs/screenshots/narrators-desktop-light.png) | ![Figure key, dark](docs/screenshots/narrators-desktop-dark.png) |
 | Phone | ![Map on a phone, light](docs/screenshots/map-mobile-light.png) | ![Glossary on a phone, dark](docs/screenshots/terms-mobile-dark.png) |
+
+## Scenes
+
+| Scene | Page | Terms |
+|---|---|---|
+| How many routes carry it? | `/adad-al-turuq/routes/` | mutawātir, mashhūr, ʿazīz, gharīb |
+| Where does the chain break? | `/al-mardud/breaks/` | mursal, muʿallaq, muʿḍal, munqaṭiʿ |
+| Who is this narrator? | `/al-mardud/unknown/` | mubham, majhūl, majhūl al-ʿayn, mastūr |
+| How was it received? | `/siyagh-al-ada/delivery/` | the eight ranks of delivery words, and the weaker ways below them |
+| Who is who? | `/al-asma/names/` | muttafiq wa-muftariq, muʾtalif wa-mukhtalif, mutashābih |
+
+Figure scenes can show a key under the diagram (**Key**) or write each narrator's kind beside the figure (**Labels**), and the choice is remembered. Where the book gives more than one position, **Other views** switches the diagram to it and keeps the view in the link (`?view=`). On a portrait phone a wide diagram becomes a swipe carousel, one panel at a time.
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/breaks-desktop-dark.png">
+  <source media="(prefers-color-scheme: light)" srcset="docs/screenshots/breaks-desktop-light.png">
+  <img alt="Where does the chain break? Four chains from the Prophet ﷺ, each with a missing narrator in a different place, and a verdict above each" src="docs/screenshots/breaks-desktop-light.png">
+</picture>
+
+| | Light | Dark |
+|---|---|---|
+| How was it received? | ![The delivery staircase, light](docs/screenshots/delivery-desktop-light.png) | ![The delivery staircase, dark](docs/screenshots/delivery-desktop-dark.png) |
+| Phone | ![How many routes carry it? on a phone, first carousel panel, light](docs/screenshots/routes-mobile-light.png) | ![Who is who? on a phone, the cells in one column, dark](docs/screenshots/names-mobile-dark.png) |
 
 ## Source and copyright
 

@@ -1,0 +1,10 @@
+---
+// a transmission arrow, in the direction of narration (spec §3.4), ported from the mockup's arrow().
+// skip draws the red dashed arrow that jumps a dropped narrator; bend pushes the curve sideways.
+// Needs <Defs /> on the page for the #ah / #ahg markers; .flow and .skip live in styles/svg.css.
+interface Props { x1: number; y1: number; x2: number; y2: number; skip?: boolean; bend?: number }
+const { x1, y1, x2, y2, skip = false, bend = 0 } = Astro.props;
+const mx = (x1 + x2) / 2 + bend;
+const my = (y1 + y2) / 2;
+---
+<path class={skip ? "skip" : "flow"} d={`M${x1} ${y1} Q${mx} ${my} ${x2} ${y2}`} marker-end={`url(#${skip ? "ahg" : "ah"})`} />

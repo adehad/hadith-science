@@ -1,0 +1,45 @@
+---
+// Key for figure scenes (ported from the mockup's LEGEND and .legend CSS), a block below the stage so it
+// never covers the diagram. Shown in Key mode only; Labels mode writes the kind name under each figure
+// instead (spec §3.5).
+// No <Defs /> here: the legend comes after the diagram in the DOM and its Companion figure uses the
+// diagram SVG's #gold gradient, which resolves anywhere in the same document.
+import Moon from "../svg/Moon.astro";
+import Narrator from "../svg/Narrator.astro";
+import { FIG, type Kind } from "../svg/figures";
+
+export type LegendKind = "moon" | Kind;
+interface Props {
+  /** which entries to show, in this order; defaults to all of them */
+  kinds?: LegendKind[];
+}
+const ALL: LegendKind[] = ["moon", "sahabi", "tabii", "later", "majhul", "mubham", "ghost"];
+const { kinds = ALL } = Astro.props;
+
+// FIG is the same figure for each kind as Chain.astro draws, so the key matches the diagram
+const LABEL: Record<Kind, string> = {
+  sahabi: "Companion (ṣaḥābī)",
+  tabii: "Successor (tābiʿī)",
+  later: "Later narrator",
+  majhul: "Unknown (majhūl)",
+  mubham: "Unnamed (mubham)",
+  ghost: "Missing link",
+};
+const K = 0.6;
+---
+<div class="legend" role="note" aria-label="Key">
+  {kinds.map((k) =>
+    k === "moon" ? (
+      <span><svg viewBox="-4 -4 48 48" aria-hidden="true"><Moon cx={20} cy={20} k={K} /></svg>The Prophet ﷺ</span>
+    ) : (
+      // the figure spans 24 x 26.4 at k=0.6, centred on the origin
+      <span><svg viewBox="-14 -14 28 28" aria-hidden="true"><Narrator x={0} y={0} k={K} {...FIG[k]} /></svg>{LABEL[k]}</span>
+    ),
+  )}
+</div>
+<style>
+  .legend{display:flex;flex-wrap:wrap;gap:4px 16px;margin-top:10px;padding:10px 12px;font-size:.82rem;color:var(--muted);background:color-mix(in srgb,var(--surface) 92%,transparent);border:1px solid var(--rule);border-radius:10px}
+  .legend span{display:inline-flex;align-items:center;gap:6px}
+  .legend svg{width:24px;height:24px;flex:none}
+  :global(:root[data-mode="labels"]) .legend{display:none}
+</style>

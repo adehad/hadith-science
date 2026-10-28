@@ -9,6 +9,7 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   // one retry on CI so a slow runner reports a flake instead of failing the deploy
   retries: process.env.CI ? 1 : 0,
+  workers: process.env.CI ? 4 : undefined,
   reporter: process.env.CI ? "github" : "list",
   webServer: { command: `bun run preview --port ${port}`, port, reuseExistingServer: !process.env.CI },
   use: { baseURL: `http://localhost:${port}` },

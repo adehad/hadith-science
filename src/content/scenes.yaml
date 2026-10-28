@@ -1,0 +1,165 @@
+# Scenes (phase 2 plan). Each caption note is our own paraphrase of the cited §.
+- id: routes
+  division: adad-al-turuq
+  moons: [0, 1]
+  order: 1
+  title: How many routes carry it?
+  eyebrow: How a report reached us · §5.2–5.6
+  lede: Reports are sorted by the fewest narrators found at any one generation of the chain.
+  source: §5.3 Mutawātir, §5.4 Mashhūr, §5.5 ʿAzīz, §5.6 Gharīb
+  diagram: Routes
+  width: 820
+  captions:
+    - term: gharib
+      note: "A single narrator alone carries it at some stage, and it does not matter where in the chain that happens; Ibn Ḥajar later splits it into absolute and relative gharīb. With mashhūr and ʿazīz it is one of the āḥād: reports that fall short of the conditions of mutawātir."
+    - term: aziz
+      note: "Never fewer than two at any stage: at least two narrate it from two. The name means either rare or strengthened, since a second route strengthens it. Being ʿazīz is not a condition for a sound (ṣaḥīḥ) report, against those who claimed it was."
+    - term: mashhur
+      note: "Carried by a limited number above two, so three or more at every stage, without meeting the conditions of mutawātir. It is named for being well known, and a group of jurists call it mustafīḍ. In common speech mashhūr also means any famous saying, even one with a single chain or none."
+    - term: mutawatir
+      note: "Carried at every stage by so many that, by experience, they could not have colluded on a lie or agreed on one by chance, and the last of them reports what was seen or heard. No fixed number is required. It gives certain knowledge (ʿilm yaqīnī), so its narrators are not investigated."
+  panels:
+    - { id: gharib, label: Gharīb, x0: 0, x1: 255 }
+    - { id: aziz, label: ʿAzīz, x0: 255, x1: 425 }
+    - { id: mashhur, label: Mashhūr, x0: 425, x1: 605 }
+    - { id: mutawatir, label: Mutawātir, x0: 605, x1: 820 }
+- id: breaks
+  division: al-mardud
+  moons: [0]
+  order: 1
+  title: Where does the chain break?
+  eyebrow: Rejected for a break in the chain · §5.18–5.20
+  lede: All four lose narrators from the chain. What tells them apart is where the gap sits and how many links are missing one after another.
+  source: §5.18 Muʿallaq, §5.19 Mursal, §5.20 Muʿḍal and Munqaṭiʿ
+  diagram: Breaks
+  width: 820
+  captions:
+    - term: mursal
+      note: "The drop comes after the Successor: a Successor, senior or junior, says the Prophet ﷺ said or did something, or that it was done in his presence. It is rejected because the missing narrator is unknown. He may be a Companion or another Successor, and a Successor may be weak or sound, and may himself have heard it from yet another Successor."
+    - term: muallaq
+      note: "The collector drops one or more narrators at his own end of the chain and cites someone further up. At the extreme the whole chain goes and he simply says the Messenger of Allah ﷺ said it, or keeps only the Companion, or the Successor and the Companion. It is rejected because the dropped narrator is unknown, but it may be judged sound where the same report appears elsewhere with him named."
+    - term: mudal
+      note: "Two or more narrators dropped one after another. Ibn Ḥajar makes each term wider than the other in one respect. Muʿḍal is the more general on where the drops sit, and it meets muʿallaq when the run of drops is at the collector's end. Muʿallaq is tied to the collector's own act at that end, and needs only one drop (§5.18, §5.20)."
+    - term: munqati
+      note: "Narrators dropped, but not one after another: for example two drops in two separate places. A single drop on its own is also munqaṭiʿ. A run of two or more in a row would make it muʿḍal instead."
+  views:
+    - id: hadith-scholars
+      label: Most hadith scholars
+      scholars: §5.19
+      note: "Even when a Successor is known to drop only trustworthy narrators, most hadith scholars pause (tawaqquf) on his mursal, because the doubt over who is missing remains. This is also one of Aḥmad's two opinions."
+    - id: malikis
+      label: Mālikīs, Kūfīs, Aḥmad (other opinion)
+      scholars: §5.19
+      note: "Aḥmad's other opinion, shared by the Mālikīs and the Kūfīs: the mursal of a Successor who drops only trustworthy narrators is accepted outright."
+    - id: shafii
+      label: al-Shāfiʿī
+      scholars: §5.19
+      note: "al-Shāfiʿī: when another report supports it, whether that one is connected or itself mursal, the balance tips to accepting it and taking the missing narrator to be trustworthy."
+  panels:
+    - { id: mursal, label: Mursal, x0: 0, x1: 215 }
+    - { id: muallaq, label: Muʿallaq, x0: 215, x1: 415 }
+    - { id: mudal, label: Muʿḍal, x0: 415, x1: 615 }
+    - { id: munqati, label: Munqaṭiʿ, x0: 615, x1: 820 }
+- id: unknown
+  division: al-mardud
+  moons: [1]
+  order: 2
+  title: Who is this narrator?
+  eyebrow: Rejected for doubt about a narrator · §5.35–5.36
+  lede: Both chains are unbroken, but in each one narrator cannot be checked. One is never named; the other is named, but too little is known of him.
+  source: §5.35 Jahāla, §5.36 Mubham
+  diagram: Unknown
+  width: 820
+  captions:
+    - term: mubham
+      note: "The one reporting from him leaves him unnamed: “a man told me”, “the shaykh told me”, “the son of so-and-so”. Another chain that names him identifies him; until then the report is not accepted, since an unnamed man’s reliability cannot be known. On the soundest view, that holds even when he is called reliable, as in “a trustworthy man told me”: he may be trustworthy to that narrator but not to others (§5.36)."
+    - term: majhul
+      note: "He is named, but too little is known of him. Ibn Ḥajar gives two causes: he goes by several names, titles or lineages and, cited by an unfamiliar one, is taken for someone else; or he narrates so rarely that few take from him (§5.35). Who narrates from him then sets which kind he is: majhūl al-ʿayn or mastūr (§5.36)."
+    - term: majhul-al-ayn
+      note: "He is named, but only one narrator reports from him. Like the unnamed narrator, he is not accepted unless someone other than that one narrator vouches for him; Ibn Ḥajar calls this the soundest view. He adds that he is accepted, too, when that sole narrator is himself qualified to judge him (§5.36)."
+    - term: mastur
+      note: "Two or more narrate from him, but no one has vouched for him; also called majhūl al-ḥāl. A group accepted his reports outright, but the majority did not. Ibn Ḥajar neither accepts nor rejects: the report is held back until his state is clear, as Imām al-Ḥaramayn held (§5.36)."
+  panels:
+    - { id: mubham, label: Mubham, x0: 0, x1: 480 }
+    - { id: majhul, label: Majhūl, x0: 480, x1: 820 }
+- id: delivery
+  division: siyagh-al-ada
+  moons: [0, 1, 2]
+  order: 1
+  title: How was it received?
+  eyebrow: How it was passed on · §5.55–5.58
+  lede: Ibn Ḥajar ranks, in eight stages, the words a narrator uses to say how he received a report. Higher steps mean closer, surer contact with the teacher; the arrow under each step thins and breaks up as that contact grows less certain. Below the stairs are weaker ways of receiving, most of which count only with the teacher's permission.
+  source: §5.55 Ṣiyagh al-adāʾ, §5.56 Muʿanʿan, §5.57 Wijāda and waṣiyya, §5.58 Iʿlām
+  diagram: Delivery
+  width: 860
+  captions:
+    - term: samitu
+      note: "First rank, with ḥaddathanā: both suit a narrator who heard the teacher's own words while alone with him. Samiʿtu is the clearer of the two, since it leaves no room for someone in between, while ḥaddathanā is sometimes used, with concealment (tadlīs), for a mere permission. Said in the plural (samiʿnā, ḥaddathanā) it shows others were there; only rarely is the plural one of respect."
+    - term: haddathana
+      note: "First rank, with samiʿtu. Keeping taḥdīth for what is heard from the teacher's own words is a well-known usage among hadith scholars, though in the language taḥdīth and ikhbār mean the same. The distinction comes from the eastern scholars and those who follow them; most western scholars treat ḥaddathanā and akhbaranā alike."
+    - term: akhbarana
+      note: "Second rank, with qaraʾtu ʿalayhi: the narrator read to the teacher himself. For the majority, reading to the teacher is a sound way of receiving reports. Some in Iraq denied it, and Ibn Ḥajar calls them far from right; Mālik and other scholars of Madīna fiercely refuted them."
+    - term: qaratu-alayhi
+      note: "Second rank: he read to the teacher himself. When that is what happened, saying qaraʾtu ʿalayhi is better than akhbaranā, because it shows more exactly what took place."
+    - term: quria-alayhi
+      note: "Third rank: someone else read to the teacher while the narrator listened. Where a reading is reported in the plural, as akhbaranā or qaraʾnā, it is treated like this rank."
+    - term: anbaana
+      note: "Fourth rank. For the earlier scholars inbāʾ means the same as ikhbār, both in the language and as a term; the later scholars use it for permission (ijāza), as they do ʿan."
+    - term: nawalana
+      note: "Fifth rank (munāwala): the teacher gives the student his original manuscript or a checked copy of it, or the student is shown the teacher's own original, and he says ‘these are my narrations from so-and-so, so narrate them from me’. With that permission, and with the student keeping the copy, it is the highest form of ijāza. Without permission most scholars do not count it."
+    - term: shafahani
+      note: "Sixth rank: permission (ijāza) given by word of mouth. Scholars call such spoken licensing mushāfaha."
+    - term: kataba-ilayya
+      note: "Seventh rank: permission (ijāza) given in writing, which the later scholars call mukātaba (correspondence). The earlier scholars kept the word for a teacher writing out hadith for his student, whether or not he also gave permission, and not for a letter carrying permission alone."
+    - term: an
+      note: "Eighth rank, with qāla, dhakara and rawā: words that could mean he heard it, had permission, or did not hear it at all. A chain joined by ʿan (muʿanʿan) counts as heard when the two lived at the same time, but not from a concealer (mudallis); the chosen view, with ʿAlī ibn al-Madīnī and al-Bukhārī, also asks for proof that they met at least once (§5.56)."
+    - term: imla
+      note: "Dictation: the teacher narrates from memory while the students write. Ibn Ḥajar puts hearing by dictation highest of all, because it brings added accuracy and memorisation."
+    - term: wijada
+      note: "He finds reports in the handwriting of a scholar he knows and says ‘I found in the handwriting of so-and-so’. Finding them does not let him say ‘so-and-so informed me’ (akhbaranā) unless he also has permission; some did say it, and erred (§5.57)."
+    - term: wasiyya
+      note: "The teacher bequeaths a book, or books, to a particular person, at his death or as he sets out on a journey. A group of the earlier imams allowed narrating on the bequest alone; the majority allow it only with permission as well (§5.57)."
+    - term: ilam
+      note: "The teacher simply tells a student that he narrates a certain book from a certain person. With permission it counts; without it, it does not (§5.58)."
+    - term: ijaza-amma
+      note: "Permission given at large: ‘to all Muslims’, ‘to everyone alive in my time’, or to the people of a region or land, the last nearest to correct as the most restricted. Ibn Ḥajar does not count it, though al-Khaṭīb and many others allowed it. Ibn al-Ṣalāḥ called all such forms a disliked leniency; Ibn Ḥajar adds that they are far weaker than hearing, yet still better than narrating the report muʿḍal (§5.58)."
+  views:
+    - id: ibn-hajar
+      label: Ibn Ḥajar's ranking
+      scholars: §5.55
+      note: "Hearing the teacher's own words ranks first; reading to him comes second."
+    - id: madinah
+      label: Some scholars of Madīna
+      scholars: §5.55
+      note: "Mālik and other scholars of Madīna fiercely refuted those in Iraq who denied that reading to the teacher counts; some of them went as far as ranking reading to him above hearing him."
+    - id: bukhari
+      label: al-Bukhārī and many others
+      scholars: §5.55
+      note: "A large group, al-Bukhārī among them, hold that hearing the teacher and reading to him are equal in authenticity and strength."
+  panels:
+    - { id: steps-1-2, label: Steps 1–2, x0: 0, x1: 220 }
+    - { id: steps-3-4, label: Steps 3–4, x0: 220, x1: 430 }
+    - { id: steps-5-6, label: Steps 5–6, x0: 430, x1: 640 }
+    - { id: steps-7-8, label: Steps 7–8, x0: 640, x1: 860 }
+- id: names
+  division: al-asma
+  moons: [0, 1, 2]
+  order: 1
+  title: Who is who?
+  eyebrow: Names that are shared or look alike · §5.59–5.61
+  lede: Some narrators share one name; others have names written alike but read differently. Telling them apart keeps two men from being taken for one, and a name from being misread.
+  source: §5.59 Muttafiq and muftariq, §5.60 Muʾtalif and mukhtalif, §5.61 Mutashābih
+  diagram: Names
+  width: 860
+  captions:
+    - term: muttafiq-wa-muftariq
+      note: "Two or more narrators share their names and their fathers' names, and further back, or share a kunya and a nisba, yet they are different people. Knowing them guards against taking two people for one. It is the opposite of muhmal, where one person may be taken for two (§5.59)."
+    - term: mutalif-wa-mukhtalif
+      note: "Names written the same but read differently, whether by their dots or by their vowels. Ibn Ḥajar counts knowing them among the most important parts of the field: ʿAlī ibn al-Madīnī said most misreadings happen in names, and others explain why: a name cannot be worked out by analogy, and nothing before or after it in the text points to the right reading (§5.60)."
+    - term: mutashabih
+      note: "The names match in writing and sound, but the fathers' names, written alike, are read differently: Muḥammad ibn ʿAqīl al-Nīsābūrī and Muḥammad ibn ʿUqayl al-Firyābī, both famous and of one generation. Or the reverse: Shurayḥ ibn al-Nuʿmān, a Successor who reported from ʿAlī, and Surayj ibn al-Nuʿmān, a teacher of al-Bukhārī. A matching name with a differing nisba counts too (§5.61)."
+  extra:
+    - title: "Worked example: ʿAbd Allāh ibn Zayd"
+      ar: عَبْدُ اللَّهِ بْنُ زَيْدٍ
+      section: §5.61
+      note: "Many narrators bear this name. Two are Companions, both of the Anṣār: one reported the hadith on the call to prayer (adhān), and his grandfather was ʿAbd Rabbih; the other reported the hadith on ablution (wuḍūʾ), and his grandfather was ʿĀṣim. ʿAbd Allāh ibn Yazīd, one letter more in the father's name, is a second crowd, among them the Companion al-Khaṭmī and al-Qārī, named in ʿĀʾisha's report. Close by are ʿAbd Allāh ibn Yaḥyā, ʿAbd Allāh ibn Nujayy (a Successor who reported from ʿAlī), and names in swapped order: Yazīd ibn ʿAbd Allāh against ʿAbd Allāh ibn Yazīd, al-Aswad ibn Yazīd against Yazīd ibn al-Aswad. In the diagram each name part added, ʿAbd Allāh, ibn Zayd, al-Anṣārī, then ibn ʿAbd Rabbih, narrows the list until only the Companion of the adhān is left."

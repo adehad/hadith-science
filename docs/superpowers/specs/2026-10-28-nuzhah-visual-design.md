@@ -1,7 +1,7 @@
 # Nuzhat al-Naẓar, visualised: design
 
 Date: 2026-10-28
-Status: reviewed, awaiting owner approval
+Status: phase 1 (foundation) and phase 2 (the five mocked scenes) are built; phase 3 not started
 Concept mockup: https://claude.ai/artifact/8V78csjQ1dFRqbjoWoZza1 (reference for look and motion; not production code)
 
 ## 1. Goal
@@ -74,6 +74,8 @@ A missing item shows as an empty slot that blinks.
 ### 3.3 Typography and text
 
 - **Fonts:** Fraunces for display, Source Sans 3 for UI and body, Amiri for Arabic. All are self-hosted through `@fontsource` packages (no Google Fonts request), so preview builds, axe runs and screenshots are deterministic.
+  - Fraunces has no ʿ or ʾ glyphs (U+02BE–02BF), so `src/styles/fonts.css` borrows them from Source Sans 3 under the Fraunces family name.
+  - The same file declares Fraunces's latin-ext face again, after latin, for the precomposed letters (ā, ī, ū, ḥ, ṣ and so on). Otherwise Chromium splits them into letter + combining macron and draws the macron from the latin face, where it lands on the next letter.
 - **Arabic:** always fully voweled (full tashkeel, with case endings). It is marked `lang="ar" dir="rtl"` and shown with its transliteration.
 - **Quoted delivery words** (for example حَدَّثَنِي رَجُلٌ) appear in a speech bubble coming from the narrator who says them, not as a caption under the person being described.
 
@@ -89,6 +91,7 @@ A missing item shows as an empty slot that blinks.
 
 - Info icons sit beside terms in the diagrams and open the term popover (§6); there are no caption rows.
 - One popover serves both purposes: definition and share actions. It is an HTML overlay positioned over the SVG, because the HTML `popover` attribute doesn't work on SVG elements.
+- On a scene, the popover shows that scene's caption note (§7.3) in place of the definition. The glossary and `/t/<slug>/` keep the term's short definition from the inventory.
 - A global **Key / Labels** switch shows either the symbol key overlay or inline labels.
 
 ### 3.6 Themes
@@ -142,12 +145,14 @@ A scene is one diagram that teaches one sub-division.
 | Scene | Division | § | Diagram |
 |---|---|---|---|
 | How many routes carry it? | 1 | 5.2–5.6 | Chains fanning out for mutawātir, mashhūr, ʿazīz and gharīb |
-| Where does the chain break? | 3 | 5.18–5.19 | Muʿallaq, mursal, muʿḍal and munqaṭiʿ shown as ghosts in a chain. Other view: some scholars' wider use of *mursal* |
-| Who is this narrator? | 3 | 5.35–5.36 | Mubham vs majhūl; speech bubble "حَدَّثَنِي رَجُلٌ" |
+| Where does the chain break? | 3 | 5.18–5.20 | Muʿallaq, mursal, muʿḍal and munqaṭiʿ shown as ghosts in a chain. All four omission types share one diagram of six generation rows, so muʿḍal and munqaṭiʿ don't overlap muʿallaq. Other views: the rulings on mursal (§5.19): the majority of hadith scholars pause (tawaqquf), one of Aḥmad's two opinions; the Mālikīs, the Kūfīs and Aḥmad's other opinion accept it outright; al-Shāfiʿī accepts it when another report supports it |
+| Who is this narrator? | 3 | 5.35–5.36 | Mubham vs majhūl; speech bubble "حَدَّثَنِي رَجُلٌ". Majhūl al-ʿayn and mastūr are small notes beside the majhūl figure |
 | How was it received? | 6 | 5.55–5.58 | Ranked staircase: Ibn Ḥajar's eight delivery levels, with wijāda, waṣiyya, iʿlām and general ijāza "below the stairs". Other views: the scholars of Madīna; al-Bukhārī and others |
-| Who is who? | 7 | 5.59–5.61 | Four panels: muttafiq/muftariq fork; muʾtalif/mukhtalif dot glyphs; mutashābih with the differing letters pulsing; a filter-box worked example narrowing to ʿAbd Allāh ibn Zayd ibn ʿAbd Rabbih |
+| Who is who? | 7 | 5.59–5.61 | Eyebrow "Names that are shared or look alike". Four panels: muttafiq/muftariq fork; muʾtalif/mukhtalif dot glyphs; mutashābih with the differing letters pulsing; a filter-box worked example narrowing to ʿAbd Allāh ibn Zayd ibn ʿAbd Rabbih |
 
 The figure key from the mockup's "Reading a narrator" becomes `/narrators/`.
+
+*Mursal* has a wider fiqh sense (any chain with a gap), but that comes from the thesis commentary, not Ibn Ḥajar's text, so it is out of scope (§2). An earlier draft of this table had it as the breaks scene's other view.
 
 **Phase 3 onwards** adds the rest of the sub-divisions, one division at a time, in planet order.
 
@@ -179,13 +184,14 @@ Until a division is built, its planet still shows on the map, and its moons are 
 - **Keyboard:** planets and info icons can be reached with Tab and opened with Enter or Space.
 - **Mobile, under about 640px:**
   - The SVG scales to the screen width.
-  - Tooltips open as a bottom panel when tapped.
+  - The term popover opens as a bottom sheet.
   - Orbits slow down.
   - **Carousel:** a scene that declares `panels` (for example "How many routes", the figure key) becomes a swipe carousel in portrait.
     - The diagram is rendered **once**: there is a single SVG and no duplicated markup, so IDs, markers and view-switch targets stay unique.
     - Panels are horizontal slices of the diagram, each defined by an x-range in diagram units. A scene that uses panels must lay its diagram out as a single row.
-    - In portrait, the SVG is set wider than the screen (the panel count × the viewport width) inside a horizontally scrolling container. Invisible snap targets, one per panel and positioned from the x-ranges, give CSS scroll-snap its stops.
-    - It has page dots and previous/next buttons, and needs no library.
+    - In portrait, the SVG is set wider than the screen inside a horizontally scrolling container. The track is sized so that the widest panel fits the viewport (diagram width ÷ widest panel × 100vw), not panel count × viewport, because uneven panels would otherwise overflow the screen. Invisible snap targets, one per panel and positioned from the x-ranges, give CSS scroll-snap its stops.
+    - It has page dots and previous/next buttons, and needs no library. In portrait the dots bar is sticky at the bottom, so it stays in view while a tall diagram scrolls past.
+    - The scroller is a focusable region (`tabindex`, `role`, `aria-label`) only in portrait; `carousel.ts` removes those attributes in landscape and wider, where nothing scrolls.
     - Landscape, and anything wider, removes the overflow and shows the full diagram at 100% width.
     - The switch is done by CSS media query (`orientation` and width), so rotating the phone switches the layout straight away.
     - Scenes laid out as a grid (for example "Who is who?") don't use panels. Each cell is its own small SVG inside an HTML CSS grid, which becomes a single column in portrait. There is still only one copy of each cell.
@@ -194,7 +200,7 @@ Until a division is built, its planet still shows on the map, and its moons are 
 
 - **Slugs:** every term has a stable ASCII slug in the term inventory, for example `mutawatir`, `mursal` or `ijaza-amma`.
 - **Term on a page:** a button. Clicking or tapping it opens a popover with:
-  - the term, its Arabic and a one-line definition;
+  - the term, its Arabic and its definition: on a scene, that scene's caption note (§7.3); on the glossary and figure key, the inventory's short definition (§3.5);
   - **Copy link**;
   - **Share**, using `navigator.share` where available and hidden otherwise;
   - **See in glossary**.
@@ -206,7 +212,7 @@ Until a division is built, its planet still shows on the map, and its moons are 
   - **How it resolves:** a tiny inline script checks `location.search`. Only when one of these shapes is present does it fetch a build-generated `terms-index.json` (its URL includes `BASE`) (slug → target URL) and redirect with `location.replace`. Pages without a slug query never load the index.
 - **Landing:** the target URL is `/<division>/<scene>/?view=<v>#<slug>`.
   - `view` is added only when the term appears only under a non-default view.
-  - Term elements carry `data-term="<slug>"` rather than an `id`. The `termlink` island reads the hash, finds the element, and scrolls to it; in a portrait carousel it first snaps to the panel containing the element. It then draws a pulse ring round the term and opens its popover.
+  - Term elements carry `data-term="<slug>"` rather than an `id`. `popover.ts` reads the hash on DOMContentLoaded and finds the element. If the element is in a view that isn't showing, it switches to that view (`viewswitch.ts`, via `window.nuzhah.setView`). In a portrait carousel it moves the carousel to the element (`carousel.ts`, `window.nuzhah.reveal`). It then scrolls the element into view. Finally it draws a pulse ring round the term and opens its popover.
 - **Pending terms** (in a division not yet built, §9):
   - `/t/<slug>/` is still generated.
   - It and the short forms redirect to the term's glossary entry, `/terms/#<slug>`. That entry shows "coming soon" and links to the division page.
@@ -218,6 +224,7 @@ Until a division is built, its planet still shows on the map, and its moons are 
 
 - **Astro + TypeScript, static output.** Chosen for reusable components, content collections with schema validation, one URL per page, good SEO by default, and small client islands.
 - No UI framework. Client islands are plain TypeScript modules.
+- Islands talk to each other only through `window.nuzhah` (`openTerm`, `setView`, `reveal`), declared once in `src/env.d.ts`.
 - **Bun** is the package manager and script runtime (`bun install`, `bun --bun astro …`).
 - **prek** runs the hooks in `.pre-commit-config.yaml` locally and in CI.
 
@@ -226,23 +233,32 @@ Until a division is built, its planet still shows on the map, and its moons are 
 ```
 src/
   components/
-    svg/          Moon, Narrator, Chain, Arrow, SpeechBubble, VerdictPill,
-                  Term, LayerGuides, InfoIcon, Staircase, FilterBox, Carousel
-    layout/       Header, Footer, Breadcrumb, Starfield, ThemeToggle,
-                  KeyToggle, ViewSwitch, ReadAsText, TermPopover
+    svg/          Moon, Narrator, Chain, Arrow, SpeechBubble, Pill, Term, LayerGuides,
+                  InfoIcon, Defs, NameTag; figures.ts (FIG / KIND_NAME), geom.ts (f, titleTrigger)
+    layout/       Header, Footer, Breadcrumb, Starfield, ThemeToggle, KeyToggle,
+                  ViewSwitch, ReadAsText, TermPopover, Legend, Carousel
+    scenes/       Routes, Breaks, Unknown, Delivery, Names (one diagram per scene)
   content/
-    divisions/    one YAML per division (term, Arabic, English, §, order, moons)
-    scenes/       one YAML per scene (see 7.3)
-    terms/        terms.yaml: the term inventory
+    divisions.yaml  the eight divisions (term, Arabic, English, §, order, moons)
+    scenes.yaml     every scene (see 7.3)
+    terms.yaml      the term inventory
+  content.config.ts collections: divisions, terms, scenes
   lib/
-    terms.ts      slug → {scene, view, definition} resolver
-    views.ts      read/write ?view=, apply targets for animated switches
-    layout/       pure layout maths (staircase, orbits, panels)
+    terms.ts      slug → target path; ?t= / bare ?slug parsing
+    views.ts      read/write ?view=
+    staircase.ts  delivery step boxes per view
+    panels.ts     carousel track width and snap stops
+    orbit.ts      map orbit maths
+    scene.ts      caption lookup, popover JSON, DiagramProps
+    inventory.ts  build-time term/scene cross-checks
+    content.ts    loads collections and runs the checks
     url.ts        base-aware link helper
-  islands/        orbit.ts, tooltip.ts, viewswitch.ts, termlink.ts, carousel.ts
+  islands/        prefs.ts, stars.ts, orbit.ts, slugquery.ts, popover.ts, glossary.ts,
+                  sw.ts, viewswitch.ts, carousel.ts
+  layouts/        Page.astro
   pages/          index, [division]/index, [division]/[scene], narrators,
-                  terms, t/[slug], 404
-  styles/         tokens.css, base.css, motion.css
+                  terms, terms-index.json, t/[slug], 404
+  styles/         tokens.css, base.css, fonts.css, svg.css, motion.css
 source/           (git-ignored) PDF, extracted text, annotation dumps
 notes/            translation-queries.md, annotation-usage.md
 docs/             specs, plans, screenshots/
@@ -250,13 +266,14 @@ docs/             specs, plans, screenshots/
 
 ### 7.3 Scene content file
 
-Each scene's YAML holds:
+All scenes live in one file, `src/content/scenes.yaml`, validated by the `scenes` collection in `src/content.config.ts`. Each entry holds:
 
-- **Header data:** id, division, title, § range.
-- **Captions:** each has a term slug, Arabic (voweled), English and a paraphrased tooltip.
-- **Views:** an optional list. Each view has an id, a label, the scholars it reflects with §, and the per-element targets that differ from the default view.
-- **Panels:** optional, for the mobile carousel. Each panel has an id, a label and an x-range in diagram units (§5).
-- **Diagram:** the name of the Astro diagram component, plus its props.
+- **Header data:** id, division, `moons` (an array of indices into the division's moons that this scene covers), order within the division, title, eyebrow, lede and source line (§ range).
+- **Captions:** each has a term slug and a `note`: the longer paraphrase shown in the scene's popover and in "Read as text". The translit, Arabic and English come from the term inventory.
+- **Views:** optional; at least two when present, and the first is the default. Each view has an id, a label, the scholars it reflects with §, and a note. The per-element targets live in the diagram component, not the YAML.
+- **Panels:** optional, for the mobile carousel. Each panel has an id, a label and an x-range in diagram units (§5); `width` gives the diagram's viewBox width.
+- **Extra:** optional non-term worked examples (title, optional Arabic, §, note). They have no term slug and are shown only in "Read as text".
+- **Diagram:** the name of the Astro diagram component.
 
 Content and drawing are separate:
 
@@ -269,7 +286,7 @@ Content and drawing are separate:
 - **Islands:** each one is a plain module included only on pages that need it. It initialises once on load, since there is no client-side router.
 - **Reduced motion:** JS-driven motion (the starfield canvas and the planet orbits, which use `requestAnimationFrame`) checks `prefers-reduced-motion` and draws one static frame instead of animating.
 - **View switching:**
-  - Each element carries its target transforms as data attributes.
+  - Each element carries its per-view targets as data attributes (`data-v-<id>` transform, `data-h-<id>` height, `data-fill-<id>` fill), and `[data-view-show]` parts outside the active view get the `off` class.
   - Switching applies the new targets in the frame after layout, so CSS transitions run. This is the mockup's staircase technique.
   - Under reduced motion the switch is immediate.
 - **Missing data:** a scene's YAML is validated at build time (§9), so runtime code assumes valid data. A runtime error in an island leaves the static SVG in place.
@@ -300,6 +317,7 @@ Content and drawing are separate:
 
 - A web app manifest (name, icons incl. maskable, `display: standalone`, night-sky theme colour) with relative `start_url` and `scope`, so it installs from both GitHub Pages (`/hadith-science/`) and previews (`/`).
 - A service worker generated after the build by Workbox (`generateSW`) precaches the built pages, styles, scripts, fonts and icons (not the `/t/` redirects), so the site reads offline after the first visit. Precached pages are served from the cache; each deploy changes their revisions and the new worker takes over immediately (the first navigation after a deploy may still show the old page). Pages outside the precache are network-first with a cache fallback. Outdated caches are cleaned on update.
+- Query strings are ignored when matching the precache, so `?view=` and `?slug` links read offline.
 - Registered only in production builds, scoped to the base path.
 - Tests: manifest validity and icons, service worker registration, offline navigation to cached pages.
 

@@ -1,0 +1,44 @@
+---
+// collapsible text version of a diagram, for screen readers and search engines (spec §5). Scenes pass their
+// captions (and views, and any extra notes); other pages pass none and put their own list in the slot, reusing
+// the wrapper.
+interface Props {
+  captions?: { translit: string; ar: string; section: string; note: string }[];
+  views?: { label: string; scholars: string; note: string }[];
+  extra?: { title: string; ar?: string; section: string; note: string }[];
+}
+const { captions, views, extra } = Astro.props;
+---
+<details class="as-text">
+  <summary>Read as text</summary>
+  {captions && captions.length > 0 && (
+    <ol>
+      {captions.map((c) => (
+        <li>
+          <b>{c.translit}</b> <span lang="ar" dir="rtl" class="ar">{c.ar}</span> ({c.section}). {c.note}
+        </li>
+      ))}
+    </ol>
+  )}
+  {views && views.length > 0 && (
+    <>
+      <p><b>Views</b></p>
+      <ul>
+        {views.map((v) => (
+          <li><b>{v.label}</b> ({v.scholars}): {v.note}</li>
+        ))}
+      </ul>
+    </>
+  )}
+  {extra?.map((x) => (
+    <p><b>{x.title}</b> {x.ar && <span lang="ar" dir="rtl" class="ar">{x.ar}</span>} ({x.section}). {x.note}</p>
+  ))}
+  <slot />
+</details>
+<style>
+  /* :global so slotted content from the calling page is styled too */
+  .as-text summary{cursor:pointer;font-weight:600}
+  .as-text :global(ol),.as-text :global(ul){margin:8px 0;padding-left:1.4em;display:grid;gap:4px}
+  .as-text :global(p){margin:0}
+  .as-text :global(.ar){font-family:var(--f-ar);font-size:1.1rem}
+</style>

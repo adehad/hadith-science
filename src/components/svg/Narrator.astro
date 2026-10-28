@@ -1,8 +1,10 @@
 ---
-// a narrator figure in the 40x44 person space, drawn at 1.5x and centred on (x, y)
+// a narrator figure in the 40x44 person space, drawn at scale k (1.5 by default) and centred on (x, y)
 // (ported from the mockup's fig(), BODY and ACC). The scroll means his identity is known, the seal that
 // someone vouches for him; a missing item is an empty slot that blinks (spec §3.2).
-// Sahabi figures fill with url(#gold): the page holding them must define that gradient once.
+// Sahabi figures fill with url(#gold): the page holding them must include <Defs /> once.
+import { f } from "./geom";
+
 interface Props {
   x: number;
   y: number;
@@ -11,10 +13,14 @@ interface Props {
   scroll?: "yes" | "slot";
   seal?: "yes" | "slot" | "crack" | "void";
   ghost?: boolean;
+  /** figure scale; 1.5 in the figure key, 0.9 in chains */
+  k?: number;
+  /** kind name drawn under the figure, shown only in Labels mode (spec §3.5) */
+  label?: string;
 }
-const { x, y, kind = "later", face, scroll, seal, ghost = false } = Astro.props;
+const { x, y, kind = "later", face, scroll, seal, ghost = false, k = 1.5, label } = Astro.props;
 const BODY = "M3 43 Q3 23 20 23 Q37 23 37 43 Z";
-const transform = `translate(${x - 30} ${y - 33}) scale(1.5)`;
+const transform = `translate(${f(x - 20 * k)} ${f(y - 22 * k)}) scale(${k})`;
 ---
 {ghost ? (
   <g transform={transform}>
@@ -76,6 +82,7 @@ const transform = `translate(${x - 30} ${y - 33}) scale(1.5)`;
     {kind === "sahabi" && <path class="n sahabi star" d="M33 0 L34.6 3.4 L38 5 L34.6 6.6 L33 10 L31.4 6.6 L28 5 L31.4 3.4Z" />}
   </g>
 )}
+{label && <text class={`lbl mode-label${ghost ? " gap" : ""}`} x={x} y={f(y + 22 * k + 14)}>{label}</text>}
 <style>
   .n{stroke-width:1.5}
   .sahabi{fill:url(#gold);stroke:var(--gold-a)}

@@ -33,4 +33,28 @@ const terms = defineCollection({
   }),
 });
 
-export const collections = { divisions, terms };
+// scenes.yaml starts empty and gains one entry per scene task (phase 2 plan)
+const scenes = defineCollection({
+  loader: file("src/content/scenes.yaml"),
+  schema: z.object({
+    id: slug,
+    division: reference("divisions"),
+    moons: z.array(z.number().int().min(0)).min(1), // indices into the division's moons this scene covers
+    order: z.number().int().min(1), // order within the division
+    title: z.string(),
+    eyebrow: z.string(),
+    lede: z.string(),
+    source: z.string(), // "§5.3 Mutawātir, §5.4 Mashhūr"; page adds the book and translator
+    diagram: z.enum(["Routes", "Breaks", "Unknown", "Delivery", "Names"]),
+    width: z.number().positive(), // diagram viewBox width, for panels
+    // note: the longer paraphrase for this scene's popover and "Read as text"; terms.yaml def stays the glossary line
+    captions: z.array(z.object({ term: slug, note: z.string().max(420) })).min(1),
+    // the first view is the default (Ibn Ḥajar's, spec §5)
+    views: z.array(z.object({ id: slug, label: z.string(), scholars: z.string(), note: z.string() })).min(2).optional(),
+    panels: z.array(z.object({ id: slug, label: z.string(), x0: z.number(), x1: z.number() })).optional(),
+    // text-only items for "Read as text" that are not terms, like the names scene's worked example
+    extra: z.array(z.object({ title: z.string(), ar: z.string().optional(), section: z.string(), note: z.string().max(900) })).optional(),
+  }),
+});
+
+export const collections = { divisions, terms, scenes };

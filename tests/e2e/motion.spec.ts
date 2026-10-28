@@ -1,4 +1,8 @@
 import { test, expect, type Page } from "@playwright/test";
+import { readFileSync } from "node:fs";
+import { parse } from "yaml";
+
+const scenes = parse(readFileSync("src/content/scenes.yaml", "utf8")) as { id: string; division: string }[];
 
 const angles = (page: Page) => page.locator(".planet").evaluateAll((els) => els.map((e) => e.getAttribute("data-angle")));
 
@@ -15,6 +19,18 @@ test("reduced motion: nothing animates", async ({ page }) => {
   expect(await angles(page)).toEqual(a1);
   expect(await stars()).toBe(s1);
 });
+
+// scenes: CSS transitions (the staircase) and the landing ring are animations; the shimmer is SMIL, which
+// getAnimations() doesn't see, so it is checked as paused
+for (const s of scenes) {
+  test(`reduced motion: /${s.division}/${s.id}/ has no animations`, async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.goto(`/${s.division}/${s.id}/`);
+    await page.evaluate(() => document.fonts.ready);
+    expect(await page.evaluate(() => document.getAnimations().map((a) => (a as CSSAnimation).animationName ?? (a as CSSTransition).transitionProperty))).toEqual([]);
+    expect(await page.evaluate(() => [...document.querySelectorAll("svg")].every((s) => s.animationsPaused()))).toBe(true);
+  });
+}
 
 test("planets move with motion allowed", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "no-preference" });

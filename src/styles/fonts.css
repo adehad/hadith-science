@@ -1,0 +1,21 @@
+/* Repairs to fontsource's Fraunces faces, which load vietnamese, latin-ext, then latin.
+   Latin is declared last and lists U+0304 (combining macron) without having ā, ī or ū, so Chromium splits ū into
+   u + U+0304 and draws latin's macron, which lands on the next letter. Declaring latin-ext again, after latin and
+   for the precomposed Latin letters only, makes it the last face for ā, ī, ū, ḥ, ṣ and the rest.
+   Fraunces has no ʾ or ʿ (U+02BE-02BF) at all, so those fell back to Times; the site's own sans has them. */
+@font-face {
+  font-family: 'Fraunces Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url("@fontsource-variable/fraunces/files/fraunces-latin-ext-wght-normal.woff2") format('woff2-variations');
+  unicode-range: U+0100-024F,U+1E00-1EFF;
+}
+@font-face {
+  font-family: 'Fraunces Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url("@fontsource-variable/source-sans-3/files/source-sans-3-latin-ext-wght-normal.woff2") format('woff2-variations');
+  unicode-range: U+02BE-02BF;
+}

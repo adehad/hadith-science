@@ -1,0 +1,63 @@
+---
+// "How many routes carry it?" (ported from the mockup's SCENES.counts): four trees from the moon, with one,
+// two, three and many narrators per generation (§5.3–5.6). Each column title is a term trigger.
+import Defs from "../svg/Defs.astro";
+import LayerGuides from "../svg/LayerGuides.astro";
+import Moon from "../svg/Moon.astro";
+import Narrator from "../svg/Narrator.astro";
+import Arrow from "../svg/Arrow.astro";
+import Term from "../svg/Term.astro";
+import InfoIcon from "../svg/InfoIcon.astro";
+import { FIG, KIND_NAME } from "../svg/figures";
+import { f, titleTrigger } from "../svg/geom";
+import { cap, type DiagramProps } from "../../lib/scene";
+
+type Props = DiagramProps;
+const { caps } = Astro.props;
+
+const W = 820;
+const LAYERS: [string, number][] = [["Prophet ﷺ", 70], ["Ṣaḥābī", 170], ["Tābiʿī", 260], ["Later", 350]];
+const ys = LAYERS.slice(1).map((l) => l[1]);
+const KINDS = ["sahabi", "tabii", "later"] as const;
+// [term slug, narrators per generation, column centre, sub-line]
+const COLS: [string, number, number, string][] = [
+  ["gharib", 1, 170, "one, at some point"],
+  ["aziz", 2, 340, "at least two"],
+  ["mashhur", 3, 510, "three or more"],
+  ["mutawatir", 5, 700, "so many that collusion is impossible"],
+];
+const TITLE_Y = 440;
+
+const cols = COLS.map(([slug, n, cx, sub]) => {
+  const c = cap(caps, slug);
+  // 42 apart clears the ~36-wide figures in the 2- and 3-figure columns (the mockup's 30 made them overlap); the
+  // 5-figure column packs tighter at a smaller scale
+  const sp = n === 1 ? 0 : n > 3 ? Math.min(30, 120 / (n - 1)) : 42;
+  const xs = Array.from({ length: n }, (_, i) => f(cx + (i - (n - 1) / 2) * sp));
+  const k = n > 3 ? 0.75 * 0.9 : 0.9;
+  const arrows = ys.flatMap((y, li) => xs.map((x) => ({ x1: li === 0 ? cx : x, y1: li === 0 ? 98 : ys[li - 1] + 22, x2: x, y2: y - 24 })));
+  // Labels-mode kind names go under the first figure of each row only (the mockup's `bare`)
+  const figs = ys.flatMap((y, li) => xs.map((x, i) => ({ x, y, kind: KINDS[li], label: i === 0 ? KIND_NAME[KINDS[li]] : undefined })));
+  // titleTrigger's defaults: 11 units per character, and the (i) a little wider than the mockup's 5.6 per
+  // half-character so it clears wide titles like Mashhūr
+  const { hit, info } = titleTrigger(c.translit, cx, TITLE_Y);
+  return { c, cx, sub, k, arrows, figs, hit, info };
+});
+---
+<svg viewBox={`0 0 ${W} 520`} role="group" aria-label="Four chains from the Prophet ﷺ: one, two, three and many narrators at each generation">
+  <Defs />
+  <LayerGuides w={W} layers={LAYERS} />
+  {cols.map((col) => (
+    <>
+      <Moon cx={col.cx} cy={LAYERS[0][1]} />
+      {/* arrows first, so the Labels-mode names' surface halo sits over arrows that pass behind them */}
+      {col.arrows.map((a) => <Arrow {...a} />)}
+      {col.figs.map((p) => <Narrator x={p.x} y={p.y} k={col.k} {...FIG[p.kind]} label={p.label} />)}
+      <Term slug={col.c.slug} json={col.c.json} label={`${col.c.translit}: ${col.c.en}`} {...col.hit}>
+        <text class="title" x={col.cx} y={TITLE_Y}>{col.c.translit}</text>
+        <InfoIcon {...col.info} />
+      </Term>
+      <text class="lbl" x={col.cx} y={TITLE_Y + 22}>{col.sub}</text>
+    </>
+  ))}
+</svg>

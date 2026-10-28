@@ -10,6 +10,9 @@ const { count, size, warnings } = await generateSW({
   globIgnores: ["t/**", "sitemap*.xml"],
   swDest: `${dir}/sw.js`,
   navigateFallback: null,
+  // every query string on this site (?view=, ?t=, a bare ?slug) is read by the browser and the pages are static,
+  // so a precached page answers whatever query it carries
+  ignoreURLParametersMatching: [/.*/],
   cleanupOutdatedCaches: true,
   clientsClaim: true,
   skipWaiting: true,
