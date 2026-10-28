@@ -1,18 +1,71 @@
 ---
 import Page from "../layouts/Page.astro";
+import Moon from "../components/svg/Moon.astro";
 import { loadContent } from "../lib/content";
+import { MAP_CENTRE, moonAt, orbitRadii, planetAt, planetRadius, startAngle } from "../lib/orbit";
+import { href } from "../lib/url";
 
-// runs the build-time content checks
-await loadContent();
+const { divisions } = await loadContent();
+const [cx, cy] = MAP_CENTRE;
+const fmt = (n: number) => +n.toFixed(2);
+// Astro types <a> as the HTML element; inside an SVG it also takes SVG presentation attributes
+const svgAttrs = (a: Record<string, string>) => a;
+// positions are computed here so the map is complete without JavaScript; the orbit island moves them on
+const planets = divisions.map((d, i) => {
+  const a = startAngle(i), [x, y] = planetAt(i, a), r = planetRadius(d.moons.length);
+  return { d, i, a, x: fmt(x), y: fmt(y), r, sats: d.moons.map((_, k) => moonAt(k, d.moons.length, r).map(fmt)) };
+});
 ---
 <Page
-  title="Nuzhat al-Naẓar, visualised"
-  description="Ibn Ḥajar al-ʿAsqalānī’s map of the hadith sciences, drawn out."
+  title="Map of the book · Nuzhat al-Naẓar, visualised"
+  description="Ibn Ḥajar al-ʿAsqalānī’s eight divisions of the hadith sciences, drawn as planets circling the Prophet ﷺ."
   crumbs={[{ label: "Map", path: "" }]}
 >
   <div>
-    <div class="eyebrow">Map</div>
-    <h2>Nuzhat al-Naẓar</h2>
-    <p class="lede">The map of the eight divisions is coming soon.</p>
+    <div class="eyebrow">The whole book · Ibn Ḥajar’s divisions</div>
+    <h2>Map of the book</h2>
+    <p class="lede">Each planet is one of Ibn Ḥajar’s divisions, in his order, circling the Prophet ﷺ as the source. Its moons are the sub-divisions under it. Choose a planet to open its page.</p>
   </div>
+  <div class="stage">
+    <svg class="map" viewBox="0 90 820 400" role="group" aria-label="Eight planets for Ibn Ḥajar’s divisions orbiting a full moon">
+      {planets.map(({ i }) => {
+        const [rx, ry] = orbitRadii(i);
+        return <ellipse class="orbit" cx={cx} cy={cy} rx={rx} ry={ry} />;
+      })}
+      <Moon cx={cx} cy={cy} k={1.3} />
+      {planets.map(({ d, i, a, x, y, r, sats }) => (
+        <a
+          href={href(`${d.id}/`)}
+          class="planet"
+          aria-label={`${d.term}: ${d.en}`}
+          data-i={i}
+          data-angle={a.toFixed(3)}
+          {...svgAttrs({ transform: `translate(${x} ${y})` })}
+        >
+          <circle class="pbody" r={r} style={`fill:var(--p${d.order})`} />
+          {sats.map(([sx, sy]) => <circle class="sat" r="3" cx={sx} cy={sy} />)}
+          <text class="ptitle" y={r + 20}>{d.term}</text>
+          <text class="psub" y={r + 34}>{d.en}</text>
+        </a>
+      ))}
+    </svg>
+  </div>
+  <p class="src">Divisions follow Ibn Ḥajar, <em>Nuzhat al-Naẓar</em> §5.2–5.71 and the summaries at §5.8.2, §5.16.3, §5.38.2 (trans. A. S. Hussain, 2012).</p>
 </Page>
+<script>
+  import "../islands/orbit.ts";
+</script>
+<style>
+  .orbit{fill:none;stroke:var(--rule);stroke-width:1}
+  .planet{cursor:pointer;outline:none}
+  .planet text{text-anchor:middle}
+  .planet .pbody{stroke:none}
+  .planet .sat{fill:var(--muted)}
+  .planet .ptitle{font:600 12px var(--f-body);font-style:normal;fill:var(--fg);stroke:var(--surface);stroke-width:4px;paint-order:stroke;stroke-linejoin:round}
+  .planet .psub{fill:var(--muted);font:600 9.5px var(--f-body);font-style:normal;letter-spacing:.12em;text-transform:uppercase;stroke:var(--surface);stroke-width:4px;paint-order:stroke;stroke-linejoin:round}
+  .planet:hover .pbody,.planet:focus-visible .pbody{stroke:var(--fg);stroke-width:2.5}
+  .planet:hover .ptitle,.planet:focus-visible .ptitle{fill:var(--fg)}
+  .src{margin:0;font-size:.85rem;color:var(--muted)}
+  /* HTML stand-in that carries the planet into the division page (view transitions only capture boxed elements) */
+  :global(.vt-planet){position:fixed;border-radius:50%;pointer-events:none;z-index:5}
+</style>

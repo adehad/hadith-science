@@ -1,0 +1,18 @@
+---
+// the full moon for the Prophet ﷺ: the source every chain flows from (ported from the mockup's moon())
+interface Props { cx: number; cy: number; k?: number }
+const { cx, cy, k = 1 } = Astro.props;
+---
+<g class="moon-g">
+  <circle class="moonglow" cx={cx} cy={cy} r={34 * k} />
+  <circle class="moon" cx={cx} cy={cy} r={24 * k} />
+  <circle class="crater" cx={cx - 15 * k} cy={cy + 10 * k} r={3 * k} />
+  <circle class="crater" cx={cx + 16 * k} cy={cy - 9 * k} r={2.2 * k} />
+  <text class="pbuh" x={cx} y={cy + 1 * k} style={`font-size:${22 * k}px`}>ﷺ</text>
+</g>
+<style>
+  .moon{fill:var(--moon)}
+  .moonglow{fill:var(--glow);opacity:.35;animation:pulse 3.5s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+  .crater{fill:var(--glow);opacity:.35}
+  .pbuh{fill:var(--moon-ink);font-family:var(--f-ar);text-anchor:middle;dominant-baseline:central}
+</style>

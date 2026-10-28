@@ -8,3 +8,5 @@ a{color:inherit}
 :focus-visible{outline:2px solid var(--gold-b);outline-offset:2px}
 .skip{position:absolute;left:-999px;top:0;z-index:10;background:var(--surface);color:var(--fg);padding:8px 14px;border-radius:0 0 8px 0}
 .skip:focus{left:0}
+.stage{background:var(--surface);border:1px solid var(--rule);border-radius:14px;overflow-x:auto}
+.stage svg{display:block;width:100%;height:auto}

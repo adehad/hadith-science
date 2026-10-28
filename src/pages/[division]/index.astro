@@ -1,0 +1,98 @@
+---
+import Page from "../../layouts/Page.astro";
+import { loadContent } from "../../lib/content";
+import { href } from "../../lib/url";
+export async function getStaticPaths() {
+  const { divisions } = await loadContent();
+  return divisions.map((d, i) => ({
+    params: { division: d.id },
+    props: { d, prev: divisions[i - 1], next: divisions[i + 1] },
+  }));
+}
+const { d, prev, next } = Astro.props;
+const { terms } = await loadContent();
+const mine = terms.filter((t) => t.division === d.id);
+// the planet drawn large: moons ride a flattened ring around it, as on the map
+const R = 56, ring: [number, number] = [R + 30, (R + 30) * 0.5];
+const sats = d.moons.map((_, k) => {
+  const b = (k / d.moons.length) * 2 * Math.PI - Math.PI / 2;
+  return [+(ring[0] * Math.cos(b)).toFixed(2), +(ring[1] * Math.sin(b)).toFixed(2)];
+});
+---
+<Page
+  title={`${d.term}: ${d.en} · Nuzhat al-Naẓar, visualised`}
+  description={`${d.term} (${d.en}), division ${d.order} of Ibn Ḥajar’s Nuzhat al-Naẓar, ${d.sections}.`}
+  crumbs={[{ label: "Map", path: "" }, { label: d.term, path: `${d.id}/` }]}
+>
+  <div class="head">
+    <!-- the map's stand-in morphs into this box; never put view-transition-name inside the SVG -->
+    <div class="hero" style="view-transition-name: planet">
+      <svg viewBox="-150 -100 300 200" role="img" aria-label={`${d.term} drawn as a planet with ${d.moons.length} moons`}>
+        <ellipse class="ring" rx={ring[0]} ry={ring[1]} />
+        <circle class="pbody" r={R} style={`fill:var(--p${d.order})`} />
+        {sats.map(([x, y]) => <circle class="sat" r="7" cx={x} cy={y} />)}
+      </svg>
+    </div>
+    <div>
+      <div class="eyebrow">Division {d.order} of 8 · {d.sections}</div>
+      <h2>{d.term}</h2>
+      <p class="ar" lang="ar" dir="rtl">{d.ar}</p>
+      <p class="lede">{d.en}</p>
+    </div>
+  </div>
+
+  <section aria-labelledby="moons">
+    <h3 id="moons">Moons</h3>
+    <ul class="captions">
+      {d.moons.map((m) => (
+        <li class="cap">
+          <b>{m}</b>
+          <p>Coming soon</p>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  {mine.length > 0 && (
+    <section aria-labelledby="terms">
+      <h3 id="terms">Terms in this division</h3>
+      <ul class="terms">
+        {mine.map((t) => (
+          <li>
+            <a href={href(`terms/#${t.id}`)}>{t.translit}</a>
+            <span class="tar" lang="ar" dir="rtl">{t.ar}</span>
+            <span class="ten">{t.en}</span>
+            <span class="tsec">{t.section}</span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  <nav class="pn" aria-label="Divisions">
+    {prev ? <a rel="prev" href={href(`${prev.id}/`)}>← {prev.term}</a> : <span />}
+    {next ? <a rel="next" href={href(`${next.id}/`)}>{next.term} →</a> : <span />}
+  </nav>
+</Page>
+<style>
+  .head{display:flex;flex-wrap:wrap;align-items:center;gap:18px 28px}
+  .hero{width:min(300px,80vw);flex:none}
+  .hero svg{display:block;width:100%;height:auto}
+  .ring{fill:none;stroke:var(--rule);stroke-width:1.5}
+  .pbody{stroke:none}
+  .sat{fill:var(--muted)}
+  .ar{font-family:var(--f-ar);font-size:1.6rem;color:var(--muted);margin:0 0 4px;text-align:left}
+  h3{font-family:var(--f-display);font-weight:500;font-size:1.3rem;margin:0 0 10px}
+  ul{list-style:none;margin:0;padding:0}
+  .captions{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+  .cap{min-width:0;border-top:2px solid var(--rule);padding-top:10px}
+  .cap b{font-family:var(--f-display);font-size:1.15rem;font-weight:700}
+  .cap p{margin:4px 0 0;color:var(--muted);font-size:.95rem}
+  .terms{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:6px 18px}
+  .terms li{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 8px;padding:4px 0;border-bottom:1px solid var(--rule)}
+  .terms a{font-weight:600}
+  .tar{font-family:var(--f-ar);font-size:1.1rem;color:var(--muted)}
+  .ten,.tsec{color:var(--muted);font-size:.9rem}
+  .pn{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  .pn a{font:600 .85rem var(--f-body);background:var(--surface);color:var(--fg);border:1px solid var(--rule);border-radius:8px;padding:7px 12px;text-decoration:none}
+</style>
