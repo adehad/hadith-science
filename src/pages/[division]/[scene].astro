@@ -3,6 +3,7 @@
 import Page from "../../layouts/Page.astro";
 import Legend, { type LegendKind } from "../../components/layout/Legend.astro";
 import ReadAsText from "../../components/layout/ReadAsText.astro";
+import ViewSwitch from "../../components/layout/ViewSwitch.astro";
 import Routes from "../../components/scenes/Routes.astro";
 import { loadContent } from "../../lib/content";
 import { captionsFor, type Cap } from "../../lib/scene";
@@ -59,7 +60,12 @@ const divPath = `${d.id}/`;
     <p class="lede">{scene.lede}</p>
   </div>
 
-  {/* Task 5: <ViewSwitch views={scene.views} /> goes here when the scene has views */}
+  {scene.views && (
+    <>
+      <ViewSwitch views={scene.views} />
+      <script>import "../../islands/viewswitch.ts";</script>
+    </>
+  )}
 
   <div class="stage-wrap">
     <div class="stage">

@@ -1,0 +1,39 @@
+---
+// "Other views" switch (spec §5): Ibn Ḥajar's view first and by default, other positions where the book
+// gives them. viewswitch.ts drives it and keeps the choice in ?view=.
+//
+// Build output rule (phase 2 plan, Task 5): every [data-view-show] element whose list lacks the default
+// view renders with class="off", here and in the diagrams. The page then shows only the default view when
+// JS is off, and nothing flashes before the island applies a ?view=. Without JS the switch itself is
+// hidden; "Read as text" still lists every view.
+interface Props {
+  views: { id: string; label: string; scholars: string; note: string }[];
+}
+const { views } = Astro.props;
+const def = views[0].id;
+---
+<div class="views" data-views={views.map((v) => v.id).join(" ")}>
+  <span class="eyebrow">Other views</span>
+  <div class="seg" role="group" aria-label="Whose view">
+    {views.map((v) => (
+      <button type="button" data-v={v.id} aria-pressed={v.id === def ? "true" : "false"}>{v.label}</button>
+    ))}
+  </div>
+  <div class="notes" aria-live="polite">
+    {views.map((v) => (
+      <p class:list={["note", { off: v.id !== def }]} data-view-show={v.id}>{v.note} ({v.scholars})</p>
+    ))}
+  </div>
+</div>
+<style>
+  /* ported from the mockup's .views, .seg and .note */
+  .views{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  :global(html:not(.js)) .views{display:none}
+  .seg{display:inline-flex;flex-wrap:wrap;border:1px solid var(--rule);border-radius:16px;padding:2px;background:var(--surface);min-width:0}
+  .seg button{font:600 .85rem var(--f-body);border:0;background:transparent;color:var(--muted);padding:5px 14px;border-radius:999px;cursor:pointer}
+  .seg button[aria-pressed="true"]{background:var(--fg);color:var(--surface)}
+  .seg button:focus-visible{outline:2px solid var(--gold-b);outline-offset:2px}
+  /* the notes wrapper takes a full row, so the note always sits under the switch */
+  .notes{flex-basis:100%}
+  .note{color:var(--muted);font-size:.9rem;max-width:65ch;margin:0}
+</style>

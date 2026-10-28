@@ -6,10 +6,6 @@ import { href } from "../lib/url";
 
 interface TermData { translit: string; ar: string; def: string; section: string }
 
-declare global {
-  interface Window { nuzhah?: { openTerm?: (slug: string) => boolean } }
-}
-
 const TRIGGER = "[data-term][data-term-json]";
 const pop = document.getElementById("term-pop");
 

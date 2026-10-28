@@ -23,3 +23,6 @@ svg .arrowhead.gap{fill:var(--gap)}
 :root:not([data-mode="labels"]) .mode-label{display:none}
 /* parts hidden by the current view (?view=); used on HTML notes as well as SVG parts */
 .off{display:none !important}
+/* viewswitch.ts sets this on <html> for an instant view change (on load), so the staircase's transitions
+   don't animate from the built default; unscoped so it reaches transitions on any element */
+.no-anim *{transition:none !important}
