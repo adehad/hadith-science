@@ -1,6 +1,7 @@
 # Term inventory for the whole book (spec §6, §9). Every def is our own
 # paraphrase of the cited § of the Nuzhah; no translation text is reproduced.
-# No term has a scene yet, so all are pending until their division is built.
+# Terms with scene: are drawn in that scene;
+# the rest are pending until their division is built.
 
 # 1. ʿAdad al-ṭuruq (§5.2–5.8)
 - id: khabar
