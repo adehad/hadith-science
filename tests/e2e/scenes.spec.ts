@@ -37,7 +37,7 @@ async function expectLanded(page: Page, slug: string, scene: string) {
 
 test("every scene term is counted", () => {
   expect(built.length).toBeGreaterThanOrEqual(30);
-  expect(panelScenes.size).toBe(7);
+  expect(panelScenes.size).toBe(8);
 });
 
 test.describe("landing, desktop", () => {
@@ -327,3 +327,18 @@ for (const d of divisions) {
     }
   });
 }
+
+test("scene prev/next: sorting follows routes in its division", async ({ page }) => {
+  await page.goto("/adad-al-turuq/sorting/");
+  await expect(page.locator('.pn a[rel="prev"]')).toHaveAttribute("href", /\/adad-al-turuq\/routes\/$/);
+  await page.goto("/adad-al-turuq/routes/");
+  await expect(page.locator('.pn a[rel="next"]')).toHaveAttribute("href", /\/adad-al-turuq\/sorting\/$/);
+});
+
+test("sorting: no legend or Key/Labels switch, since it draws no narrators", async ({ page }) => {
+  await page.goto("/adad-al-turuq/sorting/");
+  await expect(page.locator(".legend")).toHaveCount(0);
+  await expect(page.locator(".viewtoggle")).toHaveCount(0);
+  for (const slug of ["ahad", "mustafid", "maqbul", "mardud"]) await expect(trigger(page, slug)).toBeVisible();
+  await expectNoAxeViolations(page);
+});

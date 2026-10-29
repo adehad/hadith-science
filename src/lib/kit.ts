@@ -104,3 +104,14 @@ export function bracketPath(a0: number, a1: number, at: number, { vertical = fal
   }
   return d;
 }
+
+// n dots in pairs, centred on (cx, cy) and gap apart, an odd last dot centred under its pair: the mustafīḍ inset's
+// narrators at one stage of a chain (Sorting.astro). Dots, not digits, so it shows a pattern without a count.
+export function dotCluster(n: number, cx: number, cy: number, gap: number): { x: number; y: number }[] {
+  const rows = Math.ceil(n / 2);
+  return Array.from({ length: n }, (_, i) => {
+    const row = Math.floor(i / 2);
+    const alone = i === n - 1 && n % 2 === 1;
+    return { x: f(alone ? cx : cx + (i % 2 ? gap : -gap) / 2) || 0, y: f(cy + (row - (rows - 1) / 2) * gap) || 0 };
+  });
+}

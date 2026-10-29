@@ -55,6 +55,29 @@
     - { id: aziz, label: ʿAzīz, x0: 255, x1: 425 }
     - { id: mashhur, label: Mashhūr, x0: 425, x1: 605 }
     - { id: mutawatir, label: Mutawātir, x0: 605, x1: 820 }
+- id: sorting
+  division: adad-al-turuq
+  moons: [1]
+  order: 3
+  title: Which reports are acted on?
+  eyebrow: How a report reached us, accepted or rejected · §5.3–5.7
+  lede: Mutawātir is acted on without investigating its narrators, because its truth is certain. Every other report, the āḥād, is checked first. If its narrator is proven truthful it is accepted, and if proven untruthful it is rejected. If neither is proven it is held back, and treated like the rejected.
+  source: §5.3 Mutawātir, §5.4 Mustafīḍ, §5.6–5.7 Āḥād, maqbūl and mardūd
+  diagram: Sorting
+  width: 780
+  captions:
+    - term: ahad
+      note: "Every report except mutawātir: the mashhūr, ʿazīz and gharīb. Each one is also called khabar al-wāḥid, literally a report narrated by one person; as a term, it is any report that does not meet the conditions of mutawātir. Unlike mutawātir, its narrators' states must be investigated before it is used as proof, so it divides into the accepted and the rejected (§5.6–5.7)."
+    - term: mustafid
+      note: "A group of the jurists call the mashhūr mustafīḍ, named for its spreading out. Some tell the two apart: mustafīḍ is where the chain's beginning and end are equal, and mashhūr is more general than that. Others separate them on another basis, which Ibn Ḥajar says is not a question for this field. The dots in the inset are only an illustration; the book gives no example (§5.4)."
+    - term: maqbul
+      note: "An āḥād report that must be acted on, in the view of the majority. It has what makes for acceptance, its narrator's truthfulness being proven, so the report's truth is overwhelmingly likely. Mutawātir needs no such test: all of it is accepted, because the truth of the report is certain (§5.7)."
+    - term: mardud
+      note: "A report whose narrator's truthfulness is not established. When his untruthfulness is proven, the report's falsehood is overwhelmingly likely, and it is repelled. A report held back, with no proof either way, is treated like the rejected: not because a cause for rejection was found, but because a cause for acceptance was not (§5.7)."
+  panels:
+    - { id: kinds, label: Two kinds, x0: 0, x1: 260 }
+    - { id: check, label: The check, x0: 260, x1: 520 }
+    - { id: outcomes, label: Three outcomes, x0: 520, x1: 780 }
 - id: breaks
   division: al-mardud
   moons: [0]

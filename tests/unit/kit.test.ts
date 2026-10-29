@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { CHIP_CHAR_W, CHIP_PAD, bracketPath, chipRow, chipWidth, diamondPath, discRow, gaugeCells, scaleEnds, sweepAt } from "../../src/lib/kit";
+import { CHIP_CHAR_W, CHIP_PAD, bracketPath, chipRow, chipWidth, diamondPath, discRow, dotCluster, gaugeCells, scaleEnds, sweepAt } from "../../src/lib/kit";
 
 describe("chipWidth", () => {
   it("grows with the text, plus padding", () => {
@@ -131,4 +131,23 @@ describe("bracketPath", () => {
     expect(() => bracketPath(0, 10, 0, { ticks: "left" })).toThrow();
     expect(() => bracketPath(0, 10, 0, { vertical: true, ticks: "up" })).toThrow();
   });
+});
+
+describe("dotCluster", () => {
+  it("stacks dots in pairs, centred on (cx, cy), gap apart", () => {
+    expect(dotCluster(4, 50, 100, 6)).toEqual([
+      { x: 47, y: 97 }, { x: 53, y: 97 },
+      { x: 47, y: 103 }, { x: 53, y: 103 },
+    ]);
+  });
+  it("centres an odd last dot under its pair", () => {
+    expect(dotCluster(3, 50, 100, 6)).toEqual([{ x: 47, y: 97 }, { x: 53, y: 97 }, { x: 50, y: 103 }]);
+    expect(dotCluster(1, 10, 20, 6)).toEqual([{ x: 10, y: 20 }]);
+  });
+  it("keeps the whole cluster centred as it grows", () => {
+    const ys = dotCluster(6, 0, 0, 5).map((d) => d.y);
+    expect(Math.min(...ys)).toBe(-5);
+    expect(Math.max(...ys)).toBe(5);
+  });
+  it("draws nothing for zero", () => expect(dotCluster(0, 0, 0, 5)).toEqual([]));
 });

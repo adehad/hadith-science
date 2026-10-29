@@ -28,6 +28,7 @@ svg .flow{fill:none;stroke:var(--line);stroke-width:2;stroke-dasharray:6 6;anima
 svg .skip{fill:none;stroke:var(--gap);stroke-width:2;stroke-dasharray:6 6;animation:flow 1.1s linear infinite}
 svg .arrowhead{fill:var(--line)}
 svg .arrowhead.gap{fill:var(--gap)}
+svg .arrowhead.pause{fill:var(--pause)}
 /* a grade raised by support (phase 3): thick, gold, solid and still, so it never reads as narration */
 svg .lift{fill:none;stroke:var(--gold-a);stroke-width:5;stroke-linecap:round}
 svg .arrowhead.gold{fill:var(--gold-a)}

@@ -123,3 +123,24 @@ test("with motion, the acted-on scene's strike draws across the abrogated ruling
   const offset = () => strike.evaluate((e) => Number(getComputedStyle(e).strokeDashoffset.replace("px", "")));
   await expect.poll(offset, { timeout: 5000 }).toBe(0);
 });
+
+test("reduced motion: the sorting scene shows the lens at rest, the three exits drawn and the outcome cards", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/adad-al-turuq/sorting/");
+  expect(await page.locator("svg .lens-pass").evaluate((e) => getComputedStyle(e).transform)).toBe("none");
+  const exits = await page.locator("svg .exit").evaluateAll((els) => els.map((e) => [Number(getComputedStyle(e).strokeDashoffset.replace("px", "")), getComputedStyle(e).opacity]));
+  expect(exits).toEqual([[0, "1"], [0, "1"], [0, "1"]]);
+  const cards = await page.locator("svg .out").evaluateAll((els) => els.map((e) => getComputedStyle(e).opacity));
+  expect(cards).toEqual(["1", "1", "1"]);
+});
+
+test("with motion, the sorting scene's exits draw in one after another, after the lens", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.goto("/adad-al-turuq/sorting/");
+  expect(await page.locator("svg .lens-pass").evaluate((e) => e.getAnimations().map((a) => [(a as CSSAnimation).animationName, a.effect?.getTiming().delay]))).toEqual([["sorting-pass", 600]]);
+  const delays = await page.locator("svg .exit").evaluateAll((els) => els.map((e) => e.getAnimations().map((a) => [(a as CSSAnimation).animationName, a.effect?.getTiming().delay])));
+  expect(delays).toEqual([[["sorting-draw", 2200]], [["sorting-draw", 2500]], [["sorting-draw", 2800]]]);
+  const last = () => page.locator("svg .exit").last().evaluate((e) => Number(getComputedStyle(e).strokeDashoffset.replace("px", "")));
+  await expect.poll(last, { timeout: 6000 }).toBe(0);
+  await expect.poll(() => page.locator("svg .out").last().evaluate((e) => getComputedStyle(e).opacity), { timeout: 6000 }).toBe("1");
+});
