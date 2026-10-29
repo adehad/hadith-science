@@ -24,12 +24,12 @@ import Chip from "../svg/Chip.astro";
 import Glyph from "../svg/Glyph.astro";
 import Matn from "../svg/Matn.astro";
 import TermTitle from "../svg/TermTitle.astro";
+import XLink from "../svg/XLink.astro";
 import { FIG, KIND_NAME, RELIABLE } from "../svg/figures";
 import { ROW_TITLE_TRIGGER, SUBT_TRIGGER, f, titleTrigger, rowTrigger } from "../svg/geom";
 import { cap, type DiagramProps } from "../../lib/scene";
 import { chipRow, discRow, sweepAt } from "../../lib/kit";
 import { loadContent } from "../../lib/content";
-import { href } from "../../lib/url";
 
 type Props = DiagramProps;
 const { caps, scene } = Astro.props;
@@ -142,16 +142,12 @@ const CARDS = [
 
   <g aria-hidden="true"><line class="side" x1="14" x2="14" y1="368" y2="456" /></g>
   <text class="lbl start sm" x="24" y="380">if gross or excessive, his report is</text>
-  <a class="xlink" href={href(`${opposition.division}/${opposition.id}/`)} aria-label={`munkar, for those who don't require going against others (scene: ${opposition.title})`}>
-    <text class="rp" x="24" y="398"><tspan class="xu">munkar</tspan><tspan dx="5">→</tspan></text>
-  </a>
+  <XLink to={`${opposition.division}/${opposition.id}`} text="munkar" rest=", for those who don't require going against others" x={24} y={398} />
   <text class="lbl start sm" x="24" y="416">for those who don't make going</text>
   <text class="lbl start sm" x="24" y="430">against others its condition</text>
   {innovation
     ? (
-      <a class="xlink" href={href(`${innovation.division}/${innovation.id}/`)} aria-label={`and so is the open sinner's (scene: ${innovation.title})`}>
-        <text class="rp" x="24" y="452"><tspan class="xu">and so is the open sinner's</tspan><tspan dx="5">→</tspan></text>
-      </a>
+      <XLink to={`${innovation.division}/${innovation.id}`} text="and so is the open sinner's" x={24} y={452} />
     )
     : <text class="lbl start sm" x="24" y="452">and so is the open sinner's</text>}
 
@@ -209,9 +205,7 @@ const CARDS = [
   <rect class="bar-all" x={LIFE.x0} y={ALL_Y - 5} width={LIFE.x1 - LIFE.x0} height="10" rx="5" aria-hidden="true" />
   <Narrator x={560} y={146} k={K} {...FIG.weak} label={KIND_NAME.weak} />
   <text class="lbl start sm" x="584" y="142">for some ḥadīth scholars,</text>
-  <a class="xlink" href={href(`${opposition.division}/${opposition.id}/`)} aria-label={`his report is shādhdh, for some ḥadīth scholars (scene: ${opposition.title})`}>
-    <text class="rp" x="584" y="158"><tspan>his report is </tspan><tspan class="xu">shādhdh</tspan><tspan dx="5">→</tspan></text>
-  </a>
+  <XLink to={`${opposition.division}/${opposition.id}`} lead="his report is " text="shādhdh" rest=", for some ḥadīth scholars" x={584} y={158} />
 
   <text class="layer" x="540" y={mukhtalit.y}>Later in life</text>
   <TermTitle c={mukhtalit.c} x={mukhtalit.cx} y={mukhtalit.y} cls="rt mid" hit={mukhtalit.hit} info={mukhtalit.info} />

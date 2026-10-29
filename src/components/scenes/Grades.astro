@@ -12,6 +12,7 @@ import Moon from "../svg/Moon.astro";
 import Narrator from "../svg/Narrator.astro";
 import Arrow from "../svg/Arrow.astro";
 import TermTitle from "../svg/TermTitle.astro";
+import XLink from "../svg/XLink.astro";
 import Chip from "../svg/Chip.astro";
 import Gauge from "../svg/Gauge.astro";
 import Glyph from "../svg/Glyph.astro";
@@ -20,7 +21,6 @@ import { SUBT_TRIGGER, f, rowTrigger, titleTrigger } from "../svg/geom";
 import { cap, type DiagramProps } from "../../lib/scene";
 import { chipRow } from "../../lib/kit";
 import { stepFill } from "../../lib/staircase";
-import { href } from "../../lib/url";
 
 type Props = DiagramProps;
 const { caps, scene } = Astro.props;
@@ -67,8 +67,8 @@ const aRows = A_ROWS.map(([slug, y, gloss, glyph], i) => {
 });
 // the two conditions that belong to other scenes: plain text, not triggers; shādhdh links to its scene, named
 // in the link's accessible name since an arrow alone doesn't say where it goes
-const A_PLAIN: [number, string, { to: string; title: string }?][] = [
-  [216, "not anomalous (shādhdh)", { to: "al-maqbul/opposition/", title: "Who outweighs whom?" }],
+const A_PLAIN: [number, string, string?][] = [
+  [216, "not anomalous (shādhdh)", "al-maqbul/opposition"],
   [242, "no hidden defect (muʿallal)"],
 ];
 const aTitle = title("sahih-li-dhatihi", 172);
@@ -149,7 +149,7 @@ const modeLabel = KIND_NAME.later;
       <>
         <g style={`--d:${((A_ROWS.length + i) * 0.25).toFixed(2)}s`}><Glyph kind="check" cx={CHECK_X} cy={y - 4} /></g>
         {to
-          ? <a class="xlink" href={href(to.to)} aria-label={`${t}: see ${to.title}`}><text class="rp" x={CHECK_X + 14} y={y}><tspan class="xu">{t}</tspan><tspan dx="5">→</tspan></text></a>
+          ? <XLink to={to} text={t} x={CHECK_X + 14} y={y} />
           : <text class="rp" x={CHECK_X + 14} y={y}>{t}</text>}
       </>
     ))}

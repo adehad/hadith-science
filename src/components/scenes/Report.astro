@@ -18,11 +18,11 @@ import Matn from "../svg/Matn.astro";
 import Chip from "../svg/Chip.astro";
 import Bracket from "../svg/Bracket.astro";
 import TermTitle from "../svg/TermTitle.astro";
+import XLink from "../svg/XLink.astro";
 import { FIG, KIND_NAME, RELIABLE, type Kind } from "../svg/figures";
 import { SUBT_TRIGGER, f, rowTrigger, titleTrigger } from "../svg/geom";
 import { cap, type DiagramProps } from "../../lib/scene";
 import { chipWidth, stackY } from "../../lib/kit";
-import { href } from "../../lib/url";
 
 type Props = DiagramProps;
 const { caps, scene } = Astro.props;
@@ -137,9 +137,7 @@ const off = (v: ViewId) => v !== DEF;
     <text class="lbl start" x={isnad.x} y={isnad.y + 36}>to the text</text>
 
     {/* ṭuruq is routes' subject: a link, not a trigger */}
-    <a class="xlink" href={href("adad-al-turuq/routes/")} aria-label="many isnāds are its ṭuruq, its routes: see How many routes carry it?">
-      <text class="rp" x="20" y={LINK_Y}><tspan class="xu">many isnāds are its ṭuruq, its routes</tspan><tspan dx="5">→</tspan></text>
-    </a>
+    <XLink to="adad-al-turuq/routes" text="many isnāds are its ṭuruq, its routes" x={20} y={LINK_Y} />
   </svg>
 
   <svg viewBox="0 0 430 384" role="group" aria-label="Khabar and ḥadīth, two names, as two rings. One meaning: the rings are one. Two kinds: ḥadīth from the Prophet ﷺ, khabar from others. General and particular: the ḥadīth ring sits inside the khabar ring.">

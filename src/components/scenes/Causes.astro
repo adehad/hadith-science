@@ -22,13 +22,13 @@ import Glyph from "../svg/Glyph.astro";
 import Bracket from "../svg/Bracket.astro";
 import Lifespan from "../svg/Lifespan.astro";
 import TermTitle from "../svg/TermTitle.astro";
+import XLink from "../svg/XLink.astro";
 import { FIG, KIND_NAME, RELIABLE, type Kind } from "../svg/figures";
 import { f, titleTrigger } from "../svg/geom";
 import { cap, type DiagramProps } from "../../lib/scene";
 import { stepFill } from "../../lib/staircase";
 import { chipWidth } from "../../lib/kit";
 import { loadContent } from "../../lib/content";
-import { href } from "../../lib/url";
 
 type Props = DiagramProps;
 const { caps, scene } = Astro.props;
@@ -36,11 +36,11 @@ if (scene.views?.length) throw new Error("Causes: expected no views");
 if (scene.panels?.length) throw new Error("Causes: a grid of cells, not panels");
 
 const { scenes, terms } = await loadContent();
-// a scene this one links to, by id; throws so a renamed or missing scene fails the build
+// a scene this one links to, by id, as XLink's target; throws so a renamed or missing scene fails the build
 function sceneById(id: string) {
   const s = scenes.find((x) => x.id === id);
   if (!s) throw new Error(`Causes: no scene ${id} to link to`);
-  return { title: s.title, path: href(`${s.division}/${s.id}/`) };
+  return { title: s.title, to: `${s.division}/${s.id}` };
 }
 const breaks = sceneById("breaks");
 const hidden = sceneById("hidden");
@@ -87,7 +87,7 @@ const chains = CHAINS.map((ch) => {
     from = s.k === "collector" ? from : under(s.y);
     jumped = false;
   }
-  return { ...ch, arrows, label: `${ch.where}: ${ch.names} (scene: ${breaks.title})` };
+  return { ...ch, arrows };
 });
 const CAP_Y = 390;
 // the two boxes of §5.21: plain to see, and hidden
@@ -144,8 +144,8 @@ const rungs = CAUSES.map(([slug, yields], i) => {
     n: i + 1, top, fill: stepFill(i * 0.75), translit: t.translit, en, yields,
     // the whole rung is the link, short of the bracket on rungs 3–5
     end: munkar ? BRK_X - 8 : R_X1,
-    path: href(`${s.division}/${s.id}/#${slug}`),
-    label: `${t.translit} · ${en}${yields ? `: ${yields}` : ""} (scene: ${s.title})`,
+    to: `${s.division}/${s.id}#${slug}`,
+    text: `${t.translit} · ${en}${yields ? `: ${yields}` : ""}`,
     delay: i * 80,
   };
 });
@@ -167,10 +167,10 @@ const R_END = rungs[rungs.length - 1].top + R_H;
           <Narrator x={ch.x} y={ROWS[i]} k={K} {...FIG[k]} {...(k === "ghost" ? {} : RELIABLE)} label={KIND_NAME[k]} />
         ))}
         <Chip x={f(ch.x - COLLECTOR_W / 2)} y={COLLECTOR_Y} text="collector" />
-        <a class="xlink" href={breaks.path} aria-label={ch.label}>
+        <XLink to={breaks.to} text={`${ch.where}: ${ch.names}`}>
           <text class="lbl sm" x={ch.x} y={CAP_Y}>{ch.where}{" "}</text>
           <text class="rp" x={ch.x} text-anchor="middle" y={CAP_Y + 16}><tspan class="xu">{ch.names}</tspan><tspan dx="4" aria-hidden="true">→</tspan></text>
-        </a>
+        </XLink>
       </>
     ))}
 
@@ -181,9 +181,7 @@ const R_END = rungs[rungs.length - 1].top + R_H;
         <text class="layer" x={b.x + 32} y={BOX_Y + 24}>{b.head}</text>
         {b.bars.map(([x0, x1], j) => <Lifespan x0={x0} x1={x1} y={BOX_Y + 42 + j * 14} />)}
         {b.lines.map((t, j) => <text class="lbl start sm" x={b.x + 14} y={BOX_Y + 84 + j * 15}>{t}</text>)}
-        <a class="xlink" href={b.link.path} aria-label={`${b.link.title} (the ${b.head.toLowerCase()} drop)`}>
-          <text class="rp" x={b.x + BOX_W / 2} text-anchor="middle" y={BOX_Y + BOX_H - 14}><tspan class="xu">{b.link.title}</tspan><tspan dx="4" aria-hidden="true">→</tspan></text>
-        </a>
+        <XLink to={b.link.to} text={b.link.title} note={`the ${b.head.toLowerCase()} drop`} x={b.x + BOX_W / 2} y={BOX_Y + BOX_H - 14} anchor="middle" gap={4} />
       </>
     ))}
   </svg>
@@ -206,24 +204,24 @@ const R_END = rungs[rungs.length - 1].top + R_H;
             <rect class="rung" x={R_X0} y={r.top} width={R_X1 - R_X0} height={R_H} rx="4" style={`fill:${r.fill}`} />
             {/* the book's own count (§5.23–5.38) */}
             <text class="rungno" x={R_X0 + 15} y={r.top + 25}>{r.n}</text>
-            <a class="xlink" href={r.path} aria-label={r.label}>
+            <XLink to={r.to} text={r.text}>
               <rect class="hit" x={R_X0 + 26} y={r.top} width={r.end - R_X0 - 26} height={R_H} />
               <text class="rc" x={TXT_X} y={r.yields ? r.top + 17 : r.top + 25}><tspan class="xu"><tspan class="ct">{r.translit}</tspan> · {r.en}</tspan>{" "}</text>
               {r.yields && <text class="lbl start sm" x={TXT_X} y={r.top + 33}>{r.yields}</text>}
               <text class="rp" x={r.end - 10} y={r.top + 25} text-anchor="end" aria-hidden="true">→</text>
-            </a>
+            </XLink>
           </g>
           {/* rungs 3–5: munkar, for those who don't require going against others (§5.26). Emitted right after rung 5,
               so its link comes after rung 5's in the tab order; it paints over rungs 3–5, and no later rung reaches it */}
           {r.n === 5 && (
             <>
               <Bracket vertical x={BRK_X} y0={M_TOP + 4} y1={M_BOT - 4} ticks="left" />
-              <a class="xlink" href={opposition.path} aria-label={`munkar, for those who don't require going against others (scene: ${opposition.title})`}>
+              <XLink to={opposition.to} text="munkar, for those who don't require going against others">
                 <text class="lbl start sm munkar-lbl" x={BRK_X + 8} y={M_TOP + 40}>munkar, for those{" "}</text>
                 <text class="lbl start sm munkar-lbl" x={BRK_X + 8} y={M_TOP + 54}>who don't require{" "}</text>
                 <text class="lbl start sm munkar-lbl" x={BRK_X + 8} y={M_TOP + 68}>going against{" "}</text>
                 <text class="rp" x={BRK_X + 8} y={M_TOP + 84}><tspan class="xu">others</tspan><tspan dx="4" aria-hidden="true">→</tspan></text>
-              </a>
+              </XLink>
             </>
           )}
         </>
@@ -250,7 +248,7 @@ const R_END = rungs[rungs.length - 1].top + R_H;
   /* text on the gold rungs: the .lbl surface halo would draw blobs on the fill, and --muted falls under 4.5:1 on the
      darker rungs in dark mode, so no halo and a mix of --fg that passes on rung 1 in both themes */
   .rung-g .lbl,.munkar-lbl{stroke:none;fill:color-mix(in srgb,var(--fg) 85%,var(--surface))}
-  .xlink:is(:hover,:focus-visible) :is(.lbl,.munkar-lbl){fill:var(--gold-a)}
+  :global(.xlink:is(:hover,:focus-visible)) :is(.lbl,.munkar-lbl){fill:var(--gold-a)}
   /* motion: the resting style is the end state; each rung fades in from the top, once */
   .rung-g{animation:causes-in .2s ease-out both}
   @keyframes causes-in{from{opacity:0}}

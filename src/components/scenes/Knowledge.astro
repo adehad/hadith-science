@@ -20,12 +20,12 @@ import Arrow from "../svg/Arrow.astro";
 import Chip from "../svg/Chip.astro";
 import Glyph from "../svg/Glyph.astro";
 import TermTitle from "../svg/TermTitle.astro";
+import XLink from "../svg/XLink.astro";
 import { FIG, KIND_NAME, RELIABLE } from "../svg/figures";
 import { ROW_TITLE_TRIGGER, f, titleTrigger } from "../svg/geom";
 import { cap, type DiagramProps } from "../../lib/scene";
 import { chipRow } from "../../lib/kit";
 import { stepFill } from "../../lib/staircase";
-import { href } from "../../lib/url";
 
 type Props = DiagramProps;
 const { caps, scene } = Astro.props;
@@ -117,9 +117,7 @@ const muhtaff = trigger("muhtaff-bil-qarain", 530, 426);
   <g data-view-show="ibn-hajar" aria-hidden="true"><Arrow x1={202} y1={190} x2={256} y2={MUT.ibn - 4} bend={-10} /></g>
   <g class="off" data-view-show="nazari-only" aria-hidden="true"><Arrow x1={202} y1={204} x2={256} y2={MUT.nazari - 4} bend={14} /></g>
   {/* mutawātir is routes' term: a link, not a trigger */}
-  <a class="xlink" href={href("adad-al-turuq/routes/")} aria-label="Mutawātir: see How many routes carry it?">
-    <text class="rp" x="130" y="258"><tspan class="xu">Mutawātir</tspan><tspan dx="5">→</tspan></text>
-  </a>
+  <XLink to="adad-al-turuq/routes" text="Mutawātir" x={130} y={258} />
   <text class="lbl" x="130" y="276">narrators not investigated</text>
 
   <text class="layer" x="16" y={WHO.head}>Who gains it?</text>

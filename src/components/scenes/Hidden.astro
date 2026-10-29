@@ -23,12 +23,12 @@ import Glyph from "../svg/Glyph.astro";
 import Bracket from "../svg/Bracket.astro";
 import Lifespan from "../svg/Lifespan.astro";
 import TermTitle from "../svg/TermTitle.astro";
+import XLink from "../svg/XLink.astro";
 import { FIG, KIND_NAME, RELIABLE } from "../svg/figures";
 import { ROW_TITLE_TRIGGER, SUBT_TRIGGER, titleTrigger } from "../svg/geom";
 import { cap, type DiagramProps } from "../../lib/scene";
 import { spanOverlap } from "../../lib/kit";
 import { loadContent } from "../../lib/content";
-import { href } from "../../lib/url";
 
 type Props = DiagramProps;
 const { caps, scene } = Astro.props;
@@ -95,7 +95,7 @@ const MUKH = [
 // broken one (design §18). It lands on the al-mazīd term, opening its note, when the scene carries it.
 const { scenes } = await loadContent();
 const changes = scenes.find((s) => s.division === "al-mardud" && s.id === "changes");
-const mazidLink = changes && `al-mardud/${changes.id}/${changes.captions.some((c) => c.term === "mazid") ? "#mazid" : ""}`;
+const mazidLink = changes && `al-mardud/${changes.id}${changes.captions.some((c) => c.term === "mazid") ? "#mazid" : ""}`;
 ---
 <svg viewBox={`0 0 ${W} ${H}`} class="hidden-scene" role="group" aria-label="Three panels, each with two lifespans over a chain fragment. Mudallas: the narrator and his shaykh lived at the same time and met; the narrator, a concealer, cites the shaykh with ʿan or qāla, hiding the one he heard it from. With words of certainty he would be a liar; his report is not accepted until he says he heard. Mursal khafī: the two lived at the same time, but no meeting is known; the chain looks the same. That they never met is shown by his own word or a versed imam's firm statement; an extra narrator in some versions is no proof. Lived in his time: Abū ʿUthmān al-Nahdī and Qays ibn Abī Ḥāzim lived in the Prophet's ﷺ time without a known meeting, and the ḥadīth scholars agree their reports are irsāl, not tadlīs, so a meeting, not a shared lifetime, is what tadlīs needs.">
   <Defs />
@@ -156,9 +156,7 @@ const mazidLink = changes && `al-mardud/${changes.id}/${changes.captions.some((c
   <text class="lbl sm" x="390" y="446">an extra narrator in some versions</text>
   <text class="lbl sm" x="390" y="461">is no proof: it may be an addition</text>
   {mazidLink && (
-    <a class="xlink" href={href(mazidLink)} aria-label={`${changes.title} (an extra narrator: al-mazīd)`}>
-      <text class="rp" x="390" y="484" text-anchor="middle"><tspan class="xu">{changes.title}</tspan><tspan dx="5">→</tspan></text>
-    </a>
+    <XLink to={mazidLink} text={changes.title} note="an extra narrator: al-mazīd" x={390} y={484} anchor="middle" />
   )}
 
   {/* ---- panel 3: the mukhaḍramūn ---- */}

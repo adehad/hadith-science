@@ -18,12 +18,12 @@ import Chip from "../svg/Chip.astro";
 import Decision from "../svg/Decision.astro";
 import Pill from "../svg/Pill.astro";
 import TermTitle from "../svg/TermTitle.astro";
+import XLink from "../svg/XLink.astro";
 import { FIG, KIND_NAME, RELIABLE } from "../svg/figures";
 import { f, rowTrigger } from "../svg/geom";
 import { cap, type DiagramProps } from "../../lib/scene";
 import { chipWidth, pillWidth } from "../../lib/kit";
 import { loadContent } from "../../lib/content";
-import { href } from "../../lib/url";
 
 type Props = DiagramProps;
 const { caps, scene } = Astro.props;
@@ -111,9 +111,7 @@ const TAG_W = 216;
   <text class="lbl start sm" x="90" y="124">of disbelief</text>
   <text class="lbl start sm" x="20" y="164">lying is a kind of it, listed on its own</text>
   <text class="lbl start sm" x="20" y="178">and first: it harms this field the most</text>
-  <a class="xlink" href={href(`${lying.division}/${lying.id}/`)}>
-    <text class="rp" x="20" y="198"><tspan class="xu">{lying.title}</tspan><tspan dx="5" aria-hidden="true">→</tspan></text>
-  </a>
+  <XLink to={`${lying.division}/${lying.id}`} text={lying.title} x={20} y={198} />
 
   <Arrow x1={56} y1={212} x2={56} y2={248} />
   <text class="lbl start sm" x="68" y="234">in belief: explained later</text>

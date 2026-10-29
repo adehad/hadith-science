@@ -21,10 +21,10 @@ import Decision from "../svg/Decision.astro";
 import Glyph from "../svg/Glyph.astro";
 import Pill from "../svg/Pill.astro";
 import TermTitle from "../svg/TermTitle.astro";
+import XLink from "../svg/XLink.astro";
 import { ROW_TITLE_TRIGGER, SUBT_TRIGGER, f, titleTrigger } from "../svg/geom";
 import { cap, type DiagramProps } from "../../lib/scene";
 import { dotCluster } from "../../lib/kit";
-import { href } from "../../lib/url";
 
 type Props = DiagramProps;
 const { caps, scene } = Astro.props;
@@ -110,9 +110,7 @@ const EXIT_X2 = CARD.x0 - 3;
   <Chip x={CHIP_X} y={MUTAWATIR_Y} text="Mutawātir" />
   <text class="lbl start" x={CHIP_X} y="108">many routes</text>
   {/* the kinds by their routes are routes' subject: a link, not a trigger */}
-  <a class="xlink" href={href("adad-al-turuq/routes/")} aria-label="How many routes carry it? (the kinds by their routes)">
-    <text class="rp" x="24" y="134"><tspan class="xu">How many routes carry it?</tspan><tspan dx="5">→</tspan></text>
-  </a>
+  <XLink to="adad-al-turuq/routes" text="How many routes carry it?" note="the kinds by their routes" x={24} y={134} />
 
   <text class="lbl start" x="24" y={MUSTAFID_Y}>also</text>
   <TermTitle c={mustafid.c} x={mustafid.cx} y={mustafid.y} cls="rt" hit={mustafid.hit} info={mustafid.info} ar={{ x: 176, y: MUSTAFID_Y, size: "sm" }} />
@@ -161,10 +159,10 @@ const EXIT_X2 = CARD.x0 - 3;
 
   {/* ---- panel 3: three outcomes ---- */}
   {/* how sure mutawātir makes us is the knowledge scene's subject: the pill links there */}
-  <a class="xlink pill-link" href={href("adad-al-turuq/knowledge/")} aria-label="Accepted · certain: see How sure can we be?">
+  <XLink to="adad-al-turuq/knowledge" text="Accepted · certain" cls="pill-link">
     <Pill x={650} y={MUTAWATIR_Y} state="accept" text="Accepted · certain" />
-    <text class="rp" x="728" y={MUTAWATIR_Y + 4}>→</text>
-  </a>
+    <text class="rp" x="728" y={MUTAWATIR_Y + 4} aria-hidden="true">→</text>
+  </XLink>
 
   <g class="out">
     <rect class={`card ${OUT.maqbul.kind}`} x={CARD.x0} y={OUT.maqbul.y0} width={CARD.x1 - CARD.x0} height={OUT.maqbul.y1 - OUT.maqbul.y0} rx="8" />
@@ -201,7 +199,7 @@ const EXIT_X2 = CARD.x0 - 3;
   .sorting :global(.rt){text-anchor:middle}
   .yn{font-size:11px}
   .subt.plain{fill:var(--muted)}
-  .pill-link:hover :global(rect),.pill-link:focus-visible :global(rect){stroke-width:2.5}
+  .sorting :global(.pill-link:is(:hover,:focus-visible) rect){stroke-width:2.5}
   /* the five lines' dashes are staggered, so they read as many routes rather than a ladder */
   .bundle{stroke-width:1.2;stroke-dashoffset:var(--o);animation-name:sorting-flow}
   @keyframes sorting-flow{from{stroke-dashoffset:var(--o)}to{stroke-dashoffset:calc(var(--o) - 12px)}}

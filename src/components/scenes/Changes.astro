@@ -29,12 +29,12 @@ import Pill from "../svg/Pill.astro";
 import Matn from "../svg/Matn.astro";
 import Scale from "../svg/Scale.astro";
 import TermTitle from "../svg/TermTitle.astro";
+import XLink from "../svg/XLink.astro";
 import { FIG, KIND_NAME, RELIABLE } from "../svg/figures";
 import { ROW_TITLE_TRIGGER, SUBT_TRIGGER, f, rowTrigger, titleTrigger } from "../svg/geom";
 import { cap, type DiagramProps } from "../../lib/scene";
 import { LETTER_DOTS, chipWidth, letterDots, letterShape, vowelMark } from "../../lib/kit";
 import { loadContent } from "../../lib/content";
-import { href } from "../../lib/url";
 
 type Props = DiagramProps;
 const { caps, scene } = Astro.props;
@@ -294,9 +294,7 @@ const VOWELLED = ([["fatha", "fatḥa"], ["damma", "ḍamma"], ["kasra", "kasra"
     <text class="lbl start sm" x="24" y="267">only ʿan at that link, for example:</text>
     <Pill x={346} y={263} state="accept" text="addition preferred" />
     <text class="lbl start sm" x="24" y="287">no proof of a hidden drop:</text>
-    <a class="xlink" href={href(`${hidden.division}/${hidden.id}/`)}>
-      <text class="rp" x="176" y="287"><tspan class="xu">{hidden.title}</tspan><tspan dx="5" aria-hidden="true">→</tspan></text>
-    </a>
+    <XLink to={`${hidden.division}/${hidden.id}`} text={hidden.title} x={176} y={287} />
   </svg>
 
   <svg id={CELL.mudtarib} viewBox="0 0 430 300" class="mudtarib" role="group" aria-label="Muḍṭarib, an illustration. A chain from the Prophet ﷺ through a Companion, where the next link is given as one narrator or another, over a level scale: neither version can be preferred. Usually in the chain, sometimes in the text. Changed on purpose to test someone, as with al-Bukhārī and al-ʿUqaylī, it is allowed if not left standing; for rarity, it is forgery; by mistake, it is maqlūb or muʿallal.">
@@ -327,16 +325,12 @@ const VOWELLED = ([["fatha", "fatḥa"], ["damma", "ḍamma"], ["kasra", "kasra"
     {WHY.map((w) => <Chip x={WHY_X} y={w.y} text={w.chip} w={w.w} />)}
     <text class="lbl start sm" x={WHY_X + 6} y={WHY[0].y + 22}>allowed if not left standing,</text>
     <text class="lbl start sm" x={WHY_X + 6} y={WHY[0].y + 36}>as with al-Bukhārī, al-ʿUqaylī</text>
-    <a class="xlink" href={href(`${lying.division}/${lying.id}/`)}>
-      <text class="rp" x={WHY[1].after} y={WHY[1].y + 4}>forgery: <tspan class="xu">{lying.title}</tspan><tspan dx="5" aria-hidden="true">→</tspan></text>
-    </a>
+    <XLink to={`${lying.division}/${lying.id}`} lead="forgery: " text={lying.title} x={WHY[1].after} y={WHY[1].y + 4} />
     <a class="xlink jump" href={`#${CELL.maqlub}`}>
       <text class="rp" x={WHY[2].after} y={WHY[2].y + 4}><tspan class="xu">maqlūb</tspan><tspan dx="4" aria-hidden="true">↑</tspan></text>
     </a>
     <text class="lbl start sm" x={f(WHY[2].after + 58)} y={WHY[2].y + 4}>or</text>
-    <a class="xlink" href={href(`${slips.division}/${slips.id}/`)} aria-label={`muʿallal: see ${slips.title}`}>
-      <text class="rp" x={f(WHY[2].after + 76)} y={WHY[2].y + 4}><tspan class="xu">muʿallal</tspan><tspan dx="4" aria-hidden="true">→</tspan></text>
-    </a>
+    <XLink to={`${slips.division}/${slips.id}`} text="muʿallal" x={f(WHY[2].after + 76)} y={WHY[2].y + 4} gap={4} />
   </svg>
 
   <svg id={CELL.letters} viewBox="0 0 430 300" role="group" aria-label="Muṣaḥḥaf and muḥarraf, an illustration with single letters. One undotted letter outline: with no dots, one dot below or two above, it reads as different letters: muṣaḥḥaf, a change in the dots. The same outline with a fatḥa, ḍamma or kasra is voiced differently: muḥarraf, a change in the vowels. The outline stays the same. Most often in the text, sometimes in names in the chains. al-ʿAskarī, al-Dāraquṭnī and others wrote books on it.">
