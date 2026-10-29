@@ -156,7 +156,7 @@ const mazidLink = changes && `al-mardud/${changes.id}/${changes.captions.some((c
   <text class="lbl sm" x="390" y="446">an extra narrator in some versions</text>
   <text class="lbl sm" x="390" y="461">is no proof: it may be an addition</text>
   {mazidLink && (
-    <a class="xlink" href={href(mazidLink)} aria-label={`An extra narrator: see al-mazīd in ${changes.title}`}>
+    <a class="xlink" href={href(mazidLink)} aria-label={`${changes.title} (an extra narrator: al-mazīd)`}>
       <text class="rp" x="390" y="484" text-anchor="middle"><tspan class="xu">{changes.title}</tspan><tspan dx="5">→</tspan></text>
     </a>
   )}

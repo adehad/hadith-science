@@ -125,18 +125,22 @@ const base = BASE.map(([slug, ar, tr], k) => {
         <text class="stepno" x="10" y="21">{s.n}</text>
         <g class="mode" aria-hidden="true" set:html={s.icon} />
         <text class="stepen" x={CX} y={Y0 + s.lines.length * LINE - 2}>{s.en}</text>
-        {/* each line's text sits inside its trigger. axe runs separate <text>s together with no space, so a second
-            line's transliteration leads with one; SVG drops it at the line start, so it doesn't move the text */}
+        {/* each line's transliteration sits inside its trigger. axe runs separate <text>s together with no space, so a
+            second line's transliteration leads with one; SVG drops it at the line start, so it doesn't move the text.
+            The Arabic sits outside the trigger (as in TermTitle), so the trigger's visible text is the transliteration
+            its label leads with (WCAG 2.5.3); drawn first, it stays under the trigger's hit area. */}
         {s.triggers.map((t) => (
-          <Term slug={t.c.slug} json={t.c.json} label={t.label} {...t.hit}>
-            {s.lines.slice(t.k0, t.k1 + 1).map(([, ar, tr], j) => (
-              <>
-                <text class="title-ar sm" x={CX} y={Y0 + (t.k0 + j) * LINE} lang="ar">{ar}</text>
-                <text class="tr" x={CX} y={Y0 + (t.k0 + j) * LINE + 15}>{j > 0 ? ` ${tr}` : tr}</text>
-              </>
+          <>
+            {s.lines.slice(t.k0, t.k1 + 1).map(([, ar], j) => (
+              <text class="title-ar sm" x={CX} y={Y0 + (t.k0 + j) * LINE} lang="ar">{ar}</text>
             ))}
-            <InfoIcon {...t.info} />
-          </Term>
+            <Term slug={t.c.slug} json={t.c.json} label={t.label} {...t.hit}>
+              {s.lines.slice(t.k0, t.k1 + 1).map(([, , tr], j) => (
+                <text class="tr" x={CX} y={Y0 + (t.k0 + j) * LINE + 15}>{j > 0 ? ` ${tr}` : tr}</text>
+              ))}
+              <InfoIcon {...t.info} />
+            </Term>
+          </>
         ))}
         {s.n === 1 && (
           <Term slug={imla.c.slug} json={imla.c.json} label={IMLA_TEXT} {...imla.hit}>
@@ -154,12 +158,14 @@ const base = BASE.map(([slug, ar, tr], k) => {
   <text class="rowhead" x="10" y="491">Below the stairs</text>
   <text class="rowsub" x="10" y="507">most need permission (ijāza)</text>
   {base.map((b) => (
-    <Term slug={b.c.slug} json={b.c.json} label={b.tr} x={b.x} y={516} w={204} h={78}>
-      <rect class="basement" x={b.x} y="516" width="204" height="78" rx="8" />
+    <>
       <text class="title-ar" x={b.cx} y="550" lang="ar">{b.ar}</text>
-      <text class="tr" x={b.cx} y="575">{b.tr}</text>
-      <InfoIcon {...b.info} />
-    </Term>
+      <Term slug={b.c.slug} json={b.c.json} label={b.tr} x={b.x} y={516} w={204} h={78}>
+        <rect class="basement" x={b.x} y="516" width="204" height="78" rx="8" />
+        <text class="tr" x={b.cx} y="575">{b.tr}</text>
+        <InfoIcon {...b.info} />
+      </Term>
+    </>
   ))}
 </svg>
 <style>
