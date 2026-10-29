@@ -279,7 +279,8 @@ const modeLabel = KIND_NAME.later;
   /* the ticks draw in one by one; in the lifts the side routes come in, then the lift brightens, then the gain
      shows (motion.css enter, from each one's start to its resting style) */
   .tickg{--dur:.35s}
-  .faint > :global(*){animation:enter .96s ease-out both}
+  /* not the Labels-mode names, which show when toggled, not with the load-in */
+  .faint > :global(:not(.mode-label)){animation:enter .96s ease-out both}
   .liftg{--from-o:.15;--d:1.08s;--dur:.84s}
   .gain{--d:1.68s;--dur:.72s}
 </style>
