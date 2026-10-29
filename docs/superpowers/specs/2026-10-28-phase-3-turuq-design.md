@@ -50,7 +50,7 @@ These are the rules from the phase 2 plan and the al-Maqbūl design's §13.
 - **Figures:** the figure language of spec §3.1–3.2, unchanged. Named narrators are drawn reliable, with scroll and seal, as the al-Maqbūl design does.
 - **Generation colours:** Companions are gold: ʿUmar, Ibn ʿUmar, Abū Hurayra. Successors are green where that is certain from the chain (anyone narrating from a Companion): ʿAlqama, ʿAbd Allāh ibn Dīnār (in the walāʾ chain), Abū Ṣāliḥ. Muḥammad ibn Ibrāhīm, Yaḥyā ibn Saʿīd, and ʿAbd Allāh ibn Dīnār in the Branches chain are also green, from general knowledge (the Intentions chain is known for its three Successors in a row). This is open question 2.
 - **Legend and modes:**
-  - The scene page's `LEGEND` map gains `Report: ["moon", "sahabi", "tabii"]`, `Knowledge: ["moon", "sahabi", "tabii", "later"]` and `Lone: ["moon", "sahabi", "tabii", "later"]`.
+  - The scene page's `LEGEND` map gains `Report: ["moon", "sahabi", "tabii", "later"]`, `Knowledge: ["moon", "sahabi", "tabii", "later"]` and `Lone: ["moon", "sahabi", "tabii", "later"]`.
   - `Sorting` draws no narrator figures, so it has no legend and no Key/Labels switch (as `ActedOn`).
 - **Terms file:** each of the 14 terms gets `scene:` set to its scene. No term is view-only: every trigger renders in every view, so no `view:` field is needed.
 - **Term names used as plain labels.** Several scenes show the words mutawātir, mashhūr, ʿazīz or gharīb. They are plain text or chips, never triggers, because those terms belong to `routes` (the build enforces this). Where it helps, a small in-SVG link goes to `routes`, as Grades links to *Who outweighs whom?*.
@@ -559,6 +559,7 @@ These are to be added to `notes/translation-queries.md`.
 | §5.7 (p.82) | "The dispute in reality is literal" | Likely lafẓī: a dispute over words, not substance. The site says "a dispute over words". | |
 | §5.7 (p.83) | "al-Isfarāʾinī" | Usually al-Isfarāyīnī / al-Isfarāʾīnī. Spelling only. | |
 | §5.5 (p.74) | "they offer a contentious answer" | Possibly "an answer open to question" (fīhi naẓar). The site's extra avoids characterising the answer. | |
+| §5.5 (p.75) | "the silence [of the Companions] does not necessitate that they could not have heard it from someone else" | As worded, this seems to argue the opponents' side. Ibn Ḥajar's point is likely that their silence does not show they had heard it from anyone but ʿUmar. The site says only that "their silence proves nothing". | |
 
 ## 11. Term map (all 14)
 
@@ -659,5 +660,17 @@ As for al-Maqbūl, the owner asked for development to continue while they review
 - **Owner's annotations:** only the rows marked "used" in §9 go in. The "proposed" ones wait for approval in `notes/annotation-usage.md`.
 - **Gauges and meters:** they show relative order only. No numbers, percentages or counts appear, so they can't be read as measured data. The mustafīḍ inset uses dots, not digits.
 - **Arabic quoted from the reports: not shown anywhere.** Only English words of the reports appear, and at most a few. Term names keep their Arabic.
-- **Translation slips:** all four are added to `notes/translation-queries.md` for a ruling. The site uses the wording given in §10 until then.
+- **Translation slips:** all four, plus the §5.5 p.75 silence row, are added to `notes/translation-queries.md` for a ruling. The site uses the wording given in §10 until then.
 - **View swaps:** designed as transform transitions (spec §3.4). If that proves fiddly in the build, an instant swap is acceptable, as in the al-Maqbūl deviations.
+
+### Deviations in the build
+
+These differ from the sketches above, and are kept for now:
+
+- **Kit, schema and tests folded into each scene commit:** as in the al-Maqbūl build, the new kit parts, schema changes and tests went into the commit of the scene that first needed them, so §12's separate test task has no commit of its own.
+- **Report, labels:** the narrators' names are `.nm` text, on two lines where needed, so they stay clear of the isnād bracket. In Labels mode each kind name is one more line under the name, not under the figure, where it would cover the arrows and the elided dots. The cell is 430 × 384, not 360.
+- **Report, elided label:** the elided link from Yaḥyā ibn Saʿīd to al-Bukhārī carries a small `.lbl` "links not in the book", so the dots don't read as a gap in the chain.
+- **Sorting, tinted cards:** the three outcome cards are filled and edged with a light mix of their outcome colour (`--ok`, `--pause`, `--gap`). Each keeps its glyph, so colour is not the only cue.
+- **Sorting → knowledge link:** the "Accepted · certain" pill is itself the in-SVG link to *How sure can we be?* (`a.pill-link`), rather than a separate small link beside it.
+- **Knowledge, band label:** the reasoned band's label carries the sub-label "only for one able to reason", under its Arabic, so the band itself says who gains it (§5.3).
+- **Lone, panel wording:** panel 3 is "Alone link after link" and its bottom row "alone at the root, then twice more", not "most of the way", because the book doesn't name the Intentions report as a case where the singularity continues throughout (see 5.2 above). Panels 2 and 3 carry the sub-label "also absolute" (panel 3: "also absolute · from §5.5"), so a portrait visitor seeing one panel knows its kind. In panel 4 the lone narrator is "alone from one of them", and the faint route is tagged "other routes", with "the ḥadīth may be mashhūr" in the bottom row. The fard row's note is "mostly used for this kind". The Companion's Labels-mode name in panel 4 sits to its left, clear of the fan of arrows.

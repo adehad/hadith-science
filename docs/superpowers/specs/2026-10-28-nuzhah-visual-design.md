@@ -1,7 +1,7 @@
 # Nuzhat al-Naẓar, visualised: design
 
 Date: 2026-10-28
-Status: phase 1 (foundation) and phase 2 (the five mocked scenes) are built; phase 3 has begun, and division 2 (al-Maqbūl) is built
+Status: phase 1 (foundation) and phase 2 (the five mocked scenes) are built; phase 3 has begun, and divisions 1 (ʿAdad al-ṭuruq) and 2 (al-Maqbūl) are built
 Concept mockup: https://claude.ai/artifact/8V78csjQ1dFRqbjoWoZza1 (reference for look and motion; not production code)
 
 ## 1. Goal
@@ -156,6 +156,16 @@ The figure key from the mockup's "Reading a narrator" becomes `/narrators/`.
 
 **Phase 3 onwards** adds the rest of the sub-divisions, one division at a time, in planet order.
 
+**Phase 3: division 1** (ʿAdad al-ṭuruq), designed in `docs/superpowers/specs/2026-10-28-phase-3-turuq-design.md`. The phase 2 `routes` scene stays as it was, moved to second place:
+
+| Scene | § | Form | Views |
+|---|---|---|---|
+| What is a report? (`report`) | 5.2, 5.5 | Two cells: the Intentions report's chain flowing down from its text card, the isnād bracket pointing up to it, with the isnād and matn marked, and two circles for khabar and ḥadīth that merge, separate or nest | One meaning; Two kinds; General and particular |
+| How many routes carry it? (`routes`) | 5.2–5.6 | Chains fanning out for mutawātir, mashhūr, ʿazīz and gharīb (phase 2, unchanged) | none |
+| Which reports are acted on? (`sorting`) | 5.3–5.7 | A sorting gate, left to right: mutawātir and the āḥād come in, mutawātir bypasses the check, and the āḥād reach three tinted outcome cards: accepted, held back, rejected. A dot inset shows the mustafīḍ counting rule | none |
+| How sure can we be? (`knowledge`) | 5.3, 5.7 | A knowledge meter: a three-band column, with mutawātir on one side and the three supporting signs lifting a report on the other | Ibn Ḥajar: certain; Some: reasoned only |
+| Where is the narrator alone? (`lone`) | 5.8, 5.5 | Four chains side by side, the lone links on soft halos: the walāʾ, Branches of Faith and Intentions reports for absolute gharīb, and an unnamed illustration for relative gharīb | none |
+
 **Phase 3: division 2** (al-Maqbūl), designed in `docs/superpowers/specs/2026-10-28-phase-3-maqbul-design.md`:
 
 | Scene | § | Form | Views |
@@ -242,13 +252,16 @@ Until a division is built, its planet still shows on the map, and its moons are 
 ```
 src/
   components/
-    svg/          Moon, Narrator, Chain, Arrow, SpeechBubble, Pill, Term, LayerGuides,
-                  InfoIcon, Defs, NameTag, Chip, Gauge, Glyph, Scale, Matn, Decision;
-                  figures.ts (FIG / KIND_NAME), geom.ts (f, titleTrigger, rowTrigger, panelTrigger)
+    svg/          Moon, Narrator, Chain, Arrow, SpeechBubble, Pill, Term, TermTitle, LayerGuides,
+                  InfoIcon, Defs, NameTag, Chip, Gauge, Glyph, Scale, Matn, Decision, Bracket;
+                  Glyph kinds: memory, book, check, cross (division 1: rejected or not reached), lens,
+                  pause, text, companion, clock;
+                  figures.ts (FIG / KIND_NAME), geom.ts (f, titleTrigger, rowTrigger, panelTrigger,
+                  SUBT_TRIGGER, ROW_TITLE_TRIGGER)
     layout/       Header, Footer, Breadcrumb, Starfield, ThemeToggle, KeyToggle,
                   ViewSwitch, ReadAsText, TermPopover, Legend, Carousel
     scenes/       Routes, Breaks, Unknown, Delivery, Names, Grades, Opposition, Support,
-                  ActedOn (one diagram per scene)
+                  ActedOn, Report, Sorting, Knowledge, Lone (one diagram per scene)
   content/
     divisions.yaml  the eight divisions (term, Arabic, English, §, order, moons)
     scenes.yaml     every scene (see 7.3)
@@ -258,7 +271,7 @@ src/
     terms.ts      slug → target path; ?t= / bare ?slug parsing
     views.ts      read/write ?view=
     staircase.ts  delivery step boxes per view
-    kit.ts        pure layout maths for the kit parts (chip widths and rows, gauge cells, scale ends, disc rows, the sweep timing, diamond path)
+    kit.ts        pure layout maths for the kit parts (chip widths and rows, gauge cells, scale ends, disc rows, the sweep timing, diamond path, bracketPath for Bracket, dotCluster for the mustafīḍ inset)
     panels.ts     carousel track width and snap stops
     orbit.ts      map orbit maths
     scene.ts      caption lookup, popover JSON, DiagramProps
