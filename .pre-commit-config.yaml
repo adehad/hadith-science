@@ -40,7 +40,7 @@ repos:
         always_run: true
       - id: unit-tests
         name: unit tests
-        entry: bun --bun vitest run
+        entry: bun --bun vitest run --project unit
         language: system
         pass_filenames: false
         files: ^(src/lib/|tests/unit/|vitest\.config\.ts$)

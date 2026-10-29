@@ -96,9 +96,10 @@ bun run build         # static build into dist/, then the offline service worker
 bun run preview       # serve dist/
 bun run check         # astro check (types)
 bun run test          # unit tests (Vitest)
+bun run test:dist     # static checks over dist; needs a build first
 bun run test:e2e      # end-to-end tests (Playwright); needs a build first
 bun run screenshots   # regenerate docs/screenshots/; needs a build first
-bun run test:base     # build under /hadith-science/ and check every link keeps the base
+bun run test:base     # build under /hadith-science/, check every link keeps the base, and run the dist checks on it
 ```
 
 The end-to-end tests run against `bun run preview` on port 4321. If something else is already using that port, set `E2E_PORT` to use a different one. Locally, Playwright drives the system Microsoft Edge. CI installs Playwright's own Chromium instead (`bunx playwright install --with-deps chromium`).

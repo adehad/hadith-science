@@ -7,10 +7,11 @@
     "build": "bun --bun astro build && bun scripts/sw.mjs",
     "preview": "bun --bun astro preview",
     "check": "bun --bun astro check",
-    "test": "bun --bun vitest run",
+    "test": "bun --bun vitest run --project unit",
+    "test:dist": "bun --bun vitest run --project dist",
     "test:e2e": "bun --bun playwright test --project=e2e",
     "screenshots": "bun --bun playwright test --project=screenshots",
-    "test:base": "BASE=/hadith-science SITE=https://adehad.github.io bun --bun astro build --outDir dist-base && bun scripts/sw.mjs dist-base && bun scripts/check-base.mjs dist-base /hadith-science/",
+    "test:base": "BASE=/hadith-science SITE=https://adehad.github.io bun --bun astro build --outDir dist-base && bun scripts/sw.mjs dist-base && bun scripts/check-base.mjs dist-base /hadith-science/ && DIST=dist-base BASE=/hadith-science bun run test:dist",
     "guard": "bun scripts/guard-source.mjs"
   },
   "dependencies": {
@@ -26,6 +27,7 @@
     "@axe-core/playwright": "^4.14.0",
     "@playwright/test": "^1.64.1",
     "@vite-pwa/assets-generator": "^2.0.0",
+    "linkedom": "^0.18.14",
     "typescript": "^5.9.3",
     "vitest": "^5.0.5",
     "workbox-build": "^7.4.1"

@@ -30,6 +30,7 @@ jobs:
       - run: bun run check
       - run: bunx playwright install --with-deps chromium
       - run: bun run build
+      - run: bun run test:dist
       - run: bun run test:e2e
       # README screenshots are not a test: regenerate them on a manual run and keep the PNGs as an artifact
       - if: ${{ github.event_name == 'workflow_dispatch' }}
