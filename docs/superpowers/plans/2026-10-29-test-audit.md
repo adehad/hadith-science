@@ -382,6 +382,8 @@ The `dist` checks need a parser. `linkedom` is the smallest dev dependency; Bun'
 
 Unit: 142 − 10 drops + about 8 new ≈ **140**, plus **5** `dist` checks. Screenshots: **0 in CI** (from 96).
 
+**Outcome** (after step 16): **134** e2e runtime tests in 8 files, from 549. The routes smoke is 97 of them, since it scans the 15 `?view=` URLs in both themes; landing 6, views 4 (V1–V4), layout 4, motion 14 (with M5), links 4, prefs 2, pwa 3. Measured with `--workers=2` on an i7-11800H (8 cores, 16 threads, 16 GB) under other load: 6.2 min wall, from 708 test-seconds, 607 of them the routes smoke, which now runs in parallel across workers (`test.describe.configure`); before that its 97 tests ran one after another on one worker. Runs vary with the machine's load: a quieter run of the same suite took 2.6 min, and the final reviewer's, with the routes still serial, 8.1 min. Unit: **142** in 14 files, after 10 drops and the new contrast, motion-css and scene-nav tests. `dist`: **6** tests in 4 files. Screenshots: 0 in CI.
+
 ### CI time (estimate only; nothing was run)
 
 Rough per-test costs:

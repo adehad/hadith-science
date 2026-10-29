@@ -1206,6 +1206,15 @@ The counts are causes 2, hidden 3, lying 4, slips 6, changes 9, wording 3, ident
 
 This follows the conventions of the phase 2 plan and the earlier phase 3 builds: `rtk`, bun only, one commit per task, no trailers, LF, never staging `source/`. Kit, schema and test changes go into the commit of the scene that first needs them.
 
+Tests follow the writing-tests rules (`~/.claude/skills/writing-tests/SKILL.md`). Commit only tests of core logic, and each behaviour once, through the mechanism that owns it. Don't commit tests that restate content or copy (labels, legend kinds, counts, scene order), exact timings, coordinates or animation delays, tests of a library or the platform, or one browser test per data item that takes the same code path. A task's "Verify:" bullets are checks to run while building, by eye or with a throwaway spec; delete any development-only test before the task's commit. A new scene needs no new tests to be covered:
+
+- the build-time guards: `sceneErrors`, the panel guard in `Term.astro`, `XLink` and `viewAttrs`;
+- `bun run test`: the motion CSS rule (S6, finite keyframes are `from`-only) and the token contrast pairs in `src/lib/palette.ts`;
+- `bun run test:dist`: S1 term targets, S2 view integrity, S3 links and hashes, S4 label in name;
+- `bun run test:e2e`: the routes smoke (render, axe, text contrast and Labels-mode overlap, on every route and every `?view=`, in both themes), V4 (no replayed load-in on a view or mode switch) and M5 (each scene moves, and rests under reduced motion where its motion ends).
+
+Add a test only for a new mechanism, or as the regression for a real bug, named in the test.
+
 **Task 1: scene `causes`.**
 - Add `Causes` to the `diagram` enum and `LEGEND`.
 - YAML entry (§2), with `scene: causes` on its 2 terms; `breaks` to `order: 2`, `unknown` to `order: 9`.
@@ -1262,12 +1271,11 @@ This follows the conventions of the phase 2 plan and the earlier phase 3 builds:
 - Verify: each view redraws both decision paths; `?bida` portrait landing.
 - Commit `scenes: add does-his-belief-count scene`.
 
-**Task 9: tests and screenshots.**
-- `routes.spec.ts` picks up eight more routes from the sitemap.
-- `scenes.spec.ts` gains: landing for all 31 terms, desktop and portrait; views on `hidden`, `wording` and `innovation`; carousels on the five panel scenes; grid stacking on `causes`, `changes` and `identity`; the legend kinds per scene; prev/next order through all ten scenes of the division; every rung link on `causes` resolves.
-- Add the eight scenes to `motion.spec.ts`: with reduced motion, `getAnimations()` is empty.
-- Screenshots: desktop and mobile, light and dark.
-- Commits: `test: add al-mardud scene tests` (if anything is left over from the scene commits) and `docs: add al-mardud screenshots`.
+**Task 9: checks and screenshots.**
+- Run `bun run build`, `bun run test`, `bun run test:dist` and `bun run test:e2e`. The routes smoke picks up the eight routes from the sitemap and their `?view=` states from `scenes.yaml`, and the generic checks above cover the new scenes. Fix what they find in the scene or the shared mechanism, not with a per-scene test.
+- Coloured text on a new coloured fill: add the pair to `src/lib/palette.ts`.
+- Screenshots: desktop and mobile, light and dark (`bun run screenshots`, run locally; CI runs it only on demand).
+- Commit `docs: add al-mardud screenshots`.
 
 **Task 10: spec and notes.**
 - Spec §4.3: add a phase 3 division 3 table, one row per scene, and note the order change of `breaks` and `unknown`.

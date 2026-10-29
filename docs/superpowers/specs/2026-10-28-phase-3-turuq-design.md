@@ -615,7 +615,7 @@ This follows the conventions of the phase 2 plan and the al-Maqbūl build: `rtk`
 - Verify: `?gharib-nisbi` lands in panel 4 in portrait; all halos show under reduced motion.
 - Commit `scenes: add where-is-the-narrator-alone chains`.
 
-**Task 5: tests and screenshots.**
+**Task 5: tests and screenshots.** (Superseded: the test audit, `docs/superpowers/plans/2026-10-29-test-audit.md`, replaced these per-term and per-scene tests with generic checks; later phases follow the tests paragraph of the al-mardud design §16.)
 - `routes.spec.ts` picks up four more routes from the sitemap.
 - `scenes.spec.ts` gains: landing for all 14 terms, desktop and portrait; views on `report` (three) and `knowledge` (two); carousels on `sorting`, `knowledge` and `lone`; grid stacking on `report`; the legend kinds per scene; prev/next order in the division (report → routes → sorting → knowledge → lone).
 - Add the four scenes to `motion.spec.ts`: with reduced motion, `getAnimations()` is empty.

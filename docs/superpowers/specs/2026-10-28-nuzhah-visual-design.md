@@ -381,21 +381,22 @@ Content and drawing are separate:
 - **Type check:** `astro check`.
 - **Unit tests (Vitest):**
   - slug resolution, including view-only terms and unknown slugs;
-  - staircase, orbit and panel layout maths;
-  - `?view=` read/write;
-  - the base-aware URL helper.
-- **Playwright** (Chromium):
-  - Every route renders with no console errors and passes an axe accessibility scan, in both themes.
-  - Every built (non-pending) term: `/t/<slug>/` and `?<slug>` both land on the right scene with the popover open, including in a portrait carousel.
-  - Every pending term lands on its glossary entry.
-  - An unknown bare key is ignored, and `?t=<unknown>` opens the glossary filter.
-  - The view switch updates the URL and moves the elements, which end at their target positions.
+  - staircase, orbit and panel layout maths, and the scene kit's geometry;
+  - `?view=` read/write, and the scene neighbours and moon lists;
+  - the base-aware URL helper;
+  - finite keyframes are `from`-only, so a scene rests where its motion ends;
+  - every coloured text-on-fill token pair (`src/lib/palette.ts`) reaches 4.5:1 in both themes.
+- **Static checks over `dist`** (`bun run test:dist`): every term's `/t/` target and trigger, view integrity, every internal link and hash, and label in name for links and triggers.
+- **Playwright** (Chromium). One test per behaviour, through the mechanism that owns it, not one per term or scene (the test audit, `docs/superpowers/plans/2026-10-29-test-audit.md`):
+  - Every route, and every non-default `?view=`, renders with no console errors and passes an axe scan in both themes. On the same pass, SVG text contrast is measured against what is painted under it, and on figure scenes Labels mode is scanned and its labels checked for overlaps.
+  - Representative term landings: `/t/<slug>/`, `?<slug>`, a later panel of a portrait carousel, a tap in the carousel, a `?view=` kept through a landing, and a pending term reaching its glossary entry. `?t=<unknown>` and an unknown `/t/` open the glossary filter.
+  - The view switch: `?view=` on load, the buttons, the animated transition, and no replayed load-in on a view or Key/Labels switch.
   - Mobile portrait (390×844) shows the carousel; mobile landscape (844×390) shows the full diagram.
-  - With reduced motion emulated, `document.getAnimations()` is empty. The starfield canvas and the planet positions are also unchanged after one second, because they are drawn with `requestAnimationFrame` and `getAnimations()` doesn't see them.
+  - With reduced motion emulated, a scene runs no animations, CSS or SMIL, and every scene rests where its motion ends. The starfield canvas and the planet positions are also unchanged after one second, because they are drawn with `requestAnimationFrame` and `getAnimations()` doesn't see them.
   - Built HTML contains no internal link that bypasses the base path. Checked by building with `BASE=/hadith-science/` and crawling, including the `/t/` refresh and canonical URLs, the `terms-index.json` fetch URL and `404.html`.
 - **README screenshots:**
   - A separate Playwright project captures the map and each scene (desktop and mobile, light and dark) into `docs/screenshots/`.
-  - `bun run screenshots` refreshes them locally and they are committed by hand. CI runs the project to prove it works but does not commit.
+  - `bun run screenshots` refreshes them locally and they are committed by hand. CI runs the project only on demand (`workflow_dispatch`).
   - They are documentation, not visual-regression baselines.
 - **Copyright guard:**
   - `source/` is git-ignored.
@@ -422,3 +423,6 @@ Each phase has its own implementation plan.
 - Translation queries (§2) await the owner's ruling.
 - Which annotations are used: `notes/annotation-usage.md` is drafted in phase 1 for the owner's approval.
 - Highlight and ink annotations have no text attached. Their text has to be recovered from the PDF using the annotation coordinates (QuadPoints) in phase 1.
+- Delivery, madinah view: the "best of all: dictated (imlāʾ)" trigger moves with step 1 to the second column, where it runs past the first panel's edge (x 113–280 against 0–220) and is cut off in the portrait carousel. The panel guard checks it only at its default position (the comment in `Delivery.astro`). Move or shorten it, or accept the cut?
+- Names: the ruled-out rows rest at opacity .12 (about 1.3:1) and are marked `data-incidental`, so the contrast check skips them as text meant not to be read (WCAG 1.4.3's incidental exemption). Confirm, or raise them to a readable strength?
+- Cross-scene links: their accessible names now read the visible text, then ", scene: Title" or " (scene: Title)" (`XLink.astro`), so the name starts with what is shown (WCAG 2.5.3). Confirm the form.
