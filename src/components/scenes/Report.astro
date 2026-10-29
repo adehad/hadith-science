@@ -23,6 +23,7 @@ import { FIG, KIND_NAME, RELIABLE, type Kind } from "../svg/figures";
 import { SUBT_TRIGGER, f, rowTrigger, titleTrigger } from "../svg/geom";
 import { cap, type DiagramProps } from "../../lib/scene";
 import { chipWidth, stackY } from "../../lib/kit";
+import { viewAttrs } from "../../lib/views";
 
 type Props = DiagramProps;
 const { caps, scene } = Astro.props;
@@ -92,9 +93,7 @@ const RINGS: Record<"khabar" | "hadith", Record<ViewId, [number, number, number]
 };
 const ringAttrs = (ring: keyof typeof RINGS) => {
   const t = ([x, y, r]: [number, number, number]) => `translate(${x}px,${y}px) scale(${f(r / R)})`;
-  const attrs: Record<string, string> = { style: `transform:${t(RINGS[ring][DEF])}` };
-  for (const v of VIEW_IDS) attrs[`data-v-${v}`] = t(RINGS[ring][v]);
-  return attrs;
+  return viewAttrs({ v: Object.fromEntries(VIEW_IDS.map((v) => [v, t(RINGS[ring][v])])) }, VIEW_IDS);
 };
 const off = (v: ViewId) => v !== DEF;
 ---

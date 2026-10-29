@@ -26,6 +26,7 @@ import { ROW_TITLE_TRIGGER, f, titleTrigger } from "../svg/geom";
 import { cap, type DiagramProps } from "../../lib/scene";
 import { chipRow } from "../../lib/kit";
 import { stepFill } from "../../lib/staircase";
+import { viewAttrs } from "../../lib/views";
 
 type Props = DiagramProps;
 const { caps, scene } = Astro.props;
@@ -160,7 +161,7 @@ const muhtaff = trigger("muhtaff-bil-qarain", 530, 426);
   <text class="lbl start" x={LEFT} y="379">overwhelmingly likely</text>
 
   {/* the mutawātir marker moves down into the reasoned band in the other view */}
-  <g class="mut" style={`transform:${MUT_SHIFT["ibn-hajar"]}`} data-v-ibn-hajar={MUT_SHIFT["ibn-hajar"]} data-v-nazari-only={MUT_SHIFT["nazari-only"]}>
+  <g class="mut" {...viewAttrs({ v: MUT_SHIFT }, VIEW_IDS)}>
     <text class="mk" x={LEFT} y={mut.y + 4}>{mut.text}</text>
     <path class="leader" d={`M${mut.x1} ${mut.y} H${COL_CX - 6}`} aria-hidden="true" />
     <circle class="dot" cx={COL_CX} cy={mut.y} r="5" aria-hidden="true" />

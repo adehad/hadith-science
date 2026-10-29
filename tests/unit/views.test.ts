@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { readView, writeView } from "../../src/lib/views";
+import { readView, viewAttrs, writeView } from "../../src/lib/views";
 
 const ids = ["ibn-hajar", "madinah", "bukhari"];
 const page = "https://example.org/siyagh-al-ada/delivery/";
@@ -24,4 +24,12 @@ describe("writeView", () => {
   });
   it("removes the param for an unknown id", () =>
     expect(writeView(`${page}?view=madinah`, "nope", ids)).toBe(page));
+});
+
+describe("viewAttrs", () => {
+  // an element without a value for a view keeps the last view's when the reader switches to it
+  it("throws when a view has no value", () =>
+    expect(() => viewAttrs({ v: { "ibn-hajar": "none", madinah: "none" } }, ids)).toThrow(/bukhari/));
+  it("throws when a value names no view", () =>
+    expect(() => viewAttrs({ h: { "ibn-hajar": "1px", madinah: "1px", bukhari: "1px", nope: "1px" } }, ids)).toThrow(/nope/));
 });

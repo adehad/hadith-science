@@ -9,6 +9,7 @@ import InfoIcon from "../svg/InfoIcon.astro";
 import { f } from "../svg/geom";
 import { cap, type Cap, type DiagramProps } from "../../lib/scene";
 import { FLOOR, STAIR_VIEWS, STEP_W, stepBox, stepFill } from "../../lib/staircase";
+import { viewAttrs } from "../../lib/views";
 
 type Props = DiagramProps;
 const { caps, scene } = Astro.props;
@@ -69,16 +70,18 @@ const HIT_X = 2, HIT_W = W - 8, INFO_X = W - 13;
 const steps = STEPS.map(([lines, en, icon], i) => {
   const box = stepBox(def, i);
   // per-view targets for the step body, its rect and its rank arrow
-  const gAttrs: Record<string, string> = {}, rAttrs: Record<string, string> = {}, aAttrs: Record<string, string> = {};
+  const body: Record<string, string> = {}, h: Record<string, string> = {}, fill: Record<string, string> = {}, arrow: Record<string, string> = {};
   const dx: number[] = [];
   for (const v of views) {
     const b = stepBox(stair(v.id), i);
     dx.push(b.x);
-    gAttrs[`data-v-${v.id}`] = `translate(${b.x}px,${b.top}px)`;
-    rAttrs[`data-h-${v.id}`] = `${b.h}px`;
-    rAttrs[`data-fill-${v.id}`] = stepFill(stair(v.id).lvl[i]);
-    aAttrs[`data-v-${v.id}`] = `translate(${b.x}px,0px)`;
+    body[v.id] = `translate(${b.x}px,${b.top}px)`;
+    h[v.id] = `${b.h}px`;
+    fill[v.id] = stepFill(stair(v.id).lvl[i]);
+    arrow[v.id] = `translate(${b.x}px,0px)`;
   }
+  const ids = views.map((v) => v.id);
+  const gAttrs = viewAttrs({ v: body }, ids), rAttrs = viewAttrs({ h, fill }, ids), aAttrs = viewAttrs({ v: arrow }, ids);
   const triggers: { c: Cap; k0: number; k1: number; label: string; hit: { x: number; y: number; w: number; h: number }; info: { cx: number; cy: number; r: number } }[] = [];
   lines.forEach(([slug], k) => {
     const last = triggers.at(-1);
@@ -95,7 +98,6 @@ const steps = STEPS.map(([lines, en, icon], i) => {
   }
   return {
     n: i + 1, box, en, lines, triggers, icon: modeIcon(icon, CX, ICON_Y), gAttrs, rAttrs, aAttrs, dx,
-    fill: stepFill(def.lvl[i]),
     rank: { w: (4.2 - i * 0.4).toFixed(1), dash: RANK_DASH[i] },
   };
 });
@@ -122,8 +124,8 @@ const base = BASE.map(([slug, ar, tr], k) => {
   <text class="rowsub" x="850" y="26" text-anchor="end">weakest →</text>
   {steps.map((s) => (
     <>
-      <g class="stepg" style={`transform:translate(${s.box.x}px,${s.box.top}px)`} {...s.gAttrs}>
-        <rect class="step" width={W - 4} rx="6" style={`height:${s.box.h}px;fill:${s.fill}`} {...s.rAttrs} />
+      <g class="stepg" {...s.gAttrs}>
+        <rect class="step" width={W - 4} rx="6" {...s.rAttrs} />
         <text class="stepno" x="10" y="21">{s.n}</text>
         <g class="mode" aria-hidden="true" set:html={s.icon} />
         <text class="stepen" x={CX} y={Y0 + s.lines.length * LINE - 2}>{s.en}</text>
@@ -153,7 +155,7 @@ const base = BASE.map(([slug, ar, tr], k) => {
           </Term>
         )}
       </g>
-      <g class="stepg" style={`transform:translate(${s.box.x}px,0px)`} {...s.aAttrs}>
+      <g class="stepg" {...s.aAttrs}>
         <path class="rank" d={`M14 ${FLOOR - 14} H${W - 22}`} style={`stroke-width:${s.rank.w};stroke-dasharray:${s.rank.dash}`} marker-end="url(#ah)" />
       </g>
     </>
