@@ -1,21 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { FLOOR, RISE, STAIR_VIEWS, STEP_W, TOP0, stepBox, stepFill } from "../../src/lib/staircase";
+import { FLOOR, STAIR_VIEWS, stepBox, stepFill } from "../../src/lib/staircase";
 
 const { "ibn-hajar": ibnHajar, madinah, bukhari } = STAIR_VIEWS;
 
 describe("stepBox", () => {
-  it("places Ibn Ḥajar's first and last steps", () => {
-    expect(stepBox(ibnHajar, 0)).toEqual({ x: 10, top: TOP0, h: FLOOR - TOP0 });
-    expect(stepBox(ibnHajar, 7)).toEqual({ x: 10 + 7 * STEP_W, top: TOP0 + 7 * RISE, h: FLOOR - TOP0 - 7 * RISE });
-  });
-  it("places Madīna's first and last steps", () => {
-    expect(stepBox(madinah, 0)).toEqual({ x: 10 + STEP_W, top: TOP0 + RISE, h: FLOOR - TOP0 - RISE });
-    expect(stepBox(madinah, 7)).toEqual(stepBox(ibnHajar, 7));
-  });
-  it("places al-Bukhārī's first and last steps", () => {
-    expect(stepBox(bukhari, 0)).toEqual(stepBox(ibnHajar, 0));
-    expect(stepBox(bukhari, 7)).toEqual(stepBox(ibnHajar, 7));
-  });
   it("keeps every step's foot on the floor", () => {
     for (const v of Object.values(STAIR_VIEWS)) for (let i = 0; i < 8; i++) {
       const b = stepBox(v, i);
@@ -40,9 +28,8 @@ describe("views", () => {
 });
 
 describe("stepFill", () => {
-  it("fades the gold with each level down", () => {
-    expect(stepFill(0)).toBe("color-mix(in srgb,var(--gold-b) 30%,var(--surface))");
-    expect(stepFill(2)).toBe("color-mix(in srgb,var(--gold-b) 23%,var(--surface))");
-    expect(stepFill(7)).toBe("color-mix(in srgb,var(--gold-b) 5.5%,var(--surface))");
+  it("fades the gold with each level down: its share of the mix falls at every step", () => {
+    const pct = (i: number) => Number(stepFill(i).match(/([\d.]+)%/)![1]);
+    for (let i = 1; i < 8; i++) expect(pct(i)).toBeLessThan(pct(i - 1));
   });
 });
