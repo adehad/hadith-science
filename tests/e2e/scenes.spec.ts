@@ -37,7 +37,7 @@ async function expectLanded(page: Page, slug: string, scene: string) {
 
 test("every scene term is counted", () => {
   expect(built.length).toBeGreaterThanOrEqual(30);
-  expect(panelScenes.size).toBe(9);
+  expect(panelScenes.size).toBe(10);
 });
 
 test.describe("landing, desktop", () => {
@@ -363,6 +363,22 @@ test("scene prev/next: knowledge follows sorting, and the sorting pill links to 
   await page.goto("/adad-al-turuq/sorting/");
   await expect(page.locator('.pn a[rel="next"]')).toHaveAttribute("href", /\/adad-al-turuq\/knowledge\/$/);
   await expect(page.locator("svg a.pill-link")).toHaveAttribute("href", /\/adad-al-turuq\/knowledge\/$/);
+});
+
+test("scene prev/next: lone follows knowledge and ends the division", async ({ page }) => {
+  await page.goto("/adad-al-turuq/lone/");
+  await expect(page.locator('.pn a[rel="prev"]')).toHaveAttribute("href", /\/adad-al-turuq\/knowledge\/$/);
+  await expect(page.locator(".pn a").last()).toHaveAttribute("href", /\/adad-al-turuq\/$/);
+  await page.goto("/adad-al-turuq/knowledge/");
+  await expect(page.locator('.pn a[rel="next"]')).toHaveAttribute("href", /\/adad-al-turuq\/lone\/$/);
+});
+
+test("lone: a legend and the Key/Labels switch, and every term visible", async ({ page }) => {
+  await page.goto("/adad-al-turuq/lone/");
+  await expect(page.locator(".legend")).toHaveCount(1);
+  await expect(page.locator(".viewtoggle")).toHaveCount(1);
+  for (const slug of ["gharib-mutlaq", "fard", "gharib-nisbi"]) await expect(trigger(page, slug)).toBeVisible();
+  await expectNoAxeViolations(page);
 });
 
 test("sorting: no legend or Key/Labels switch, since it draws no narrators", async ({ page }) => {

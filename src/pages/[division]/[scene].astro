@@ -17,6 +17,7 @@ import ActedOn from "../../components/scenes/ActedOn.astro";
 import Report from "../../components/scenes/Report.astro";
 import Sorting from "../../components/scenes/Sorting.astro";
 import Knowledge from "../../components/scenes/Knowledge.astro";
+import Lone from "../../components/scenes/Lone.astro";
 import { loadContent } from "../../lib/content";
 import { captionsFor, type DiagramProps } from "../../lib/scene";
 import { href } from "../../lib/url";
@@ -40,7 +41,7 @@ const caps = captionsFor(scene, terms);
 
 // each scene task adds its diagram here; import only components that exist
 // typed by the props every diagram takes, so a misnamed or missing prop fails astro check
-const DIAGRAMS: Partial<Record<Diagram, (p: DiagramProps) => any>> = { Routes, Breaks, Unknown, Delivery, Names, Grades, Opposition, Support, ActedOn, Report, Sorting, Knowledge };
+const DIAGRAMS: Partial<Record<Diagram, (p: DiagramProps) => any>> = { Routes, Breaks, Unknown, Delivery, Names, Grades, Opposition, Support, ActedOn, Report, Sorting, Knowledge, Lone };
 const D = DIAGRAMS[scene.diagram];
 if (!D) throw new Error(`no diagram component for ${scene.diagram}`);
 
@@ -59,6 +60,8 @@ const LEGEND: Partial<Record<Diagram, LegendKind[]>> = {
   Report: ["moon", "sahabi", "tabii", "later"],
   // the mutawātir fan is unnamed and illustrative; the clean-routes card draws later narrators
   Knowledge: ["moon", "sahabi", "tabii", "later"],
+  // the four lone-narrator chains; the relative column's narrator below the Companion's students is a later one
+  Lone: ["moon", "sahabi", "tabii", "later"],
   // ActedOn and Sorting draw no narrator figures, so they have no legend and no Key/Labels switch (phase 3 designs §1)
 };
 const kinds = LEGEND[scene.diagram];

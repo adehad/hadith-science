@@ -131,6 +131,7 @@
   def: "Means the same as gharīb, but in practice is used mostly for the absolute kind."
   section: "§5.8"
   division: adad-al-turuq
+  scene: lone
 - id: gharib-mutlaq
   translit: Gharīb muṭlaq
   ar: غَرِيبٌ مُطْلَقٌ
@@ -138,13 +139,15 @@
   def: "The report is solitary at its root, the Companion's end of the chain. Usually called fard muṭlaq."
   section: "§5.8"
   division: adad-al-turuq
+  scene: lone
 - id: gharib-nisbi
   translit: Gharīb nisbī
   ar: غَرِيبٌ نِسْبِيٌّ
   en: Relatively rare
-  def: "Several carry it from the Companion, but later one narrator is alone, or alone from a given person. The hadith itself may be well known."
+  def: "Several carry it from the Companion, then one narrator is alone with it further down: alone relative to one person. The hadith itself may be well known."
   section: "§5.8"
   division: adad-al-turuq
+  scene: lone
 
 # 2. al-Maqbūl (§5.9–5.16)
 - id: sahih-li-dhatihi

@@ -115,6 +115,32 @@
     - title: Why Mālik's presence counts
       section: §5.7
       note: "Anyone with the least knowledge of this field knows that when a narrator like Mālik takes part in a report, he is truthful in it; when another of his rank joins him, it grows stronger and the fear of a mistake recedes. The standing and qualities of such narrators make their chain equal to one carried by a large number of others."
+- id: lone
+  division: adad-al-turuq
+  moons: [1]
+  order: 5
+  title: Where is the narrator alone?
+  eyebrow: How a report reached us, absolute and relative gharīb · §5.8
+  lede: A gharīb report has one narrator alone at some point in its chain. Where that happens decides its kind. If he is alone at the root, the Companion's end, it is absolute; if several narrate from the Companion and someone is alone further down, it is relative.
+  source: §5.8 Gharīb and fard, absolute and relative; §5.5 the Intentions report
+  diagram: Lone
+  width: 1040
+  captions:
+    - term: gharib-mutlaq
+      note: "The narrator is alone at the root of the chain, the Companion's end, where its routes meet. The book calls it fard muṭlaq. In the report forbidding the sale or gift of walāʾ, ʿAbd Allāh ibn Dīnār alone has it from Ibn ʿUmar. In the Branches of Faith report, Abū Ṣāliḥ alone has it from Abū Hurayra, and ʿAbd Allāh ibn Dīnār alone after him. At times it stays solitary all or most of the way (§5.8)."
+    - term: fard
+      note: "Fard and gharīb mean the same, in the language and as terms. In practice, as nouns, fard is used mostly for the absolute kind and gharīb mostly for the relative. As verbs they make no difference: of either kind it is said that so-and-so was alone with it (tafarrada bihi, aghraba bihi). Ibn Ḥajar compares this with how mursal and munqaṭiʿ are used (§5.8)."
+    - term: gharib-nisbi
+      note: "More than one narrator has it from the Companion, then one narrator is alone with it further down. It is called relative because the singularity is relative to one particular person, even if the ḥadīth itself is mashhūr. The book names it fard nisbī, but notes that the word fard is rarely used for this kind. It gives no example, so this column is only an illustration (§5.8)."
+  panels:
+    - { id: wala, label: Alone at the root, x0: 0, x1: 260 }
+    - { id: branches, label: Alone, then alone again, x0: 260, x1: 520 }
+    - { id: intentions, label: Alone link after link, x0: 520, x1: 780 }
+    - { id: nisbi, label: Alone further down, x0: 780, x1: 1040 }
+  extra:
+    - title: The Intentions report
+      section: §5.5
+      note: "Some who hold that a sound report must be at least ʿazīz answer the case of the Intentions report this way: ʿUmar told it from the pulpit before the Companions, who would have questioned it had they not known it. Ibn Ḥajar replies that their silence proves nothing, and that even granting this for ʿUmar, it does not hold for what follows: ʿAlqama alone narrates it from ʿUmar, then Muḥammad ibn Ibrāhīm alone from ʿAlqama, then Yaḥyā ibn Saʿīd alone from Muḥammad, by the sound route the ḥadīth masters know. Supporting chains have appeared, but they cannot be counted. Ibn Rushayd adds that its place as the first report in al-Bukhārī's Ṣaḥīḥ is enough to refute the claim that being ʿazīz was al-Bukhārī's condition."
 - id: breaks
   division: al-mardud
   moons: [0]

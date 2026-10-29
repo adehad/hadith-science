@@ -170,3 +170,17 @@ test("with motion, the knowledge scene's lifts draw in one after another, then t
   const y = () => page.locator("svg .mut").evaluate((e) => new DOMMatrix(getComputedStyle(e).transform).f);
   await expect.poll(y, { timeout: 5000 }).toBe(154);
 });
+
+test("reduced motion: the lone scene shows every halo", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/adad-al-turuq/lone/");
+  expect(await page.locator("svg .alone").evaluateAll((els) => els.map((e) => getComputedStyle(e).opacity))).toEqual(Array(7).fill("1"));
+});
+
+test("with motion, the lone scene's halos fade in one after another, panel by panel", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.goto("/adad-al-turuq/lone/");
+  const delays = await page.locator("svg .alone").evaluateAll((els) => els.map((e) => e.getAnimations().map((a) => [(a as CSSAnimation).animationName, a.effect?.getTiming().delay])));
+  expect(delays).toEqual([600, 800, 1000, 1200, 1400, 1600, 1800].map((d) => [["lone-halo", d]]));
+  await expect.poll(() => page.locator("svg .alone").last().evaluate((e) => getComputedStyle(e).opacity), { timeout: 6000 }).toBe("1");
+});
