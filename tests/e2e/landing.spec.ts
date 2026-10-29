@@ -3,13 +3,16 @@ import AxeBuilder from "@axe-core/playwright";
 import { readFileSync } from "node:fs";
 import { parse } from "yaml";
 
-// scene pages (phase 2): term landings, views, the portrait carousel, Key/Labels mode, scene navigation
+// term landings: /t/<slug>/ and /?slug reach the term's scene with its popover open, inside the carousel in portrait,
+// and keep a ?view= the URL carries. Every term's target is checked statically (tests/dist/terms.test.ts, S1); these
+// run the landing code (popover.ts land) once per way in
 // the snapshot of dist this run serves (playwright.config.ts)
 const index = JSON.parse(readFileSync(`${process.env.E2E_DIST ?? "dist"}/terms-index.json`, "utf8")) as Record<string, string>;
 // built terms point at a scene; pending ones at their glossary entry
 const built = Object.entries(index)
   .filter(([, path]) => !path.startsWith("terms/"))
   .map(([slug, path]) => ({ slug, scene: path.split("#")[0] }));
+const pending = Object.entries(index).filter(([, path]) => path.startsWith("terms/")).map(([slug]) => slug);
 type Scene = { id: string; division: string; moons: number[]; panels?: unknown[] };
 const scenes = parse(readFileSync("src/content/scenes.yaml", "utf8")) as Scene[];
 const panelScenes = new Set(scenes.filter((s) => s.panels).map((s) => `${s.division}/${s.id}/`));
@@ -51,34 +54,51 @@ test("every scene term is counted", () => {
 
 test.describe("landing, desktop", () => {
   test.use({ viewport: DESKTOP });
-  for (const { slug, scene } of built) {
-    test(`/t/${slug}/ lands on ${scene}`, async ({ page }) => {
-      await page.goto(`/t/${slug}/`);
-      await expectLanded(page, slug, scene);
-    });
-    test(`/?${slug} lands on ${scene}`, async ({ page }) => {
-      await gotoQuery(page, slug);
-      await expectLanded(page, slug, scene);
-    });
-  }
+
+  test("L1: /t/<slug>/ lands on the term's scene with its popover open", async ({ page }) => {
+    const { slug, scene } = built[0];
+    await page.goto(`/t/${slug}/`);
+    await expectLanded(page, slug, scene);
+  });
+
+  test("L2: /?slug lands on the term's scene with its popover open", async ({ page }) => {
+    const { slug, scene } = built[built.length - 1];
+    await gotoQuery(page, slug);
+    await expectLanded(page, slug, scene);
+  });
+
+  test("a pending term's /t/ lands on its glossary entry", async ({ page }) => {
+    expect(pending.length).toBeGreaterThan(0);
+    await page.goto(`/t/${pending[0]}/`);
+    await expect(page).toHaveURL(new RegExp(`/terms/#${pending[0]}$`));
+    await expect(page.locator(`#${pending[0]}`)).toBeInViewport();
+  });
 });
 
 test.describe("landing, portrait carousel", () => {
   test.use({ viewport: PORTRAIT });
-  for (const { slug, scene } of built.filter((b) => panelScenes.has(b.scene))) {
-    test(`/?${slug} lands inside the carousel on ${scene}`, async ({ page }) => {
-      await gotoQuery(page, slug);
-      await expectLanded(page, slug, scene);
-      // the carousel has been scrolled so the whole trigger sits inside the visible part of the scroller
-      const scroller = page.locator(".carousel .scroller");
-      await expect.poll(async () => {
-        const [t, s] = [await trigger(page, slug).boundingBox(), await scroller.boundingBox()];
-        return !!t && !!s && t.x >= s.x - 1 && t.x + t.width <= s.x + s.width + 1;
-      }).toBe(true);
-    });
-  }
 
-  test("a tap on a visible trigger opens the popover", async ({ page }) => {
+  test("L3: a term in a later panel lands scrolled into the carousel", async ({ page }) => {
+    // a term whose trigger starts out of the scroller's view, past the first panel
+    const scene = scenes.find((s) => s.panels)!;
+    await page.goto(`/${scene.division}/${scene.id}/`);
+    const slug = await page.evaluate(() => {
+      const s = document.querySelector(".carousel .scroller")!.getBoundingClientRect();
+      return [...document.querySelectorAll("[data-term][data-term-json]")]
+        .find((el) => el.getBoundingClientRect().left >= s.right)?.getAttribute("data-term");
+    });
+    expect(slug).toBeTruthy();
+    await gotoQuery(page, slug!);
+    await expectLanded(page, slug!, `${scene.division}/${scene.id}/`);
+    // the carousel has been scrolled so the whole trigger sits inside the visible part of the scroller
+    const scroller = page.locator(".carousel .scroller");
+    await expect.poll(async () => {
+      const [t, s] = [await trigger(page, slug!).boundingBox(), await scroller.boundingBox()];
+      return !!t && !!s && t.x >= s.x - 1 && t.x + t.width <= s.x + s.width + 1;
+    }).toBe(true);
+  });
+
+  test("L4: a tap on a visible trigger opens the popover", async ({ page }) => {
     await page.goto("/adad-al-turuq/routes/");
     const i = await page.evaluate(() => {
       const s = document.querySelector(".carousel .scroller")!.getBoundingClientRect();
@@ -172,13 +192,8 @@ test.describe("views", () => {
     await expect(page.locator('svg [data-view-show="nested"]')).toBeVisible();
   });
 
-  test("a report URL carrying ?view=nested and a term stays on nested", async ({ page }) => {
-    // two params, so the bare-term redirect leaves it alone: the page opens on the nested view
-    await page.goto("/adad-al-turuq/report/?view=nested&khabar");
-    await expect(page).toHaveURL(/\/adad-al-turuq\/report\/\?view=nested&khabar$/);
-    await expect(page.locator('.views button[data-v="nested"]')).toHaveAttribute("aria-pressed", "true");
-    await expect(page.locator('svg [data-view-show="nested"]')).toBeVisible();
-    // the landing form, ?view=nested#khabar: the term opens, and the view stays on nested, since khabar shows in it
+  // L5 (popover.ts): a term landing on a scene keeps the view the URL asks for, where the term shows in it
+  test("L5: ?view=x#term opens the term and keeps the view", async ({ page }) => {
     await page.goto("/adad-al-turuq/report/?view=nested#khabar");
     await expect(trigger(page, "khabar")).toHaveAttribute("aria-expanded", "true");
     await expect(page.locator("#term-pop")).toBeVisible();

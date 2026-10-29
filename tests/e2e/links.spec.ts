@@ -5,14 +5,6 @@ import { parse } from "yaml";
 const terms = parse(readFileSync("src/content/terms.yaml", "utf8")) as { id: string; scene?: string }[];
 const pending = terms.filter((t) => !t.scene);
 
-for (const t of pending) {
-  test(`pending term ${t.id} lands on its glossary entry`, async ({ page }) => {
-    await page.goto(`/t/${t.id}/`);
-    await expect(page).toHaveURL(new RegExp(`/terms/#${t.id}$`));
-    await expect(page.locator(`#${t.id}`)).toBeInViewport();
-  });
-}
-
 test("bare ?slug resolves", async ({ page }) => {
   await page.goto(`/?${pending[0].id}`);
   await expect(page).toHaveURL(new RegExp(`/terms/#${pending[0].id}$`));
