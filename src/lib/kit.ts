@@ -115,3 +115,9 @@ export function dotCluster(n: number, cx: number, cy: number, gap: number): { x:
     return { x: f(alone ? cx : cx + (i % 2 ? gap : -gap) / 2) || 0, y: f(cy + (row - (rows - 1) / 2) * gap) || 0 };
   });
 }
+
+// the baseline of line j of n stacked text lines, lh apart and centred on y: a narrator's name lines beside his
+// figure (Report.astro, Lone.astro)
+export function stackY(y: number, j: number, n: number, lh = 14): number {
+  return f(y + (j - (n - 1) / 2) * lh);
+}

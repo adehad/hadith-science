@@ -20,6 +20,7 @@ import TermTitle from "../svg/TermTitle.astro";
 import { FIG, KIND_NAME, RELIABLE, type Kind } from "../svg/figures";
 import { SUBT_TRIGGER, f, panelTrigger, rowTrigger } from "../svg/geom";
 import { cap, type DiagramProps } from "../../lib/scene";
+import { stackY } from "../../lib/kit";
 
 type Props = DiagramProps;
 const { caps, scene } = Astro.props;
@@ -74,7 +75,7 @@ const CHAINS: Chain[] = [
   },
 ];
 const NAME_DX = HALO.w / 2 + 4;
-const lineY = (y: number, j: number, n: number) => f(y + 4 + (j - (n - 1) / 2) * 14);
+const lineY = (y: number, j: number, n: number) => stackY(y + 4, j, n);
 
 // ---- panel 4: the relative column, unnamed ----
 const P4 = { moon: 870, comp: 870, studs: [830, 870, 910], lone: 870, other: 990 };
@@ -200,11 +201,7 @@ const BOTTOM = [
   ))}
 </svg>
 <style>
-  /* :global, since TermTitle renders the trigger text */
-  .lone :global(.rt){fill:var(--fg);font:700 13px var(--f-body)}
-  .lbl.start{text-anchor:start}
   .lbl.end{text-anchor:end}
-  .lbl.sm{font-size:11px}
   .rn{fill:var(--fg);font:700 13px var(--f-body);text-anchor:middle}
   .faint{opacity:.5}
   /* the halo behind each lone narrator: decoration only, the tags carry the meaning */

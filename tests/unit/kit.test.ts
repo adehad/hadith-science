@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { CHIP_CHAR_W, CHIP_PAD, bracketPath, chipRow, chipWidth, diamondPath, discRow, dotCluster, gaugeCells, scaleEnds, sweepAt } from "../../src/lib/kit";
+import { CHIP_CHAR_W, CHIP_PAD, bracketPath, chipRow, chipWidth, diamondPath, discRow, dotCluster, gaugeCells, scaleEnds, stackY, sweepAt } from "../../src/lib/kit";
 
 describe("chipWidth", () => {
   it("grows with the text, plus padding", () => {
@@ -150,4 +150,13 @@ describe("dotCluster", () => {
     expect(Math.max(...ys)).toBe(5);
   });
   it("draws nothing for zero", () => expect(dotCluster(0, 0, 0, 5)).toEqual([]));
+});
+
+describe("stackY", () => {
+  it("centres n lines on y, lh apart", () => {
+    expect([0, 1, 2].map((j) => stackY(100, j, 3))).toEqual([86, 100, 114]);
+    expect([0, 1].map((j) => stackY(100, j, 2, 10))).toEqual([95, 105]);
+  });
+  it("puts a single line on y", () => expect(stackY(42, 0, 1)).toBe(42));
+  it("rounds to 2 decimals", () => expect(stackY(10, 0, 2, 1 / 3)).toBe(9.83));
 });

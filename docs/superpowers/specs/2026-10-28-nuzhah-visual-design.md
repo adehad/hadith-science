@@ -271,7 +271,7 @@ src/
     terms.ts      slug → target path; ?t= / bare ?slug parsing
     views.ts      read/write ?view=
     staircase.ts  delivery step boxes per view
-    kit.ts        pure layout maths for the kit parts (chip widths and rows, gauge cells, scale ends, disc rows, the sweep timing, diamond path, bracketPath for Bracket, dotCluster for the mustafīḍ inset)
+    kit.ts        pure layout maths for the kit parts (chip widths and rows, gauge cells, scale ends, disc rows, the sweep timing, diamond path, bracketPath for Bracket, dotCluster for the mustafīḍ inset, stackY for name lines beside a figure)
     panels.ts     carousel track width and snap stops
     orbit.ts      map orbit maths
     scene.ts      caption lookup, popover JSON, DiagramProps

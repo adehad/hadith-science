@@ -21,7 +21,7 @@ import TermTitle from "../svg/TermTitle.astro";
 import { FIG, KIND_NAME, RELIABLE, type Kind } from "../svg/figures";
 import { SUBT_TRIGGER, f, rowTrigger, titleTrigger } from "../svg/geom";
 import { cap, type DiagramProps } from "../../lib/scene";
-import { chipWidth } from "../../lib/kit";
+import { chipWidth, stackY } from "../../lib/kit";
 import { href } from "../../lib/url";
 
 type Props = DiagramProps;
@@ -116,7 +116,8 @@ const off = (v: ViewId) => v !== DEF;
     <Arrow x1={CX} y1={LAST.y + HALF + 4} x2={CX} y2={BUKHARI.y - 13} variant="elided" />
     <text class="lbl start sm" x={ELIDED.x} y={ELIDED.y}>links not in the book</text>
     {CHAIN.map((p) => {
-      const lineY = (j: number) => f(p.y + 4 + (j - p.lines.length / 2) * 14);
+      // the Labels-mode kind name is the last of the stack
+      const lineY = (j: number) => stackY(p.y + 4, j, p.lines.length + 1);
       return (
         <>
           <Narrator x={CX} y={p.y} k={K} {...FIG[p.kind]} {...RELIABLE} />
@@ -188,14 +189,8 @@ const off = (v: ViewId) => v !== DEF;
   .cells svg{background:var(--surface)}
   @media (max-width:640px) and (orientation:portrait){.cells{grid-template-columns:1fr}}
   /* :global, since TermTitle renders the trigger text */
-  .report :global(.rt){fill:var(--fg);font:700 13px var(--f-body)}
-  .report :global(.subt.start),.report .lbl.start{text-anchor:start}
-  .lbl.sm{font-size:11px}
+  .report :global(.subt.start){text-anchor:start}
   .tail{fill:none;stroke:var(--line);stroke-width:1.4}
-  .rp{fill:var(--fg);font:600 12px var(--f-body)}
-  .xlink .xu{text-decoration:underline;text-decoration-color:var(--line)}
-  .xlink:hover text,.xlink:focus-visible text{fill:var(--gold-a)}
-  .xlink:hover .xu,.xlink:focus-visible .xu{text-decoration-color:var(--gold-a)}
   /* the rings keep their stroke width at every scale; ḥadīth in the darker gold, for 3:1 against the surface */
   .rk,.rh{fill:none;vector-effect:non-scaling-stroke}
   .rk{stroke:var(--fg);stroke-width:2}

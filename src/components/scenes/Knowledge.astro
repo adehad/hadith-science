@@ -225,15 +225,9 @@ const muhtaff = trigger("muhtaff-bil-qarain", 530, 426);
 </svg>
 <style>
   /* :global, since TermTitle renders the trigger text */
-  .knowledge :global(.rt){fill:var(--fg);font:700 13px var(--f-body);text-anchor:middle}
-  .lbl.start{text-anchor:start}
+  .knowledge :global(.rt){text-anchor:middle}
   /* right to left, so its end is its left edge: the Arabic starts at LEFT with the rows above it */
   .title-ar.rtl-start{text-anchor:end}
-  .lbl.sm{font-size:11px}
-  .rp{fill:var(--fg);font:600 12px var(--f-body)}
-  .xlink .xu{text-decoration:underline;text-decoration-color:var(--line)}
-  .xlink:hover text,.xlink:focus-visible text{fill:var(--gold-a)}
-  .xlink:hover .xu,.xlink:focus-visible .xu{text-decoration-color:var(--gold-a)}
   .ct{fill:var(--fg);font:700 12.5px var(--f-body);text-anchor:middle}
   .mk{fill:var(--fg);font:600 12px var(--f-body)}
   .band{stroke:none}

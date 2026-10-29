@@ -200,14 +200,9 @@ const EXIT_X2 = CARD.x0 - 3;
 </svg>
 <style>
   /* :global, since TermTitle renders the trigger text */
-  .sorting :global(.rt){fill:var(--fg);font:700 13px var(--f-body);text-anchor:middle}
-  .lbl.start{text-anchor:start}
+  .sorting :global(.rt){text-anchor:middle}
   .yn{font-size:11px}
   .subt.plain{fill:var(--muted)}
-  .rp{fill:var(--fg);font:600 12px var(--f-body)}
-  .xlink .xu{text-decoration:underline;text-decoration-color:var(--line)}
-  .xlink:hover text,.xlink:focus-visible text{fill:var(--gold-a)}
-  .xlink:hover .xu,.xlink:focus-visible .xu{text-decoration-color:var(--gold-a)}
   .pill-link:hover :global(rect),.pill-link:focus-visible :global(rect){stroke-width:2.5}
   /* the five lines' dashes are staggered, so they read as many routes rather than a ladder */
   .bundle{stroke-width:1.2;stroke-dashoffset:var(--o);animation-name:sorting-flow}
