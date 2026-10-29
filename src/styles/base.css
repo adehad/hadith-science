@@ -19,3 +19,8 @@ a.skip:focus{left:0}
 .pn a{font:600 .85rem var(--f-body);background:var(--surface);color:var(--fg);border:1px solid var(--rule);border-radius:8px;padding:7px 12px;text-decoration:none}
 .landing{animation:landing-ring 1.4s ease-out 2}
 @keyframes landing-ring{0%{filter:drop-shadow(0 0 0 var(--gold-b))}40%{filter:drop-shadow(0 0 10px var(--gold-b))}100%{filter:drop-shadow(0 0 0 transparent)}}
+/* a scene drawn as a grid of separate figures (Names, Grades, Report, Causes, Changes, Identity): two columns, one in
+   portrait; the 1px gaps show the grid's background, drawing var(--rule) lines between the cells */
+.cells{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--rule)}
+.cells svg{background:var(--surface)}
+@media (max-width:640px) and (orientation:portrait){.cells{grid-template-columns:1fr}}

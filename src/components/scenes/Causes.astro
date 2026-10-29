@@ -233,10 +233,6 @@ const R_END = rungs[rungs.length - 1].top + R_H;
   </svg>
 </div>
 <style>
-  /* the grid's 1px gaps show its background, drawing var(--rule) lines between the cells (as Names) */
-  .cells{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--rule)}
-  .cells svg{background:var(--surface)}
-  @media (max-width:640px) and (orientation:portrait){.cells{grid-template-columns:1fr}}
   .causes .layer{text-anchor:start}
   .box{fill:none;stroke:var(--rule);stroke-width:1.4}
   .wedge{fill:color-mix(in srgb,var(--gold-a) 55%,var(--surface));stroke:var(--gold-a);stroke-width:1}
