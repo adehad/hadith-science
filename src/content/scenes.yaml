@@ -309,6 +309,44 @@
     - title: The illustrations
       section: §5.28–5.32
       note: "The book gives examples only for maqlūb: Murra ibn Kaʿb, and the hands in Abū Hurayra's report. For mudraj, al-mazīd, muḍṭarib, muṣaḥḥaf and muḥarraf it names none, so those cells are illustrations: unnamed chains, blank text cards and single letter shapes, not real reports. One undotted letter outline is read as different letters by the dots below or above it, and is voiced differently by a fatḥa, ḍamma or kasra."
+- id: wording
+  division: al-mardud
+  moons: [1]
+  order: 7
+  title: May the words be changed?
+  eyebrow: Changing the words on purpose, and rare words · §5.33–5.34
+  lede: On the correct opinion, a report's words may be changed on purpose, by cutting it short or putting it in other words, only by a scholar who knows how words carry meaning. Even then the exact words are better. Where a word is rare, the books on rare words explain it.
+  source: §5.33 Ikhtiṣār al-ḥadīth and al-riwāya bi-l-maʿnā, §5.34 Gharīb al-ḥadīth
+  diagram: Wording
+  width: 780
+  captions:
+    - term: ikhtisar-al-hadith
+      note: "Cutting part of a report. On the correct opinion, only a scholar who knows what words signify may change a text on purpose; most allow shortening on that condition. The expert drops only what has no tie to the rest, so the meaning holds and the two parts stand like two reports, or the kept part points to the dropped one. One who does not know may drop what matters, such as an exception (§5.33)."
+    - term: riwaya-bil-mana
+      note: "Telling a report in other words of the same meaning. The dispute is well known; most allow it to a scholar who knows how words carry meaning. Their strongest proof: all agree an expert may put the Law into another language, so other Arabic words are allowed all the more. Still, the exact words are without doubt better; al-Qāḍī ʿIyāḍ wished the practice would stop (§5.33)."
+    - term: gharib-al-hadith
+      note: "When a word is unclear because it is rare, the books on rare words explain it: Abū ʿUbayd al-Qāsim ibn Sallām's, unarranged until Ibn Qudāma put it in letter order; Abū ʿUbayd al-Harawī's, the most complete; al-Zamakhsharī's al-Fāʾiq; and Ibn al-Athīr's al-Nihāya, the easiest to consult. A common word in a special sense needs the books on the meanings of reports and on difficult reports (§5.34)."
+  views:
+    - id: most
+      label: Most scholars
+      scholars: Most scholars, and Ibn Ḥajar, §5.33
+      note: "Most scholars allow it; on the correct opinion, Ibn Ḥajar says, only a scholar who knows how words carry meaning may do it. Their strongest proof: all agree an expert may put the Law into another language, so other Arabic words are allowed all the more."
+    - id: single-words
+      label: "Some: single words only"
+      scholars: "“It is said”, §5.33"
+      note: "Some, whom the book doesn't name, allow it for single words, not for whole sentences."
+    - id: knows-wording
+      label: "Some: if he knows the words"
+      scholars: "“It is also said”, §5.33"
+      note: "Others, again unnamed, allow it to one who knows the original words, so that he can go back to them."
+    - id: forgot
+      label: "Some: if he has forgotten them"
+      scholars: "“It is said”, §5.33"
+      note: "Others, again unnamed, allow it only to one who memorised the report and then forgot its words while its meaning stayed firm in his mind. He may tell it by meaning to state a ruling, unlike one who still knows its wording."
+  panels:
+    - { id: shortening, label: Cutting it short, x0: 0, x1: 260 }
+    - { id: by-meaning, label: In other words, x0: 260, x1: 520 }
+    - { id: rare, label: Rare words, x0: 520, x1: 780 }
 - id: unknown
   division: al-mardud
   moons: [1]

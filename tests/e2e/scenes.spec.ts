@@ -46,7 +46,7 @@ async function gotoQuery(page: Page, slug: string) {
 
 test("every scene term is counted", () => {
   expect(built.length).toBeGreaterThanOrEqual(30);
-  expect(panelScenes.size).toBe(13);
+  expect(panelScenes.size).toBe(14);
 });
 
 test.describe("landing, desktop", () => {
@@ -272,6 +272,48 @@ test.describe("views", () => {
     await expect(page.locator('.views button[data-v="contemporary"]')).toHaveAttribute("aria-pressed", "true");
   });
 
+  test("wording: each of the four views swaps panel 2's tag and output card, and every term stays", async ({ page }) => {
+    await page.goto("/al-mardud/wording/");
+    // no narrator figures: no legend and no Key/Labels switch
+    await expect(page.locator(".legend")).toHaveCount(0);
+    await expect(page.locator(".viewtoggle")).toHaveCount(0);
+    const part = (id: string) => page.locator(`svg [data-view-show~="${id}"]`);
+    const TAGS: Record<string, string> = {
+      most: "most scholars allow it",
+      "single-words": "single words, not sentences",
+      "knows-wording": "he can go back to the words",
+      forgot: "the words forgotten, the meaning kept",
+    };
+    const ids = Object.keys(TAGS);
+    for (const id of ids) {
+      if (id !== "most") {
+        await page.locator(`.views button[data-v="${id}"]`).click();
+        await expect(page).toHaveURL(new RegExp(`[?&]view=${id}\\b`));
+      }
+      await expect(page.locator(`.views button[data-v="${id}"]`)).toHaveAttribute("aria-pressed", "true");
+      await expect(page.locator(`svg [data-view-show="${id}"]`, { hasText: TAGS[id] })).toBeVisible();
+      for (const other of ids.filter((x) => x !== id)) await expect(page.locator(`svg [data-view-show="${other}"]`, { hasText: TAGS[other] })).toBeHidden();
+      // single words changes one word of the output card; the other views change them all
+      await expect(page.locator("svg .nw:visible .word.changed")).toHaveCount(id === "single-words" ? 1 : 5);
+      // knows the words draws the way back to them; forgotten fades the original words
+      await expect(page.locator("svg path.ret")).toBeVisible({ visible: id === "knows-wording" });
+      await expect(part("forgot").locator(".word.lost").first()).toBeVisible({ visible: id === "forgot" });
+      for (const slug of ["ikhtisar-al-hadith", "riwaya-bil-mana", "gharib-al-hadith"]) await expect(trigger(page, slug)).toBeVisible();
+      await expectNoAxeViolations(page);
+    }
+    // each "it is said" view note says the book doesn't name who holds it, once: in the note, not again in the
+    // scholars field
+    for (const id of ["single-words", "knows-wording", "forgot"]) expect((await page.locator(`.views [data-view-show="${id}"]`).textContent())!.match(/unnamed|doesn't name/gi)).toHaveLength(1);
+    await expect(page.locator('.views [data-view-show="most"]')).toContainText("on the correct opinion, Ibn Ḥajar says");
+  });
+
+  test("wording: opening al-riwāya bi-l-maʿnā from ?view=forgot keeps that view", async ({ page }) => {
+    await page.goto("/al-mardud/wording/?view=forgot#riwaya-bil-mana");
+    await expect(trigger(page, "riwaya-bil-mana")).toHaveAttribute("aria-expanded", "true");
+    await expect(page).toHaveURL(/[?&]view=forgot\b/);
+    await expect(page.locator('.views button[data-v="forgot"]')).toHaveAttribute("aria-pressed", "true");
+  });
+
   test("accept-all swaps the clash branch's Weigh them for Accepted; the scales stay", async ({ page }) => {
     await page.goto("/al-maqbul/opposition/");
     const branch = (id: string) => page.locator(`svg [data-view-show="${id}"]`);
@@ -354,7 +396,7 @@ test("Key and Labels modes swap the legend for labels, and the choice survives a
   await expectNoAxeViolations(page);
 });
 
-test("scene prev/next: breaks leads on to hidden, hidden to lying, lying to slips, slips to changes, and changes to unknown", async ({ page }) => {
+test("scene prev/next: breaks leads on to hidden, hidden to lying, lying to slips, slips to changes, changes to wording, and wording to unknown", async ({ page }) => {
   await page.goto("/al-mardud/breaks/");
   await expect(page.locator('.pn a[rel="next"]')).toHaveAttribute("href", /\/al-mardud\/hidden\/$/);
   await page.goto("/al-mardud/hidden/");
@@ -368,9 +410,12 @@ test("scene prev/next: breaks leads on to hidden, hidden to lying, lying to slip
   await expect(page.locator('.pn a[rel="next"]')).toHaveAttribute("href", /\/al-mardud\/changes\/$/);
   await page.goto("/al-mardud/changes/");
   await expect(page.locator('.pn a[rel="prev"]')).toHaveAttribute("href", /\/al-mardud\/slips\/$/);
+  await expect(page.locator('.pn a[rel="next"]')).toHaveAttribute("href", /\/al-mardud\/wording\/$/);
+  await page.goto("/al-mardud/wording/");
+  await expect(page.locator('.pn a[rel="prev"]')).toHaveAttribute("href", /\/al-mardud\/changes\/$/);
   await expect(page.locator('.pn a[rel="next"]')).toHaveAttribute("href", /\/al-mardud\/unknown\/$/);
   await page.goto("/al-mardud/unknown/");
-  await expect(page.locator('.pn a[rel="prev"]')).toHaveAttribute("href", /\/al-mardud\/changes\/$/);
+  await expect(page.locator('.pn a[rel="prev"]')).toHaveAttribute("href", /\/al-mardud\/wording\/$/);
 });
 
 test("scene prev/next: the report scene opens its division and leads on to routes", async ({ page }) => {

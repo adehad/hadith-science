@@ -290,3 +290,66 @@ test("with motion, the changes scene's inserts fade in one after another, the na
   await expect.poll(() => page.locator("svg .swap-up").evaluate((e) => new DOMMatrix(getComputedStyle(e).transform).isIdentity), { timeout: 5000 }).toBe(true);
   await expect.poll(() => page.locator("svg .ins").last().evaluate((e) => getComputedStyle(e).opacity), { timeout: 5000 }).toBe("1");
 });
+
+test("reduced motion: the wording scene rests with the cuts made, the pieces apart, the output card in place and the star bright", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/al-mardud/wording/");
+  const css = (sel: string, prop: string) => page.locator(sel).evaluateAll((els, p) => els.map((e) => getComputedStyle(e).getPropertyValue(p)), prop);
+  expect(await css("svg .sblade, svg .apart, svg .through, svg .star", "transform")).toEqual(Array(4 + 4 + 1 + 1).fill("none"));
+  expect(await css("svg .through, svg .star", "opacity")).toEqual(["1", "1"]);
+  // the old words show only while the card passes the gate; at rest they are gone and the new ones shown
+  expect(await css("svg .oldw", "opacity")).toEqual(["0"]);
+  expect(await css("svg .neww, svg .nw:not(.off)", "opacity")).toEqual(["1", "1"]);
+  expect(await page.locator(".wording").evaluate((el) => el.getAnimations({ subtree: true }).filter((a) => !(a as CSSAnimation).animationName?.startsWith("flow")).length)).toBe(0);
+});
+
+test("with motion, the wording scene's scissors close once at each cut, the pieces part, the card passes the gate once and the star brightens once", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.goto("/al-mardud/wording/");
+  const timing = (sel: string) => page.locator(sel).evaluateAll((els) => els.map((e) => e.getAnimations().map((a) => [(a as CSSAnimation).animationName, a.effect?.getTiming().delay, a.effect?.getTiming().iterations, a.effect?.getTiming().fill])));
+  expect(await timing("svg .sblade.a")).toEqual([600, 1400].map((d) => [["wording-close-a", d, 1, "both"]]));
+  expect(await timing("svg .sblade.b")).toEqual([600, 1400].map((d) => [["wording-close-b", d, 1, "both"]]));
+  expect(await timing("svg .apart")).toEqual([1000, 1000, 1800, 1800].map((d) => [["wording-apart", d, 1, "both"]]));
+  expect(await timing("svg .through")).toEqual([[["wording-through", 400, 1, "both"]]]);
+  expect(await timing("svg .oldw")).toEqual([[["wording-old", 400, 1, "both"]]]);
+  expect(await timing("svg .neww")).toEqual([[["wording-new", 400, 1, "both"]]]);
+  // the view groups inside it carry no animation of their own, so showing one never replays the fade
+  expect(await timing("svg .nw")).toEqual([[], []]);
+  expect(await timing("svg .star")).toEqual([[["wording-star", 2000, 1, "both"]]]);
+  // they end where the reduced-motion page rests: the blades closed, the pieces apart, the card in place, the old
+  // words gone and the star bright (both fill holds the end state)
+  const settled = () => page.locator(".wording").evaluate((el) => {
+    const id = (sel: string) => [...el.querySelectorAll(sel)].every((e) => new DOMMatrix(getComputedStyle(e).transform).isIdentity);
+    const op = (sel: string) => getComputedStyle(el.querySelector(sel)!).opacity;
+    return id(".sblade") && id(".apart") && id(".through") && id(".star") && op(".oldw") === "0" && op(".neww") === "1" && op(".star") === "1";
+  });
+  await expect.poll(settled, { timeout: 6000 }).toBe(true);
+});
+
+test("with motion, switching the wording scene's view shows the output card's new words at once", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.goto("/al-mardud/wording/");
+  // let the first pass finish, then switch: the shown group's words must not fade in again
+  await expect.poll(() => page.locator("svg .neww").evaluate((e) => getComputedStyle(e).opacity), { timeout: 6000 }).toBe("1");
+  await page.waitForTimeout(300);
+  // in the page, so a slow test runner's round trips don't count: click the view's button, then read the shown
+  // words' effective opacity (the product of their own and every ancestor's, up to the svg) on each frame. Return
+  // the lowest seen in the first 100ms, and the lowest from then until 900ms, when the old fade would be over
+  const lows = (v: string) => page.evaluate((v) => new Promise<[number, number]>((done) => {
+    const shown = () => {
+      let o = 1;
+      for (let n: Element | null = document.querySelector("svg .nw:not(.off)"); n && n.tagName !== "svg"; n = n.parentElement) o *= Number(getComputedStyle(n).opacity);
+      return o;
+    };
+    document.querySelector<HTMLButtonElement>(`.views button[data-v="${v}"]`)!.click();
+    const t0 = performance.now();
+    let early = 1, late = 1;
+    const tick = () => {
+      const t = performance.now() - t0;
+      if (t < 100) early = Math.min(early, shown()); else late = Math.min(late, shown());
+      if (t < 900) requestAnimationFrame(tick); else done([early, late]);
+    };
+    tick();
+  }), v);
+  for (const v of ["single-words", "most"]) expect(await lows(v)).toEqual([1, 1]);
+});

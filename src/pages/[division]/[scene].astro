@@ -22,6 +22,7 @@ import Hidden from "../../components/scenes/Hidden.astro";
 import Lying from "../../components/scenes/Lying.astro";
 import Slips from "../../components/scenes/Slips.astro";
 import Changes from "../../components/scenes/Changes.astro";
+import Wording from "../../components/scenes/Wording.astro";
 import { loadContent } from "../../lib/content";
 import { captionsFor, type DiagramProps } from "../../lib/scene";
 import { href } from "../../lib/url";
@@ -45,7 +46,7 @@ const caps = captionsFor(scene, terms);
 
 // each scene task adds its diagram here; import only components that exist
 // typed by the props every diagram takes, so a misnamed or missing prop fails astro check
-const DIAGRAMS: Partial<Record<Diagram, (p: DiagramProps) => any>> = { Routes, Breaks, Unknown, Delivery, Names, Grades, Opposition, Support, ActedOn, Report, Sorting, Knowledge, Lone, Hidden, Lying, Slips, Changes };
+const DIAGRAMS: Partial<Record<Diagram, (p: DiagramProps) => any>> = { Routes, Breaks, Unknown, Delivery, Names, Grades, Opposition, Support, ActedOn, Report, Sorting, Knowledge, Lone, Hidden, Lying, Slips, Changes, Wording };
 const D = DIAGRAMS[scene.diagram];
 if (!D) throw new Error(`no diagram component for ${scene.diagram}`);
 
@@ -74,7 +75,8 @@ const LEGEND: Partial<Record<Diagram, LegendKind[]>> = {
   Slips: ["moon", "sahabi", "tabii", "later", "weak", "mukhtalit", "ghost"],
   // the added narrator and the wavering link are reliable later narrators; the wavering link hangs from a Companion
   Changes: ["moon", "sahabi", "later"],
-  // ActedOn and Sorting draw no narrator figures, so they have no legend and no Key/Labels switch (phase 3 designs §1)
+  // ActedOn, Sorting and Wording draw no narrator figures, so they have no legend and no Key/Labels switch (phase 3
+  // designs §1)
 };
 const kinds = LEGEND[scene.diagram];
 const hasFigures = kinds !== undefined;

@@ -1,0 +1,287 @@
+---
+// "May the words be changed?" (phase 3 al-Mardūd design §8): the changes made on purpose (§5.33–5.34), after the
+// mistakes of §5.28–5.32, in three panels of one 780-wide row, so it carousels in portrait. All three are about one
+// text card:
+//   1  cutting it short (ikhtiṣār): the card in segments, cut twice. The expert cuts at a seam and leaves two whole
+//      reports; one who does not know cuts off the last segment, the exception the rest depends on
+//   2  telling it in other words (al-riwāya bi-l-maʿnā): the card passes through a gate, a scholar who knows how
+//      words carry meaning, and comes out with other words over the same gold meaning band
+//   3  rare words (gharīb al-ḥadīth): a card with one shaded word, and the books §5.34 names, in its order
+// The cards' words are blocks and rule lines, never words: the only words shown are the "except…" tag. No Arabic
+// report wording. No narrator figures, so no legend and no Key/Labels switch (design §1).
+// The "Other views" switch (§5.33's four positions on telling by meaning) changes panel 2 only: each view has its own
+// tag group under the panel (data-view-show), single words changes one word block of the output card, knows the
+// words adds a dashed arrow back to the original words, and forgotten fades the input card's words, keeping the
+// meaning. The groups outside the default view are built with class="off"; view swaps are instant (design §18).
+// Motion: the scissors close once at each cut and the pieces move apart; the output card slides down through the
+// gate once, its old words giving way to new ones; the star on al-Nihāya brightens once. Each resting style is the
+// end state, so with motion.css stopping every animation the cuts are made, the pieces apart, the output card in
+// place with its new words, and the star bright.
+import Defs from "../svg/Defs.astro";
+import Arrow from "../svg/Arrow.astro";
+import Glyph from "../svg/Glyph.astro";
+import Matn from "../svg/Matn.astro";
+import TermTitle from "../svg/TermTitle.astro";
+import { SUBT_TRIGGER, f, panelTrigger } from "../svg/geom";
+import { cap, type DiagramProps } from "../../lib/scene";
+
+type Props = DiagramProps;
+const { caps, scene } = Astro.props;
+
+const W = 780, H = 520;
+const VIEW_IDS = ["most", "single-words", "knows-wording", "forgot"];
+if ((scene.views ?? []).map((v) => v.id).join() !== VIEW_IDS.join()) throw new Error(`Wording: expected views ${VIEW_IDS.join(", ")}`);
+const PANELS = scene.panels ?? [];
+if (PANELS.length !== 3) throw new Error("Wording: expected three panels");
+
+const TITLE_Y = 30, SUB_Y = 50;
+
+// a panel title as a term trigger; panelTrigger checks it sits wholly inside its panel
+function title(slug: string, cx: number) {
+  const c = cap(caps, slug);
+  return { c, cx, ...panelTrigger(c.translit, cx, TITLE_Y, PANELS, { ...SUBT_TRIGGER, name: `Wording: ${slug}` }) };
+}
+const ikhtisar = title("ikhtisar-al-hadith", 130);
+const riwaya = title("riwaya-bil-mana", 390);
+const gharib = title("gharib-al-hadith", 650);
+
+// ---- panel 1: cutting it short ----
+// the card's segment edges: four seams between five segments; the last, wider one holds the exception
+const B = [22, 62, 96, 130, 164, 214];
+const SEG_H = 26;
+const SRC_Y = 70, EXP_Y = 152, IGN_Y = 264;
+// each piece's segments as [x0, x1] pairs, from edge index i0 to i1
+const segs = (i0: number, i1: number) => B.slice(i0, i1).map((x, j) => [x, B[i0 + j + 1]] as const);
+// a piece of the card from edge i0 to i1, resting dx from its place in the whole card (a cut piece moves apart
+// from there after the cut)
+const piece = (i0: number, i1: number, y: number, dx = 0, inactive = false) => ({
+  x: B[i0] + dx, w: B[i1] - B[i0], y, inactive, dx,
+  seams: B.slice(i0 + 1, i1).map((x) => x + dx),
+  rules: segs(i0, i1).map(([a, b]) => ({ x0: a + dx + 6, x1: b + dx - 6 })),
+  except: i1 === B.length - 1 ? { x: (B[4] + B[5]) / 2 + dx } : undefined,
+});
+const SOURCE = piece(0, 5, SRC_Y);
+// the expert cuts at the seam after segment 2: two whole pieces, 6 apart. One who does not know cuts off the last
+// segment, the exception, which the rest needs
+const CUTS = [
+  { at: B[2], y: EXP_Y, t: 0.6, pieces: [piece(0, 2, EXP_Y, -3), piece(2, 5, EXP_Y, 3)] },
+  { at: B[4], y: IGN_Y, t: 1.4, pieces: [piece(0, 4, IGN_Y, -3), piece(4, 5, IGN_Y, 3, true)] },
+];
+const SCI_R = 9;
+const MARK_X = 238;
+
+// ---- panel 2: in other words ----
+const IN = { x: 292, y: 70, w: 196, h: 40 };
+const OUT_Y = 246;
+const SLIDE = OUT_Y - IN.y;
+const WORD_DY = 9, WORD_H = 10, BAND_DY = 25, BAND_H = 8;
+// word blocks of mixed widths, left to right from x0 with a 6-unit gap; `changed` marks a word not in the original
+function blocks(widths: number[], changed: (i: number) => boolean = () => false) {
+  let x = IN.x + 13;
+  return widths.map((w, i) => {
+    const b = { x, w, changed: changed(i) };
+    x += w + 6;
+    return b;
+  });
+}
+const ORIGINAL = [30, 18, 40, 24, 34];
+const IN_WORDS = blocks(ORIGINAL);
+// most, knows the words and forgotten: every word differs, in other widths; the meaning band is the same
+const ALL_NEW = blocks([22, 36, 16, 44, 28], () => true);
+// single words: one word differs, the rest as they were
+const ONE_NEW = blocks([30, 18, 26, 24, 34], (i) => i === 2);
+if (Math.max(...[...IN_WORDS, ...ALL_NEW, ...ONE_NEW].map((b) => b.x + b.w)) > IN.x + IN.w - 10) throw new Error("Wording: a word block leaves its card");
+const GATE = { x0: 306, x1: 474, y0: 154, y1: 204 };
+const TAG_Y = 396;
+const TAGS: { view: string; text: string; lines: string[]; dashed: boolean }[] = [
+  { view: "most", text: "most scholars allow it", lines: ["Ibn Ḥajar: the correct opinion", "their proof: an expert may put", "the Law into another language"], dashed: false },
+  { view: "single-words", text: "single words, not sentences", lines: ["it is said"], dashed: true },
+  { view: "knows-wording", text: "he can go back to the words", lines: ["it is also said"], dashed: true },
+  { view: "forgot", text: "the words forgotten, the meaning kept", lines: ["it is said: then he may tell it", "by meaning to state a ruling"], dashed: true },
+];
+const TAG_W = 216;
+
+// ---- panel 3: rare words ----
+const RARE = { x: 560, y: 70, w: 180, h: 26 };
+const RARE_WORDS = (() => {
+  let x = RARE.x + 12;
+  return [26, 18, 30, 22, 28].map((w, i) => {
+    const b = { x, w, rare: i === 2 };
+    x += w + 8;
+    return b;
+  });
+})();
+const BOOK_X = 546, TXT_X = 562;
+const SHELF = [
+  { y: 160, name: "Abū ʿUbayd al-Qāsim ibn Sallām", sub: ["unarranged; Ibn Qudāma later put", "it in letter order"] },
+  { y: 216, name: "Abū ʿUbayd al-Harawī", sub: ["the most complete, improved by", "Abū Mūsā al-Madīnī"] },
+  { y: 272, name: "al-Zamakhsharī: al-Fāʾiq", sub: ["well arranged"] },
+  { y: 314, name: "Ibn al-Athīr: al-Nihāya", sub: ["gathered them all: the easiest", "to consult"], best: true },
+];
+const STAR = { x: 716, y: 310, r: 6 };
+const star = Array.from({ length: 10 }, (_, i) => {
+  const a = -Math.PI / 2 + (i * Math.PI) / 5;
+  const r = i % 2 ? STAR.r * 0.45 : STAR.r;
+  return `${f(STAR.x + r * Math.cos(a))} ${f(STAR.y + r * Math.sin(a))}`;
+}).join(" L");
+---
+<svg viewBox={`0 0 ${W} ${H}`} class="wording" role="group" aria-label="Three panels about one text card. Ikhtiṣār al-ḥadīth, cutting it short: an expert cuts at a seam, leaving two whole reports, or a part that points to the rest; one who does not know may cut off what the rest depends on, such as an exception. Most allow it only to an expert, and on the correct opinion a text may be changed on purpose, cut or reworded, only by a scholar who knows how words carry meaning. al-Riwāya bi-l-maʿnā, telling it in other words: the card passes through that scholar and comes out in other words with the same meaning. The exact words are better, without doubt, and al-Qāḍī ʿIyāḍ wished the practice would stop. The Other views switch shows the four positions the book reports on who may do it. Gharīb al-ḥadīth, rare words: a word used rarely is explained in the books on rare words, in this order: Abū ʿUbayd al-Qāsim ibn Sallām's, unarranged until Ibn Qudāma put it in letter order; Abū ʿUbayd al-Harawī's, the most complete, improved by Abū Mūsā al-Madīnī; al-Zamakhsharī's al-Fāʾiq, well arranged; and Ibn al-Athīr's al-Nihāya, which gathered them all and is the easiest to consult. A common word used in a special sense needs the books on the meanings of reports and on difficult reports, by al-Ṭaḥāwī, al-Khaṭṭābī, Ibn ʿAbd al-Barr and others.">
+  <Defs />
+  <line class="divider" x1="260" x2="260" y1="12" y2={H - 12} />
+  <line class="divider" x1="520" x2="520" y1="12" y2={H - 12} />
+
+  {/* ---- panel 1: cutting it short ---- */}
+  <TermTitle c={ikhtisar.c} x={ikhtisar.cx} y={TITLE_Y} cls="subt" hit={ikhtisar.hit} info={ikhtisar.info} />
+  <text class="lbl" x="130" y={SUB_Y}>cutting part of it</text>
+  {[SOURCE, ...CUTS.flatMap((c) => c.pieces)].map((p) => (
+    <g class:list={[{ apart: p.dx !== 0 }]} style={p.dx ? `--from:${-p.dx}px;--d:${p.y === EXP_Y ? 1 : 1.8}s` : undefined}>
+      <Matn x={p.x} y={p.y} w={p.w} h={SEG_H} inactive={p.inactive} />
+      {p.seams.map((x) => <line class="seam" x1={x} x2={x} y1={p.y + 3} y2={p.y + SEG_H - 3} />)}
+      {p.rules.map((r) => (p.except && r.x0 > p.except.x - 30
+        ? <text class="except" x={p.except.x} y={p.y + 16}>except…</text>
+        : <path class="rl" d={`M${r.x0} ${p.y + 10} H${r.x1} M${r.x0} ${p.y + 17} H${f(r.x1 - 6)}`} />))}
+    </g>
+  ))}
+  <text class="layer" x="20" y="132">An expert</text>
+  <text class="layer" x="20" y="234">One who does not know</text>
+  {CUTS.map((c) => (
+    <g class="cut" style={`--d:${c.t}s`}><Glyph kind="scissors" cx={c.at} cy={c.y - SCI_R - 3} r={SCI_R} /></g>
+  ))}
+  <Glyph kind="check" cx={MARK_X} cy={EXP_Y + SEG_H / 2} r={8} />
+  <text class="lbl sm" x="124" y="198">two whole reports, or the part</text>
+  <text class="lbl sm" x="124" y="212">kept points to the part dropped</text>
+  <Glyph kind="cross" cx={MARK_X} cy={IGN_Y + SEG_H / 2} r={8} />
+  <text class="lbl sm" x="124" y="310">drops what matters, such as the exception</text>
+  <text class="lbl" x="130" y="346">most allow it only to an expert</text>
+  <g aria-hidden="true"><line class="side" x1="20" x2="20" y1="396" y2="470" /></g>
+  <text class="lbl start sm" x="30" y="408">in shortening and in other words</text>
+  <text class="lbl start sm" x="30" y="424">alike, on the correct opinion:</text>
+  <text class="lbl start sm" x="30" y="438">no change to a text on purpose,</text>
+  <text class="lbl start sm" x="30" y="452">except by a scholar who knows</text>
+  <text class="lbl start sm" x="30" y="466">how words carry meaning</text>
+
+  {/* ---- panel 2: in other words ---- */}
+  <TermTitle c={riwaya.c} x={riwaya.cx} y={TITLE_Y} cls="subt" hit={riwaya.hit} info={riwaya.info} />
+  <text class="lbl" x="390" y={SUB_Y}>telling it in other words</text>
+  <Matn x={IN.x} y={IN.y} w={IN.w} h={IN.h} />
+  <g data-view-show="most single-words knows-wording">
+    {IN_WORDS.map((b) => <rect class="word" x={b.x} y={IN.y + WORD_DY} width={b.w} height={WORD_H} rx="2" />)}
+  </g>
+  {/* forgotten: the words fade, the meaning stays */}
+  <g class="off" data-view-show="forgot">
+    {IN_WORDS.map((b) => <rect class="word lost" x={b.x} y={IN.y + WORD_DY} width={b.w} height={WORD_H} rx="2" />)}
+  </g>
+  <rect class="band" x={IN.x + 12} y={IN.y + BAND_DY} width={IN.w - 24} height={BAND_H} rx="2" />
+  <text class="lbl start sm" x="400" y={IN.y + IN.h + 18}>gold band: the meaning</text>
+
+  <Arrow x1={390} y1={IN.y + IN.h + 4} x2={390} y2={GATE.y0 - 4} />
+  {/* the output card slides down through the gate, so it is drawn before it */}
+  <g class="through" style={`--slide:${-SLIDE}px`}>
+    <Matn x={IN.x} y={OUT_Y} w={IN.w} h={IN.h} />
+    <rect class="band" x={IN.x + 12} y={OUT_Y + BAND_DY} width={IN.w - 24} height={BAND_H} rx="2" />
+    {/* the old words, seen only while the card passes the gate */}
+    <g class="oldw" aria-hidden="true">
+      {IN_WORDS.map((b) => <rect class="word" x={b.x} y={OUT_Y + WORD_DY} width={b.w} height={WORD_H} rx="2" />)}
+    </g>
+    {/* the new words fade in once, on this wrapper: a view group shown later must not replay it (.off is display:none,
+        and showing an element restarts its animation), so the view groups themselves carry none */}
+    <g class="neww">
+      <g class="nw" data-view-show="most knows-wording forgot">
+        {ALL_NEW.map((b) => <rect class:list={["word", { changed: b.changed }]} x={b.x} y={OUT_Y + WORD_DY} width={b.w} height={WORD_H} rx="2" />)}
+      </g>
+      <g class="nw off" data-view-show="single-words">
+        {ONE_NEW.map((b) => <rect class:list={["word", { changed: b.changed }]} x={b.x} y={OUT_Y + WORD_DY} width={b.w} height={WORD_H} rx="2" />)}
+      </g>
+    </g>
+  </g>
+  <g class="gate">
+    <rect x={GATE.x0} y={GATE.y0} width={GATE.x1 - GATE.x0} height={GATE.y1 - GATE.y0} rx="12" />
+    <rect class="inner" x={GATE.x0 + 4} y={GATE.y0 + 4} width={GATE.x1 - GATE.x0 - 8} height={GATE.y1 - GATE.y0 - 8} rx="9" />
+  </g>
+  <text class="gate-t" x="390" y={GATE.y0 + 22}>a scholar who knows</text>
+  <text class="gate-t" x="390" y={GATE.y0 + 38}>how words carry meaning</text>
+  <Arrow x1={390} y1={GATE.y1 + 4} x2={390} y2={OUT_Y - 4} />
+  <Glyph kind="check" cx={504} cy={OUT_Y + IN.h / 2} r={8} />
+  <text class="lbl start sm" x="400" y={OUT_Y + IN.h + 16}>the same meaning</text>
+  {/* knows the words: he can go back to them */}
+  <path class="ret off" data-view-show="knows-wording" d={`M${IN.x - 4} ${OUT_Y + 20} C${IN.x - 26} ${OUT_Y + 20} ${IN.x - 26} ${IN.y + 20} ${IN.x - 6} ${IN.y + 20}`} marker-end="url(#ah)" />
+
+  <text class="lbl" x="390" y="330">the exact words are better,</text>
+  <text class="lbl" x="390" y="345">without doubt</text>
+  <text class="lbl sm" x="390" y="364">al-Qāḍī ʿIyāḍ wished the practice</text>
+  <text class="lbl sm" x="390" y="377">would stop</text>
+  {TAGS.map((t) => (
+    <g class:list={[{ off: t.view !== "most" }]} data-view-show={t.view}>
+      <rect class:list={["vtag", { dashed: t.dashed }]} x={390 - TAG_W / 2} y={TAG_Y} width={TAG_W} height="22" rx="11" />
+      <text class="vtag-t" x="390" y={TAG_Y + 15}>{t.text}</text>
+      {t.lines.map((l, i) => <text class="lbl sm" x="390" y={TAG_Y + 42 + i * 14}>{l}</text>)}
+    </g>
+  ))}
+
+  {/* ---- panel 3: rare words ---- */}
+  <TermTitle c={gharib.c} x={gharib.cx} y={TITLE_Y} cls="subt" hit={gharib.hit} info={gharib.info} />
+  <text class="lbl" x="650" y={SUB_Y}>rare words</text>
+  <Matn x={RARE.x} y={RARE.y} w={RARE.w} h={RARE.h} />
+  {RARE_WORDS.map((b) => b.rare
+    ? <rect class="rare" x={b.x} y={RARE.y + 6} width={b.w} height={RARE.h - 12} rx="2" />
+    : <path class="rl" d={`M${b.x} ${RARE.y + 13} H${b.x + b.w}`} />)}
+  <text class="lbl sm" x={RARE_WORDS[2].x + RARE_WORDS[2].w / 2} y={RARE.y + RARE.h + 16}>a word used rarely</text>
+  <Arrow x1={650} y1={RARE.y + RARE.h + 24} x2={650} y2={140} />
+  {SHELF.map((b) => (
+    <>
+      <Glyph kind="book" cx={BOOK_X} cy={b.y - 4} r={8} />
+      <text class="nm" x={TXT_X} y={b.y}>{b.name}</text>
+      {b.sub.map((l, i) => <text class:list={["lbl start sm", { best: b.best }]} x={TXT_X} y={b.y + 15 + i * 14}>{l}</text>)}
+    </>
+  ))}
+  <path class="star" d={`M${star} Z`} aria-hidden="true" />
+  <text class="colhead start" x="540" y="390">A common word, a special sense</text>
+  <Glyph kind="book" cx={BOOK_X} cy={414} r={8} />
+  <text class="nm" x={TXT_X} y="418">books on the meanings of reports</text>
+  <text class="nm" x={TXT_X} y="433">and on difficult reports</text>
+  <text class="lbl start sm" x={TXT_X} y="452">al-Ṭaḥāwī, al-Khaṭṭābī,</text>
+  <text class="lbl start sm" x={TXT_X} y="466">Ibn ʿAbd al-Barr and others</text>
+</svg>
+<style>
+  .wording .colhead.start,.wording .layer{text-anchor:start}
+  /* panel 1: the card's seams and its blank lines of text */
+  .seam{stroke:var(--moon-ink);stroke-width:1;stroke-dasharray:2 2;opacity:.6}
+  .rl{fill:none;stroke:var(--moon-ink);stroke-width:1;opacity:.45}
+  .except{fill:var(--moon-ink);font:italic 700 10px var(--f-body);text-anchor:middle}
+  .side{stroke:var(--line);stroke-width:2}
+  /* panel 2: word blocks, the gold meaning band, the gate and the way back to the words */
+  .word{fill:color-mix(in srgb,var(--moon-ink) 55%,var(--moon));stroke:none}
+  .word.changed{fill:var(--ok)}
+  .word.lost{fill:none;stroke:var(--moon-ink);stroke-width:.8;stroke-dasharray:2 2;opacity:.5}
+  .band{fill:var(--gold-b);stroke:var(--gold-a);stroke-width:.8}
+  .gate rect{fill:color-mix(in srgb,var(--gold-b) 14%,var(--surface));stroke:var(--gold-a);stroke-width:1.6}
+  .gate rect.inner{fill:none;stroke-width:1}
+  .gate-t{fill:var(--fg);font:700 12px var(--f-body);text-anchor:middle}
+  .ret{fill:none;stroke:var(--line);stroke-width:1.6;stroke-dasharray:4 3}
+  .vtag{fill:color-mix(in srgb,var(--pause) 12%,var(--surface));stroke:var(--pause);stroke-width:1.4}
+  .vtag.dashed{stroke-dasharray:4 3}
+  .vtag-t{fill:var(--pause);font:700 11.5px var(--f-body);text-anchor:middle}
+  /* panel 3: the rare word, and the easiest book */
+  .rare{fill:color-mix(in srgb,var(--gold-b) 45%,transparent);stroke:var(--gold-a);stroke-width:1.2}
+  .best{fill:color-mix(in srgb,var(--gold-a) 55%,var(--fg))}
+  .star{fill:var(--gold-b);stroke:var(--gold-a);stroke-width:.8;stroke-linejoin:round}
+
+  /* motion: each resting style is the end state, and each animation runs from its start state, once */
+  /* the scissors close at each cut; the pieces then move apart */
+  .cut :global(.sblade.a){animation:wording-close-a .4s ease-in both;animation-delay:var(--d)}
+  .cut :global(.sblade.b){animation:wording-close-b .4s ease-in both;animation-delay:var(--d)}
+  @keyframes wording-close-a{from{transform:rotate(-16deg)}}
+  @keyframes wording-close-b{from{transform:rotate(16deg)}}
+  .apart{animation:wording-apart .4s ease-out both;animation-delay:var(--d)}
+  @keyframes wording-apart{from{transform:translateX(var(--from))}}
+  /* the output card slides down through the gate; its old words give way to the new as it passes */
+  .through{animation:wording-through 1.2s ease-in-out .4s both}
+  @keyframes wording-through{from{transform:translateY(var(--slide));opacity:0}15%{opacity:1}}
+  .oldw{opacity:0;animation:wording-old 1.2s linear .4s both}
+  @keyframes wording-old{0%,40%{opacity:1}60%,100%{opacity:0}}
+  .neww{animation:wording-new 1.2s linear .4s both}
+  @keyframes wording-new{0%,50%{opacity:0}70%,100%{opacity:1}}
+  /* the star on al-Nihāya brightens once */
+  .star{transform-box:fill-box;transform-origin:center;animation:wording-star .8s ease-out 2s both}
+  @keyframes wording-star{from{opacity:.25;transform:scale(.5)}60%{transform:scale(1.4)}}
+</style>

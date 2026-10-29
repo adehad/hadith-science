@@ -4,11 +4,13 @@
 // pause: two bars in a ring; text: a page of lines; companion: a bust with a star, in the Companions' gold; clock: a
 // face with two hands, for dates; cross: a drawn ✕ in a box, for rejected or not reached, the same stroke as check.
 // coin: a disc with an inner ring, for the money-changer (phase 3 al-Mardūd design §6); dashed draws a false one.
+// scissors: a pair pointing down, closed, for cutting a text short (al-Mardūd design §8). Each half (handle ring and
+// blade) is a .sblade group pivoting on the screw, so a scene can open and close them with a rotation.
 // The tick is a .tick path and the cross an .xmark path, each with pathLength 1, so a scene can draw them in with a
 // stroke-dash animation.
 import { f } from "./geom";
 
-interface Props { kind: "memory" | "book" | "check" | "cross" | "lens" | "pause" | "text" | "companion" | "clock" | "coin"; cx: number; cy: number; r?: number; dashed?: boolean }
+interface Props { kind: "memory" | "book" | "check" | "cross" | "lens" | "pause" | "text" | "companion" | "clock" | "coin" | "scissors"; cx: number; cy: number; r?: number; dashed?: boolean }
 const { kind, cx, cy, r = 7, dashed = false } = Astro.props;
 const p = (dx: number, dy: number) => `${f(cx + dx * r)} ${f(cy + dy * r)}`;
 ---
@@ -62,6 +64,17 @@ const p = (dx: number, dy: number) => `${f(cx + dx * r)} ${f(cy + dy * r)}`;
       <path class="gline" d={`M${p(0, -0.6)} L${p(0, 0)} L${p(0.45, 0.25)}`} />
     </>
   )}
+  {kind === "scissors" && (
+    <>
+      {([["a", -1], ["b", 1]] as const).map(([side, s]) => (
+        <g class={`sblade ${side}`} style={`transform-box:view-box;transform-origin:${cx}px ${f(cy + 0.1 * r)}px`}>
+          <circle class="gring-s" cx={f(cx + s * 0.45 * r)} cy={f(cy - 0.62 * r)} r={f(0.3 * r)} />
+          <path class="gblade" d={`M${p(s * 0.3, -0.36)} L${p(0, 0.1)} L${p(-s * 0.12, 1)}`} />
+        </g>
+      ))}
+      <circle class="gscrew" cx={cx} cy={f(cy + 0.1 * r)} r={f(Math.max(1, 0.08 * r))} />
+    </>
+  )}
   {kind === "coin" && (
     <>
       <circle class:list={["gcoin", { dashed }]} cx={cx} cy={cy} r={f(r * 0.95)} />
@@ -82,6 +95,9 @@ const p = (dx: number, dy: number) => `${f(cx + dx * r)} ${f(cy + dy * r)}`;
   .gbars{fill:none;stroke:var(--pause);stroke-width:2.2;stroke-linecap:round}
   .gold-line{fill:none;stroke:var(--gold-a);stroke-width:1.6;stroke-linecap:round}
   .gstar{fill:var(--gold-a)}
+  .gring-s{fill:none;stroke:var(--fg);stroke-width:1.5}
+  .gblade{fill:none;stroke:var(--fg);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  .gscrew{fill:var(--fg)}
   .gcoin{fill:var(--gold-b);stroke:var(--gold-a);stroke-width:1.4}
   .gcoin-in{fill:none;stroke:var(--gold-a);stroke-width:1}
   .gcoin.dashed{fill:var(--surface);stroke:var(--gap);stroke-dasharray:3 2}

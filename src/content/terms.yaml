@@ -596,13 +596,15 @@
   def: "Cutting part of a hadith. Most allow it only for an expert, who leaves out nothing that the rest depends on."
   section: "§5.33"
   division: al-mardud
+  scene: wording
 - id: riwaya-bil-mana
   translit: al-Riwāya bi-l-maʿnā
   ar: الرِّوَايَةُ بِالْمَعْنَى
   en: Narrating by meaning
-  def: "Passing on a hadith in other words. Most allow it for a scholar who knows how words carry meaning, though the exact wording is always better."
+  def: "Passing on a hadith in other words. Most allow it for a scholar who knows how words carry meaning, though keeping the exact wording is, without doubt, better."
   section: "§5.33"
   division: al-mardud
+  scene: wording
 - id: gharib-al-hadith
   translit: Gharīb al-ḥadīth
   ar: غَرِيبُ الْحَدِيثِ
@@ -610,6 +612,7 @@
   def: "Uncommon words in a hadith, explained in dedicated books; Ibn al-Athīr's al-Nihāya is the easiest to consult."
   section: "§5.34"
   division: al-mardud
+  scene: wording
 - id: jahala
   translit: Jahāla
   ar: جَهَالَةٌ
