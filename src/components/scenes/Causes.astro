@@ -27,7 +27,7 @@ import { FIG, KIND_NAME, RELIABLE, type Kind } from "../svg/figures";
 import { f, titleTrigger } from "../svg/geom";
 import { cap, type DiagramProps } from "../../lib/scene";
 import { stepFill } from "../../lib/staircase";
-import { chipWidth } from "../../lib/kit";
+import { chipWidth, stagger } from "../../lib/kit";
 import { loadContent } from "../../lib/content";
 
 type Props = DiagramProps;
@@ -146,7 +146,7 @@ const rungs = CAUSES.map(([slug, yields], i) => {
     end: munkar ? BRK_X - 8 : R_X1,
     to: `${s.division}/${s.id}#${slug}`,
     text: `${t.translit} · ${en}${yields ? `: ${yields}` : ""}`,
-    delay: i * 80,
+    delay: stagger(i, { step: 0.08 }),
   };
 });
 const M_TOP = rungs[2].top, M_BOT = rungs[4].top + R_H;
@@ -200,7 +200,7 @@ const R_END = rungs[rungs.length - 1].top + R_H;
     <g class="rungs">
       {rungs.map((r) => (
         <>
-          <g class="rung-g" style={`animation-delay:${r.delay}ms`}>
+          <g class="rung-g m-enter" style={`--d:${r.delay}`}>
             <rect class="rung" x={R_X0} y={r.top} width={R_X1 - R_X0} height={R_H} rx="4" style={`fill:${r.fill}`} />
             {/* the book's own count (§5.23–5.38) */}
             <text class="rungno" x={R_X0 + 15} y={r.top + 25}>{r.n}</text>
@@ -245,7 +245,6 @@ const R_END = rungs[rungs.length - 1].top + R_H;
      darker rungs in dark mode, so no halo and a mix of --fg that passes on rung 1 in both themes */
   .rung-g .lbl,.munkar-lbl{stroke:none;fill:var(--on-gold)}
   :global(.xlink:is(:hover,:focus-visible)) :is(.lbl,.munkar-lbl){fill:var(--gold-a)}
-  /* motion: the resting style is the end state; each rung fades in from the top, once */
-  .rung-g{animation:causes-in .2s ease-out both}
-  @keyframes causes-in{from{opacity:0}}
+  /* each rung fades in from the top, once */
+  .rung-g{--dur:.2s}
 </style>

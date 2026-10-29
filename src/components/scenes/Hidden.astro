@@ -115,7 +115,7 @@ const mazidLink = changes && `al-mardud/${changes.id}${changes.captions.some((c)
   <Lifespan x0={P1.shaykh[0]} x1={P1.shaykh[1]} y={B1} name="shaykh" />
   <Lifespan x0={P1.narrator[0]} x1={P1.narrator[1]} y={B2} name="narrator" />
   <g class="knot-g" aria-hidden="true">
-    <path class="knot" pathLength="1" d={`M${knot.mid} ${B1} V${B2}`} />
+    <path class="knot m-draw" pathLength="1" d={`M${knot.mid} ${B1} V${B2}`} />
     <circle class="knot-dot" cx={knot.mid} cy={B1} r="3.4" />
     <circle class="knot-dot" cx={knot.mid} cy={B2} r="3.4" />
   </g>
@@ -200,9 +200,7 @@ const mazidLink = changes && `al-mardud/${changes.id}${changes.captions.some((c)
   .q{fill:var(--gap);font:700 15px var(--f-body);text-anchor:middle;stroke:var(--surface);stroke-width:3px;paint-order:stroke;animation:blink 2.4s ease-in-out infinite}
   /* TermTitle draws the text, so the centring has to reach into it */
   .hidden-scene :global(.rt.mid){text-anchor:middle}
-  .knot{fill:none;stroke:var(--gold-a);stroke-width:2.4;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:0;animation:hidden-knot .6s ease-out .4s both}
+  .knot{fill:none;stroke:var(--gold-a);stroke-width:2.4;stroke-linecap:round;--dur:.6s;--d:.4s}
   .knot-dot{fill:var(--gold-b);stroke:var(--gold-a);stroke-width:1}
-  /* the resting style is drawn; the animation runs from undrawn, once */
-  @keyframes hidden-knot{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
   .dashed :global(rect),.dashed :global(path){stroke-dasharray:4 3}
 </style>

@@ -69,6 +69,7 @@ const groups = divisions
   .def{margin:0 0 8px}
   .meta{margin:0;display:flex;flex-wrap:wrap;gap:4px 14px;font-size:.88rem;color:var(--muted)}
   .sec{font-weight:600}
-  :global(.pulse){animation:gl-pulse 1.4s ease-out 2}
-  @keyframes gl-pulse{0%{box-shadow:0 0 0 0 var(--gold-b);border-color:var(--gold-b)}100%{box-shadow:0 0 0 14px transparent}}
+  /* the ring grows out to its resting style, spread and gone */
+  :global(.pulse){box-shadow:0 0 0 14px transparent;animation:gl-pulse 1.4s ease-out 2}
+  @keyframes gl-pulse{from{box-shadow:0 0 0 0 var(--gold-b);border-color:var(--gold-b)}}
 </style>

@@ -4,6 +4,10 @@
 // round to 2 decimals, so the built SVG doesn't carry float noise (re-exported by components/svg/geom.ts)
 export const f = (n: number) => +n.toFixed(2);
 
+// the --d (animation delay) of the ith of a row of elements that come in one after another (motion.css .m-draw,
+// .m-enter): start seconds, then step seconds apart
+export const stagger = (i: number, { start = 0, step }: { start?: number; step: number }) => `${f(start + i * step)}s`;
+
 // chip text is 11px semibold: about 5.6 units per character, with 8 units of padding each side
 export const CHIP_CHAR_W = 5.6, CHIP_PAD = 16, CHIP_H = 20;
 

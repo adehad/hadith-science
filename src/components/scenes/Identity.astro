@@ -124,13 +124,13 @@ const OTHERS_X = f(books[books.length - 1].after + 8);
     </g>
 
     {/* the ties, behind the names and the figure */}
-    {TIES.map((d) => <path class="tie" d={d} />)}
+    {TIES.map((d) => <path class="tie m-enter" d={d} />)}
     {NAMES.map((n) => <Chip x={n.x} y={n.y} text={n.text} w={n.w} />)}
     <text class="lbl sm" x={NAMES[1].cx} y={SIDE_Y + 26}>after his grandfather</text>
     <text class="lbl sm" x={NAMES[2].cx} y={SIDE_Y + 26}>another name</text>
     <text class="lbl sm" x="215" y={K_Y + 26}>after his son</text>
 
-    <g class="one">
+    <g class="one m-enter">
       <Narrator x={ONE.x} y={ONE.y} k={ONE.k} {...FIG.majhul} label={KIND_NAME.majhul} />
     </g>
 
@@ -180,8 +180,7 @@ const OTHERS_X = f(books[books.length - 1].after + 8);
   /* motion: each resting style is the end state, and each animation runs from its start state. The six faint
      figures rest hidden; they start over their names and slide to the one man, fading as he fades in. */
   .merge{opacity:0;animation:identity-merge 1.6s ease-in-out .8s both}
-  @keyframes identity-merge{from{opacity:.6;transform:translate(var(--dx),var(--dy))}75%{opacity:.6}to{opacity:0;transform:none}}
-  .one{animation:identity-one .5s ease-out 2s both}
-  @keyframes identity-one{from{opacity:0}}
-  .tie{animation:identity-one .5s ease-out 2.3s both}
+  @keyframes identity-merge{from{opacity:.6;transform:translate(var(--dx),var(--dy))}75%{opacity:.6}}
+  .one{--dur:.5s;--d:2s}
+  .tie{--dur:.5s;--d:2.3s}
 </style>

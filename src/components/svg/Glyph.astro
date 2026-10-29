@@ -6,25 +6,26 @@
 // coin: a disc with an inner ring, for the money-changer (phase 3 al-Mardūd design §6); dashed draws a false one.
 // scissors: a pair pointing down, closed, for cutting a text short (al-Mardūd design §8). Each half (handle ring and
 // blade) is a .sblade group pivoting on the screw, so a scene can open and close them with a rotation.
-// The tick is a .tick path and the cross an .xmark path, each with pathLength 1, so a scene can draw them in with a
-// stroke-dash animation.
+// The tick is a .tick path and the cross an .xmark path, each with pathLength 1. With animate, the tick and cross
+// draw in (motion.css .m-draw) and each scissor half comes in (.m-enter, from the --from-r the scene sets on it),
+// timed by the --d and --dur the scene sets on a wrapping group.
 import { f } from "./geom";
 
-interface Props { kind: "memory" | "book" | "check" | "cross" | "lens" | "pause" | "text" | "companion" | "clock" | "coin" | "scissors"; cx: number; cy: number; r?: number; dashed?: boolean }
-const { kind, cx, cy, r = 7, dashed = false } = Astro.props;
+interface Props { kind: "memory" | "book" | "check" | "cross" | "lens" | "pause" | "text" | "companion" | "clock" | "coin" | "scissors"; cx: number; cy: number; r?: number; dashed?: boolean; animate?: boolean }
+const { kind, cx, cy, r = 7, dashed = false, animate = false } = Astro.props;
 const p = (dx: number, dy: number) => `${f(cx + dx * r)} ${f(cy + dy * r)}`;
 ---
 <g class={`glyph-${kind}`} aria-hidden="true">
   {kind === "check" && (
     <>
       <rect class="gbox" x={f(cx - r)} y={f(cy - r)} width={f(2 * r)} height={f(2 * r)} rx={f(r * 0.3)} />
-      <path class="tick" pathLength="1" d={`M${p(-0.55, 0)} L${p(-0.12, 0.45)} L${p(0.6, -0.5)}`} />
+      <path class:list={["tick", { "m-draw": animate }]} pathLength="1" d={`M${p(-0.55, 0)} L${p(-0.12, 0.45)} L${p(0.6, -0.5)}`} />
     </>
   )}
   {kind === "cross" && (
     <>
       <rect class="gbox" x={f(cx - r)} y={f(cy - r)} width={f(2 * r)} height={f(2 * r)} rx={f(r * 0.3)} />
-      <path class="xmark" pathLength="1" d={`M${p(-0.45, -0.45)} L${p(0.45, 0.45)} M${p(0.45, -0.45)} L${p(-0.45, 0.45)}`} />
+      <path class:list={["xmark", { "m-draw": animate }]} pathLength="1" d={`M${p(-0.45, -0.45)} L${p(0.45, 0.45)} M${p(0.45, -0.45)} L${p(-0.45, 0.45)}`} />
     </>
   )}
   {kind === "memory" && (
@@ -67,7 +68,7 @@ const p = (dx: number, dy: number) => `${f(cx + dx * r)} ${f(cy + dy * r)}`;
   {kind === "scissors" && (
     <>
       {([["a", -1], ["b", 1]] as const).map(([side, s]) => (
-        <g class={`sblade ${side}`} style={`transform-box:view-box;transform-origin:${cx}px ${f(cy + 0.1 * r)}px`}>
+        <g class:list={["sblade", side, { "m-enter": animate }]} style={`transform-box:view-box;transform-origin:${cx}px ${f(cy + 0.1 * r)}px`}>
           <circle class="gring-s" cx={f(cx + s * 0.45 * r)} cy={f(cy - 0.62 * r)} r={f(0.3 * r)} />
           <path class="gblade" d={`M${p(s * 0.3, -0.36)} L${p(0, 0.1)} L${p(-s * 0.12, 1)}`} />
         </g>

@@ -140,7 +140,7 @@ const lensStyle = `--x0:${SWEEP.x0 - LENS.x}px;--x1:${SWEEP.x1 - LENS.x}px;--dy:
   <text class="sn" x={STU.shafii} y={Y.s + 28}>al-Shāfiʿī</text>
   {/* what a group thought of his version, struck through once a follow-up turns up */}
   <text class="lbl gap" x={STU.shafii} y={Y.s + 46}>alone?</text>
-  <path class="strike" pathLength="1" style={`--d:${qanabiAt + 0.1}s`} d={`M${STU.shafii - 22} ${Y.s + 41} L${STU.shafii + 22} ${Y.s + 41}`} />
+  <path class="strike m-draw" pathLength="1" style={`--d:${qanabiAt + 0.1}s`} d={`M${STU.shafii - 22} ${Y.s + 41} L${STU.shafii + 22} ${Y.s + 41}`} />
   {(() => { const c = chip("complete 30", STU.shafii); return <g class="wording"><Chip x={c.x} y={WORD_Y} text={c.text} w={c.w} /></g>; })()}
   {(() => { const c = chip("al-Umm", STU.shafii); return <Chip x={c.x} y={BOOK_Y} text={c.text} w={c.w} />; })()}
 
@@ -154,7 +154,7 @@ const lensStyle = `--x0:${SWEEP.x0 - LENS.x}px;--x1:${SWEEP.x1 - LENS.x}px;--dy:
   {(() => { const c = chip("count for it", STU.others); return <g class="wording"><Chip x={c.x} y={WORD_Y} text={c.text} w={c.w} /></g>; })()}
 
   {/* al-Qaʿnabī: a full follow-up, with al-Shāfiʿī at Mālik */}
-  <g class="route" style={`--d:${delay(STU.qanabi)}`}>
+  <g class="route m-enter" style={`--d:${delay(STU.qanabi)}`}>
     <Arrow x1={MALIK.x + 5} y1={MALIK.y + HALF + 2} x2={STU.qanabi - 6} y2={Y.s - HALF - 3} bend={6} />
     <Narrator x={STU.qanabi} y={Y.s} k={K} {...FIG.later} {...RELIABLE} />
     <text class="sn" x={STU.qanabi} y={Y.s + 28}>al-Qaʿnabī</text>
@@ -167,7 +167,7 @@ const lensStyle = `--x0:${SWEEP.x0 - LENS.x}px;--x1:${SWEEP.x1 - LENS.x}px;--dy:
     const [a, b] = r.figs;
     const w = chip(r.word, r.x), k = chip(r.book, r.x);
     return (
-      <g class="route" style={`--d:${delay(r.x)}`}>
+      <g class="route m-enter" style={`--d:${delay(r.x)}`}>
         {r.arc
           ? <path class="flow" d={r.arc} marker-end="url(#ah)" />
           : <Arrow x1={r.from.x} y1={r.from.y} x2={a.x - 6} y2={a.y - HALF - 3} bend={r.bend} />}
@@ -192,7 +192,7 @@ const lensStyle = `--x0:${SWEEP.x0 - LENS.x}px;--x1:${SWEEP.x1 - LENS.x}px;--dy:
   })}
 
   {/* ---- the brackets: where each new route joins the old one ---- */}
-  <g class="brk">
+  <g class="brk m-enter">
     {brackets.map((b) => (
       <>
         <Bracket x0={b.x0} x1={b.x1} y={b.by} />
@@ -209,19 +209,17 @@ const lensStyle = `--x0:${SWEEP.x0 - LENS.x}px;--x1:${SWEEP.x1 - LENS.x}px;--dy:
 <style>
   .wording :global(.chip text){font-style:italic}
   /* butt caps, so the strike shows nothing before it starts drawing */
-  .strike{fill:none;stroke:var(--gap);stroke-width:1.8;stroke-linecap:butt;stroke-dasharray:1;animation:support-draw .35s ease-out both;animation-delay:var(--d)}
+  .strike{fill:none;stroke:var(--gap);stroke-width:1.8;stroke-linecap:butt;--dur:.35s}
   .faint{opacity:.55}
   /* the sweep, about 6s, run once; each animation runs from its start state to the resting (end) state */
-  .route{animation:support-light .6s ease-out both;animation-delay:var(--d)}
+  .route{--from-o:.15;--dur:.6s}
   /* the brackets start half in, not faint, so a visitor landing on ?mutabi can still see the bracket */
-  .brk{animation:support-brk .6s ease-out 5s both}
-  .lens{transform-box:fill-box;transform-origin:center;animation:support-sweep 6s both}
-  @keyframes support-light{from{opacity:.15}}
-  @keyframes support-brk{from{opacity:.5}}
-  @keyframes support-draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+  .brk{--from-o:.5;--dur:.6s;--d:5s}
+  /* the lens waits at the first book (0.8s), sweeps the row (4s), then settles on the heading (0.72s); it fills
+     backwards only, so once done it drops the animation's identity matrix and rests at none */
+  .lens{transform-box:fill-box;transform-origin:center;animation:support-sweep 5.52s backwards}
   @keyframes support-sweep{
-    0%,13.33%{transform:translate(var(--x0),var(--dy)) scale(1.8);animation-timing-function:linear}
-    80%{transform:translate(var(--x1),var(--dy)) scale(1.8);animation-timing-function:ease-in-out}
-    92%,100%{transform:none}
+    0%,14.493%{transform:translate(var(--x0),var(--dy)) scale(1.8);animation-timing-function:linear}
+    86.957%{transform:translate(var(--x1),var(--dy)) scale(1.8);animation-timing-function:ease-in-out}
   }
 </style>

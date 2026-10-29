@@ -144,7 +144,7 @@ const EXIT_X2 = CARD.x0 - 3;
   <text class="lbl" x="290" y={FLOW_Y - 8}>āḥād</text>
   <g aria-hidden="true">
     {EXITS.map((e) => (
-      <path class="exit" pathLength="1" style={`--d:${e.d}s`} d={`M${e.x1} ${e.y1} L${EXIT_X2} ${e.y2}`} marker-end="url(#ah)" />
+      <path class="exit m-draw m-marked" pathLength="1" style={`--d:${e.d}s`} d={`M${e.x1} ${e.y1} L${EXIT_X2} ${e.y2}`} marker-end="url(#ah)" />
     ))}
     <Decision cx={Q.cx} cy={Q.cy} w={Q.w} h={Q.h} lines={["narrator's", "truthfulness", "proven?"]} />
     {/* the lens makes one pass over the question, then rests above it */}
@@ -164,7 +164,7 @@ const EXIT_X2 = CARD.x0 - 3;
     <text class="rp" x="728" y={MUTAWATIR_Y + 4} aria-hidden="true">→</text>
   </XLink>
 
-  <g class="out">
+  <g class="out m-enter">
     <rect class={`card ${OUT.maqbul.kind}`} x={CARD.x0} y={OUT.maqbul.y0} width={CARD.x1 - CARD.x0} height={OUT.maqbul.y1 - OUT.maqbul.y0} rx="8" />
     <Glyph kind="check" cx={GLYPH_X} cy={OUT.maqbul.title - 5} r={9} />
     <TermTitle c={maqbul.c} x={maqbul.cx} y={maqbul.y} cls="subt" hit={maqbul.hit} info={maqbul.info} ar={{ x: 724, y: maqbul.y, size: "sm" }} />
@@ -173,14 +173,14 @@ const EXIT_X2 = CARD.x0 - 3;
     <text class="lbl" x="650" y="198">the majority: it must be acted on</text>
   </g>
 
-  <g class="out">
+  <g class="out m-enter">
     <rect class={`card ${OUT.held.kind}`} x={CARD.x0} y={OUT.held.y0} width={CARD.x1 - CARD.x0} height={OUT.held.y1 - OUT.held.y0} rx="8" />
     <Glyph kind="pause" cx={GLYPH_X} cy={OUT.held.title - 5} r={9} />
     <text class="subt plain" x={TITLE_CX} y={OUT.held.title}>Held back</text>
     <text class="lbl" x="650" y="269">neither is proven</text>
   </g>
 
-  <g class="out">
+  <g class="out m-enter">
     <rect class={`card ${OUT.mardud.kind}`} x={CARD.x0} y={OUT.mardud.y0} width={CARD.x1 - CARD.x0} height={OUT.mardud.y1 - OUT.mardud.y0} rx="8" />
     <Glyph kind="cross" cx={GLYPH_X} cy={OUT.mardud.title - 5} r={9} />
     <TermTitle c={mardud.c} x={mardud.cx} y={mardud.y} cls="subt" hit={mardud.hit} info={mardud.info} ar={{ x: 724, y: mardud.y, size: "sm" }} />
@@ -201,7 +201,7 @@ const EXIT_X2 = CARD.x0 - 3;
   .subt.plain{fill:var(--muted)}
   .sorting :global(.pill-link:is(:hover,:focus-visible) rect){stroke-width:2.5}
   /* the five lines' dashes are staggered, so they read as many routes rather than a ladder */
-  .bundle{stroke-width:1.2;stroke-dashoffset:var(--o);animation-name:sorting-flow}
+  .bundle{stroke-width:1.2;stroke-dashoffset:var(--o);animation:sorting-flow 1.1s linear infinite}
   @keyframes sorting-flow{from{stroke-dashoffset:var(--o)}to{stroke-dashoffset:calc(var(--o) - 12px)}}
   .leader{fill:none;stroke:var(--line);stroke-width:1.3;stroke-dasharray:.1 4;stroke-linecap:round}
   .inset{fill:none;stroke:var(--rule);stroke-width:1.2}
@@ -211,11 +211,10 @@ const EXIT_X2 = CARD.x0 - 3;
   .iname{fill:var(--fg);font:italic 600 12px var(--f-body)}
   .card{fill:var(--surface);stroke:var(--rule);stroke-width:1.2}
   .treated{fill:none;stroke:var(--pause);stroke-width:1.6;stroke-dasharray:4 3}
-  /* each resting style is the end state; the animations run from the start state, once */
-  .exit{fill:none;stroke:var(--line);stroke-width:2;stroke-dasharray:1;stroke-dashoffset:0;animation:sorting-draw .4s ease-out both;animation-delay:var(--d)}
+  /* each resting style is the end state; the animations run from the start state, once: the lens passes over the
+     question and back, the exits draw in one by one, then the outcomes brighten */
+  .exit{fill:none;stroke:var(--line);stroke-width:2}
   .lens-pass{animation:sorting-pass 1.6s ease-in-out .6s both}
-  .out{animation:sorting-up .5s ease-out 3.2s both}
-  @keyframes sorting-draw{0%{stroke-dashoffset:1;opacity:0}10%{opacity:1}100%{stroke-dashoffset:0;opacity:1}}
   @keyframes sorting-pass{25%{transform:translateX(-20px)}75%{transform:translateX(20px)}}
-  @keyframes sorting-up{from{opacity:.5}}
+  .out{--from-o:.5;--dur:.5s;--d:3.2s}
 </style>

@@ -160,7 +160,7 @@ const startW = chipWidth(START);
   ))}
   <Matn x={540} y={258} w={104} h={58} lines={["visiting graves", "forbidden"]} inactive />
   {/* the earlier ruling is lifted: a strike draws across it once */}
-  <path class="strike" pathLength="1" d="M550 306 L634 270" />
+  <path class="strike m-draw" pathLength="1" d="M550 306 L634 270" />
   <Matn x={656} y={258} w={108} h={58} lines={["“Visit them; for", "indeed it reminds", "of the hereafter.”"]} />
   <text class="lbl" x="650" y="392">Burayda's report, in Muslim</text>
   <text class="lbl" x="650" y="413">known from</text>
@@ -206,7 +206,6 @@ const startW = chipWidth(START);
   .stem{stroke:var(--muted);stroke-width:1.2}
   .pin{fill:var(--surface);stroke:var(--fg);stroke-width:1.8}
   .unk{fill:var(--pause-ink);font:700 22px var(--f-display);text-anchor:middle;animation:blink 2.4s ease-in-out infinite}
-  /* the strike's resting state is drawn; the animation runs from undrawn, once */
-  .strike{fill:none;stroke:var(--gap);stroke-width:2.2;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:0;animation:acted-draw .8s ease-out 1s both}
-  @keyframes acted-draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+  /* drawn in once, after the scale has started to tip */
+  .strike{fill:none;stroke:var(--gap);stroke-width:2.2;stroke-linecap:round;--dur:.8s;--d:1s}
 </style>

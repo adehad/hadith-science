@@ -120,7 +120,7 @@ test("with motion, the acted-on scene's strike draws across the abrogated ruling
     name: (a as CSSAnimation).animationName,
     delay: a.effect?.getTiming().delay,
   })));
-  expect(anims).toContainEqual({ name: "acted-draw", delay: 1000 });
+  expect(anims).toContainEqual({ name: "draw", delay: 1000 });
   const offset = () => strike.evaluate((e) => Number(getComputedStyle(e).strokeDashoffset.replace("px", "")));
   await expect.poll(offset, { timeout: 5000 }).toBe(0);
 });
@@ -140,7 +140,7 @@ test("with motion, the sorting scene's exits draw in one after another, after th
   await page.goto("/adad-al-turuq/sorting/");
   expect(await page.locator("svg .lens-pass").evaluate((e) => e.getAnimations().map((a) => [(a as CSSAnimation).animationName, a.effect?.getTiming().delay]))).toEqual([["sorting-pass", 600]]);
   const delays = await page.locator("svg .exit").evaluateAll((els) => els.map((e) => e.getAnimations().map((a) => [(a as CSSAnimation).animationName, a.effect?.getTiming().delay])));
-  expect(delays).toEqual([[["sorting-draw", 2200]], [["sorting-draw", 2500]], [["sorting-draw", 2800]]]);
+  expect(delays).toEqual([2200, 2500, 2800].map((d) => [["draw", d], ["enter", d]]));
   const last = () => page.locator("svg .exit").last().evaluate((e) => Number(getComputedStyle(e).strokeDashoffset.replace("px", "")));
   await expect.poll(last, { timeout: 6000 }).toBe(0);
   await expect.poll(() => page.locator("svg .out").last().evaluate((e) => getComputedStyle(e).opacity), { timeout: 6000 }).toBe("1");
@@ -161,8 +161,8 @@ test("with motion, the knowledge scene's lifts draw in one after another, then t
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await page.goto("/adad-al-turuq/knowledge/");
   const delays = await page.locator("svg .lift.draw").evaluateAll((els) => els.map((e) => e.getAnimations().map((a) => [(a as CSSAnimation).animationName, a.effect?.getTiming().delay])));
-  expect(delays).toEqual([[["knowledge-draw", 800]], [["knowledge-draw", 1200]], [["knowledge-draw", 1600]]]);
-  expect(await page.locator("svg .all-three").evaluate((e) => e.getAnimations().map((a) => [(a as CSSAnimation).animationName, a.effect?.getTiming().delay]))).toEqual([["knowledge-bright", 2100]]);
+  expect(delays).toEqual([800, 1200, 1600].map((d) => [["draw", d], ["enter", d]]));
+  expect(await page.locator("svg .all-three").evaluate((e) => e.getAnimations().map((a) => [(a as CSSAnimation).animationName, a.effect?.getTiming().delay]))).toEqual([["enter", 2100]]);
   const last = () => page.locator("svg .lift.draw").last().evaluate((e) => Number(getComputedStyle(e).strokeDashoffset.replace("px", "")));
   await expect.poll(last, { timeout: 6000 }).toBe(0);
   await expect.poll(() => page.locator("svg .all-three").evaluate((e) => getComputedStyle(e).opacity), { timeout: 6000 }).toBe("1");
@@ -182,7 +182,7 @@ test("with motion, the lone scene's halos fade in one after another, panel by pa
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await page.goto("/adad-al-turuq/lone/");
   const delays = await page.locator("svg .alone").evaluateAll((els) => els.map((e) => e.getAnimations().map((a) => [(a as CSSAnimation).animationName, a.effect?.getTiming().delay])));
-  expect(delays).toEqual([600, 800, 1000, 1200, 1400, 1600, 1800].map((d) => [["lone-halo", d]]));
+  expect(delays).toEqual([600, 800, 1000, 1200, 1400, 1600, 1800].map((d) => [["enter", d]]));
   await expect.poll(() => page.locator("svg .alone").last().evaluate((e) => getComputedStyle(e).opacity), { timeout: 6000 }).toBe("1");
 });
 
@@ -201,7 +201,7 @@ test("with motion, the hidden scene's met knot draws in once after a delay", asy
     delay: a.effect?.getTiming().delay,
     iterations: a.effect?.getTiming().iterations,
   })));
-  expect(anims).toContainEqual({ name: "hidden-knot", delay: 400, iterations: 1 });
+  expect(anims).toContainEqual({ name: "draw", delay: 400, iterations: 1 });
   await expect.poll(() => knot.evaluate((e) => Number(getComputedStyle(e).strokeDashoffset.replace("px", ""))), { timeout: 5000 }).toBe(0);
 });
 
@@ -220,9 +220,9 @@ test("with motion, the lying scene's clue cards fade in one after another, then 
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await page.goto("/al-mardud/lying/");
   const timing = (sel: string) => page.locator(sel).evaluateAll((els) => els.map((e) => e.getAnimations().map((a) => [(a as CSSAnimation).animationName, a.effect?.getTiming().delay, a.effect?.getTiming().iterations])));
-  expect(await timing("svg .clue")).toEqual([300, 600, 900].map((d) => [["lying-in", d, 1]]));
-  expect(await timing("svg .xdraw .xmark")).toEqual([1300, 1500, 1700, 1900].map((d) => [["lying-draw", d, 1]]));
-  expect(await timing("svg .feed")).toEqual(Array(3).fill([["lying-draw", 400, 1]]));
+  expect(await timing("svg .clue")).toEqual([300, 600, 900].map((d) => [["enter", d, 1]]));
+  expect(await timing("svg .xdraw .xmark")).toEqual([1300, 1500, 1700, 1900].map((d) => [["draw", d, 1]]));
+  expect(await timing("svg .feed")).toEqual(Array(3).fill([["draw", 400, 1]]));
   // Ghiyāth's added words blink, as Matn's .added does
   expect(await timing("svg.lying .added")).toEqual([[["blink", 0, Infinity]]]);
   await expect.poll(() => page.locator("svg .xdraw .xmark").last().evaluate((e) => Number(getComputedStyle(e).strokeDashoffset.replace("px", ""))), { timeout: 5000 }).toBe(0);
@@ -253,11 +253,11 @@ test("with motion, the slips scene's lens sweeps the routes in, then the ring cl
     const s = getComputedStyle(e);
     return [s.animationName, s.animationDelay, s.animationIterationCount];
   }));
-  expect(await declared("svg .lens")).toEqual([["slips-sweep", "0.6s", "1"]]);
+  expect(await declared("svg .lens")).toEqual([["enter", "0.6s", "1"]]);
   // each route brightens as the lens reaches it (lib/kit.ts sweepAt), and the ring closes after the sweep
-  expect(await timing("svg .route")).toEqual([1150, 1960, 2780].map((d) => [["slips-light", d, 1]]));
-  expect(await declared("svg .lost")).toEqual([["slips-ring", "3.1s", "1"]]);
-  expect(await timing("svg .xdraw .xmark")).toEqual([400, 550, 700, 850, 1000, 1150].map((d) => [["slips-draw", d, 1]]));
+  expect(await timing("svg .route")).toEqual([1150, 1960, 2780].map((d) => [["enter", d, 1]]));
+  expect(await declared("svg .lost")).toEqual([["enter", "3.1s", "1"]]);
+  expect(await timing("svg .xdraw .xmark")).toEqual([400, 550, 700, 850, 1000, 1150].map((d) => [["draw", d, 1]]));
   expect(await declared("svg .event")).toEqual([["slips-pulse", "0.6s", "1"]]);
   // the end state: the lens at rest and the ring in place
   await expect.poll(() => page.locator("svg .lens").evaluate((e) => getComputedStyle(e).transform), { timeout: 8000 }).toBe("none");
@@ -279,7 +279,7 @@ test("with motion, the changes scene's inserts fade in one after another, the na
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await page.goto("/al-mardud/changes/");
   const timing = (sel: string) => page.locator(sel).evaluateAll((els) => els.map((e) => e.getAnimations().map((a) => [(a as CSSAnimation).animationName, a.effect?.getTiming().delay, a.effect?.getTiming().iterations])));
-  expect(await timing("svg .ins")).toEqual([300, 600, 900, 1200, 1500].map((d) => [["changes-in", d, 1]]));
+  expect(await timing("svg .ins")).toEqual([300, 600, 900, 1200, 1500].map((d) => [["enter", d, 1]]));
   expect(await timing("svg .swap-a")).toEqual([[["changes-swap-a", 600, 1]]]);
   expect(await timing("svg .swap-b")).toEqual([[["changes-swap-b", 600, 1]]]);
   expect(await timing("svg .swap-down")).toEqual([[["changes-swap-down", 600, 1]]]);
@@ -308,12 +308,12 @@ test("with motion, the wording scene's scissors close once at each cut, the piec
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await page.goto("/al-mardud/wording/");
   const timing = (sel: string) => page.locator(sel).evaluateAll((els) => els.map((e) => e.getAnimations().map((a) => [(a as CSSAnimation).animationName, a.effect?.getTiming().delay, a.effect?.getTiming().iterations, a.effect?.getTiming().fill])));
-  expect(await timing("svg .sblade.a")).toEqual([600, 1400].map((d) => [["wording-close-a", d, 1, "both"]]));
-  expect(await timing("svg .sblade.b")).toEqual([600, 1400].map((d) => [["wording-close-b", d, 1, "both"]]));
-  expect(await timing("svg .apart")).toEqual([1000, 1000, 1800, 1800].map((d) => [["wording-apart", d, 1, "both"]]));
+  expect(await timing("svg .sblade.a")).toEqual([600, 1400].map((d) => [["enter", d, 1, "both"]]));
+  expect(await timing("svg .sblade.b")).toEqual([600, 1400].map((d) => [["enter", d, 1, "both"]]));
+  expect(await timing("svg .apart")).toEqual([1000, 1000, 1800, 1800].map((d) => [["enter", d, 1, "both"]]));
   expect(await timing("svg .through")).toEqual([[["wording-through", 400, 1, "both"]]]);
-  expect(await timing("svg .oldw")).toEqual([[["wording-old", 400, 1, "both"]]]);
-  expect(await timing("svg .neww")).toEqual([[["wording-new", 400, 1, "both"]]]);
+  expect(await timing("svg .oldw")).toEqual([[["enter", 880, 1, "both"]]]);
+  expect(await timing("svg .neww")).toEqual([[["enter", 1000, 1, "both"]]]);
   // the view groups inside it carry no animation of their own, so showing one never replays the fade
   expect(await timing("svg .nw")).toEqual([[], []]);
   expect(await timing("svg .star")).toEqual([[["wording-star", 2000, 1, "both"]]]);
@@ -371,8 +371,8 @@ test("with motion, the identity scene's six figures slide together once and fade
   await page.goto("/al-mardud/identity/");
   const timing = (sel: string) => page.locator(sel).evaluateAll((els) => els.map((e) => e.getAnimations().map((a) => [(a as CSSAnimation).animationName, a.effect?.getTiming().delay, a.effect?.getTiming().iterations, a.effect?.getTiming().fill])));
   expect(await timing("svg .merge")).toEqual(Array(6).fill([["identity-merge", 800, 1, "both"]]));
-  expect(await timing("svg .one")).toEqual([[["identity-one", 2000, 1, "both"]]]);
-  expect(await timing("svg .tie")).toEqual(Array(6).fill([["identity-one", 2300, 1, "both"]]));
+  expect(await timing("svg .one")).toEqual([[["enter", 2000, 1, "both"]]]);
+  expect(await timing("svg .tie")).toEqual(Array(6).fill([["enter", 2300, 1, "both"]]));
   // each faint figure starts away from the one man: paused at its first frame, its transform is an offset
   const start = await page.locator("svg .merge").first().evaluate((e) => {
     const a = e.getAnimations()[0];
@@ -426,7 +426,7 @@ test("with motion, the causes scene's rungs fade in from the top once, one after
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await page.goto("/al-mardud/causes/");
   const timing = (sel: string) => page.locator(sel).evaluateAll((els) => els.map((e) => e.getAnimations().map((a) => [(a as CSSAnimation).animationName, a.effect?.getTiming().delay, a.effect?.getTiming().iterations, a.effect?.getTiming().fill])));
-  expect(await timing("svg .rung-g")).toEqual([0, 80, 160, 240, 320, 400, 480, 560, 640, 720].map((d) => [["causes-in", d, 1, "both"]]));
+  expect(await timing("svg .rung-g")).toEqual([0, 80, 160, 240, 320, 400, 480, 560, 640, 720].map((d) => [["enter", d, 1, "both"]]));
   expect(await timing("#cell-omission path.flow, #cell-omission path.skip")).toEqual(Array(12).fill([["flow", 0, Infinity, "none"]]));
   // each rung starts hidden: the last, paused at its first frame, is transparent
   const start = await page.locator("svg .rung-g").last().evaluate((e) => {

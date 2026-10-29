@@ -135,7 +135,7 @@ const star = Array.from({ length: 10 }, (_, i) => {
   <TermTitle c={ikhtisar.c} x={ikhtisar.cx} y={TITLE_Y} cls="subt" hit={ikhtisar.hit} info={ikhtisar.info} />
   <text class="lbl" x="130" y={SUB_Y}>cutting part of it</text>
   {[SOURCE, ...CUTS.flatMap((c) => c.pieces)].map((p) => (
-    <g class:list={[{ apart: p.dx !== 0 }]} style={p.dx ? `--from:${-p.dx}px;--d:${p.y === EXP_Y ? 1 : 1.8}s` : undefined}>
+    <g class:list={[{ "apart m-enter": p.dx !== 0 }]} style={p.dx ? `--from-xy:${-p.dx}px 0;--d:${p.y === EXP_Y ? 1 : 1.8}s` : undefined}>
       <Matn x={p.x} y={p.y} w={p.w} h={SEG_H} inactive={p.inactive} />
       {p.seams.map((x) => <line class="seam" x1={x} x2={x} y1={p.y + 3} y2={p.y + SEG_H - 3} />)}
       {p.rules.map((r) => (p.except && r.x0 > p.except.x - 30
@@ -146,7 +146,7 @@ const star = Array.from({ length: 10 }, (_, i) => {
   <text class="layer" x="20" y="132">An expert</text>
   <text class="layer" x="20" y="234">One who does not know</text>
   {CUTS.map((c) => (
-    <g class="cut" style={`--d:${c.t}s`}><Glyph kind="scissors" cx={c.at} cy={c.y - SCI_R - 3} r={SCI_R} /></g>
+    <g class="cut" style={`--d:${c.t}s`}><Glyph kind="scissors" cx={c.at} cy={c.y - SCI_R - 3} r={SCI_R} animate /></g>
   ))}
   <Glyph kind="check" cx={MARK_X} cy={EXP_Y + SEG_H / 2} r={8} />
   <text class="lbl sm" x="124" y="198">two whole reports, or the part</text>
@@ -181,12 +181,12 @@ const star = Array.from({ length: 10 }, (_, i) => {
     <Matn x={IN.x} y={OUT_Y} w={IN.w} h={IN.h} />
     <rect class="band" x={IN.x + 12} y={OUT_Y + BAND_DY} width={IN.w - 24} height={BAND_H} rx="2" />
     {/* the old words, seen only while the card passes the gate */}
-    <g class="oldw" aria-hidden="true">
+    <g class="oldw m-enter" aria-hidden="true">
       {IN_WORDS.map((b) => <rect class="word" x={b.x} y={OUT_Y + WORD_DY} width={b.w} height={WORD_H} rx="2" />)}
     </g>
     {/* the new words fade in once, on this wrapper: a view group shown later must not replay it (.off is display:none,
         and showing an element restarts its animation), so the view groups themselves carry none */}
-    <g class="neww">
+    <g class="neww m-enter">
       <g class="nw" data-view-show="most knows-wording forgot">
         {ALL_NEW.map((b) => <rect class:list={["word", { changed: b.changed }]} x={b.x} y={OUT_Y + WORD_DY} width={b.w} height={WORD_H} rx="2" />)}
       </g>
@@ -265,19 +265,16 @@ const star = Array.from({ length: 10 }, (_, i) => {
 
   /* motion: each resting style is the end state, and each animation runs from its start state, once */
   /* the scissors close at each cut; the pieces then move apart */
-  .cut :global(.sblade.a){animation:wording-close-a .4s ease-in both;animation-delay:var(--d)}
-  .cut :global(.sblade.b){animation:wording-close-b .4s ease-in both;animation-delay:var(--d)}
-  @keyframes wording-close-a{from{transform:rotate(-16deg)}}
-  @keyframes wording-close-b{from{transform:rotate(16deg)}}
-  .apart{animation:wording-apart .4s ease-out both;animation-delay:var(--d)}
-  @keyframes wording-apart{from{transform:translateX(var(--from))}}
+  .cut{--ease:ease-in}
+  .cut :global(.sblade){--from-o:1}
+  .cut :global(.sblade.a){--from-r:-16deg}
+  .cut :global(.sblade.b){--from-r:16deg}
+  .apart{--from-o:1}
   /* the output card slides down through the gate; its old words give way to the new as it passes */
   .through{animation:wording-through 1.2s ease-in-out .4s both}
   @keyframes wording-through{from{transform:translateY(var(--slide));opacity:0}15%{opacity:1}}
-  .oldw{opacity:0;animation:wording-old 1.2s linear .4s both}
-  @keyframes wording-old{0%,40%{opacity:1}60%,100%{opacity:0}}
-  .neww{animation:wording-new 1.2s linear .4s both}
-  @keyframes wording-new{0%,50%{opacity:0}70%,100%{opacity:1}}
+  .oldw{opacity:0;--from-o:1;--d:.88s;--dur:.24s;--ease:linear}
+  .neww{--d:1s;--dur:.24s;--ease:linear}
   /* the star on al-Nihāya brightens once */
   .star{transform-box:fill-box;transform-origin:center;animation:wording-star .8s ease-out 2s both}
   @keyframes wording-star{from{opacity:.25;transform:scale(.5)}60%{transform:scale(1.4)}}
