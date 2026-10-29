@@ -37,7 +37,7 @@ async function expectLanded(page: Page, slug: string, scene: string) {
 
 test("every scene term is counted", () => {
   expect(built.length).toBeGreaterThanOrEqual(30);
-  expect(panelScenes.size).toBe(11);
+  expect(panelScenes.size).toBe(12);
 });
 
 test.describe("landing, desktop", () => {
@@ -345,14 +345,17 @@ test("Key and Labels modes swap the legend for labels, and the choice survives a
   await expectNoAxeViolations(page);
 });
 
-test("scene prev/next: breaks leads on to hidden, and hidden to unknown", async ({ page }) => {
+test("scene prev/next: breaks leads on to hidden, hidden to lying, and lying to unknown", async ({ page }) => {
   await page.goto("/al-mardud/breaks/");
   await expect(page.locator('.pn a[rel="next"]')).toHaveAttribute("href", /\/al-mardud\/hidden\/$/);
   await page.goto("/al-mardud/hidden/");
   await expect(page.locator('.pn a[rel="prev"]')).toHaveAttribute("href", /\/al-mardud\/breaks\/$/);
+  await expect(page.locator('.pn a[rel="next"]')).toHaveAttribute("href", /\/al-mardud\/lying\/$/);
+  await page.goto("/al-mardud/lying/");
+  await expect(page.locator('.pn a[rel="prev"]')).toHaveAttribute("href", /\/al-mardud\/hidden\/$/);
   await expect(page.locator('.pn a[rel="next"]')).toHaveAttribute("href", /\/al-mardud\/unknown\/$/);
   await page.goto("/al-mardud/unknown/");
-  await expect(page.locator('.pn a[rel="prev"]')).toHaveAttribute("href", /\/al-mardud\/hidden\/$/);
+  await expect(page.locator('.pn a[rel="prev"]')).toHaveAttribute("href", /\/al-mardud\/lying\/$/);
 });
 
 test("scene prev/next: the report scene opens its division and leads on to routes", async ({ page }) => {
@@ -409,6 +412,18 @@ test("lone: a legend and the Key/Labels switch, and every term visible", async (
   await expect(page.locator(".legend")).toHaveCount(1);
   await expect(page.locator(".viewtoggle")).toHaveCount(1);
   for (const slug of ["gharib-mutlaq", "fard", "gharib-nisbi"]) await expect(trigger(page, slug)).toBeVisible();
+  await expectNoAxeViolations(page);
+});
+
+test("lying: the legend names the liar and the suspect, and every term is visible", async ({ page }) => {
+  await page.goto("/al-mardud/lying/");
+  await expect(page.locator(".legend")).toContainText("Liar (kadhdhāb)");
+  await expect(page.locator(".legend")).toContainText("Suspected of lying");
+  await expect(page.locator(".viewtoggle")).toHaveCount(1);
+  await expect(page.locator(".views")).toHaveCount(0);
+  for (const slug of ["kadhib", "tuhma-bil-kadhib", "matruk", "mawdu"]) await expect(trigger(page, slug)).toBeVisible();
+  // the only report words are the translation's English fragments, the added words marked
+  await expect(page.locator("svg .matn .added")).toHaveText("“and pigeon racing”");
   await expectNoAxeViolations(page);
 });
 

@@ -3,7 +3,8 @@
 // as InfoIcon (WCAG 2.5.3). memory: a head with a mark inside it; book: an open book; check: a tick in a box; lens: a magnifying glass, for searching;
 // pause: two bars in a ring; text: a page of lines; companion: a bust with a star, in the Companions' gold; clock: a
 // face with two hands, for dates; cross: a drawn ✕ in a box, for rejected or not reached, the same stroke as check.
-// The tick is a .tick path, so a scene can draw it in with a stroke-dash animation.
+// The tick is a .tick path and the cross an .xmark path, each with pathLength 1, so a scene can draw them in with a
+// stroke-dash animation.
 import { f } from "./geom";
 
 interface Props { kind: "memory" | "book" | "check" | "cross" | "lens" | "pause" | "text" | "companion" | "clock"; cx: number; cy: number; r?: number }
@@ -20,7 +21,7 @@ const p = (dx: number, dy: number) => `${f(cx + dx * r)} ${f(cy + dy * r)}`;
   {kind === "cross" && (
     <>
       <rect class="gbox" x={f(cx - r)} y={f(cy - r)} width={f(2 * r)} height={f(2 * r)} rx={f(r * 0.3)} />
-      <path class="xmark" d={`M${p(-0.45, -0.45)} L${p(0.45, 0.45)} M${p(0.45, -0.45)} L${p(-0.45, 0.45)}`} />
+      <path class="xmark" pathLength="1" d={`M${p(-0.45, -0.45)} L${p(0.45, 0.45)} M${p(0.45, -0.45)} L${p(-0.45, 0.45)}`} />
     </>
   )}
   {kind === "memory" && (

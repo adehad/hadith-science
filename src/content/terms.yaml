@@ -453,6 +453,7 @@
   def: "The gravest ground of criticism: the narrator deliberately attributed to the Prophet ﷺ what he did not say."
   section: "§5.23"
   division: al-mardud
+  scene: lying
 - id: tuhma-bil-kadhib
   translit: Tuhma bi-l-kadhib
   ar: تُهْمَةٌ بِالْكَذِبِ
@@ -460,6 +461,7 @@
   def: "Only he carries a report that clashes with known principles, or he lies in everyday speech though no lie in hadith is proven."
   section: "§5.23"
   division: al-mardud
+  scene: lying
 - id: fuhsh-al-ghalat
   translit: Fuḥsh al-ghalaṭ
   ar: فُحْشُ الْغَلَطِ
@@ -502,6 +504,7 @@
   def: "A report from a narrator who lied about the Prophet ﷺ. Judged on strong evidence, such as a confession or a text against the Qurʾan."
   section: "§5.24"
   division: al-mardud
+  scene: lying
 - id: matruk
   translit: Matrūk
   ar: مَتْرُوكٌ
@@ -509,6 +512,7 @@
   def: "A report whose narrator is accused of lying."
   section: "§5.25"
   division: al-mardud
+  scene: lying
 - id: muallal
   translit: Muʿallal
   ar: مُعَلَّلٌ

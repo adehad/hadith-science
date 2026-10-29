@@ -203,3 +203,26 @@ test("with motion, the hidden scene's met knot draws in once after a delay", asy
   expect(anims).toContainEqual({ name: "hidden-knot", delay: 400, iterations: 1 });
   await expect.poll(() => knot.evaluate((e) => Number(getComputedStyle(e).strokeDashoffset.replace("px", ""))), { timeout: 5000 }).toBe(0);
 });
+
+test("reduced motion: the lying scene shows its clue cards, with the crosses and source lines drawn", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/al-mardud/lying/");
+  const offset = (sel: string) => page.locator(sel).evaluateAll((els) => els.map((e) => Number(getComputedStyle(e).strokeDashoffset.replace("px", ""))));
+  expect(await page.locator("svg .clue").evaluateAll((els) => els.map((e) => getComputedStyle(e).opacity))).toEqual(["1", "1", "1"]);
+  expect(await offset("svg .xdraw .xmark")).toEqual([0, 0, 0, 0]);
+  expect(await offset("svg .feed")).toEqual([0, 0, 0]);
+  // Ghiyāth's added words rest still
+  expect(await page.locator("svg.lying .added").evaluate((e) => e.getAnimations().length)).toBe(0);
+});
+
+test("with motion, the lying scene's clue cards fade in one after another, then the crosses draw in", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.goto("/al-mardud/lying/");
+  const timing = (sel: string) => page.locator(sel).evaluateAll((els) => els.map((e) => e.getAnimations().map((a) => [(a as CSSAnimation).animationName, a.effect?.getTiming().delay, a.effect?.getTiming().iterations])));
+  expect(await timing("svg .clue")).toEqual([300, 600, 900].map((d) => [["lying-in", d, 1]]));
+  expect(await timing("svg .xdraw .xmark")).toEqual([1300, 1500, 1700, 1900].map((d) => [["lying-draw", d, 1]]));
+  expect(await timing("svg .feed")).toEqual(Array(3).fill([["lying-draw", 400, 1]]));
+  // Ghiyāth's added words blink, as Matn's .added does
+  expect(await timing("svg.lying .added")).toEqual([[["blink", 0, Infinity]]]);
+  await expect.poll(() => page.locator("svg .xdraw .xmark").last().evaluate((e) => Number(getComputedStyle(e).strokeDashoffset.replace("px", ""))), { timeout: 5000 }).toBe(0);
+});

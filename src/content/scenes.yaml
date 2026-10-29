@@ -212,6 +212,39 @@
     - title: The mukhaḍramūn
       section: §5.22
       note: "Ibn Ḥajar's evidence that tadlīs needs a known meeting, not just a shared lifetime. The people of knowledge in ḥadīth agree that the reports of the mukhaḍramūn, such as Abū ʿUthmān al-Nahdī and Qays ibn Abī Ḥāzim, from the Prophet ﷺ are irsāl, not tadlīs. They certainly lived in his time, but it is not known whether they met him. If living at the same time were enough for tadlīs, they would be mudallis. al-Shāfiʿī and Abū Bakr al-Bazzār also require a meeting, and al-Khaṭīb's al-Kifāya stipulates it. Ibn Ḥajar calls this the trusted opinion."
+- id: lying
+  division: al-mardud
+  moons: [1]
+  order: 4
+  title: Did he lie?
+  eyebrow: Rejected for lying · §5.23–5.25
+  lede: The gravest charge is lying about the Prophet ﷺ, and a report from such a narrator is called fabricated. Next comes being suspected of lying, which makes a report abandoned. A forgery is judged on overwhelming evidence, not certainty, because even a liar sometimes tells the truth.
+  source: §5.23 Kadhib and tuhma bi-l-kadhib, §5.24 Mawḍūʿ, §5.25 Matrūk
+  diagram: Lying
+  width: 780
+  captions:
+    - term: kadhib
+      note: "The gravest of the ten causes of criticism, which the book sets out from the worst downwards: the narrator lies in a Prophetic report, deliberately narrating from the Prophet ﷺ what he did not say. Open sin is the wider charge, but lying is named on its own because in this field it is the graver charge. A report from such a narrator is the first kind of rejected report, mawḍūʿ (§5.23–5.24)."
+    - term: tuhma-bil-kadhib
+      note: "Suspicion of lying, less grave than lying itself. It arises when a ḥadīth is reported by him alone and goes against known principles, or when he is known to lie in his everyday speech, though no lie of his in Prophetic reports is proven. A report from such a narrator is the second kind of rejected report, matrūk (§5.23, §5.25)."
+    - term: matruk
+      note: "The second kind of rejected report, following the order of the ten causes: one whose narrator is accused of lying. The grounds of the accusation are those given among the causes: only he reports it and it goes against known principles, or he lies in everyday speech though no lie of his in ḥadīth is proven (§5.23, §5.25)."
+    - term: mawdu
+      note: "The first kind of rejected report: its narrator lied about the Prophet ﷺ. It is judged on overwhelming evidence, not certainty, since even a liar sometimes tells the truth, and only scholars of wide knowledge and insight can judge it. Signs include the forger's admission, the narrator's state at the time, and a text clashing past reconciling with the Qurʾan, mutawātir sunna, firm consensus or common sense (§5.24)."
+  panels:
+    - { id: charges, label: Two charges, x0: 0, x1: 260 }
+    - { id: signs, label: How a forgery is known, x0: 260, x1: 520 }
+    - { id: sources, label: Where it comes from, x0: 520, x1: 780 }
+  extra:
+    - title: Two forgers caught in the act
+      section: §5.24
+      note: "The narrator's state can give a forgery away. When the question of whether al-Ḥasan heard from Abū Hurayra came up before Maʾmūn ibn Aḥmad, he at once recited a chain to the Prophet ﷺ saying that he had. Ghiyāth ibn Ibrāhīm came in on al-Mahdī while he was playing with his pigeons, and at once recited a chain to the Prophet ﷺ allowing contests in archery, camel racing and horse racing, adding the words “and pigeon racing” himself. al-Mahdī knew he had lied for his sake, and ordered the pigeons killed."
+    - title: A forger's confession
+      section: §5.24
+      note: "Sometimes a forgery is known from the forger's own admission. Ibn Daqīq al-ʿĪd said the confession is not taken as certain, since he may be lying in it. Some understood him to mean it is not acted on at all, but Ibn Ḥajar says he only denied certainty, and a ruling can rest on overwhelming evidence. Otherwise no one could be punished on a confession to murder or adultery, since they too might be lying."
+    - title: Where forged words come from, and why
+      section: §5.24
+      note: "A forger may invent the words himself, or take the words of others, such as some of the pious predecessors, the ancient sages or biblical sources, or take a report with a weak chain and invent a sound chain for it so that it spreads. Forgers act from an absence of religion, like the zindīqs; from ignorance, like some worshippers; from loyalty to a school; to please leaders; or to win fame with something rare. All of it is forbidden by consensus. Some of the Karrāmiyya and Ṣūfīs are reported to allow lying to encourage good and warn against evil; Ibn Ḥajar calls this a mistake born of ignorance, since that too is part of the Law. Deliberately lying about the Prophet ﷺ is a major sin, and al-Juwaynī went so far as to call the deliberate forger a disbeliever. Narrating a forged report is forbidden unless one makes its forgery clear, as Muslim's report from the Prophet ﷺ warns."
 - id: unknown
   division: al-mardud
   moons: [1]
