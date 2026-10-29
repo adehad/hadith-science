@@ -141,6 +141,25 @@
     - title: The Intentions report
       section: §5.5
       note: "Some who hold that a sound report must be at least ʿazīz answer the case of the Intentions report this way: ʿUmar told it from the pulpit before the Companions, who would have questioned it had they not known it. Ibn Ḥajar replies that their silence proves nothing, and that even granting this for ʿUmar, it does not hold for what follows: ʿAlqama alone narrates it from ʿUmar, then Muḥammad ibn Ibrāhīm alone from ʿAlqama, then Yaḥyā ibn Saʿīd alone from Muḥammad, by the sound route the ḥadīth masters know. Supporting chains have appeared, but they cannot be counted. Ibn Rushayd adds that its place as the first report in al-Bukhārī's Ṣaḥīḥ is enough to refute the claim that being ʿazīz was al-Bukhārī's condition."
+- id: causes
+  division: al-mardud
+  moons: [0, 1]
+  order: 1
+  title: Why is a report rejected?
+  eyebrow: Rejected reports, the two grounds · §5.17, §5.21, §5.23
+  lede: A report is rejected for one of two things. A narrator has dropped out of its chain, or a narrator in it is open to a charge. Ibn Ḥajar names ten charges, and lists them from the gravest down rather than sorting them by kind.
+  source: §5.17 Saqṭ and ṭaʿn, §5.21 Plain and hidden drops, §5.23 The ten causes, §5.24–5.38 What each cause yields
+  diagram: Causes
+  width: 860
+  captions:
+    - term: saqt
+      note: "A narrator missing from the chain: one of the two grounds for rejecting a report. The drop may be at the collector's end of the chain, by his own act; at the far end, after the Successor; or elsewhere. It may be plain to all, when the two never met, as records of birth, death, study and travel show; or hidden, found only by experts who know a ḥadīth's routes (§5.17, §5.21)."
+    - term: tan
+      note: "The other ground: a charge against a narrator, touching his religion or his accuracy. Five causes concern integrity and five accuracy, but Ibn Ḥajar doesn't sort them, so all ten run from the gravest down: lying about the Prophet ﷺ, being accused of it, gross errors, negligence, open sin, mistaken impressions, going against the reliable, being unknown, innovation and poor memory (§5.17, §5.23)."
+  extra:
+    - title: What each cause yields
+      section: §5.24–5.38
+      note: "Lying about the Prophet ﷺ makes a report mawḍūʿ, and being accused of lying makes it matrūk. Gross errors, negligence and open sin make it munkar, for those who don't require going against others. A mistaken impression found by close study and gathering the chains makes it muʿallal. Going against the reliable gives mudraj, maqlūb, al-mazīd, muḍṭarib, muṣaḥḥaf and muḥarraf. Being unknown covers the mubham, majhūl al-ʿayn and mastūr narrator. An innovator is accepted or not by the kind of his innovation. Poor memory for life is shādhdh, for some ḥadīth scholars; poor memory that comes on later is mukhtaliṭ."
 - id: breaks
   division: al-mardud
   moons: [0]

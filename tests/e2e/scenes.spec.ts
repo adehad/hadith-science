@@ -404,11 +404,11 @@ test.describe("carousel", () => {
   });
 });
 
-// the Names pattern: the names, grades, report, changes and identity scenes are all grids of cells
+// the Names pattern: the names, grades, report, changes, identity and causes scenes are all grids of cells
 test.describe("names grid", () => {
   const lefts = (page: Page) => page.locator(".cells > svg").evaluateAll((els) => els.map((e) => Math.round(e.getBoundingClientRect().left)));
 
-  for (const path of ["/al-asma/names/", "/al-maqbul/grades/", "/adad-al-turuq/report/", "/al-mardud/changes/", "/al-mardud/identity/"]) {
+  for (const path of ["/al-asma/names/", "/al-maqbul/grades/", "/adad-al-turuq/report/", "/al-mardud/changes/", "/al-mardud/identity/", "/al-mardud/causes/"]) {
     test(`portrait: ${path} stacks its cells in one column`, async ({ page }) => {
       await page.setViewportSize(PORTRAIT);
       await page.goto(path);
@@ -440,6 +440,14 @@ test("Key and Labels modes swap the legend for labels, and the choice survives a
   await expect(legend).toBeHidden();
   await expect(label).toBeVisible();
   await expectNoAxeViolations(page);
+});
+
+test("scene prev/next: causes opens the division and leads on to breaks", async ({ page }) => {
+  await page.goto("/al-mardud/causes/");
+  await expect(page.locator('.pn a[rel="prev"]')).toHaveCount(0);
+  await expect(page.locator('.pn a[rel="next"]')).toHaveAttribute("href", /\/al-mardud\/breaks\/$/);
+  await page.goto("/al-mardud/breaks/");
+  await expect(page.locator('.pn a[rel="prev"]')).toHaveAttribute("href", /\/al-mardud\/causes\/$/);
 });
 
 test("scene prev/next: breaks leads on to hidden, hidden to lying, lying to slips, slips to changes, changes to wording, wording to identity, identity to unknown, and unknown to innovation, the last", async ({ page }) => {
@@ -650,4 +658,62 @@ test("identity: both cells link on to Who is this narrator?, named by their visi
   await page.locator("#cell-one-student a.xlink").click();
   await expect(page).toHaveURL(/\/al-mardud\/unknown\/$/);
   await expect(page.locator("h1")).toHaveText("Who is this narrator?");
+});
+
+// the ten causes of §5.23 in the book's order, gravest first, and the scene each one's term lives on
+const CAUSES: [string, string][] = [
+  ["Kadhib", "lying"], ["Tuhma bi-l-kadhib", "lying"], ["Fuḥsh al-ghalaṭ", "slips"], ["Ghafla", "slips"], ["Fisq", "innovation"],
+  ["Wahm", "slips"], ["Mukhālafa", "changes"], ["Jahāla", "identity"], ["Bidʿa", "innovation"], ["Sūʾ al-ḥifẓ", "slips"],
+];
+
+test("causes: the ladder gives the ten causes in the book's order, each rung named by its visible text and linking to a built scene", async ({ page }) => {
+  await page.setViewportSize(DESKTOP);
+  await page.goto("/al-mardud/causes/");
+  const rungs = page.locator("#cell-criticism .rung-g a.xlink");
+  await expect(rungs).toHaveCount(CAUSES.length);
+  for (let i = 0; i < CAUSES.length; i++) {
+    const [name, sceneId] = CAUSES[i];
+    const a = rungs.nth(i);
+    const visible = (await a.locator("text.rc").textContent())!.trim();
+    expect(visible.startsWith(name)).toBe(true);
+    expect((await a.getAttribute("aria-label"))!.startsWith(visible)).toBe(true);
+    await expect(a.locator('text[aria-hidden="true"]')).toHaveText("→");
+    const url = (await a.getAttribute("href"))!;
+    expect(url).toMatch(new RegExp(`/al-mardud/${sceneId}/#[a-z-]+$`));
+    expect((await page.request.get(url.split("#")[0])).status()).toBe(200);
+  }
+  // the other links: the three chain captions and the plain-drop box to breaks, the hidden box to hidden, munkar to
+  // opposition; each named first by the whole of its visible text, less the arrow decoration (WCAG 2.5.3). Both are
+  // compared without punctuation, so a label's "a: b" matches the text's two lines "a" and "b"
+  const norm = (s: string) => s.replace("→", "").replace(/\p{P}/gu, " ").replace(/\s+/g, " ").trim();
+  for (const a of await page.locator(".causes a.xlink").all()) {
+    const label = await a.getAttribute("aria-label");
+    expect(label, "every causes link has a label").toBeTruthy();
+    const text = norm((await a.textContent())!);
+    expect(norm(label!).startsWith(text), `"${label}" starts with "${text}"`).toBe(true);
+    expect((await page.request.get((await a.getAttribute("href"))!.split("#")[0])).status()).toBe(200);
+  }
+  await expect(page.locator('#cell-omission a.xlink[href$="/al-mardud/breaks/"]')).toHaveCount(4);
+  await expect(page.locator('#cell-omission a.xlink[href$="/al-mardud/hidden/"]')).toHaveCount(1);
+  await expect(page.locator('#cell-criticism a.xlink[href$="/al-maqbul/opposition/"]')).toHaveCount(1);
+});
+
+test("causes: a click on each rung lands on its cause in the scene that draws it", async ({ page }) => {
+  await page.setViewportSize(DESKTOP);
+  for (let i = 0; i < CAUSES.length; i++) {
+    await page.goto("/al-mardud/causes/");
+    await page.locator("#cell-criticism .rung-g a.xlink").nth(i).click();
+    await expect(page).toHaveURL(new RegExp(`/al-mardud/${CAUSES[i][1]}/#`));
+    await expect(page.locator("h1")).toBeVisible();
+  }
+});
+
+test("causes: the legend, both terms visible, and the integrity and accuracy split left untagged", async ({ page }) => {
+  await page.setViewportSize(DESKTOP);
+  await page.goto("/al-mardud/causes/");
+  await expect(page.locator(".legend")).toBeVisible();
+  for (const slug of ["saqt", "tan"]) await expect(trigger(page, slug)).toBeVisible();
+  await expect(page.locator("#cell-criticism")).toContainText("doesn't sort them");
+  // one ghost Narrator group per chain (each draws its head and body as two .n.ghost shapes)
+  await expect(page.locator("#cell-omission g:has(> .n.ghost)")).toHaveCount(3);
 });

@@ -412,3 +412,31 @@ test("with motion, the innovation scene's path arrows flow, in every view, and n
   await page.locator('.views button[data-v="reject"]').click();
   await expect.poll(flows).toEqual({ shownFlow: true, count: 1 + 1 + 1, others: [] });
 });
+
+test("reduced motion: the causes scene rests with every rung shown", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/al-mardud/causes/");
+  const op = await page.locator("svg .rung-g").evaluateAll((els) => els.map((e) => getComputedStyle(e).opacity));
+  expect(op).toEqual(Array(10).fill("1"));
+  expect(await page.locator(".causes").evaluate((el) => el.getAnimations({ subtree: true }).length)).toBe(0);
+});
+
+test("with motion, the causes scene's rungs fade in from the top once, one after another, and its chain arrows flow", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.goto("/al-mardud/causes/");
+  const timing = (sel: string) => page.locator(sel).evaluateAll((els) => els.map((e) => e.getAnimations().map((a) => [(a as CSSAnimation).animationName, a.effect?.getTiming().delay, a.effect?.getTiming().iterations, a.effect?.getTiming().fill])));
+  expect(await timing("svg .rung-g")).toEqual([0, 80, 160, 240, 320, 400, 480, 560, 640, 720].map((d) => [["causes-in", d, 1, "both"]]));
+  expect(await timing("#cell-omission path.flow, #cell-omission path.skip")).toEqual(Array(12).fill([["flow", 0, Infinity, "none"]]));
+  // each rung starts hidden: the last, paused at its first frame, is transparent
+  const start = await page.locator("svg .rung-g").last().evaluate((e) => {
+    const a = e.getAnimations()[0];
+    a.pause();
+    a.currentTime = 0;
+    const o = getComputedStyle(e).opacity;
+    a.finish();
+    return o;
+  });
+  expect(start).toBe("0");
+  // and they end where the reduced-motion page rests
+  await expect.poll(() => page.locator("svg .rung-g").evaluateAll((els) => els.every((e) => getComputedStyle(e).opacity === "1")), { timeout: 5000 }).toBe(true);
+});

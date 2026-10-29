@@ -7,6 +7,7 @@ import ReadAsText from "../../components/layout/ReadAsText.astro";
 import ViewSwitch from "../../components/layout/ViewSwitch.astro";
 import Routes from "../../components/scenes/Routes.astro";
 import Breaks from "../../components/scenes/Breaks.astro";
+import Causes from "../../components/scenes/Causes.astro";
 import Unknown from "../../components/scenes/Unknown.astro";
 import Delivery from "../../components/scenes/Delivery.astro";
 import Names from "../../components/scenes/Names.astro";
@@ -48,7 +49,7 @@ const caps = captionsFor(scene, terms);
 
 // each scene task adds its diagram here; import only components that exist
 // typed by the props every diagram takes, so a misnamed or missing prop fails astro check
-const DIAGRAMS: Partial<Record<Diagram, (p: DiagramProps) => any>> = { Routes, Breaks, Unknown, Delivery, Names, Grades, Opposition, Support, ActedOn, Report, Sorting, Knowledge, Lone, Hidden, Lying, Slips, Changes, Wording, Identity, Innovation };
+const DIAGRAMS: Partial<Record<Diagram, (p: DiagramProps) => any>> = { Routes, Breaks, Causes, Unknown, Delivery, Names, Grades, Opposition, Support, ActedOn, Report, Sorting, Knowledge, Lone, Hidden, Lying, Slips, Changes, Wording, Identity, Innovation };
 const D = DIAGRAMS[scene.diagram];
 if (!D) throw new Error(`no diagram component for ${scene.diagram}`);
 
@@ -56,6 +57,8 @@ if (!D) throw new Error(`no diagram component for ${scene.diagram}`);
 const LEGEND: Partial<Record<Diagram, LegendKind[]>> = {
   Routes: ["moon", "sahabi", "tabii", "later"],
   Breaks: ["moon", "sahabi", "tabii", "later", "ghost"],
+  // cell A's three mini chains, each missing one narrator; cell B's ladder draws no figures
+  Causes: ["moon", "sahabi", "tabii", "later", "ghost"],
   Unknown: ["moon", "sahabi", "tabii", "later", "majhul", "mubham"],
   // the mastūr in cell C is the majhūl figure: scroll, empty seal slot
   Grades: ["moon", "sahabi", "tabii", "later", "majhul"],

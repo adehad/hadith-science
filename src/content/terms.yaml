@@ -383,6 +383,7 @@
   def: "A narrator missing from the chain: at the collector's end, after the Successor, or elsewhere. The gap may be plain or hidden."
   section: "§5.17"
   division: al-mardud
+  scene: causes
 - id: tan
   translit: Ṭaʿn
   ar: طَعْنٌ
@@ -390,6 +391,7 @@
   def: "A charge against a narrator's integrity or accuracy; with omission, one of the two grounds for rejecting a report."
   section: "§5.17"
   division: al-mardud
+  scene: causes
 - id: muallaq
   translit: Muʿallaq
   ar: مُعَلَّقٌ
