@@ -20,6 +20,7 @@ import Knowledge from "../../components/scenes/Knowledge.astro";
 import Lone from "../../components/scenes/Lone.astro";
 import Hidden from "../../components/scenes/Hidden.astro";
 import Lying from "../../components/scenes/Lying.astro";
+import Slips from "../../components/scenes/Slips.astro";
 import { loadContent } from "../../lib/content";
 import { captionsFor, type DiagramProps } from "../../lib/scene";
 import { href } from "../../lib/url";
@@ -43,7 +44,7 @@ const caps = captionsFor(scene, terms);
 
 // each scene task adds its diagram here; import only components that exist
 // typed by the props every diagram takes, so a misnamed or missing prop fails astro check
-const DIAGRAMS: Partial<Record<Diagram, (p: DiagramProps) => any>> = { Routes, Breaks, Unknown, Delivery, Names, Grades, Opposition, Support, ActedOn, Report, Sorting, Knowledge, Lone, Hidden, Lying };
+const DIAGRAMS: Partial<Record<Diagram, (p: DiagramProps) => any>> = { Routes, Breaks, Unknown, Delivery, Names, Grades, Opposition, Support, ActedOn, Report, Sorting, Knowledge, Lone, Hidden, Lying, Slips };
 const D = DIAGRAMS[scene.diagram];
 if (!D) throw new Error(`no diagram component for ${scene.diagram}`);
 
@@ -68,6 +69,8 @@ const LEGEND: Partial<Record<Diagram, LegendKind[]>> = {
   Hidden: ["moon", "tabii", "later", "mudallis", "ghost"],
   // the liar and the suspect side by side; panel 3's forged chain swaps a weak narrator for reliable ones
   Lying: ["later", "liar", "accused", "weak"],
+  // the three records: a weak narrator, the gathered routes with a Companion that isn't there, and memory failing
+  Slips: ["moon", "sahabi", "tabii", "later", "weak", "mukhtalit", "ghost"],
   // ActedOn and Sorting draw no narrator figures, so they have no legend and no Key/Labels switch (phase 3 designs §1)
 };
 const kinds = LEGEND[scene.diagram];

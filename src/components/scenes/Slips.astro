@@ -1,0 +1,285 @@
+---
+// "Did he keep it right?" (phase 3 al-Mardūd design §6): the causes of criticism about mistakes and memory
+// (§5.23) and what they make a report (§5.26–5.27, §5.38), in three panels of one 780-wide row, so it carousels in
+// portrait:
+//   1  errors and carelessness: a weak narrator beside a record strip where crosses stand out (fuḥsh al-ghalaṭ),
+//      and a narrator passing a text on past a check he never ticks (ghafla); for some, both make a report munkar
+//   2  a hidden defect (muʿallal): one chain gives a Companion; a lens gathers three other routes, each from the
+//      Successor straight to the Prophet ﷺ, and a ring marks the Companion that isn't there (wahm). The book gives
+//      no example, so the chain is unnamed and labelled an illustration (design §18). The money-changer's coins and
+//      the masters the translation names sit under it; the two names under a translation query are left out.
+//   3  poor memory (sūʾ al-ḥifẓ): all his life, a hatched bar; later in life (mukhtaliṭ), a bar broken by an event,
+//      with his reports sorted before (accepted if told apart), can't tell (held back) and after (no verdict:
+//      the translation gives none, design §18)
+// No Arabic report wording. The record strip is marks, not a count. No views (design §6.5).
+// Motion: the crosses draw in one after another and the empty check blinks; routes B–D brighten as the lens
+// passes, then the ring closes round the Companion and the false coin blinks; the event star pulses once and the
+// "?" blinks. Each resting style is the end state, so with motion.css stopping every animation the crosses are
+// drawn, the routes shown, the ring in place, the lens at rest at the end of its sweep and nothing blinks.
+import Defs from "../svg/Defs.astro";
+import Moon from "../svg/Moon.astro";
+import Narrator from "../svg/Narrator.astro";
+import Arrow from "../svg/Arrow.astro";
+import Chip from "../svg/Chip.astro";
+import Glyph from "../svg/Glyph.astro";
+import Matn from "../svg/Matn.astro";
+import TermTitle from "../svg/TermTitle.astro";
+import { FIG, KIND_NAME, RELIABLE } from "../svg/figures";
+import { ROW_TITLE_TRIGGER, SUBT_TRIGGER, f, panelTrigger, rowTrigger } from "../svg/geom";
+import { cap, type DiagramProps } from "../../lib/scene";
+import { chipRow, discRow, sweepAt } from "../../lib/kit";
+import { loadContent } from "../../lib/content";
+import { href } from "../../lib/url";
+
+type Props = DiagramProps;
+const { caps, scene } = Astro.props;
+
+const W = 780, H = 520;
+if (scene.views?.length) throw new Error("Slips: expected no views");
+const PANELS = scene.panels ?? [];
+if (PANELS.length !== 3) throw new Error("Slips: expected three panels");
+
+const TITLE_Y = 30, SUB_Y = 50;
+
+// a left-aligned 13px row title as a term trigger (charW for a title of wide letters); rowTrigger doesn't know about panels, so check here that the
+// hit area sits wholly inside panel i, or the portrait carousel would cut it
+function row(slug: string, x: number, y: number, i: number, charW?: number) {
+  const c = cap(caps, slug);
+  const t = rowTrigger(c.translit, x, y, charW ? { charW } : {});
+  const p = PANELS[i];
+  if (t.hit.x < p.x0 || t.hit.x + t.hit.w > p.x1) throw new Error(`Slips: ${slug} trigger leaves its panel`);
+  return { c, x, y, ...t };
+}
+// a centred 15px sub-title as a term trigger; panelTrigger checks it stays in its panel
+function subt(slug: string, cx: number, y: number) {
+  const c = cap(caps, slug);
+  return { c, cx, y, ...panelTrigger(c.translit, cx, y, PANELS, { ...SUBT_TRIGGER, name: `Slips: ${slug}` }) };
+}
+
+// links to other scenes: munkar and shādhdh belong to "Who outweighs whom?", open sin to the innovation scene,
+// which gets its link once it exists, so no build ships a broken one (design §18)
+const { scenes } = await loadContent();
+const opposition = scenes.find((s) => s.id === "opposition");
+if (!opposition) throw new Error("Slips: no opposition scene to link to");
+const innovation = scenes.find((s) => s.division === "al-mardud" && s.id === "innovation");
+
+// ---- panel 1: errors and carelessness ----
+const FK = 0.8;
+const fuhsh = row("fuhsh-al-ghalat", 20, 84, 0);
+const WEAK_Y = 136;
+// the record: ten marks, six of them crosses, mixed so the crosses stand out; marks, not a count (design §18).
+// Each cross draws in 0.15s after the one before.
+const CROSSES = new Set([1, 3, 4, 6, 8, 9]);
+let nth = 0;
+const MARKS = discRow(10, 170, 15).map((x, i) => ({ x, cross: CROSSES.has(i), d: CROSSES.has(i) ? f(0.4 + 0.15 * nth++) : 0 }));
+const ghafla = row("ghafla", 20, 222, 0);
+const CARELESS_Y = 276;
+const STUB = { x: 88, y: CARELESS_Y - 14, w: 64, h: 28 };
+
+// ---- panel 2: a hidden defect ----
+const muallal = subt("muallal", 390, TITLE_Y);
+const K = 0.6, HALF = 22 * K;
+const MOON_Y = 96, MK = 0.4, C_Y = 150, S_Y = 206, N_Y = 262;
+const A_X = 300;
+// the sweep: the lens moves along the Companions' row from x0 to x1 between t0 and t1 seconds, and rests at x1;
+// each other route brightens as the lens reaches it
+const SWEEP = { x0: 330, x1: 506, t0: 0.6, t1: 3 };
+const OTHERS = [370, 430, 490].map((x) => ({ x, d: sweepAt(x, SWEEP) }));
+const RING_D = f(SWEEP.t1 + 0.1);
+const wahm = row("wahm", 284, 316, 1, 9);
+const COINS = [284, 304, 324];
+const MASTERS = [["ʿAlī ibn al-Madīnī", "Aḥmad ibn Ḥanbal"], ["al-Bukhārī", "Abū Zurʿa", "al-Dāraquṭnī"]].flatMap((texts, i) =>
+  chipRow(texts, 272, 6).chips.map((c) => ({ ...c, y: 476 + i * 26 })),
+);
+if (Math.max(...MASTERS.map((c) => c.x + c.w)) > 512) throw new Error("Slips: a master's chip leaves its panel");
+
+// ---- panel 3: poor memory ----
+const su = subt("su-al-hifz", 650, TITLE_Y);
+const LIFE = { x0: 540, x1: 760 };
+const ALL_Y = 107;
+const mukhtalit = (() => {
+  const c = cap(caps, "mukhtalit");
+  const cx = 715, y = 200;
+  return { c, cx, y, ...panelTrigger(c.translit, cx, y, PANELS, { ...ROW_TITLE_TRIGGER, name: "Slips: mukhtalit" }) };
+})();
+const FIG_Y = 240;
+const LATE_Y = 282, EVENT_X = 650;
+// his reports, sorted: before the change, can't tell, after
+const CARD_W = 72, CARD = { y0: 362, y1: 408 };
+const CARDS = [
+  { x: 536, head: "before", lines: ["accepted, if", "told apart"] },
+  { x: 614, head: "?", lines: ["can't tell:", "held back"] },
+  { x: 692, head: "after", lines: ["his memory", "had failed"] },
+].map((c) => ({ ...c, cx: c.x + CARD_W / 2 }));
+---
+<svg viewBox={`0 0 ${W} ${H}`} class="slips" role="group" aria-label="Three panels. Errors and carelessness: fuḥsh al-ghalaṭ, a weak narrator whose record of reports is crossed with many glaring mistakes; ghafla, a narrator careless of accuracy in what he passes on. For those who don't make going against others a condition of munkar, the report of either is munkar, and so is that of an open sinner. A hidden defect, muʿallal, shown as an illustration, since the book gives no example: one chain runs from the Prophet ﷺ through a Companion and a Successor; gathering three other routes shows each going from the Successor straight to the Prophet ﷺ, so the Companion is not there. The narrator reported on a mistaken impression, wahm. Like a money-changer judging false coins, the expert may not always show his proof; few have spoken on it, such as ʿAlī ibn al-Madīnī, Aḥmad ibn Ḥanbal, al-Bukhārī, Abū Zurʿa and al-Dāraquṭnī. Poor memory, sūʾ al-ḥifẓ, where his mistakes outweigh what he gets right: all his life, which some call shādhdh; or later in life, mukhtaliṭ, through old age, loss of sight, or his books burned or lost. What he told before is accepted if it can be told apart; what can't be told apart is held back; after, his memory had failed. Only a study of those who took from him tells them apart.">
+  <Defs />
+  <defs>
+    <pattern id="slips-hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <rect width="6" height="6" class="hatch-bg" />
+      <path d="M0 0 V6" class="hatch-ln" />
+    </pattern>
+  </defs>
+  <line class="divider" x1="260" x2="260" y1="12" y2={H - 12} />
+  <line class="divider" x1="520" x2="520" y1="12" y2={H - 12} />
+
+  {/* ---- panel 1: errors and carelessness ---- */}
+  <text class="subt" x="130" y={TITLE_Y}>Errors and carelessness</text>
+  <text class="lbl sm" x="130" y={SUB_Y}>the third and fourth causes</text>
+
+  <TermTitle c={fuhsh.c} x={fuhsh.x} y={fuhsh.y} cls="rt" hit={fuhsh.hit} info={fuhsh.info} ar={{ x: f(fuhsh.info.cx + 50), y: fuhsh.y, size: "sm" }} />
+  <Narrator x={52} y={WEAK_Y} k={FK} {...FIG.weak} label={KIND_NAME.weak} />
+  {MARKS.map((m) => m.cross
+    ? <g class="xdraw" style={`--d:${m.d}s`}><Glyph kind="cross" cx={m.x} cy={WEAK_Y} r={6} /></g>
+    : <Glyph kind="check" cx={m.x} cy={WEAK_Y} r={6} />)}
+  <text class="lbl" x="170" y="166">many and glaring</text>
+  <text class="lbl sm" x="170" y="180">an illustration, not a count</text>
+
+  <TermTitle c={ghafla.c} x={ghafla.x} y={ghafla.y} cls="rt" hit={ghafla.hit} info={ghafla.info} ar={{ x: f(ghafla.info.cx + 34), y: ghafla.y, size: "sm" }} />
+  <Narrator x={52} y={CARELESS_Y} k={FK} {...FIG.later} label={KIND_NAME.later} />
+  <Matn x={STUB.x} y={STUB.y} w={STUB.w} h={STUB.h} />
+  <Arrow x1={STUB.x + STUB.w + 4} y1={CARELESS_Y} x2={190} y2={CARELESS_Y} />
+  {/* the check he never makes: an empty slot that blinks, the sign for anything missing (spec §3.2) */}
+  <rect class="slot-box" x="198" y={CARELESS_Y - 10} width="20" height="20" rx="6" aria-hidden="true" />
+  <text class="lbl" x="150" y="318">careless of accuracy</text>
+
+  <g aria-hidden="true"><line class="side" x1="14" x2="14" y1="368" y2="456" /></g>
+  <text class="lbl start sm" x="24" y="380">if gross or excessive, his report is</text>
+  <a class="xlink" href={href(`${opposition.division}/${opposition.id}/`)} aria-label={`munkar, for those who don't require going against others (scene: ${opposition.title})`}>
+    <text class="rp" x="24" y="398"><tspan class="xu">munkar</tspan><tspan dx="5">→</tspan></text>
+  </a>
+  <text class="lbl start sm" x="24" y="416">for those who don't make going</text>
+  <text class="lbl start sm" x="24" y="430">against others its condition</text>
+  {innovation
+    ? (
+      <a class="xlink" href={href(`${innovation.division}/${innovation.id}/`)} aria-label={`and so is the open sinner's (scene: ${innovation.title})`}>
+        <text class="rp" x="24" y="452"><tspan class="xu">and so is the open sinner's</tspan><tspan dx="5">→</tspan></text>
+      </a>
+    )
+    : <text class="lbl start sm" x="24" y="452">and so is the open sinner's</text>}
+
+  {/* ---- panel 2: a hidden defect ---- */}
+  <TermTitle c={muallal.c} x={muallal.cx} y={muallal.y} cls="subt" hit={muallal.hit} info={muallal.info} ar={{ x: f(muallal.info.cx + 34), y: muallal.y, size: "sm" }} />
+  <text class="lbl sm" x="390" y={SUB_Y}>a hidden flaw, found only by</text>
+  <text class="lbl sm" x="390" y={SUB_Y + 14}>gathering the routes</text>
+
+  {/* route A, the one under study: it gives a Companion */}
+  <Moon cx={A_X} cy={MOON_Y} k={MK} />
+  <Arrow x1={A_X} y1={MOON_Y + 24 * MK + 3} x2={A_X} y2={C_Y - HALF - 3} />
+  <Arrow x1={A_X} y1={C_Y + HALF + 2} x2={A_X} y2={S_Y - HALF - 3} />
+  <Arrow x1={A_X} y1={S_Y + HALF + 2} x2={A_X} y2={N_Y - HALF - 3} />
+  <Narrator x={A_X} y={C_Y} k={K} {...FIG.sahabi} label={KIND_NAME.sahabi} />
+  <Narrator x={A_X} y={S_Y} k={K} {...FIG.tabii} {...RELIABLE} label={KIND_NAME.tabii} />
+  <Narrator x={A_X} y={N_Y} k={K} {...FIG.later} {...RELIABLE} label={KIND_NAME.later} />
+
+  {/* routes B–D, gathered: from the Successor straight to the Prophet ﷺ. Their figures are route A's kinds, so only
+      route A's carry Labels-mode names, which would crowd and fade here */}
+  {OTHERS.map((r) => (
+    <g class="route" style={`--d:${r.d}s`}>
+      <Moon cx={r.x} cy={MOON_Y} k={MK} />
+      <Arrow x1={r.x} y1={MOON_Y + 24 * MK + 3} x2={r.x} y2={S_Y - HALF - 3} variant="skip" />
+      <Arrow x1={r.x} y1={S_Y + HALF + 2} x2={r.x} y2={N_Y - HALF - 3} />
+      <Narrator x={r.x} y={S_Y} k={K} {...FIG.tabii} {...RELIABLE} />
+      <Narrator x={r.x} y={N_Y} k={K} {...FIG.later} {...RELIABLE} />
+    </g>
+  ))}
+  <circle class="lost" cx={A_X} cy={C_Y} r="20" style={`--d:${RING_D}s`} aria-hidden="true" />
+  <g class="lens" style={`--dx:${SWEEP.x0 - SWEEP.x1}px`}><Glyph kind="lens" cx={SWEEP.x1} cy={C_Y} r={10} /></g>
+
+  <TermTitle c={wahm.c} x={wahm.x} y={wahm.y} cls="rt" hit={wahm.hit} info={wahm.info} />
+  <text class="lbl start sm" x={f(wahm.info.cx + 14)} y={wahm.y}>a mistaken impression</text>
+  <text class="lbl" x="390" y="340">gathered, the other routes have</text>
+  <text class="lbl" x="390" y="355">no Companion here</text>
+  <text class="lbl sm" x="390" y="374">an illustration: the book names no example</text>
+
+  {COINS.map((x, i) => i === COINS.length - 1
+    ? <g class="fake"><Glyph kind="coin" cx={x} cy={414} r={9} dashed /></g>
+    : <Glyph kind="coin" cx={x} cy={414} r={9} />)}
+  <text class="lbl start sm" x="340" y="404">like a money-changer judging</text>
+  <text class="lbl start sm" x="340" y="418">false coins, he may not</text>
+  <text class="lbl start sm" x="340" y="432">always show his proof</text>
+
+  <text class="layer" x="272" y="456">Few have spoken on it</text>
+  {MASTERS.map((c) => <Chip x={c.x} y={c.y} text={c.text} />)}
+
+  {/* ---- panel 3: poor memory ---- */}
+  <TermTitle c={su.c} x={su.cx} y={su.y} cls="subt" hit={su.hit} info={su.info} />
+  <text class="lbl sm" x="650" y={SUB_Y}>his mistakes outweigh</text>
+  <text class="lbl sm" x="650" y={SUB_Y + 14}>what he gets right</text>
+
+  <text class="layer" x="540" y="92">All his life</text>
+  <rect class="bar-all" x={LIFE.x0} y={ALL_Y - 5} width={LIFE.x1 - LIFE.x0} height="10" rx="5" aria-hidden="true" />
+  <Narrator x={560} y={146} k={K} {...FIG.weak} label={KIND_NAME.weak} />
+  <text class="lbl start sm" x="584" y="142">for some ḥadīth scholars,</text>
+  <a class="xlink" href={href(`${opposition.division}/${opposition.id}/`)} aria-label={`his report is shādhdh, for some ḥadīth scholars (scene: ${opposition.title})`}>
+    <text class="rp" x="584" y="158"><tspan>his report is </tspan><tspan class="xu">shādhdh</tspan><tspan dx="5">→</tspan></text>
+  </a>
+
+  <text class="layer" x="540" y={mukhtalit.y}>Later in life</text>
+  <TermTitle c={mukhtalit.c} x={mukhtalit.cx} y={mukhtalit.y} cls="rt mid" hit={mukhtalit.hit} info={mukhtalit.info} />
+  <Narrator x={590} y={FIG_Y} k={K} {...FIG.later} {...RELIABLE} label={KIND_NAME.later} />
+  <Narrator x={715} y={FIG_Y} k={K} {...FIG.mukhtalit} label={KIND_NAME.mukhtalit} />
+  <g aria-hidden="true">
+    <rect class="bar-sound" x={LIFE.x0} y={LATE_Y - 5} width={EVENT_X - LIFE.x0} height="10" rx="5" />
+    <rect class="bar-failed" x={EVENT_X} y={LATE_Y - 5} width={LIFE.x1 - EVENT_X} height="10" rx="5" />
+    <path class="event" d={`M${EVENT_X} ${LATE_Y - 10} L${EVENT_X + 3} ${LATE_Y - 3} L${EVENT_X + 10} ${LATE_Y} L${EVENT_X + 3} ${LATE_Y + 3} L${EVENT_X} ${LATE_Y + 10} L${EVENT_X - 3} ${LATE_Y + 3} L${EVENT_X - 10} ${LATE_Y} L${EVENT_X - 3} ${LATE_Y - 3} Z`} />
+  </g>
+  <Glyph kind="clock" cx={634} cy={306} r={7} />
+  <Glyph kind="book" cx={666} cy={306} r={7} />
+  <path class="strike" d="M658 299 L674 313 M674 299 L658 313" aria-hidden="true" />
+  <text class="lbl sm" x={EVENT_X} y="330">old age, loss of sight, or his</text>
+  <text class="lbl sm" x={EVENT_X} y="344">books burned or lost</text>
+
+  {CARDS.map((c, i) => (
+    <>
+      <rect class:list={["card", { failed: i === 2 }]} x={c.x} y={CARD.y0} width={CARD_W} height={CARD.y1 - CARD.y0} rx="6" />
+      {i === 1
+        ? <text class="q" x={c.cx} y={CARD.y0 + 17} aria-hidden="true">?</text>
+        : <text class="layer mid" x={c.cx} y={CARD.y0 + 15}>{c.head}</text>}
+      {i === 0 && <Glyph kind="check" cx={c.cx} cy={CARD.y0 + 31} r={7} />}
+      {i === 1 && <Glyph kind="pause" cx={c.cx} cy={CARD.y0 + 31} r={7} />}
+      {i === 2 && <circle class="faded-head" cx={c.cx} cy={CARD.y0 + 31} r="6" aria-hidden="true" />}
+      {c.lines.map((t, j) => <text class="lbl sm" x={c.cx} y={CARD.y1 + 16 + j * 14}>{t}</text>)}
+    </>
+  ))}
+
+  <Glyph kind="lens" cx={548} cy={468} r={9} />
+  <text class="lbl start sm" x="562" y="466">only a study of those who took</text>
+  <text class="lbl start sm" x="562" y="480">from him tells them apart</text>
+</svg>
+<style>
+  .hatch-bg{fill:var(--surface)}
+  .hatch-ln{stroke:var(--muted);stroke-width:2}
+  .side{stroke:var(--line);stroke-width:1.4;stroke-dasharray:3 3}
+  /* TermTitle draws the text, so the centring has to reach into it */
+  .slips :global(.rt.mid){text-anchor:middle}
+  .slips .layer.mid{text-anchor:middle}
+  .slot-box{fill:none;stroke:var(--muted);stroke-width:1.3;stroke-dasharray:3 2.4;animation:blink 2.4s ease-in-out infinite}
+  .route{opacity:.5}
+  .lost{fill:none;stroke:var(--gap);stroke-width:2;stroke-dasharray:4 3;transform-box:fill-box;transform-origin:center}
+  .bar-all{fill:url(#slips-hatch);stroke:var(--muted);stroke-width:1}
+  .bar-sound{fill:color-mix(in srgb,var(--muted) 75%,var(--surface));stroke:var(--muted);stroke-width:1}
+  .bar-failed{fill:var(--surface);stroke:var(--muted);stroke-width:1;stroke-dasharray:4 3}
+  .event{fill:var(--gap);stroke:var(--surface);stroke-width:1.2;stroke-linejoin:round;transform-box:fill-box;transform-origin:center}
+  .strike{fill:none;stroke:var(--gap);stroke-width:1.8;stroke-linecap:round}
+  .card{fill:var(--surface);stroke:var(--rule);stroke-width:1.2}
+  .card.failed{fill:color-mix(in srgb,var(--muted) 12%,var(--surface));stroke:var(--muted);stroke-dasharray:4 3}
+  .faded-head{fill:none;stroke:var(--muted);stroke-width:1.3;stroke-dasharray:2 1.5}
+  .q{fill:var(--gap);font:700 15px var(--f-body);text-anchor:middle;stroke:var(--surface);stroke-width:3px;paint-order:stroke}
+  /* each resting style is the end state; the animations run from the start state, once, except the blinks. The
+     lens and ring fill backwards only, so once done they fall back to the resting transform (none), not an
+     interpolated identity matrix. They and the star (no fill) then drop out of getAnimations(), so the motion test
+     checks their computed animation properties; the routes and crosses fill both ways and stay listed */
+  .xdraw :global(.xmark){stroke-dasharray:1;stroke-dashoffset:0;animation:slips-draw .3s ease-out both;animation-delay:var(--d)}
+  .route{animation:slips-light .6s ease-out both;animation-delay:var(--d)}
+  .lens{animation:slips-sweep 2.4s linear .6s backwards}
+  .lost{animation:slips-ring .4s ease-out backwards;animation-delay:var(--d)}
+  .fake{animation:blink 2.4s ease-in-out infinite}
+  .event{animation:slips-pulse .8s ease-in-out .6s 1}
+  .q{animation:blink 2.4s ease-in-out infinite}
+  @keyframes slips-draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+  @keyframes slips-light{from{opacity:.15}}
+  @keyframes slips-sweep{from{transform:translateX(var(--dx))}}
+  @keyframes slips-ring{from{opacity:0;transform:scale(1.6)}}
+  @keyframes slips-pulse{50%{transform:scale(1.5)}}
+</style>

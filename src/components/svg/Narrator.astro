@@ -31,7 +31,7 @@ const transform = `translate(${f(x - 20 * k)} ${f(y - 22 * k)}) scale(${k})`;
   <g transform={transform}>
     <path class={`n ${kind}`} d={BODY} />
     {face === "faded"
-      ? <circle class={`n ${kind}`} cx="20" cy="11" r="8.5" style="opacity:.3;stroke:var(--muted);stroke-dasharray:2 1.5" />
+      ? <circle class={`n ${kind}`} cx="20" cy="11" r="8.5" style="fill-opacity:.3;stroke:var(--muted);stroke-dasharray:2 1.5" />
       : <circle class={`n ${kind}`} cx="20" cy="11" r="8.5" />}
     {/* generation marks (spec §3.1), from the mockup's companion/successor symbols: a star, and a chest band
         raised from y=34 to sit above the name scroll, which would otherwise cover it */}

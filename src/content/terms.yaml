@@ -469,6 +469,7 @@
   def: "The narrator's mistakes are many and glaring."
   section: "§5.23"
   division: al-mardud
+  scene: slips
 - id: ghafla
   translit: Ghafla
   ar: غَفْلَةٌ
@@ -476,6 +477,7 @@
   def: "A naive carelessness about accuracy in what he passes on."
   section: "§5.23"
   division: al-mardud
+  scene: slips
 - id: fisq
   translit: Fisq
   ar: فِسْقٌ
@@ -490,6 +492,7 @@
   def: "The narrator reports on a mistaken impression. When gathering the routes exposes it, the report is muʿallal."
   section: "§5.23"
   division: al-mardud
+  scene: slips
 - id: mukhalafa
   translit: Mukhālafa
   ar: مُخَالَفَةٌ
@@ -520,6 +523,7 @@
   def: "A report with a hidden flaw, such as a broken chain passed off as connected, found only by gathering its routes. Few experts master it."
   section: "§5.27"
   division: al-mardud
+  scene: slips
 - id: mudraj
   translit: Mudraj
   ar: مُدْرَجٌ
@@ -657,6 +661,7 @@
   def: "The narrator's mistakes outweigh what he gets right, either all his life or from some point on."
   section: "§5.38"
   division: al-mardud
+  scene: slips
 - id: mukhtalit
   translit: Mukhtaliṭ
   ar: مُخْتَلِطٌ
@@ -664,6 +669,7 @@
   def: "Memory that failed later, through age, blindness or lost books. What he narrated before is accepted if it can be told apart."
   section: "§5.38"
   division: al-mardud
+  scene: slips
 
 # 4. Muntahā al-isnād (§5.40–5.44)
 - id: marfu

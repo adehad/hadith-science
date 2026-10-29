@@ -37,7 +37,7 @@ async function expectLanded(page: Page, slug: string, scene: string) {
 
 test("every scene term is counted", () => {
   expect(built.length).toBeGreaterThanOrEqual(30);
-  expect(panelScenes.size).toBe(12);
+  expect(panelScenes.size).toBe(13);
 });
 
 test.describe("landing, desktop", () => {
@@ -345,7 +345,7 @@ test("Key and Labels modes swap the legend for labels, and the choice survives a
   await expectNoAxeViolations(page);
 });
 
-test("scene prev/next: breaks leads on to hidden, hidden to lying, and lying to unknown", async ({ page }) => {
+test("scene prev/next: breaks leads on to hidden, hidden to lying, lying to slips, and slips to unknown", async ({ page }) => {
   await page.goto("/al-mardud/breaks/");
   await expect(page.locator('.pn a[rel="next"]')).toHaveAttribute("href", /\/al-mardud\/hidden\/$/);
   await page.goto("/al-mardud/hidden/");
@@ -353,9 +353,12 @@ test("scene prev/next: breaks leads on to hidden, hidden to lying, and lying to 
   await expect(page.locator('.pn a[rel="next"]')).toHaveAttribute("href", /\/al-mardud\/lying\/$/);
   await page.goto("/al-mardud/lying/");
   await expect(page.locator('.pn a[rel="prev"]')).toHaveAttribute("href", /\/al-mardud\/hidden\/$/);
+  await expect(page.locator('.pn a[rel="next"]')).toHaveAttribute("href", /\/al-mardud\/slips\/$/);
+  await page.goto("/al-mardud/slips/");
+  await expect(page.locator('.pn a[rel="prev"]')).toHaveAttribute("href", /\/al-mardud\/lying\/$/);
   await expect(page.locator('.pn a[rel="next"]')).toHaveAttribute("href", /\/al-mardud\/unknown\/$/);
   await page.goto("/al-mardud/unknown/");
-  await expect(page.locator('.pn a[rel="prev"]')).toHaveAttribute("href", /\/al-mardud\/lying\/$/);
+  await expect(page.locator('.pn a[rel="prev"]')).toHaveAttribute("href", /\/al-mardud\/slips\/$/);
 });
 
 test("scene prev/next: the report scene opens its division and leads on to routes", async ({ page }) => {
@@ -424,6 +427,22 @@ test("lying: the legend names the liar and the suspect, and every term is visibl
   for (const slug of ["kadhib", "tuhma-bil-kadhib", "matruk", "mawdu"]) await expect(trigger(page, slug)).toBeVisible();
   // the only report words are the translation's English fragments, the added words marked
   await expect(page.locator("svg .matn .added")).toHaveText("“and pigeon racing”");
+  await expectNoAxeViolations(page);
+});
+
+test("slips: the legend names the faded head, every term is visible, and munkar and shādhdh link to their scene", async ({ page }) => {
+  await page.goto("/al-mardud/slips/");
+  await expect(page.locator(".legend")).toContainText("Memory failed (mukhtaliṭ)");
+  await expect(page.locator(".viewtoggle")).toHaveCount(1);
+  await expect(page.locator(".views")).toHaveCount(0);
+  for (const slug of ["fuhsh-al-ghalat", "ghafla", "wahm", "muallal", "su-al-hifz", "mukhtalit"]) await expect(trigger(page, slug)).toBeVisible();
+  // munkar and shādhdh are plain links to Who outweighs whom?, never triggers (design §18)
+  const links = page.locator("svg.slips a.xlink");
+  await expect(links.filter({ hasText: "munkar" })).toHaveAttribute("href", /\/al-maqbul\/opposition\/$/);
+  await expect(links.filter({ hasText: "shādhdh" })).toHaveAttribute("href", /\/al-maqbul\/opposition\/$/);
+  // the muʿallal chain is an illustration, and the two names under a translation query are left out
+  await expect(page.locator("svg.slips")).toContainText("an illustration: the book names no example");
+  await expect(page.locator("svg.slips .chip")).toHaveCount(5);
   await expectNoAxeViolations(page);
 });
 

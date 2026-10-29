@@ -245,6 +245,37 @@
     - title: Where forged words come from, and why
       section: §5.24
       note: "A forger may invent the words himself, or take the words of others, such as some of the pious predecessors, the ancient sages or biblical sources, or take a report with a weak chain and invent a sound chain for it so that it spreads. Forgers act from an absence of religion, like the zindīqs; from ignorance, like some worshippers; from loyalty to a school; to please leaders; or to win fame with something rare. All of it is forbidden by consensus. Some of the Karrāmiyya and Ṣūfīs are reported to allow lying to encourage good and warn against evil; Ibn Ḥajar calls this a mistake born of ignorance, since that too is part of the Law. Deliberately lying about the Prophet ﷺ is a major sin, and al-Juwaynī went so far as to call the deliberate forger a disbeliever. Narrating a forged report is forbidden unless one makes its forgery clear, as Muslim's report from the Prophet ﷺ warns."
+- id: slips
+  division: al-mardud
+  moons: [1]
+  order: 5
+  title: Did he keep it right?
+  eyebrow: Rejected for mistakes · §5.23, §5.26–5.27, §5.38
+  lede: Some charges are about how well a narrator keeps what he reports. He may make many glaring mistakes, be careless, or report on a mistaken impression that only gathering the routes will show. His memory may be poor all his life, or fail later, so that what he told before is accepted only when it can be told apart.
+  source: §5.23 Fuḥsh al-ghalaṭ, ghafla and wahm, §5.26 Munkar, §5.27 Muʿallal, §5.38 Sūʾ al-ḥifẓ and mukhtaliṭ
+  diagram: Slips
+  width: 780
+  captions:
+    - term: fuhsh-al-ghalat
+      note: "The third of the ten causes of criticism: the narrator's mistakes are gross, which means many. For those who do not make going against others a condition of munkar, his report is munkar, and so are the reports of the fourth and the fifth: the one whose carelessness is excessive and the one whose sin is open (§5.23, §5.26)."
+    - term: ghafla
+      note: "The fourth cause: a naive carelessness about accuracy in what he passes on. When it is excessive, his report is munkar for those who do not make going against others a condition of munkar (§5.23, §5.26)."
+    - term: wahm
+      note: "The sixth cause: the narrator reports on a mistaken impression. When indications reveal it, such as joining up a mursal or broken chain, or slipping one ḥadīth into another, found by close study and gathering the routes, the report is muʿallal. Ibn Ḥajar names this one because it needs the longest explanation (§5.23, §5.27)."
+    - term: muallal
+      note: "A report whose hidden mistake shows only by close study and gathering its routes, one of the subtlest kinds. Only a few with keen understanding, vast memory and full knowledge of narrators' ranks, chains and texts have spoken on it, such as ʿAlī ibn al-Madīnī, Aḥmad, al-Bukhārī, Abū Zurʿa and al-Dāraquṭnī. Like a money-changer judging false coins, the expert may not always show his proof (§5.27)."
+    - term: su-al-hifz
+      note: "The tenth cause: the narrator's mistakes outweigh what he gets right. It is of two kinds. If it stays with him in every state, some ḥadīth scholars call his report shādhdh. If it comes on him later, he is mukhtaliṭ (§5.23, §5.38)."
+    - term: mukhtalit
+      note: "Poor memory that came on later: through old age, the loss of his sight, or the burning or loss of the books he relied on, so that he fell back on a memory that had weakened. What he narrated before is accepted when it can be told apart; what cannot is held back, as is any case that can't be settled. Only a study of those who took from him shows which is which (§5.38)."
+  panels:
+    - { id: errors, label: Errors and carelessness, x0: 0, x1: 260 }
+    - { id: defect, label: A hidden defect, x0: 260, x1: 520 }
+    - { id: memory, label: Poor memory, x0: 520, x1: 780 }
+  extra:
+    - title: The hidden-defect picture
+      section: §5.27
+      note: "The book gives no example of a muʿallal report, so the middle panel is an illustration. One unnamed chain runs from the Prophet ﷺ through a Companion and a Successor, which looks connected. Gathering the other routes shows each of them going from the Successor straight to the Prophet ﷺ, with no Companion between: the narrator has joined up a mursal, one of the indications §5.27 names. The book names two more of the few who spoke on it, whose names in the translation are under query; they are left out of the panel until a ruling."
 - id: unknown
   division: al-mardud
   moons: [1]

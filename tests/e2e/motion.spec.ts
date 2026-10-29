@@ -226,3 +226,40 @@ test("with motion, the lying scene's clue cards fade in one after another, then 
   expect(await timing("svg.lying .added")).toEqual([[["blink", 0, Infinity]]]);
   await expect.poll(() => page.locator("svg .xdraw .xmark").last().evaluate((e) => Number(getComputedStyle(e).strokeDashoffset.replace("px", ""))), { timeout: 5000 }).toBe(0);
 });
+
+test("reduced motion: the slips scene shows the lens at the end of its sweep, the ring drawn and the timeline at rest", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/al-mardud/slips/");
+  const css = (sel: string, prop: string) => page.locator(sel).evaluateAll((els, p) => els.map((e) => getComputedStyle(e).getPropertyValue(p)), prop);
+  // the lens rests where the sweep ends, past the gathered routes, which all show
+  expect(await css("svg .lens", "transform")).toEqual(["none"]);
+  expect(await css("svg .route", "opacity")).toEqual(["0.5", "0.5", "0.5"]);
+  expect(await css("svg .lost", "opacity")).toEqual(["1"]);
+  expect(await css("svg .lost", "transform")).toEqual(["none"]);
+  // every cross on the record is drawn; the timeline's event star is at rest and nothing blinks
+  expect(await page.locator("svg .xdraw .xmark").evaluateAll((els) => els.map((e) => Number(getComputedStyle(e).strokeDashoffset.replace("px", ""))))).toEqual(Array(6).fill(0));
+  expect(await css("svg .event", "transform")).toEqual(["none"]);
+  expect(await page.locator("svg.slips").evaluate((svg) => svg.getAnimations({ subtree: true }).length)).toBe(0);
+});
+
+test("with motion, the slips scene's lens sweeps the routes in, then the ring closes and the timeline star pulses once", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.goto("/al-mardud/slips/");
+  const timing = (sel: string) => page.locator(sel).evaluateAll((els) => els.map((e) => e.getAnimations().map((a) => [(a as CSSAnimation).animationName, a.effect?.getTiming().delay, a.effect?.getTiming().iterations])));
+  // the lens, ring and star don't fill forwards, so once finished they leave getAnimations() (the star after about
+  // 1.4s, which a loaded run can pass before this reads it): check their declared animations instead
+  const declared = (sel: string) => page.locator(sel).evaluateAll((els) => els.map((e) => {
+    const s = getComputedStyle(e);
+    return [s.animationName, s.animationDelay, s.animationIterationCount];
+  }));
+  expect(await declared("svg .lens")).toEqual([["slips-sweep", "0.6s", "1"]]);
+  // each route brightens as the lens reaches it (lib/kit.ts sweepAt), and the ring closes after the sweep
+  expect(await timing("svg .route")).toEqual([1150, 1960, 2780].map((d) => [["slips-light", d, 1]]));
+  expect(await declared("svg .lost")).toEqual([["slips-ring", "3.1s", "1"]]);
+  expect(await timing("svg .xdraw .xmark")).toEqual([400, 550, 700, 850, 1000, 1150].map((d) => [["slips-draw", d, 1]]));
+  expect(await declared("svg .event")).toEqual([["slips-pulse", "0.6s", "1"]]);
+  // the end state: the lens at rest and the ring in place
+  await expect.poll(() => page.locator("svg .lens").evaluate((e) => getComputedStyle(e).transform), { timeout: 8000 }).toBe("none");
+  await expect.poll(() => page.locator("svg .lost").evaluate((e) => getComputedStyle(e).opacity), { timeout: 8000 }).toBe("1");
+  await expect.poll(() => page.locator("svg .route").last().evaluate((e) => getComputedStyle(e).opacity), { timeout: 8000 }).toBe("0.5");
+});
