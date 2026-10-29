@@ -347,6 +347,28 @@
     - { id: shortening, label: Cutting it short, x0: 0, x1: 260 }
     - { id: by-meaning, label: In other words, x0: 260, x1: 520 }
     - { id: rare, label: Rare words, x0: 520, x1: 780 }
+- id: identity
+  division: al-mardud
+  moons: [1]
+  order: 8
+  title: Why is he unknown?
+  eyebrow: Rejected for a narrator who is unknown, the causes · §5.35
+  lede: The eighth charge is that a narrator is unknown, and Ibn Ḥajar gives two causes. A man with many names, cited by one he is not known by, is taken for someone else; and a man who narrates rarely has few who take from him.
+  source: §5.35 Jahāla and al-wuḥdān, §5.36 Majhūl al-ʿayn and mastūr
+  diagram: Identity
+  width: 860
+  captions:
+    - term: jahala
+      note: "The eighth cause of criticism: the narrator's state is unknown. One cause: he has many references, such as name, lineage, title, occupation, description or ancestry; known by one, he is cited by another and taken for someone else. Muḥammad ibn al-Sāʾib ibn Bishr al-Kalbī was also called Muḥammad ibn Bishr, Ḥammād ibn al-Sāʾib, Abū al-Naḍr, Abū Saʿīd and Abū Hishām, and taken for a group (§5.35)."
+    - term: wuhdan
+      note: "The other cause of being unknown: the narrator narrates rarely, so few take from him. Scholars compiled books of al-wuḥdān: narrators from whom only one person narrates, even when he is named. Muslim and al-Ḥasan ibn Sufyān were among those who compiled them. Who narrates from him then sets which kind of unknown he is (§5.35–5.36)."
+  extra:
+    - title: Books on men with many names
+      section: §5.35
+      note: "Scholars have written on narrators with many names. al-Khaṭīb al-Baghdādī did it excellently in al-Mūḍiḥ, and before him ʿAbd al-Ghanī and then al-Ṣūrī wrote on it. One who does not know that the names belong to one man will not notice it."
+    - title: The illustration
+      section: §5.35
+      note: "The book gives an example only for many names: al-Kalbī. It names no narrator with a single student, so the second cell is an illustration: unnamed figures, one narrator with a single student and, beside him for contrast, one with many. The kinds of unknown narrator that follow, majhūl al-ʿayn and mastūr, are drawn in Who is this narrator?"
 - id: unknown
   division: al-mardud
   moons: [1]

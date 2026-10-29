@@ -353,3 +353,41 @@ test("with motion, switching the wording scene's view shows the output card's ne
   }), v);
   for (const v of ["single-words", "most"]) expect(await lows(v)).toEqual([1, 1]);
 });
+
+test("reduced motion: the identity scene rests with one man among his names, the six faint figures not shown", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/al-mardud/identity/");
+  const css = (sel: string, prop: string) => page.locator(sel).evaluateAll((els, p) => els.map((e) => getComputedStyle(e).getPropertyValue(p)), prop);
+  expect(await css("svg .merge", "opacity")).toEqual(Array(6).fill("0"));
+  expect(await css("svg .merge", "transform")).toEqual(Array(6).fill("none"));
+  expect(await css("svg .one", "opacity")).toEqual(["1"]);
+  expect(await css("svg .tie", "opacity")).toEqual(Array(6).fill("1"));
+  expect(await page.locator(".identity").evaluate((el) => el.getAnimations({ subtree: true }).length)).toBe(0);
+});
+
+test("with motion, the identity scene's six figures slide together once and fade as the one man and his ties appear", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.goto("/al-mardud/identity/");
+  const timing = (sel: string) => page.locator(sel).evaluateAll((els) => els.map((e) => e.getAnimations().map((a) => [(a as CSSAnimation).animationName, a.effect?.getTiming().delay, a.effect?.getTiming().iterations, a.effect?.getTiming().fill])));
+  expect(await timing("svg .merge")).toEqual(Array(6).fill([["identity-merge", 800, 1, "both"]]));
+  expect(await timing("svg .one")).toEqual([[["identity-one", 2000, 1, "both"]]]);
+  expect(await timing("svg .tie")).toEqual(Array(6).fill([["identity-one", 2300, 1, "both"]]));
+  // each faint figure starts away from the one man: paused at its first frame, its transform is an offset
+  const start = await page.locator("svg .merge").first().evaluate((e) => {
+    const a = e.getAnimations()[0];
+    a.pause();
+    a.currentTime = 0;
+    const id = new DOMMatrix(getComputedStyle(e).transform).isIdentity;
+    a.finish(); // let it end, for the settled check below
+    return id;
+  });
+  expect(start).toBe(false);
+  // cell B's arrows flow down
+  expect(await timing("#cell-one-student path.flow")).toEqual(Array(5).fill([["flow", 0, Infinity, "none"]]));
+  // they end where the reduced-motion page rests: the faint figures gone and in place, the man and his ties shown
+  const settled = () => page.locator(".identity").evaluate((el) => {
+    const all = (sel: string, ok: (s: CSSStyleDeclaration) => boolean) => [...el.querySelectorAll(sel)].every((e) => ok(getComputedStyle(e)));
+    return all(".merge", (s) => s.opacity === "0" && new DOMMatrix(s.transform).isIdentity) && all(".one, .tie", (s) => s.opacity === "1");
+  });
+  await expect.poll(settled, { timeout: 6000 }).toBe(true);
+});

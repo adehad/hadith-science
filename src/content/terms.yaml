@@ -620,6 +620,7 @@
   def: "Doubt over who a narrator is or what he is like, because he goes by many names or because few narrate from him."
   section: "§5.35"
   division: al-mardud
+  scene: identity
 - id: majhul
   translit: Majhūl
   ar: مَجْهُولٌ
@@ -635,6 +636,7 @@
   def: "Narrators from whom only one person narrates, even when they are named. Muslim and others listed them."
   section: "§5.35"
   division: al-mardud
+  scene: identity
 - id: mubham
   translit: Mubham
   ar: مُبْهَمٌ
