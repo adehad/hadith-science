@@ -162,7 +162,11 @@ const EXIT_X2 = CARD.x0 - 3;
   <text class="lbl" x="390" y="384">the report is used as proof</text>
 
   {/* ---- panel 3: three outcomes ---- */}
-  <Pill x={650} y={MUTAWATIR_Y} state="accept" text="Accepted · certain" />
+  {/* how sure mutawātir makes us is the knowledge scene's subject: the pill links there */}
+  <a class="xlink pill-link" href={href("adad-al-turuq/knowledge/")} aria-label="Accepted · certain: see How sure can we be?">
+    <Pill x={650} y={MUTAWATIR_Y} state="accept" text="Accepted · certain" />
+    <text class="rp" x="728" y={MUTAWATIR_Y + 4}>→</text>
+  </a>
 
   <g class="out">
     <rect class={`card ${OUT.maqbul.kind}`} x={CARD.x0} y={OUT.maqbul.y0} width={CARD.x1 - CARD.x0} height={OUT.maqbul.y1 - OUT.maqbul.y0} rx="8" />
@@ -204,6 +208,7 @@ const EXIT_X2 = CARD.x0 - 3;
   .xlink .xu{text-decoration:underline;text-decoration-color:var(--line)}
   .xlink:hover text,.xlink:focus-visible text{fill:var(--gold-a)}
   .xlink:hover .xu,.xlink:focus-visible .xu{text-decoration-color:var(--gold-a)}
+  .pill-link:hover :global(rect),.pill-link:focus-visible :global(rect){stroke-width:2.5}
   /* the five lines' dashes are staggered, so they read as many routes rather than a ladder */
   .bundle{stroke-width:1.2;stroke-dashoffset:var(--o);animation-name:sorting-flow}
   @keyframes sorting-flow{from{stroke-dashoffset:var(--o)}to{stroke-dashoffset:calc(var(--o) - 12px)}}

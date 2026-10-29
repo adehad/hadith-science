@@ -144,3 +144,29 @@ test("with motion, the sorting scene's exits draw in one after another, after th
   await expect.poll(last, { timeout: 6000 }).toBe(0);
   await expect.poll(() => page.locator("svg .out").last().evaluate((e) => getComputedStyle(e).opacity), { timeout: 6000 }).toBe("1");
 });
+
+test("reduced motion: the knowledge scene shows the lifts drawn and the all-three marker bright", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/adad-al-turuq/knowledge/");
+  const lifts = await page.locator("svg .lift.draw").evaluateAll((els) => els.map((e) => [Number(getComputedStyle(e).strokeDashoffset.replace("px", "")), getComputedStyle(e).opacity]));
+  expect(lifts).toEqual([[0, "1"], [0, "1"], [0, "1"]]);
+  expect(await page.locator("svg .all-three").evaluate((e) => getComputedStyle(e).opacity)).toBe("1");
+  // the other view's marker swap is instant: no transition runs
+  await page.locator('.views button[data-v="nazari-only"]').click();
+  expect(await page.evaluate(() => document.getAnimations().length)).toBe(0);
+});
+
+test("with motion, the knowledge scene's lifts draw in one after another, then the all-three marker brightens", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.goto("/adad-al-turuq/knowledge/");
+  const delays = await page.locator("svg .lift.draw").evaluateAll((els) => els.map((e) => e.getAnimations().map((a) => [(a as CSSAnimation).animationName, a.effect?.getTiming().delay])));
+  expect(delays).toEqual([[["knowledge-draw", 800]], [["knowledge-draw", 1200]], [["knowledge-draw", 1600]]]);
+  expect(await page.locator("svg .all-three").evaluate((e) => e.getAnimations().map((a) => [(a as CSSAnimation).animationName, a.effect?.getTiming().delay]))).toEqual([["knowledge-bright", 2100]]);
+  const last = () => page.locator("svg .lift.draw").last().evaluate((e) => Number(getComputedStyle(e).strokeDashoffset.replace("px", "")));
+  await expect.poll(last, { timeout: 6000 }).toBe(0);
+  await expect.poll(() => page.locator("svg .all-three").evaluate((e) => getComputedStyle(e).opacity), { timeout: 6000 }).toBe("1");
+  // the mutawātir marker slides down to the other view's place
+  await page.locator('.views button[data-v="nazari-only"]').click();
+  const y = () => page.locator("svg .mut").evaluate((e) => new DOMMatrix(getComputedStyle(e).transform).f);
+  await expect.poll(y, { timeout: 5000 }).toBe(154);
+});

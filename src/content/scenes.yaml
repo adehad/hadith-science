@@ -78,6 +78,43 @@
     - { id: kinds, label: Two kinds, x0: 0, x1: 260 }
     - { id: check, label: The check, x0: 260, x1: 520 }
     - { id: outcomes, label: Three outcomes, x0: 520, x1: 780 }
+- id: knowledge
+  division: adad-al-turuq
+  moons: [0, 1]
+  order: 4
+  title: How sure can we be?
+  eyebrow: How a report reached us, the knowledge it gives · §5.3, §5.7
+  lede: Mutawātir gives certain knowledge, which even a layperson gains without reasoning. An āḥād report backed by signs can give reasoned knowledge, but only to a ḥadīth scholar versed in its narrators. With all three signs together it comes close to certainty.
+  source: §5.3 Certain and reasoned knowledge, §5.7 Reports with supporting signs
+  diagram: Knowledge
+  width: 780
+  captions:
+    - term: ilm-yaqini
+      note: "Mutawātir gives certain knowledge: a firm belief that matches the truth and compels a person to accept it, with no way to refute it. It comes without building evidence, so even a layperson, who cannot reason it out, gains it. Its narrators are not investigated: it must be acted on without that search (§5.3)."
+    - term: ilm-nazari
+      note: "Reasoned knowledge comes only by building evidence, ordering known or presumed facts to reach further ones, so only someone able to reason gains it. By the chosen opinion, an āḥād report backed by signs gives it, but only to a ḥadīth scholar versed in the narrators and hidden defects. Those who deny it keep the word knowledge for mutawātir: a dispute over words, Ibn Ḥajar says (§5.3, §5.7)."
+    - term: muhtaff-bil-qarain
+      note: "An āḥād report whose signs give reasoned knowledge. Ibn Ḥajar names three: being in both Ṣaḥīḥs, unless an expert criticised it or it is in an unresolved clash; a mashhūr with routes free of weak narrators and hidden defects; and a chain of great imams, not gharīb, as Aḥmad from al-Shāfiʿī from Mālik, the first two each with a partner. All three together come close to certainty (§5.7)."
+  views:
+    - id: ibn-hajar
+      label: "Ibn Ḥajar: certain"
+      scholars: §5.3
+      note: "Mutawātir gives certain knowledge, which needs no building of evidence, so a layperson gains it too. Ibn Ḥajar calls this the trusted opinion."
+    - id: nazari-only
+      label: "Some: reasoned only"
+      scholars: "“It has also been said”, §5.3"
+      note: "An opinion the book reports without naming who holds it: mutawātir gives only reasoned knowledge. Ibn Ḥajar rejects it (“This is not so”): a layperson, who cannot order facts into an argument, still gains knowledge from mutawātir, which could not happen if that knowledge were reasoned."
+  panels:
+    - { id: certain, label: Certain, x0: 0, x1: 260 }
+    - { id: meter, label: How sure, x0: 260, x1: 520 }
+    - { id: signs, label: The signs, x0: 520, x1: 780 }
+  extra:
+    - title: Why the two Ṣaḥīḥs count as a sign
+      section: §5.7
+      note: "The standing of al-Bukhārī and Muslim in this field, their lead in telling the sound from the rest, and the scholars' acceptance of their books. That acceptance alone gives knowledge more strongly than many routes that fall short of mutawātir. It excludes reports an expert criticised, and two of their reports that clash with no way to prefer one; for the rest, the scholars agree on accepting them as sound. If it is said they agreed only to act on these reports, Ibn Ḥajar answers that acting on every sound report is agreed anyway, so the two books would then have nothing special. Abū Isḥāq al-Isfarāʾīnī, and among the ḥadīth imams al-Ḥumaydī and Abū al-Faḍl ibn Ṭāhir, said these reports give reasoned knowledge. Abū Manṣūr al-Baghdādī and Abū Bakr ibn Fūrak said the same of the clean mashhūr."
+    - title: Why Mālik's presence counts
+      section: §5.7
+      note: "Anyone with the least knowledge of this field knows that when a narrator like Mālik takes part in a report, he is truthful in it; when another of his rank joins him, it grows stronger and the fear of a mistake recedes. The standing and qualities of such narrators make their chain equal to one carried by a large number of others."
 - id: breaks
   division: al-mardud
   moons: [0]

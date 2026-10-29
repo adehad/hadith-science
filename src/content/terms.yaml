@@ -51,6 +51,7 @@
   def: "Knowledge that compels belief with no reasoning needed, so even a layperson gains it. Mass transmission gives it."
   section: "§5.3"
   division: adad-al-turuq
+  scene: knowledge
 - id: ilm-nazari
   translit: al-ʿIlm al-naẓarī
   ar: الْعِلْمُ النَّظَرِيُّ
@@ -58,6 +59,7 @@
   def: "Knowledge reached only by weighing evidence, so only someone able to reason gains it. Some single-route reports with supporting signs give it."
   section: "§5.3"
   division: adad-al-turuq
+  scene: knowledge
 - id: mashhur
   translit: Mashhūr
   ar: مَشْهُورٌ
@@ -121,6 +123,7 @@
   def: "A single-route report backed by signs, such as being in both Ṣaḥīḥs, having several clean routes, or a chain of great imams, so it gives reasoned knowledge."
   section: "§5.7"
   division: adad-al-turuq
+  scene: knowledge
 - id: fard
   translit: Fard
   ar: فَرْدٌ

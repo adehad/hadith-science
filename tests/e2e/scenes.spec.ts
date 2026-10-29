@@ -37,7 +37,7 @@ async function expectLanded(page: Page, slug: string, scene: string) {
 
 test("every scene term is counted", () => {
   expect(built.length).toBeGreaterThanOrEqual(30);
-  expect(panelScenes.size).toBe(8);
+  expect(panelScenes.size).toBe(9);
 });
 
 test.describe("landing, desktop", () => {
@@ -215,6 +215,28 @@ test.describe("views", () => {
     await expectNoAxeViolations(page);
   });
 
+  test("knowledge: the other view moves the mutawātir marker into the reasoned band and asks how the layperson knows", async ({ page }) => {
+    await page.goto("/adad-al-turuq/knowledge/");
+    const part = (id: string) => page.locator(`svg [data-view-show="${id}"]`);
+    const marker = page.locator("svg .mut");
+    const at = (v: string) => marker.evaluate((e, v) => (e as SVGElement).style.transform.replace(/\s/g, "") === e.getAttribute(`data-v-${v}`)!.replace(/\s/g, ""), v);
+    expect(await at("ibn-hajar")).toBe(true);
+    await expect(part("nazari-only").first()).toBeHidden();
+    await page.locator('.views button[data-v="nazari-only"]').click();
+    await expect(page).toHaveURL(/[?&]view=nazari-only\b/);
+    await expect(page.locator('.views button[data-v="nazari-only"]')).toHaveAttribute("aria-pressed", "true");
+    // reduced motion: the marker sits at once where this view puts it, lower down the meter
+    expect(await at("nazari-only")).toBe(true);
+    await expect(part("nazari-only").filter({ hasText: "yet he still gains it from mutawātir" })).toBeVisible();
+    for (const g of await part("ibn-hajar").all()) await expect(g).toBeHidden();
+    // the view note says who holds it and that Ibn Ḥajar rejects it
+    await expect(page.locator('.views [data-view-show="nazari-only"]')).toContainText("Ibn Ḥajar rejects it");
+    for (const slug of ["ilm-yaqini", "ilm-nazari", "muhtaff-bil-qarain"]) await expect(trigger(page, slug)).toBeVisible();
+    await expectNoAxeViolations(page);
+    await page.goto("/adad-al-turuq/knowledge/?view=nazari-only");
+    expect(await at("nazari-only")).toBe(true);
+  });
+
   test("accept-all swaps the clash branch's Weigh them for Accepted; the scales stay", async ({ page }) => {
     await page.goto("/al-maqbul/opposition/");
     const branch = (id: string) => page.locator(`svg [data-view-show="${id}"]`);
@@ -333,6 +355,14 @@ test("scene prev/next: sorting follows routes in its division", async ({ page })
   await expect(page.locator('.pn a[rel="prev"]')).toHaveAttribute("href", /\/adad-al-turuq\/routes\/$/);
   await page.goto("/adad-al-turuq/routes/");
   await expect(page.locator('.pn a[rel="next"]')).toHaveAttribute("href", /\/adad-al-turuq\/sorting\/$/);
+});
+
+test("scene prev/next: knowledge follows sorting, and the sorting pill links to it", async ({ page }) => {
+  await page.goto("/adad-al-turuq/knowledge/");
+  await expect(page.locator('.pn a[rel="prev"]')).toHaveAttribute("href", /\/adad-al-turuq\/sorting\/$/);
+  await page.goto("/adad-al-turuq/sorting/");
+  await expect(page.locator('.pn a[rel="next"]')).toHaveAttribute("href", /\/adad-al-turuq\/knowledge\/$/);
+  await expect(page.locator("svg a.pill-link")).toHaveAttribute("href", /\/adad-al-turuq\/knowledge\/$/);
 });
 
 test("sorting: no legend or Key/Labels switch, since it draws no narrators", async ({ page }) => {
