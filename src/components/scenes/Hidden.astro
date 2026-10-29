@@ -24,7 +24,7 @@ import Bracket from "../svg/Bracket.astro";
 import Lifespan from "../svg/Lifespan.astro";
 import TermTitle from "../svg/TermTitle.astro";
 import { FIG, KIND_NAME, RELIABLE } from "../svg/figures";
-import { ROW_TITLE_TRIGGER, SUBT_TRIGGER, panelTrigger } from "../svg/geom";
+import { ROW_TITLE_TRIGGER, SUBT_TRIGGER, titleTrigger } from "../svg/geom";
 import { cap, type DiagramProps } from "../../lib/scene";
 import { spanOverlap } from "../../lib/kit";
 import { loadContent } from "../../lib/content";
@@ -50,17 +50,17 @@ const SH_Y = 172, GH_Y = 246, NA_Y = 320;
 // the skip arrow's start: below the shaykh's Labels-mode name, which Narrator draws 14 under his feet
 const SKIP_Y = SH_Y + HALF + 20;
 
-// a panel title as a term trigger; panelTrigger checks it sits wholly inside its panel
+// a panel title as a term trigger; Term checks it sits wholly inside its panel
 function title(slug: string, cx: number) {
   const c = cap(caps, slug);
-  return { c, cx, ...panelTrigger(c.translit, cx, TITLE_Y, PANELS, { ...SUBT_TRIGGER, name: `Hidden: ${slug}` }) };
+  return { c, cx, ...titleTrigger(c.translit, cx, TITLE_Y, SUBT_TRIGGER) };
 }
 const mudallas = title("mudallas", 130);
 const mursalKhafi = title("mursal-khafi", 390);
 const mudallis = (() => {
   const c = cap(caps, "mudallis");
   const y = 378;
-  return { c, cx: 70, y, ...panelTrigger(c.translit, 70, y, PANELS, { ...ROW_TITLE_TRIGGER, name: "Hidden: mudallis" }) };
+  return { c, cx: 70, y, ...titleTrigger(c.translit, 70, y, ROW_TITLE_TRIGGER) };
 })();
 
 // ---- the lifespan bars: overlap only, no dates ----

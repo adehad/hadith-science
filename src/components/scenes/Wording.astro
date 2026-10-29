@@ -22,7 +22,7 @@ import Arrow from "../svg/Arrow.astro";
 import Glyph from "../svg/Glyph.astro";
 import Matn from "../svg/Matn.astro";
 import TermTitle from "../svg/TermTitle.astro";
-import { SUBT_TRIGGER, f, panelTrigger } from "../svg/geom";
+import { SUBT_TRIGGER, f, titleTrigger } from "../svg/geom";
 import { cap, type DiagramProps } from "../../lib/scene";
 
 type Props = DiagramProps;
@@ -36,10 +36,10 @@ if (PANELS.length !== 3) throw new Error("Wording: expected three panels");
 
 const TITLE_Y = 30, SUB_Y = 50;
 
-// a panel title as a term trigger; panelTrigger checks it sits wholly inside its panel
+// a panel title as a term trigger; Term checks it sits wholly inside its panel
 function title(slug: string, cx: number) {
   const c = cap(caps, slug);
-  return { c, cx, ...panelTrigger(c.translit, cx, TITLE_Y, PANELS, { ...SUBT_TRIGGER, name: `Wording: ${slug}` }) };
+  return { c, cx, ...titleTrigger(c.translit, cx, TITLE_Y, SUBT_TRIGGER) };
 }
 const ikhtisar = title("ikhtisar-al-hadith", 130);
 const riwaya = title("riwaya-bil-mana", 390);

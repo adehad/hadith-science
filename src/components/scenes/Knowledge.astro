@@ -21,7 +21,7 @@ import Chip from "../svg/Chip.astro";
 import Glyph from "../svg/Glyph.astro";
 import TermTitle from "../svg/TermTitle.astro";
 import { FIG, KIND_NAME, RELIABLE } from "../svg/figures";
-import { ROW_TITLE_TRIGGER, f, panelTrigger } from "../svg/geom";
+import { ROW_TITLE_TRIGGER, f, titleTrigger } from "../svg/geom";
 import { cap, type DiagramProps } from "../../lib/scene";
 import { chipRow } from "../../lib/kit";
 import { stepFill } from "../../lib/staircase";
@@ -33,15 +33,13 @@ const { caps, scene } = Astro.props;
 const W = 780, H = 490;
 const VIEW_IDS = ["ibn-hajar", "nazari-only"] as const;
 if ((scene.views ?? []).map((v) => v.id).join() !== VIEW_IDS.join()) throw new Error(`Knowledge: expected views ${VIEW_IDS.join(", ")}`);
-const PANELS = scene.panels ?? [];
-
-// a 13px bold term label, centred so panelTrigger can check its hit area sits wholly inside its panel (or the
+// a 13px bold term label, centred; Term checks its hit area sits wholly inside its panel (or the
 // carousel would cut it); left sets where the text starts, for the meter's left-aligned rows
 const ROW = { ...ROW_TITLE_TRIGGER, gap: 10 } as const;
 function trigger(slug: string, left: number, y: number) {
   const c = cap(caps, slug);
   const cx = f(left + (c.translit.length * ROW.charW) / 2);
-  return { c, cx, y, ...panelTrigger(c.translit, cx, y, PANELS, { ...ROW, name: `Knowledge: ${slug}` }) };
+  return { c, cx, y, ...titleTrigger(c.translit, cx, y, ROW) };
 }
 
 // ---- panel 1: certain ----

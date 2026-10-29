@@ -25,7 +25,7 @@ import Glyph from "../svg/Glyph.astro";
 import Matn from "../svg/Matn.astro";
 import TermTitle from "../svg/TermTitle.astro";
 import { FIG, KIND_NAME, RELIABLE } from "../svg/figures";
-import { ROW_TITLE_TRIGGER, SUBT_TRIGGER, f, panelTrigger, rowTrigger } from "../svg/geom";
+import { ROW_TITLE_TRIGGER, SUBT_TRIGGER, f, titleTrigger, rowTrigger } from "../svg/geom";
 import { cap, type DiagramProps } from "../../lib/scene";
 import { chipRow, discRow, sweepAt } from "../../lib/kit";
 import { loadContent } from "../../lib/content";
@@ -41,19 +41,16 @@ if (PANELS.length !== 3) throw new Error("Slips: expected three panels");
 
 const TITLE_Y = 30, SUB_Y = 50;
 
-// a left-aligned 13px row title as a term trigger (charW for a title of wide letters); rowTrigger doesn't know about panels, so check here that the
-// hit area sits wholly inside panel i, or the portrait carousel would cut it
-function row(slug: string, x: number, y: number, i: number, charW?: number) {
+// a left-aligned 13px row title as a term trigger (charW for a title of wide letters); Term checks it stays in its panel
+function row(slug: string, x: number, y: number, charW?: number) {
   const c = cap(caps, slug);
   const t = rowTrigger(c.translit, x, y, charW ? { charW } : {});
-  const p = PANELS[i];
-  if (t.hit.x < p.x0 || t.hit.x + t.hit.w > p.x1) throw new Error(`Slips: ${slug} trigger leaves its panel`);
   return { c, x, y, ...t };
 }
-// a centred 15px sub-title as a term trigger; panelTrigger checks it stays in its panel
+// a centred 15px sub-title as a term trigger; Term checks it stays in its panel
 function subt(slug: string, cx: number, y: number) {
   const c = cap(caps, slug);
-  return { c, cx, y, ...panelTrigger(c.translit, cx, y, PANELS, { ...SUBT_TRIGGER, name: `Slips: ${slug}` }) };
+  return { c, cx, y, ...titleTrigger(c.translit, cx, y, SUBT_TRIGGER) };
 }
 
 // links to other scenes: munkar and shādhdh belong to "Who outweighs whom?", open sin to the innovation scene,
@@ -65,14 +62,14 @@ const innovation = scenes.find((s) => s.division === "al-mardud" && s.id === "in
 
 // ---- panel 1: errors and carelessness ----
 const FK = 0.8;
-const fuhsh = row("fuhsh-al-ghalat", 20, 84, 0);
+const fuhsh = row("fuhsh-al-ghalat", 20, 84);
 const WEAK_Y = 136;
 // the record: ten marks, six of them crosses, mixed so the crosses stand out; marks, not a count (design §18).
 // Each cross draws in 0.15s after the one before.
 const CROSSES = new Set([1, 3, 4, 6, 8, 9]);
 let nth = 0;
 const MARKS = discRow(10, 170, 15).map((x, i) => ({ x, cross: CROSSES.has(i), d: CROSSES.has(i) ? f(0.4 + 0.15 * nth++) : 0 }));
-const ghafla = row("ghafla", 20, 222, 0);
+const ghafla = row("ghafla", 20, 222);
 const CARELESS_Y = 276;
 const STUB = { x: 88, y: CARELESS_Y - 14, w: 64, h: 28 };
 
@@ -86,7 +83,7 @@ const A_X = 300;
 const SWEEP = { x0: 330, x1: 506, t0: 0.6, t1: 3 };
 const OTHERS = [370, 430, 490].map((x) => ({ x, d: sweepAt(x, SWEEP) }));
 const RING_D = f(SWEEP.t1 + 0.1);
-const wahm = row("wahm", 284, 316, 1, 9);
+const wahm = row("wahm", 284, 316, 9);
 const COINS = [284, 304, 324];
 const MASTERS = [["ʿAlī ibn al-Madīnī", "Aḥmad ibn Ḥanbal"], ["al-Bukhārī", "Abū Zurʿa", "al-Dāraquṭnī"]].flatMap((texts, i) =>
   chipRow(texts, 272, 6).chips.map((c) => ({ ...c, y: 476 + i * 26 })),
@@ -100,7 +97,7 @@ const ALL_Y = 107;
 const mukhtalit = (() => {
   const c = cap(caps, "mukhtalit");
   const cx = 715, y = 200;
-  return { c, cx, y, ...panelTrigger(c.translit, cx, y, PANELS, { ...ROW_TITLE_TRIGGER, name: "Slips: mukhtalit" }) };
+  return { c, cx, y, ...titleTrigger(c.translit, cx, y, ROW_TITLE_TRIGGER) };
 })();
 const FIG_Y = 240;
 const LATE_Y = 282, EVENT_X = 650;

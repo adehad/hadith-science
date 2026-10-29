@@ -20,7 +20,7 @@ import Chip from "../svg/Chip.astro";
 import Glyph from "../svg/Glyph.astro";
 import Bracket from "../svg/Bracket.astro";
 import { FIG, KIND_NAME, RELIABLE, type Kind } from "../svg/figures";
-import { SUBT_TRIGGER, f, panelTrigger } from "../svg/geom";
+import { SUBT_TRIGGER, f, titleTrigger } from "../svg/geom";
 import { cap, type DiagramProps } from "../../lib/scene";
 import { CHIP_CHAR_W, chipWidth, sweepAt } from "../../lib/kit";
 
@@ -29,8 +29,6 @@ const { caps, scene } = Astro.props;
 
 const W = 780, H = 600;
 if (scene.views?.length) throw new Error("Support: expected no views");
-const PANELS = scene.panels ?? [];
-
 const K = 0.7;
 const HALF = 22 * K; // half a figure's height
 
@@ -94,11 +92,11 @@ const chip = (text: string, cx: number) => {
   return { text, w, x: f(cx - w / 2) };
 };
 
-// a bracket label as a term trigger, in the 15px display face (geom's SUBT_TRIGGER); panelTrigger checks it sits
+// a bracket label as a term trigger, in the 15px display face (geom's SUBT_TRIGGER); Term checks it sits
 // wholly inside its panel, or the carousel would cut it
 function label(slug: string, cx: number, y: number) {
   const c = cap(caps, slug);
-  return { c, cx, y, ...panelTrigger(c.translit, cx, y, PANELS, { ...SUBT_TRIGGER, name: `Support: ${slug}` }) };
+  return { c, cx, y, ...titleTrigger(c.translit, cx, y, SUBT_TRIGGER) };
 }
 // [slug, bracket x0, x1, row, label centre]; the full follow-up's bracket covers al-Qaʿnabī only, not al-Shāfiʿī
 const BRACKETS: [string, number, number, number, number][] = [
@@ -113,7 +111,7 @@ const brackets = BRACKETS.map(([slug, x0, x1, y, cx]) => ({ x0, x1, by: y, ...la
 const itibar = (() => {
   const c = cap(caps, "itibar");
   const cx = f(LENS.x + 18 + (c.translit.length * SUBT_TRIGGER.charW) / 2), y = LENS.y + 6;
-  return { c, cx, y, ...panelTrigger(c.translit, cx, y, PANELS, { ...SUBT_TRIGGER, top: 19, h: 26, x0: LENS.x - 12, name: "Support: itibar" }) };
+  return { c, cx, y, ...titleTrigger(c.translit, cx, y, { ...SUBT_TRIGGER, top: 19, h: 26, x0: LENS.x - 12 }) };
 })();
 
 const qanabiAt = sweepAt(STU.qanabi, SWEEP);

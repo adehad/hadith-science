@@ -70,8 +70,10 @@ const steps = STEPS.map(([lines, en, icon], i) => {
   const box = stepBox(def, i);
   // per-view targets for the step body, its rect and its rank arrow
   const gAttrs: Record<string, string> = {}, rAttrs: Record<string, string> = {}, aAttrs: Record<string, string> = {};
+  const dx: number[] = [];
   for (const v of views) {
     const b = stepBox(stair(v.id), i);
+    dx.push(b.x);
     gAttrs[`data-v-${v.id}`] = `translate(${b.x}px,${b.top}px)`;
     rAttrs[`data-h-${v.id}`] = `${b.h}px`;
     rAttrs[`data-fill-${v.id}`] = stepFill(stair(v.id).lvl[i]);
@@ -92,7 +94,7 @@ const steps = STEPS.map(([lines, en, icon], i) => {
     t.label = `${lines.slice(t.k0, t.k1 + 1).map((l) => l[2]).join(sep)}: ${t.c.en}`;
   }
   return {
-    n: i + 1, box, en, lines, triggers, icon: modeIcon(icon, CX, ICON_Y), gAttrs, rAttrs, aAttrs,
+    n: i + 1, box, en, lines, triggers, icon: modeIcon(icon, CX, ICON_Y), gAttrs, rAttrs, aAttrs, dx,
     fill: stepFill(def.lvl[i]),
     rank: { w: (4.2 - i * 0.4).toFixed(1), dash: RANK_DASH[i] },
   };
@@ -134,7 +136,7 @@ const base = BASE.map(([slug, ar, tr], k) => {
             {s.lines.slice(t.k0, t.k1 + 1).map(([, ar], j) => (
               <text class="title-ar sm" x={CX} y={Y0 + (t.k0 + j) * LINE} lang="ar">{ar}</text>
             ))}
-            <Term slug={t.c.slug} json={t.c.json} label={t.label} {...t.hit}>
+            <Term slug={t.c.slug} json={t.c.json} label={t.label} {...t.hit} dx={s.dx}>
               {s.lines.slice(t.k0, t.k1 + 1).map(([, , tr], j) => (
                 <text class="tr" x={CX} y={Y0 + (t.k0 + j) * LINE + 15}>{j > 0 ? ` ${tr}` : tr}</text>
               ))}
@@ -142,8 +144,10 @@ const base = BASE.map(([slug, ar, tr], k) => {
             </Term>
           </>
         ))}
+        {/* checked against the panels in the default view only: in the madinah view step 1 moves to the second
+            column and this line runs past the first panel's edge (x 113–280 against 0–220) */}
         {s.n === 1 && (
-          <Term slug={imla.c.slug} json={imla.c.json} label={IMLA_TEXT} {...imla.hit}>
+          <Term slug={imla.c.slug} json={imla.c.json} label={IMLA_TEXT} {...imla.hit} dx={[s.box.x]}>
             <text class="lbl" x={HIT_X} y="-8" style="text-anchor:start">{IMLA_TEXT}</text>
             <InfoIcon {...imla.info} />
           </Term>

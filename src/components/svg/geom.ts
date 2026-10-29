@@ -3,7 +3,6 @@
 // round to 2 decimals, so the built SVG doesn't carry float noise; it lives with the other pure layout maths
 export { f } from "../../lib/kit";
 import { f } from "../../lib/kit";
-import type { Panel } from "../../lib/panels";
 
 export interface TitleTriggerOpts {
   /** estimated width per character of the title (11 for the 20px display title) */
@@ -19,19 +18,21 @@ export interface TitleTriggerOpts {
   h?: number;
   /** the (i)'s radius, when not InfoIcon's default */
   r?: number;
+  /** start the hit area here instead, to take in something before the title (Support's lens) */
+  x0?: number;
 }
 
 // a centred title as a term trigger (worked out first in Routes.astro): the (i) placement and a hit area that
 // runs from just before the title to just past the (i). text is the visible title, cx its centre, y its baseline.
 export function titleTrigger(
   text: string, cx: number, y: number,
-  { charW = 11, half = 6.4, extra = 0, gap = 16, top = 22, h = 30, r }: TitleTriggerOpts = {},
+  { charW = 11, half = 6.4, extra = 0, gap = 16, top = 22, h = 30, r, x0 }: TitleTriggerOpts = {},
 ) {
   const n = text.length;
   const tw = n * charW + extra * 2;
   const info = { cx: f(cx + n * half + extra + gap), cy: y - 6, ...(r ? { r } : {}) };
-  const x0 = f(cx - tw / 2 - 6);
-  return { info, hit: { x: x0, y: y - top, w: f(info.cx + 13 - x0), h } };
+  const x = f(x0 ?? cx - tw / 2 - 6);
+  return { info, hit: { x, y: y - top, w: f(info.cx + 13 - x), h } };
 }
 
 // the 15px display sub-title as a term trigger (Grades' lifts, Support's brackets, ActedOn's cards): about 9.2
@@ -61,21 +62,4 @@ export function rowTrigger(text: string, x: number, y: number, { charW = 6.7, x0
   const info = { cx: f(x + text.length * charW + 12), cy: y - 4, r: 7 };
   const end = x1 ?? info.cx + 10;
   return { info, hit: { x: f(x0), y: y - top, w: f(end - x0), h } };
-}
-
-export interface PanelTriggerOpts extends TitleTriggerOpts {
-  /** start the hit area here instead, to take in something before the title (Support's lens) */
-  x0?: number;
-  /** the trigger's name in the error */
-  name?: string;
-}
-
-// a centred title as a term trigger (titleTrigger) in a carousel scene: the hit area must sit wholly inside the
-// panel its centre is in, or the portrait carousel would cut it, so this throws at build time if it doesn't
-export function panelTrigger(text: string, cx: number, y: number, panels: Panel[], { x0, name = text, ...opts }: PanelTriggerOpts = {}) {
-  const t = titleTrigger(text, cx, y, opts);
-  const hit = x0 === undefined ? t.hit : { ...t.hit, x: f(x0), w: f(t.hit.x + t.hit.w - x0) };
-  const p = panels.find((q) => cx >= q.x0 && cx < q.x1);
-  if (!p || hit.x < p.x0 || hit.x + hit.w > p.x1) throw new Error(`${name} trigger leaves its panel`);
-  return { info: t.info, hit };
 }

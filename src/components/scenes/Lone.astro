@@ -18,7 +18,7 @@ import Narrator from "../svg/Narrator.astro";
 import Arrow from "../svg/Arrow.astro";
 import TermTitle from "../svg/TermTitle.astro";
 import { FIG, KIND_NAME, RELIABLE, type Kind } from "../svg/figures";
-import { SUBT_TRIGGER, f, panelTrigger, rowTrigger } from "../svg/geom";
+import { SUBT_TRIGGER, f, titleTrigger, rowTrigger } from "../svg/geom";
 import { cap, type DiagramProps } from "../../lib/scene";
 import { stackY } from "../../lib/kit";
 
@@ -88,10 +88,10 @@ const halos = [
 ].map((h, i) => ({ ...h, d: f(HALO_T0 + i * HALO_STEP) }));
 
 // ---- triggers ----
-// the panel titles in the 15px display face (geom's SUBT_TRIGGER); panelTrigger checks each sits inside its panel
+// the panel titles in the 15px display face (geom's SUBT_TRIGGER); Term checks each sits inside its panel
 function title(slug: string, cx: number) {
   const c = cap(caps, slug);
-  return { c, cx, y: TITLE_Y, ...panelTrigger(c.translit, cx, TITLE_Y, PANELS, { ...SUBT_TRIGGER, name: `Lone: ${slug}` }) };
+  return { c, cx, y: TITLE_Y, ...titleTrigger(c.translit, cx, TITLE_Y, SUBT_TRIGGER) };
 }
 const mutlaq = title("gharib-mutlaq", 130);
 const nisbi = title("gharib-nisbi", 910);
@@ -101,8 +101,6 @@ const fard = (() => {
   const c = cap(caps, "fard");
   const x = 26;
   const t = rowTrigger(c.translit, x, SUB_Y);
-  const p = PANELS[0];
-  if (t.hit.x < p.x0 || t.hit.x + t.hit.w > p.x1) throw new Error("Lone: fard trigger leaves its panel");
   return { c, x, ...t, noteX: f(t.info.cx + 14) };
 })();
 

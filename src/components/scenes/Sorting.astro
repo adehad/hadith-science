@@ -21,7 +21,7 @@ import Decision from "../svg/Decision.astro";
 import Glyph from "../svg/Glyph.astro";
 import Pill from "../svg/Pill.astro";
 import TermTitle from "../svg/TermTitle.astro";
-import { ROW_TITLE_TRIGGER, SUBT_TRIGGER, f, panelTrigger } from "../svg/geom";
+import { ROW_TITLE_TRIGGER, SUBT_TRIGGER, f, titleTrigger } from "../svg/geom";
 import { cap, type DiagramProps } from "../../lib/scene";
 import { dotCluster } from "../../lib/kit";
 import { href } from "../../lib/url";
@@ -31,8 +31,6 @@ const { caps, scene } = Astro.props;
 
 const W = 780, H = 480;
 if (scene.views?.length) throw new Error("Sorting: expected no views");
-const PANELS = scene.panels ?? [];
-
 // ---- panel 1: the two kinds ----
 const CHIP_X = 30;
 const MUTAWATIR_Y = 80;
@@ -46,11 +44,11 @@ const AHAD_KINDS = [
 const BRK = { x: 112, y0: 200, y1: 300 };
 const FLOW_Y = 250;
 
-// a term title in the 15px display face (SUBT_TRIGGER), or a 13px bold alias row (ROW_TITLE_TRIGGER); panelTrigger
+// a term title in the 15px display face (SUBT_TRIGGER), or a 13px bold alias row (ROW_TITLE_TRIGGER); Term
 // checks each hit area sits wholly inside its panel, or the carousel would cut it
 function trigger(slug: string, cx: number, y: number, opts: object = SUBT_TRIGGER) {
   const c = cap(caps, slug);
-  return { c, cx, y, ...panelTrigger(c.translit, cx, y, PANELS, { ...opts, name: `Sorting: ${slug}` }) };
+  return { c, cx, y, ...titleTrigger(c.translit, cx, y, opts) };
 }
 const ahad = trigger("ahad", 145, FLOW_Y + 5);
 // its two-line gloss starts clear of the bracket

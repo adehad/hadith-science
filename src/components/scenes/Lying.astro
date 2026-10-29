@@ -21,7 +21,7 @@ import Glyph from "../svg/Glyph.astro";
 import Matn from "../svg/Matn.astro";
 import TermTitle from "../svg/TermTitle.astro";
 import { FIG, KIND_NAME, RELIABLE } from "../svg/figures";
-import { SUBT_TRIGGER, f, panelTrigger, rowTrigger } from "../svg/geom";
+import { SUBT_TRIGGER, f, titleTrigger, rowTrigger } from "../svg/geom";
 import { cap, type DiagramProps } from "../../lib/scene";
 import { chipRow } from "../../lib/kit";
 
@@ -35,19 +35,16 @@ if (PANELS.length !== 3) throw new Error("Lying: expected three panels");
 
 const TITLE_Y = 30, SUB_Y = 50;
 
-// a left-aligned 13px row title as a term trigger; rowTrigger doesn't know about panels, so check here that the
-// hit area sits wholly inside the first one, or the portrait carousel would cut it
+// a left-aligned 13px row title as a term trigger; Term checks it stays in its panel
 function row(slug: string, x: number, y: number) {
   const c = cap(caps, slug);
   const t = rowTrigger(c.translit, x, y);
-  const p = PANELS[0];
-  if (t.hit.x < p.x0 || t.hit.x + t.hit.w > p.x1) throw new Error(`Lying: ${slug} trigger leaves its panel`);
   return { c, x, y, ...t };
 }
-// a centred 15px sub-title as a term trigger; panelTrigger checks it stays in its panel
+// a centred 15px sub-title as a term trigger; Term checks it stays in its panel
 function subt(slug: string, cx: number, y: number) {
   const c = cap(caps, slug);
-  return { c, cx, y, ...panelTrigger(c.translit, cx, y, PANELS, { ...SUBT_TRIGGER, name: `Lying: ${slug}` }) };
+  return { c, cx, y, ...titleTrigger(c.translit, cx, y, SUBT_TRIGGER) };
 }
 
 // ---- panel 1: two charges ----
