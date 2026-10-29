@@ -1,3 +1,5 @@
+import { MOTION_KEY, currentMotion, onMotionChange, setMotion } from "../lib/motion";
+
 type Theme = "light" | "dark" | "system";
 const THEMES: Theme[] = ["light", "dark", "system"];
 const root = document.documentElement;
@@ -43,10 +45,30 @@ modeBtns.forEach((b) =>
 );
 applyMode(read("nuzhah-mode") === "labels" ? "labels" : "key");
 
-// CSS can't reach SMIL (the Companion's gold shimmer), so reduced motion pauses it here (spec §3.4)
-const still = matchMedia("(prefers-reduced-motion: reduce)");
+// the motion switch (spec §3.4). Page.astro's head script has already set data-motion from storage, and
+// MotionToggle.astro's CSS shows "on" or "off" from it; here the switch gets its state. With the system asking for
+// reduced motion it is aria-disabled rather than disabled, so it stays in the tab order, and a click does nothing.
+// CSS can't reach SMIL (the Companion's gold shimmer), so it is paused here whenever motion is stopped.
+const motionBtn = document.querySelector<HTMLButtonElement>("#motion-toggle");
 function applyMotion() {
-  document.querySelectorAll("svg").forEach((s) => (still.matches ? s.pauseAnimations() : s.unpauseAnimations()));
+  const state = currentMotion();
+  document.querySelectorAll("svg").forEach((s) => (state === "on" ? s.unpauseAnimations() : s.pauseAnimations()));
+  if (motionBtn) {
+    motionBtn.setAttribute("aria-pressed", String(state === "on"));
+    if (state === "system") motionBtn.setAttribute("aria-disabled", "true");
+    else motionBtn.removeAttribute("aria-disabled");
+  }
 }
-still.addEventListener("change", applyMotion);
+motionBtn?.addEventListener("click", () => {
+  const state = currentMotion();
+  if (state === "system") return;
+  const on = state !== "on";
+  write(MOTION_KEY, on ? "on" : "off");
+  setMotion(on);
+});
+// a choice made in another tab applies here too
+addEventListener("storage", (e) => {
+  if (e.key === MOTION_KEY) setMotion(e.newValue !== "off");
+});
+onMotionChange(applyMotion);
 applyMotion();

@@ -86,6 +86,11 @@ A missing item shows as an empty slot that blinks.
 - **Header:** a starfield whose stars drift and fade.
 - **"Other views" switch:** elements animate to their new position and size; they are not redrawn.
 - **Reduced motion:** `prefers-reduced-motion` turns off every animation, every transition and the view transitions.
+- **Motion switch (WCAG 2.2.2):** much of the motion loops without end (flowing chain arrows; blinking ghosts, slots and dots; the moon pulse; the starfield; the map's orbits; the Changes sway), so the header has a **Motion: on / off** switch (§5) that stops it without the system setting.
+  - Off does exactly what reduced motion does. `motion.css` applies the same `animation: none; transition: none` under `:root[data-motion="off"]`; `prefs.ts` pauses SMIL; the starfield, the orbits, the carousel's smooth scroll and the view switch's transitions ask `motionAllowed()` in `src/lib/motion.ts` and listen for its change event; and the head script skips cross-document view transitions on `pageswap` and `pagereveal`.
+  - The choice is kept in `localStorage` (`nuzhah-motion`), and the head script sets `data-motion="off"` on `<html>` before first paint, so nothing moves even for a frame. The switch's own look and its "on"/"off" come from CSS on that attribute and the media query, so it is right in that frame too, before `prefs.ts` runs. A choice made in another tab applies through the `storage` event.
+  - Its accessible name is always "Motion"; `aria-pressed` carries the state, and the visible "on"/"off" is `aria-hidden`.
+  - When the system asks for reduced motion, that wins: the switch reads "Motion: off" and is `aria-disabled` (not `disabled`, so keyboard users still reach it), ignores clicks, and adds "(system setting)" for screen readers.
 
 ### 3.5 Labels
 
@@ -187,7 +192,8 @@ Until a division is built, its planet still shows on the map, and its moons are 
 - **Header** on every page:
   - starfield behind the site title;
   - breadcrumb (Map › Division › Scene);
-  - Key/Labels switch and theme switch, both saved in `localStorage`. Every storage access is wrapped in try/catch, and the page works without storage.
+  - Key/Labels switch, theme switch and motion switch (§3.4), all saved in `localStorage`. Every storage access is wrapped in try/catch, and the page works without storage.
+  - The switches are `<button>`s with `aria-pressed`; the motion switch is pressed while motion is on. All three need script, so they are hidden without it.
 - **Main area:** one diagram per page.
   - Scenes with scholarly disagreement show Ibn Ḥajar's view by default, with an **Other views** switch.
   - The chosen view is kept in the URL (`?view=madinah`) so that a link opens on that view.
@@ -197,7 +203,7 @@ Until a division is built, its planet still shows on the map, and its moons are 
 - **Footer:**
   - credits Ibn Ḥajar and the translation and states that the text is paraphrased;
   - links to `/terms/`, `/narrators/` and the repository.
-- **Map to scene:** native cross-document view transitions (`@view-transition { navigation: auto; }`, declared inside `@media (prefers-reduced-motion: no-preference)` so reduced motion disables them without JavaScript, plus matching `view-transition-name`s) morph the planet into the division page and the moon into the scene.
+- **Map to scene:** native cross-document view transitions (`@view-transition { navigation: auto; }`, declared inside `@media (prefers-reduced-motion: no-preference)` so reduced motion disables them without JavaScript, and skipped by the head script when the motion switch is off (§3.4), plus matching `view-transition-name`s) morph the planet into the division page and the moon into the scene.
   - Astro's `<ClientRouter />` is **not** used. Every navigation is a full page load, so islands only need to initialise once on load.
   - Browsers without support (currently Firefox) get plain navigation. Without JavaScript, these are plain links.
 - **Keyboard:** planets and info icons can be reached with Tab and opened with Enter or Space.

@@ -6,13 +6,13 @@
 // The build renders the default view (inline values, class="off" on parts outside it); this island applies a
 // ?view= on load and the buttons switch views, keeping the URL in step so a link opens on the same view.
 import { readView, writeView } from "../lib/views";
+import { motionAllowed } from "../lib/motion";
 
 const box = document.querySelector<HTMLElement>(".views[data-views]");
 
 if (box) {
   const ids = box.dataset.views!.split(/\s+/);
   const buttons = box.querySelectorAll<HTMLButtonElement>("button[data-v]");
-  const still = matchMedia("(prefers-reduced-motion: reduce)");
   // bumped by every apply, so only the latest one's double rAF sets values (a quick second click wins)
   let seq = 0;
 
@@ -32,13 +32,13 @@ if (box) {
     // page-wide, so the note under the switch and the diagram's parts change together
     document.querySelectorAll<Element>("[data-view-show]")
       .forEach((el) => el.classList.toggle("off", !el.getAttribute("data-view-show")!.split(/\s+/).includes(id)));
-    if (animate && !still.matches) {
+    if (animate && motionAllowed()) {
       // the mockup's slideStairs: set the targets in the frame after layout so the CSS transitions run
       requestAnimationFrame(() => requestAnimationFrame(() => {
         if (n === seq) setValues(id);
       }));
     } else if (animate) {
-      setValues(id); // reduced motion: motion.css already turns transitions off
+      setValues(id); // motion stopped: motion.css already turns transitions off
     } else {
       // instant (on load, on a term landing): .stepg / rect.step transitions would otherwise still animate
       // from the built default, so suspend them (svg.css .no-anim), set, force a reflow, then restore

@@ -49,9 +49,15 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
         if (t === "light" || t === "dark") document.documentElement.dataset.theme = t;
         var m = localStorage.getItem("nuzhah-mode");
         document.documentElement.dataset.mode = m === "labels" ? "labels" : "key";
+        if (localStorage.getItem("nuzhah-motion") === "off") document.documentElement.dataset.motion = "off";
       } catch (e) {
         document.documentElement.dataset.mode = "key";
       }
+      // with the motion switch off, skip the cross-document view transition on both sides of a navigation
+      // (motion.css can't make @view-transition depend on an attribute)
+      var skip = function (e) { if (e.viewTransition && document.documentElement.dataset.motion === "off") e.viewTransition.skipTransition(); };
+      addEventListener("pageswap", skip);
+      addEventListener("pagereveal", skip);
     </script>
   </head>
   <body>

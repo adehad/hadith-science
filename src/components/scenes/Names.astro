@@ -166,6 +166,8 @@ const rows = ROWS.map(([name, tag, e], k) => ({ name, tag, e, y: 112 + k * 19 })
   @keyframes names-e3{0%,53%{opacity:1}57%,92%{opacity:.12}100%{opacity:1}}
   @keyframes names-e4{0%,73%{opacity:1}77%,92%{opacity:.12}100%{opacity:1}}
   @keyframes names-win{0%,77%{opacity:0}81%,92%{opacity:1}100%{opacity:0}}
-  /* motion.css stops every animation; show the loop's end state: all chips, the narrowed rows, the answer lit */
+  /* motion.css stops every animation (reduced motion, or the motion switch off); show the loop's end state: all
+     chips, the narrowed rows, the answer lit */
   @media (prefers-reduced-motion: reduce){.e1,.e2,.e3,.e4{opacity:.12}}
+  :global(:root[data-motion="off"]) :is(.e1,.e2,.e3,.e4){opacity:.12}
 </style>

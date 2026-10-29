@@ -1,4 +1,5 @@
 import { test, expect, type Page } from "@playwright/test";
+import AxeBuilder from "@axe-core/playwright";
 import { readFileSync } from "node:fs";
 import { parse } from "yaml";
 
@@ -439,4 +440,159 @@ test("with motion, the causes scene's rungs fade in from the top once, one after
   expect(start).toBe("0");
   // and they end where the reduced-motion page rests
   await expect.poll(() => page.locator("svg .rung-g").evaluateAll((els) => els.every((e) => getComputedStyle(e).opacity === "1")), { timeout: 5000 }).toBe(true);
+});
+
+test.describe("motion switch (WCAG 2.2.2)", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: "no-preference" });
+  });
+
+  const running = (page: Page) => page.evaluate(() => document.getAnimations().length);
+  const smilPaused = (page: Page) => page.evaluate(() => [...document.querySelectorAll("svg")].every((s) => s.animationsPaused()));
+
+  test("turning motion off on a scene page stops every animation, CSS and SMIL", async ({ page }) => {
+    await page.goto("/al-mardud/causes/");
+    const toggle = page.locator("#motion-toggle");
+    await expect(toggle).toHaveText("Motion: on", { useInnerText: true });
+    // the name stays put; aria-pressed carries the state
+    await expect(toggle).toHaveAccessibleName("Motion");
+    await expect(toggle).toHaveAttribute("aria-pressed", "true");
+    expect(await running(page)).toBeGreaterThan(0);
+    await toggle.click();
+    await expect(page.locator("html")).toHaveAttribute("data-motion", "off");
+    await expect(toggle).toHaveText("Motion: off", { useInnerText: true });
+    await expect(toggle).toHaveAccessibleName("Motion");
+    await expect(toggle).toHaveAttribute("aria-pressed", "false");
+    await expect.poll(() => running(page)).toBe(0);
+    expect(await smilPaused(page)).toBe(true);
+    // and on again
+    await toggle.click();
+    await expect.poll(() => running(page)).toBeGreaterThan(0);
+    expect(await smilPaused(page)).toBe(false);
+  });
+
+  test("turning motion off stops the starfield and the orbits", async ({ page }) => {
+    await page.goto("/");
+    const a0 = await angles(page);
+    await expect.poll(() => angles(page)).not.toEqual(a0);
+    await page.locator("#motion-toggle").click();
+    // the next frame may still be in flight
+    await page.waitForTimeout(100);
+    const stars = () => page.locator("canvas.stars").evaluate((c: HTMLCanvasElement) => c.toDataURL());
+    const [a1, s1] = [await angles(page), await stars()];
+    await page.waitForTimeout(1000);
+    expect(await angles(page)).toEqual(a1);
+    expect(await stars()).toBe(s1);
+  });
+
+  test("the choice survives a reload, and is set before paint", async ({ page }) => {
+    await page.goto("/al-mardud/innovation/");
+    await page.locator("#motion-toggle").click();
+    expect(await page.evaluate(() => localStorage.getItem("nuzhah-motion"))).toBe("off");
+    // what the attribute was at the first frame, before anything painted
+    await page.addInitScript(() => requestAnimationFrame(() => ((window as unknown as { first?: string }).first = document.documentElement.dataset.motion)));
+    await page.reload();
+    await expect.poll(() => page.evaluate(() => (window as unknown as { first?: string }).first)).toBe("off");
+    await expect(page.locator("html")).toHaveAttribute("data-motion", "off");
+    await expect(page.locator("#motion-toggle")).toHaveText("Motion: off", { useInnerText: true });
+    expect(await running(page)).toBe(0);
+    expect(await smilPaused(page)).toBe(true);
+    await page.locator("#motion-toggle").click();
+    await page.reload();
+    await expect(page.locator("html")).not.toHaveAttribute("data-motion");
+    await expect(page.locator("#motion-toggle")).toHaveText("Motion: on", { useInnerText: true });
+  });
+
+  test("with motion off, a navigation skips its view transition", async ({ page }) => {
+    // record each page's incoming view transition: a skipped one's ready promise rejects
+    await page.addInitScript(() => {
+      addEventListener("pagereveal", (e) => {
+        const vt = (e as Event & { viewTransition?: ViewTransition }).viewTransition;
+        (window as unknown as { vt: string }).vt = vt ? "pending" : "none";
+        vt?.ready.then(() => ((window as unknown as { vt: string }).vt = "ran"), () => ((window as unknown as { vt: string }).vt = "skipped"));
+      });
+    });
+    const vt = () => page.evaluate(() => (window as unknown as { vt: string }).vt);
+    // with motion on, the transition runs. Under a loaded parallel run the browser now and then skips one with no
+    // pagereveal transition at all, whatever the switch says, so this control gets a few tries
+    await expect(async () => {
+      await page.goto("/al-mardud/");
+      await page.locator('a[href$="/al-mardud/causes/"]').first().click();
+      await page.waitForURL(/\/al-mardud\/causes\/$/);
+      await expect.poll(vt, { timeout: 2000 }).toBe("ran");
+    }).toPass({ timeout: 20000 });
+    await page.locator("#motion-toggle").click();
+    await page.goBack();
+    await page.waitForURL(/\/al-mardud\/$/);
+    await page.locator('a[href$="/al-mardud/causes/"]').first().click();
+    await page.waitForURL(/\/al-mardud\/causes\/$/);
+    // skipped on the way out (pageswap), so none reaches the new page, or skipped on arrival (pagereveal)
+    await expect.poll(vt).toMatch(/^(none|skipped)$/);
+  });
+
+  test("with the system asking for reduced motion, the switch reads off, says why and ignores clicks", async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.goto("/");
+    const toggle = page.locator("#motion-toggle");
+    // aria-disabled rather than disabled, so it stays in the tab order and keyboard users hear why
+    await expect(toggle).toHaveAttribute("aria-disabled", "true");
+    await expect(toggle).not.toHaveAttribute("disabled");
+    await expect(toggle).toHaveText("Motion: off (system setting)", { useInnerText: true });
+    await expect(toggle).toHaveAccessibleName("Motion (system setting)");
+    await expect(toggle).toHaveAttribute("aria-pressed", "false");
+    await toggle.focus();
+    await expect(toggle).toBeFocused();
+    await toggle.press("Enter");
+    // Playwright treats aria-disabled as disabled, so the click is forced
+    await toggle.click({ force: true });
+    await expect(page.locator("html")).not.toHaveAttribute("data-motion");
+    expect(await page.evaluate(() => localStorage.getItem("nuzhah-motion"))).toBeNull();
+    // and it comes back when the system setting is turned off
+    await page.emulateMedia({ reducedMotion: "no-preference" });
+    await expect(toggle).not.toHaveAttribute("aria-disabled");
+    await expect(toggle).toHaveText("Motion: on", { useInnerText: true });
+    await expect(toggle).toHaveAccessibleName("Motion");
+  });
+
+  test("before prefs.ts runs, CSS already shows the switch off, unpressed", async ({ page }) => {
+    // hold back every script file, so only the inline head script runs: it sets data-motion from storage
+    await page.addInitScript(() => localStorage.setItem("nuzhah-motion", "off"));
+    await page.route(/\.js$/, (r) => r.abort());
+    await page.goto("/al-mardud/causes/");
+    const toggle = page.locator("#motion-toggle");
+    await expect(page.locator("html")).toHaveAttribute("data-motion", "off");
+    await expect(toggle).toHaveText("Motion: off", { useInnerText: true });
+    expect(await toggle.evaluate((b) => getComputedStyle(b).backgroundColor)).toBe("rgba(0, 0, 0, 0)");
+  });
+
+  test("a choice made in another tab applies here", async ({ page, context }) => {
+    await page.goto("/");
+    const other = await context.newPage();
+    await other.emulateMedia({ reducedMotion: "no-preference" });
+    await other.goto("/terms/");
+    await other.locator("#motion-toggle").click();
+    await expect(page.locator("html")).toHaveAttribute("data-motion", "off");
+    await expect(page.locator("#motion-toggle")).toHaveAttribute("aria-pressed", "false");
+    await other.locator("#motion-toggle").click();
+    await expect(page.locator("html")).not.toHaveAttribute("data-motion");
+    await expect(page.locator("#motion-toggle")).toHaveAttribute("aria-pressed", "true");
+  });
+
+  for (const state of ["on", "off"]) {
+    test(`axe finds nothing with motion ${state}`, async ({ page }) => {
+      await page.goto("/al-mardud/innovation/");
+      if (state === "off") await page.locator("#motion-toggle").click();
+      await expect(page.locator("#motion-toggle")).toHaveText(`Motion: ${state}`, { useInnerText: true });
+      const axe = await new AxeBuilder({ page }).analyze();
+      expect(axe.violations.map((v) => `${v.id}: ${v.nodes.map((n) => n.target.join(" ")).join(", ")}`)).toEqual([]);
+    });
+  }
+});
+
+test.describe("motion switch without script", () => {
+  test.use({ javaScriptEnabled: false });
+  test("is hidden, like the other header controls", async ({ page }) => {
+    await page.goto("/");
+    await expect(page.locator("#motion-toggle")).toBeHidden();
+  });
 });
