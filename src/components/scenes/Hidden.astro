@@ -92,9 +92,10 @@ const MUKH = [
 ];
 
 // the al-mazīd cell of "What changed in the telling?" gets a link once that scene exists, so no build ships a
-// broken one (design §18)
+// broken one (design §18). It lands on the al-mazīd term, opening its note, when the scene carries it.
 const { scenes } = await loadContent();
 const changes = scenes.find((s) => s.division === "al-mardud" && s.id === "changes");
+const mazidLink = changes && `al-mardud/${changes.id}/${changes.captions.some((c) => c.term === "mazid") ? "#mazid" : ""}`;
 ---
 <svg viewBox={`0 0 ${W} ${H}`} class="hidden-scene" role="group" aria-label="Three panels, each with two lifespans over a chain fragment. Mudallas: the narrator and his shaykh lived at the same time and met; the narrator, a concealer, cites the shaykh with ʿan or qāla, hiding the one he heard it from. With words of certainty he would be a liar; his report is not accepted until he says he heard. Mursal khafī: the two lived at the same time, but no meeting is known; the chain looks the same. That they never met is shown by his own word or a versed imam's firm statement; an extra narrator in some versions is no proof. Lived in his time: Abū ʿUthmān al-Nahdī and Qays ibn Abī Ḥāzim lived in the Prophet's ﷺ time without a known meeting, and the ḥadīth scholars agree their reports are irsāl, not tadlīs, so a meeting, not a shared lifetime, is what tadlīs needs.">
   <Defs />
@@ -154,8 +155,8 @@ const changes = scenes.find((s) => s.division === "al-mardud" && s.id === "chang
   <text class="lbl start sm" x="304" y="409">or a versed imam's firm statement</text>
   <text class="lbl sm" x="390" y="446">an extra narrator in some versions</text>
   <text class="lbl sm" x="390" y="461">is no proof: it may be an addition</text>
-  {changes && (
-    <a class="xlink" href={href(`al-mardud/${changes.id}/`)} aria-label={`An extra narrator: see ${changes.title}`}>
+  {mazidLink && (
+    <a class="xlink" href={href(mazidLink)} aria-label={`An extra narrator: see al-mazīd in ${changes.title}`}>
       <text class="rp" x="390" y="484" text-anchor="middle"><tspan class="xu">{changes.title}</tspan><tspan dx="5">→</tspan></text>
     </a>
   )}

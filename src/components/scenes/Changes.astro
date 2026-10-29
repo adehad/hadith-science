@@ -1,0 +1,427 @@
+---
+// "What changed in the telling?" (phase 3 al-Mardūd design §7): the seventh cause, going against the reliable
+// (mukhālafa, §5.23), and its forms (§5.28–5.32). Ibn Ḥajar opens each form with "if the opposition is by…", so the
+// first cell sorts by what changed and each answer is an in-page link to its own cell. Six cells, each its own
+// 430x300 SVG in an HTML grid (the Names pattern): two columns on desktop, one in portrait (spec §5).
+//   A  What changed? Two mini versions, the reliable one and his, and five answers that jump to their cells
+//   B  Mudraj: the four kinds of mudraj al-isnād as pictograms, and mudraj al-matn's insert at the start, middle
+//      and end of a text
+//   C  Maqlūb: Murra ibn Kaʿb and Kaʿb ibn Murra, and the right and left hands in Abū Hurayra's report (§5.29),
+//      the translation's English only, in quotation marks as it gives them
+//   D  al-Mazīd: the more reliable chain, with the hearing stated, against a version with a narrator added
+//   E  Muḍṭarib: one link given two ways over a level scale, and what a change made on purpose or by mistake is
+//   F  Muṣaḥḥaf and muḥarraf: one undotted letter outline, changed by its dots or by its vowels (lib/kit.ts
+//      letterShape, letterDots and vowelMark, shared with Names.astro)
+// The book gives an example only for maqlūb, so B, D, E and F are labelled illustrations (design §18), and
+// "Read as text" says so (scenes.yaml `extra`). No Arabic report wording; F draws single letter shapes only.
+// §5.28's "changing of the text or the isnād" is read as the arrangement of the isnād (design §7.9): "how a
+// chain is put together". No views (design §7.5).
+// Motion: B's inserts fade in one after another; C's swapped names and words trade places once; E's two arrows
+// into the wavering link sway, the one loop in the division; F's changing dots and vowels blink. Each resting style
+// is the end state, so with motion.css stopping every animation the inserts show, the names and words rest as the
+// book gives them, the arrows are still and nothing blinks.
+import Defs from "../svg/Defs.astro";
+import Moon from "../svg/Moon.astro";
+import Narrator from "../svg/Narrator.astro";
+import Arrow from "../svg/Arrow.astro";
+import Chip from "../svg/Chip.astro";
+import Pill from "../svg/Pill.astro";
+import Matn from "../svg/Matn.astro";
+import Scale from "../svg/Scale.astro";
+import TermTitle from "../svg/TermTitle.astro";
+import { FIG, KIND_NAME, RELIABLE } from "../svg/figures";
+import { ROW_TITLE_TRIGGER, SUBT_TRIGGER, f, rowTrigger, titleTrigger } from "../svg/geom";
+import { cap, type DiagramProps } from "../../lib/scene";
+import { LETTER_DOTS, chipWidth, letterDots, letterShape, vowelMark } from "../../lib/kit";
+import { loadContent } from "../../lib/content";
+import { href } from "../../lib/url";
+
+type Props = DiagramProps;
+const { caps, scene } = Astro.props;
+if (scene.views?.length) throw new Error("Changes: expected no views");
+if (scene.panels?.length) throw new Error("Changes: a grid of cells, not panels");
+
+const TITLE_Y = 26;
+const ILLUS = "an illustration: the book names no example";
+
+// a cell's 20px display title as a term trigger, with its Arabic name after the (i)
+function title(slug: string, cx: number, y = TITLE_Y) {
+  const c = cap(caps, slug);
+  const t = titleTrigger(c.translit, cx, y);
+  return { c, cx, y, ...t, ar: { x: f(t.info.cx + 46), y } };
+}
+// a left-aligned 13px row title as a term trigger
+function row(slug: string, x: number, y: number) {
+  const c = cap(caps, slug);
+  return { c, x, y, ...rowTrigger(c.translit, x, y) };
+}
+// a centred 13px title as a term trigger (cell F's two halves)
+function midRow(slug: string, cx: number, y: number) {
+  const c = cap(caps, slug);
+  return { c, cx, y, ...titleTrigger(c.translit, cx, y, ROW_TITLE_TRIGGER) };
+}
+
+// links to other scenes (all built before this one)
+const { scenes } = await loadContent();
+const sceneOf = (id: string) => {
+  const s = scenes.find((x) => x.division === "al-mardud" && x.id === id);
+  if (!s) throw new Error(`Changes: no ${id} scene to link to`);
+  return s;
+};
+const [hidden, lying, slips] = ["hidden", "lying", "slips"].map(sceneOf);
+
+// the cells' ids, for cell A's in-page links; never a term slug, so a jump doesn't open a popover
+const CELL = { mudraj: "cell-mudraj", maqlub: "cell-maqlub", mazid: "cell-mazid", mudtarib: "cell-mudtarib", letters: "cell-letters" } as const;
+
+// ---- cell A: what changed? ----
+const mukhalafa = title("mukhalafa", 185, 30);
+// two mini versions: three links and a text card; in his version one link is changed
+const VERS = [
+  { label: "the reliable version", y: 128, tint: false },
+  { label: "his version", y: 210, tint: true },
+].map((v) => ({ ...v, dots: [30, 62, 94].map((x) => ({ x, y: v.y })) }));
+const ANSWERS: [keyof typeof CELL, string, string][] = [
+  ["mudraj", "Mudraj", "a chain's make-up, or words slipped in"],
+  ["maqlub", "Maqlūb", "one thing put before another"],
+  ["mazid", "al-Mazīd", "a narrator added"],
+  ["mudtarib", "Muḍṭarib", "a narrator changed, no way to choose"],
+  ["letters", "Muṣaḥḥaf, muḥarraf", "letters changed: dots or vowels"],
+];
+const ANS_X = 196;
+const answers = ANSWERS.map(([cell, name, gloss], i) => ({ id: CELL[cell], name, gloss, y: 86 + i * 38 }));
+
+// ---- cell B: mudraj ----
+const mudraj = title("mudraj", 190);
+const isnad = row("mudraj-al-isnad", 20, 64);
+const matn = row("mudraj-al-matn", 20, 196);
+const PX = [65, 165, 265, 365];
+const P_TOP = 82, P_MID = 108, CARD_Y = 120, CARD_H = 18;
+const PICTO_CAPS: [string, string][] = [["several chains", "merged into one"], ["part told with", "another's chain"], ["two texts,", "one chain"], ["his own words", "taken as the text"]];
+const M_CARDS = [20, 155, 290].map((x, i) => ({ x, w: 120, ins: [x + 6, x + 45, x + 84][i], end: i === 2 }));
+const M_LABELS = ["at the start", "in the middle", "at the end: most often"];
+const M_Y = 206, M_H = 22;
+// the inserts fade in one after another: the pictograms' first, then the three text cards
+const INS_D = (i: number) => `${f(0.3 + i * 0.3)}s`;
+
+// ---- cell C: maqlūb ----
+const maqlub = title("maqlub", 190);
+const CHIP_Y = 72, CHIP_H = 26, CHIP_W = 150;
+const L_CHIP = 30, R_CHIP = 250;
+// the right chip reads Kaʿb ibn Murra; the two names start in each other's places and trade them once
+const SLOT = { kab: 296, ibn: 325, murra: 357 };
+const SWAP_DX = SLOT.murra - SLOT.kab;
+// the two text cards: the slip (inactive) over the version of both Ṣaḥīḥs, each a short fragment of the translation's
+// words with ellipses where words are cut (design §7.3). Each card's two lines share one slot for the word that
+// changes, so the words trade lines in place; the rest of each line sits either side of it.
+const CARD_X = 26, CARD_W = 300, CARD_H2 = 40;
+const SX = 176, GAP = 16;
+const TEXT_CARDS = [
+  { y: 146, inactive: true, top: "right", bottom: "left", side: ["one narrator's", "slip, in Muslim"] },
+  { y: 202, inactive: false, top: "left", bottom: "right", side: ["as in both", "Ṣaḥīḥs"] },
+].map((c) => ({ ...c, l1: c.y + 16, l2: c.y + 31 }));
+
+// ---- cell D: al-mazīd ----
+const mazid = (() => {
+  const c = cap(caps, "mazid");
+  return { c, cx: 200, y: 28, ...titleTrigger(c.translit, 200, 28, SUBT_TRIGGER) };
+})();
+const DK = 0.7, DH = 22 * DK;
+const D_L = 110, D_R = 300;
+// A's Labels-mode name sits on the arrow into the added narrator, so the gap to the gold ring is left open, and
+// B's name ends above the first outcome pill
+const D_A = 78, D_X = 140, D_B = 190, D_RING = 21;
+const HEARD = "hearing stated";
+const heardW = chipWidth(HEARD);
+
+// ---- cell E: muḍṭarib ----
+const mudtarib = title("mudtarib", 190);
+const EK = 0.6, EH = 22 * EK;
+const E_X = 90;
+// each arrow starts below its narrator's Labels-mode name (y + 22k + 14), so none runs through one
+const E_MOON = 62, E_C = 102, E_PQ = 164, E_N = 224;
+const UNDER_LABEL = EH + 18;
+const E_P = E_X - 28, E_Q = E_X + 28;
+const SWAY_O = { x: E_X, y: E_C + UNDER_LABEL };
+const WHY_X = 196;
+const WHY = [
+  { y: 146, chip: "to test someone" },
+  { y: 210, chip: "for rarity" },
+  { y: 244, chip: "by mistake" },
+].map((w) => ({ ...w, w: chipWidth(w.chip), after: f(WHY_X + chipWidth(w.chip) + 8) }));
+
+// ---- cell F: muṣaḥḥaf and muḥarraf ----
+const musahhaf = midRow("musahhaf", 110, 30);
+const muharraf = midRow("muharraf", 320, 30);
+const GY = 124;
+const DOTTED = ([["none", "as written"], ["below", "bāʾ"], ["two", "tāʾ"]] as const).map(([dots, name], i) => {
+  const gx = 45 + i * 65;
+  return { gx, d: letterShape(gx, GY), dots: letterDots(gx, GY, LETTER_DOTS[dots]), name };
+});
+const VOWELLED = ([["fatha", "fatḥa"], ["damma", "ḍamma"], ["kasra", "kasra"]] as const).map(([v, name], i) => {
+  const gx = 255 + i * 65;
+  return { gx, d: letterShape(gx, GY), mark: vowelMark(gx, GY, v), name };
+});
+---
+<div class="cells changes">
+  <svg id="cell-sorter" viewBox="0 0 430 300" role="group" aria-label="Going against the reliable: what changed? The reliable version against his, with one link changed. How a chain is put together, or words slipped in: mudraj. One thing put before another: maqlūb. A narrator added: al-mazīd. A narrator changed, with no way to choose: muḍṭarib. Letters changed by their dots or vowels: muṣaḥḥaf and muḥarraf. Each is a form of the seventh charge.">
+    <Defs />
+    <TermTitle c={mukhalafa.c} x={mukhalafa.cx} y={mukhalafa.y} hit={mukhalafa.hit} info={mukhalafa.info} ar={mukhalafa.ar} />
+    <text class="lbl" x="215" y="54">going against the reliable: what changed?</text>
+    {VERS.map((v) => (
+      <>
+        <text class="lbl start sm" x="20" y={v.y - 20}>{v.label}</text>
+        <path class="pl" d={`M${v.dots[0].x} ${v.y} H${v.dots[2].x} M${v.dots[2].x + 6} ${v.y} H112`} />
+        {v.dots.map((d, i) => <circle class:list={["pd", { tint: v.tint && i === 1 }]} cx={d.x} cy={d.y} r="6" />)}
+        <Matn x={114} y={v.y - 10} w={46} h={20} />
+      </>
+    ))}
+    <text class="neq" x="94" y="176" aria-hidden="true">≠</text>
+    {answers.map((a) => (
+      <a class="xlink jump" href={`#${a.id}`}>
+        <text class="rp jn" x={ANS_X} y={a.y}><tspan class="xu">{a.name}</tspan><tspan dx="5" aria-hidden="true">↓</tspan></text>
+        <text class="lbl start sm" x={ANS_X} y={a.y + 15}>{a.gloss}</text>
+      </a>
+    ))}
+    <text class="lbl" x="215" y="286">each a form of the seventh charge</text>
+  </svg>
+
+  <svg id={CELL.mudraj} viewBox="0 0 430 300" role="group" aria-label="Mudraj, an illustration. Mudraj al-isnād, four kinds: several chains merged into one; part of a text told with another's chain; two texts told with one chain; a narrator's own words, said when distracted, taken as the text. Mudraj al-matn: words that are not part of the text come in at its start, in its middle, or, most often, at its end; or a Companion's or a later narrator's words are merged into the Prophet's ﷺ. It is known from a fuller version, a statement, or because he ﷺ could not have said it.">
+    <TermTitle c={mudraj.c} x={mudraj.cx} y={mudraj.y} hit={mudraj.hit} info={mudraj.info} ar={mudraj.ar} />
+    <text class="lbl sm" x="215" y="44">{ILLUS}</text>
+
+    <TermTitle c={isnad.c} x={isnad.x} y={isnad.y} cls="rt" hit={isnad.hit} info={isnad.info} />
+    {/* 1: three routes merged into one, with no mark */}
+    {[-22, 0, 22].map((dx) => <path class="pl" d={`M${PX[0] + dx} ${P_TOP} L${PX[0]} ${P_MID}`} />)}
+    {[-22, 0, 22].map((dx) => <circle class="pd sm" cx={PX[0] + dx} cy={P_TOP} r="4.5" />)}
+    <path class="pl" d={`M${PX[0]} ${P_MID} V${CARD_Y}`} />
+    <circle class="pd sm" cx={PX[0]} cy={P_MID} r="4.5" />
+    <Matn x={PX[0] - 24} y={CARD_Y} w={48} h={CARD_H} />
+    {/* 2: the last part of the text came by another chain (faint), but is told with the first */}
+    <path class="pl" d={`M${PX[1] - 12} ${P_TOP} V${CARD_Y}`} />
+    <path class="pl faint-line" d={`M${PX[1] + 20} ${P_TOP} L${PX[1] + 12} ${CARD_Y}`} />
+    <circle class="pd sm" cx={PX[1] - 12} cy={P_TOP} r="4.5" />
+    <circle class="pd sm" cx={PX[1] - 12} cy={P_MID} r="4.5" />
+    <circle class="pd sm faint" cx={PX[1] + 20} cy={P_TOP} r="4.5" />
+    <Matn x={PX[1] - 24} y={CARD_Y} w={48} h={CARD_H} />
+    <rect class="ins" style={`--d:${INS_D(0)}`} x={PX[1] + 2} y={CARD_Y + 3} width="20" height={CARD_H - 6} rx="2" />
+    {/* 3: two texts, each with its own chain, told with one */}
+    <path class="pl" d={`M${PX[2]} ${P_TOP} V${P_MID} M${PX[2]} ${P_MID} L${PX[2] - 24} ${CARD_Y} M${PX[2]} ${P_MID} L${PX[2] + 24} ${CARD_Y}`} />
+    <circle class="pd sm" cx={PX[2]} cy={P_TOP} r="4.5" />
+    <circle class="pd sm" cx={PX[2]} cy={P_MID} r="4.5" />
+    <Matn x={PX[2] - 44} y={CARD_Y} w={38} h={CARD_H} />
+    <Matn x={PX[2] + 6} y={CARD_Y} w={38} h={CARD_H} />
+    {/* 4: he reads a chain, is distracted and speaks for himself; a listener takes it as the text */}
+    <path class="pl" d={`M${PX[3] - 20} ${P_TOP} V${P_MID}`} />
+    <circle class="pd sm" cx={PX[3] - 20} cy={P_TOP} r="4.5" />
+    <circle class="pd sm" cx={PX[3] - 20} cy={P_MID} r="4.5" />
+    <g class="say" aria-hidden="true">
+      <rect x={PX[3] + 2} y={P_TOP - 10} width="34" height="20" rx="10" />
+      <path d={`M${PX[3] + 8} ${P_TOP + 8} L${PX[3] - 10} ${P_MID - 4}`} />
+      <text x={PX[3] + 19} y={P_TOP + 3}>…</text>
+    </g>
+    <path class="pl" d={`M${PX[3] + 19} ${P_TOP + 12} V${CARD_Y}`} marker-end="url(#ah)" />
+    <Matn x={PX[3] - 4} y={CARD_Y} w={46} h={CARD_H} />
+    <rect class="ins" style={`--d:${INS_D(1)}`} x={PX[3] + 2} y={CARD_Y + 3} width="34" height={CARD_H - 6} rx="2" />
+    {PX.map((x, i) => PICTO_CAPS[i].map((t, j) => <text class="lbl sm" x={x} y={160 + j * 13}>{t}</text>))}
+
+    <TermTitle c={matn.c} x={matn.x} y={matn.y} cls="rt" hit={matn.hit} info={matn.info} />
+    {M_CARDS.map((c, i) => (
+      <>
+        <Matn x={c.x} y={M_Y} w={c.w} h={M_H} />
+        <path class="rl" d={`M${c.x + 8} ${M_Y + 8} H${c.x + c.w - 8} M${c.x + 8} ${M_Y + 15} H${c.x + c.w - 8}`} />
+        <rect class:list={["ins", { strong: c.end }]} style={`--d:${INS_D(2 + i)}`} x={c.ins} y={M_Y + 4} width="30" height={M_H - 8} rx="2" />
+        <text class:list={["lbl sm", { strongl: c.end }]} x={c.x + c.w / 2} y={M_Y + M_H + 16}>{M_LABELS[i]}</text>
+      </>
+    ))}
+    <text class="lbl sm" x="215" y="266">or a Companion's, or a later narrator's, words merged into his ﷺ</text>
+    <text class="lbl sm" x="215" y="286">known from a fuller version, a statement, or what he ﷺ could not say</text>
+  </svg>
+
+  <svg id={CELL.maqlub} viewBox="0 0 430 300" role="group" aria-label="Maqlūb. In names: Murra ibn Kaʿb given as Kaʿb ibn Murra, one's name being the other's father's name. In a text: in Abū Hurayra's report of the seven, as Muslim has it, one narrator's slip reads “…the right hand … what the left …”; as in both Ṣaḥīḥs, “…the left hand … what the right …”. al-Khaṭīb wrote Rāfiʿ al-irtiyāb on it.">
+    <TermTitle c={maqlub.c} x={maqlub.cx} y={maqlub.y} hit={maqlub.hit} info={maqlub.info} ar={maqlub.ar} />
+    <text class="layer" x="20" y="52">In names</text>
+    <g class="nchip">
+      <rect x={L_CHIP} y={CHIP_Y - CHIP_H / 2} width={CHIP_W} height={CHIP_H} rx={CHIP_H / 2} />
+      <text x={L_CHIP + CHIP_W / 2} y={CHIP_Y + 4}>Murra ibn Kaʿb</text>
+    </g>
+    <g class="nchip">
+      <rect x={R_CHIP} y={CHIP_Y - CHIP_H / 2} width={CHIP_W} height={CHIP_H} rx={CHIP_H / 2} />
+      <text class="swap-a" style={`--dx:${SWAP_DX}px`} x={SLOT.kab} y={CHIP_Y + 4}>Kaʿb</text>
+      <text x={SLOT.ibn} y={CHIP_Y + 4}>ibn</text>
+      <text class="swap-b" style={`--dx:${-SWAP_DX}px`} x={SLOT.murra} y={CHIP_Y + 4}>Murra</text>
+    </g>
+    <path class="sw" d={`M${L_CHIP + CHIP_W + 8} ${CHIP_Y - 5} H${R_CHIP - 8}`} marker-end="url(#ah)" />
+    <path class="sw" d={`M${R_CHIP - 8} ${CHIP_Y + 5} H${L_CHIP + CHIP_W + 8}`} marker-end="url(#ah)" />
+    <text class="lbl" x="215" y="108">one's name is the other's father's name</text>
+
+    <text class="layer" x="20" y="134">In a text</text>
+    <text class="lbl start sm" x="96" y="134">Abū Hurayra's report of the seven whom Allah will shade</text>
+    {TEXT_CARDS.map((c) => (
+      <>
+        <Matn x={CARD_X} y={c.y} w={CARD_W} h={CARD_H2} inactive={c.inactive} />
+        {/* in reading order (WCAG 1.3.2): the positions are absolute, so the order doesn't move anything */}
+        <text class="mw end" x={SX - GAP} y={c.l1}>“…the</text>
+        <text class:list={["mw mid diff", { "swap-down": c.inactive }]} x={SX} y={c.l1}>{c.top}</text>
+        <text class="mw" x={SX + GAP} y={c.l1}>hand …</text>
+        <text class="mw end" x={SX - GAP} y={c.l2}>what the</text>
+        <text class:list={["mw mid diff", { "swap-up": c.inactive }]} x={SX} y={c.l2}>{c.bottom}</text>
+        <text class="mw" x={SX + GAP} y={c.l2}>…”</text>
+        <text class="lbl start sm" x={CARD_X + CARD_W + 12} y={c.l1}>{c.side[0]}</text>
+        <text class="lbl start sm" x={CARD_X + CARD_W + 12} y={c.l2}>{c.side[1]}</text>
+      </>
+    ))}
+    <text class="lbl sm" x="215" y="272">a book on it: al-Khaṭīb's Rāfiʿ al-irtiyāb</text>
+  </svg>
+
+  <svg id={CELL.mazid} viewBox="0 0 430 300" role="group" aria-label="al-Mazīd fī muttaṣil al-asānīd, an illustration. The more reliable version goes from one narrator to the next with the hearing stated; another version adds a narrator between them. If the hearing is stated at that link, the addition is rejected; if that link is told only with ʿan, the addition is preferred. An extra narrator is no proof of a hidden drop.">
+    <TermTitle c={mazid.c} x={mazid.cx} y={mazid.y} cls="subt" hit={mazid.hit} info={mazid.info} />
+    <text class="lbl sm" x="215" y="43">{ILLUS}</text>
+    <text class="lbl" x={D_L} y="58">the more reliable</text>
+    <text class="lbl" x={D_R} y="58">another version</text>
+    <Arrow x1={D_L} y1={f(D_A + DH + 3)} x2={D_L} y2={f(D_B - DH - 4)} />
+    <Chip x={f(D_L - heardW / 2)} y={(D_A + D_B) / 2} text={HEARD} w={heardW} />
+    <Narrator x={D_L} y={D_A} k={DK} {...FIG.later} {...RELIABLE} label={KIND_NAME.later} />
+    <Narrator x={D_L} y={D_B} k={DK} {...FIG.later} {...RELIABLE} label={KIND_NAME.later} />
+    <Arrow x1={D_R} y1={f(D_A + DH + 3)} x2={D_R} y2={D_X - D_RING - 3} />
+    <Arrow x1={D_R} y1={f(D_X + DH + 3)} x2={D_R} y2={f(D_B - DH - 4)} />
+    <Narrator x={D_R} y={D_A} k={DK} {...FIG.later} {...RELIABLE} label={KIND_NAME.later} />
+    <circle class="addring" cx={D_R} cy={D_X} r={D_RING} aria-hidden="true" />
+    <Narrator x={D_R} y={D_X} k={DK} {...FIG.later} {...RELIABLE} />
+    <text class="lbl start addtag" x={D_R + 28} y={D_X + 4}>added</text>
+    <Narrator x={D_R} y={D_B} k={DK} {...FIG.later} {...RELIABLE} label={KIND_NAME.later} />
+    <text class="lbl start sm" x="24" y="242">hearing stated at that link:</text>
+    <Pill x={346} y={238} state="reject" text="addition rejected" />
+    <text class="lbl start sm" x="24" y="267">only ʿan at that link, for example:</text>
+    <Pill x={346} y={263} state="accept" text="addition preferred" />
+    <text class="lbl start sm" x="24" y="287">no proof of a hidden drop:</text>
+    <a class="xlink" href={href(`${hidden.division}/${hidden.id}/`)}>
+      <text class="rp" x="176" y="287"><tspan class="xu">{hidden.title}</tspan><tspan dx="5" aria-hidden="true">→</tspan></text>
+    </a>
+  </svg>
+
+  <svg id={CELL.mudtarib} viewBox="0 0 430 300" class="mudtarib" role="group" aria-label="Muḍṭarib, an illustration. A chain from the Prophet ﷺ through a Companion, where the next link is given as one narrator or another, over a level scale: neither version can be preferred. Usually in the chain, sometimes in the text. Changed on purpose to test someone, as with al-Bukhārī and al-ʿUqaylī, it is allowed if not left standing; for rarity, it is forgery; by mistake, it is maqlūb or muʿallal.">
+    <TermTitle c={mudtarib.c} x={mudtarib.cx} y={mudtarib.y} hit={mudtarib.hit} info={mudtarib.info} ar={mudtarib.ar} />
+    <text class="lbl sm" x="215" y="44">{ILLUS}</text>
+    <Moon cx={E_X} cy={E_MOON} k={0.4} />
+    <Arrow x1={E_X} y1={f(E_MOON + 24 * 0.4 + 3)} x2={E_X} y2={f(E_C - EH - 4)} />
+    <Narrator x={E_X} y={E_C} k={EK} {...FIG.sahabi} {...RELIABLE} label={KIND_NAME.sahabi} />
+    {/* the link that won't settle: both arrows into it sway about the Companion */}
+    <g class="sway" style={`transform-box:view-box;transform-origin:${SWAY_O.x}px ${SWAY_O.y}px`}>
+      <Arrow x1={E_X - 5} y1={SWAY_O.y} x2={E_P + 4} y2={f(E_PQ - EH - 4)} bend={-4} />
+      <Arrow x1={E_X + 5} y1={SWAY_O.y} x2={E_Q - 4} y2={f(E_PQ - EH - 4)} bend={4} />
+    </g>
+    <g class="faint">
+      <Narrator x={E_P} y={E_PQ} k={EK} {...FIG.later} {...RELIABLE} label={KIND_NAME.later} />
+      <Narrator x={E_Q} y={E_PQ} k={EK} {...FIG.later} {...RELIABLE} label={KIND_NAME.later} />
+    </g>
+    <text class="lbl sm" x={E_X} y={E_PQ + 4}>or</text>
+    <Arrow x1={E_P + 4} y1={f(E_PQ + UNDER_LABEL)} x2={E_X - 5} y2={f(E_N - EH - 4)} />
+    <Arrow x1={E_Q - 4} y1={f(E_PQ + UNDER_LABEL)} x2={E_X + 5} y2={f(E_N - EH - 4)} />
+    <Narrator x={E_X} y={E_N} k={EK} {...FIG.later} {...RELIABLE} label={KIND_NAME.later} />
+    <Scale x={E_X} y={264} w={64} tilt={0} left={1} right={1} drop={14} stand={26} pw={28} />
+    <text class="lbl start sm" x="146" y="284">level: neither version can be preferred</text>
+
+    <text class="lbl start" x={WHY_X} y="72">usually in the chain,</text>
+    <text class="lbl start" x={WHY_X} y="88">sometimes in the text</text>
+    <text class="colhead start" x={WHY_X} y="120">When the change is made</text>
+    {WHY.map((w) => <Chip x={WHY_X} y={w.y} text={w.chip} w={w.w} />)}
+    <text class="lbl start sm" x={WHY_X + 6} y={WHY[0].y + 22}>allowed if not left standing,</text>
+    <text class="lbl start sm" x={WHY_X + 6} y={WHY[0].y + 36}>as with al-Bukhārī, al-ʿUqaylī</text>
+    <a class="xlink" href={href(`${lying.division}/${lying.id}/`)}>
+      <text class="rp" x={WHY[1].after} y={WHY[1].y + 4}>forgery: <tspan class="xu">{lying.title}</tspan><tspan dx="5" aria-hidden="true">→</tspan></text>
+    </a>
+    <a class="xlink jump" href={`#${CELL.maqlub}`}>
+      <text class="rp" x={WHY[2].after} y={WHY[2].y + 4}><tspan class="xu">maqlūb</tspan><tspan dx="4" aria-hidden="true">↑</tspan></text>
+    </a>
+    <text class="lbl start sm" x={f(WHY[2].after + 58)} y={WHY[2].y + 4}>or</text>
+    <a class="xlink" href={href(`${slips.division}/${slips.id}/`)} aria-label={`muʿallal: see ${slips.title}`}>
+      <text class="rp" x={f(WHY[2].after + 76)} y={WHY[2].y + 4}><tspan class="xu">muʿallal</tspan><tspan dx="4" aria-hidden="true">→</tspan></text>
+    </a>
+  </svg>
+
+  <svg id={CELL.letters} viewBox="0 0 430 300" role="group" aria-label="Muṣaḥḥaf and muḥarraf, an illustration with single letters. One undotted letter outline: with no dots, one dot below or two above, it reads as different letters: muṣaḥḥaf, a change in the dots. The same outline with a fatḥa, ḍamma or kasra is voiced differently: muḥarraf, a change in the vowels. The outline stays the same. Most often in the text, sometimes in names in the chains. al-ʿAskarī, al-Dāraquṭnī and others wrote books on it.">
+    <line class="divider" x1="215" x2="215" y1="12" y2="176" />
+    <TermTitle c={musahhaf.c} x={musahhaf.cx} y={musahhaf.y} cls="rt mid" hit={musahhaf.hit} info={musahhaf.info} ar={{ x: musahhaf.cx, y: 54, size: "sm" }} />
+    <TermTitle c={muharraf.c} x={muharraf.cx} y={muharraf.y} cls="rt mid" hit={muharraf.hit} info={muharraf.info} ar={{ x: muharraf.cx, y: 54, size: "sm" }} />
+    <text class="lbl sm" x="110" y="74">by its dots</text>
+    <text class="lbl sm" x="320" y="74">by its vowels</text>
+    {DOTTED.map((g) => (
+      <>
+        <path class="glyph" d={g.d} />
+        {g.dots.map((d) => <circle class="ldot" cx={d.cx} cy={d.cy} r={d.r} />)}
+        <text class="lbl sm" x={g.gx} y={GY + 44}>{g.name}</text>
+      </>
+    ))}
+    {VOWELLED.map((g) => (
+      <>
+        <path class="glyph" d={g.d} />
+        <path class="vmark" d={g.mark} />
+        <text class="lbl sm" x={g.gx} y={GY + 44}>{g.name}</text>
+      </>
+    ))}
+    <text class="lbl" x="215" y="200">the outline stays; only the dots, or only the vowels, change</text>
+    <text class="lbl sm" x="215" y="224">most often in the text; sometimes in names in the chains</text>
+    <text class="lbl sm" x="215" y="246">al-ʿAskarī, al-Dāraquṭnī and others wrote books on it</text>
+    <text class="lbl sm" x="215" y="276">{ILLUS}</text>
+  </svg>
+</div>
+<style>
+  /* the grid's 1px gaps show its background, drawing var(--rule) lines between the cells (as Names) */
+  .cells{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--rule)}
+  .cells svg{background:var(--surface)}
+  @media (max-width:640px) and (orientation:portrait){.cells{grid-template-columns:1fr}}
+  /* an in-page jump lands the cell with a little room above it (the header scrolls away, it isn't sticky) */
+  .cells svg{scroll-margin-top:72px}
+  /* TermTitle draws the text, so the centring has to reach into it */
+  .changes :global(.rt.mid){text-anchor:middle}
+  .changes .colhead.start,.changes .layer{text-anchor:start}
+  /* cell A and B's small pictograms: plain links and dots, not narrator figures */
+  .pl{fill:none;stroke:var(--line);stroke-width:1.6}
+  .faint-line{stroke-dasharray:3 3;opacity:.7}
+  .pd{fill:var(--surface);stroke:var(--fg);stroke-width:1.6}
+  .pd.tint{fill:color-mix(in srgb,var(--gap) 35%,var(--surface));stroke:var(--gap)}
+  .pd.faint{opacity:.55}
+  .neq{fill:var(--gap);font:700 22px var(--f-body);text-anchor:middle}
+  .jn{font-weight:700}
+  .say rect{fill:var(--surface);stroke:var(--line);stroke-width:1.2}
+  .say path{fill:none;stroke:var(--line);stroke-width:1.2}
+  .say text{fill:var(--fg);font:700 13px var(--f-body);text-anchor:middle}
+  .rl{fill:none;stroke:var(--moon-ink);stroke-width:1;opacity:.45}
+  /* an insert: words that don't belong, shaded */
+  .ins{fill:color-mix(in srgb,var(--gap) 38%,transparent);stroke:var(--gap);stroke-width:1}
+  .ins.strong{stroke-width:2}
+  .strongl{fill:var(--fg)}
+  /* cell C: the name chips and the text cards' words */
+  .nchip rect{fill:var(--surface);stroke:var(--line);stroke-width:1.2}
+  .nchip text{fill:var(--fg);font:600 12px var(--f-body);text-anchor:middle}
+  .sw{fill:none;stroke:var(--line);stroke-width:1.4}
+  .mw{fill:var(--moon-ink);font:600 11px var(--f-body)}
+  .mw.end{text-anchor:end}
+  .mw.mid{text-anchor:middle}
+  .mw.diff{font-weight:800;text-decoration:underline}
+  /* cell D: the added narrator */
+  .addring{fill:none;stroke:var(--gold-a);stroke-width:1.8;stroke-dasharray:4 3}
+  .addtag{fill:color-mix(in srgb,var(--gold-a) 55%,var(--fg))}
+  /* cell E: the two versions of the link, faint child by child so their Labels-mode names stay full strength */
+  .faint > :global(*){opacity:.55}
+  .faint > :global(.mode-label){opacity:1}
+  /* cell F: the letter shapes (lib/kit.ts) */
+  .glyph{fill:none;stroke:var(--fg);stroke-width:5;stroke-linecap:round}
+  .ldot{fill:var(--gap);animation:blink 2.4s ease-in-out infinite}
+  .vmark{fill:none;stroke:var(--gap);stroke-width:3;stroke-linecap:round;animation:blink 2.4s ease-in-out infinite}
+  /* motion: each resting style is the end state, and each animation runs from its start state */
+  .ins{animation:changes-in .5s ease-out both;animation-delay:var(--d)}
+  @keyframes changes-in{from{opacity:0}}
+  /* the names and words trade places once, ending as the book gives them */
+  .swap-a{animation:changes-swap-a .8s ease-in-out .6s both}
+  .swap-b{animation:changes-swap-b .8s ease-in-out .6s both}
+  @keyframes changes-swap-a{from{transform:translate(var(--dx),0)}50%{transform:translate(calc(var(--dx) / 2),-11px)}}
+  @keyframes changes-swap-b{from{transform:translate(var(--dx),0)}50%{transform:translate(calc(var(--dx) / 2),11px)}}
+  .swap-down{animation:changes-swap-down .8s ease-in-out .6s both}
+  .swap-up{animation:changes-swap-up .8s ease-in-out .6s both}
+  @keyframes changes-swap-down{from{transform:translateY(15px)}50%{transform:translate(16px,7.5px)}}
+  @keyframes changes-swap-up{from{transform:translateY(-15px)}50%{transform:translate(-16px,-7.5px)}}
+  /* the one loop in the division: the arrows into the wavering link sway and never settle */
+  .sway{animation:changes-sway 3s ease-in-out infinite alternate}
+  @keyframes changes-sway{from{transform:rotate(-3deg)}to{transform:rotate(3deg)}}
+</style>

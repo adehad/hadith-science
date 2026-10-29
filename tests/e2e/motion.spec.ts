@@ -263,3 +263,30 @@ test("with motion, the slips scene's lens sweeps the routes in, then the ring cl
   await expect.poll(() => page.locator("svg .lost").evaluate((e) => getComputedStyle(e).opacity), { timeout: 8000 }).toBe("1");
   await expect.poll(() => page.locator("svg .route").last().evaluate((e) => getComputedStyle(e).opacity), { timeout: 8000 }).toBe("0.5");
 });
+
+test("reduced motion: the changes scene shows every insert, the names and words as the book gives them, and still arrows", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/al-mardud/changes/");
+  const css = (sel: string, prop: string) => page.locator(sel).evaluateAll((els, p) => els.map((e) => getComputedStyle(e).getPropertyValue(p)), prop);
+  expect(await css("svg .ins", "opacity")).toEqual(Array(5).fill("1"));
+  expect(await css("svg .swap-a, svg .swap-b, svg .swap-up, svg .swap-down", "transform")).toEqual(Array(4).fill("none"));
+  expect(await css("svg .sway", "transform")).toEqual(["none"]);
+  expect(await page.locator(".changes").evaluate((el) => el.getAnimations({ subtree: true }).length)).toBe(0);
+});
+
+test("with motion, the changes scene's inserts fade in one after another, the names and words swap once, the wavering link sways and the letters blink", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.goto("/al-mardud/changes/");
+  const timing = (sel: string) => page.locator(sel).evaluateAll((els) => els.map((e) => e.getAnimations().map((a) => [(a as CSSAnimation).animationName, a.effect?.getTiming().delay, a.effect?.getTiming().iterations])));
+  expect(await timing("svg .ins")).toEqual([300, 600, 900, 1200, 1500].map((d) => [["changes-in", d, 1]]));
+  expect(await timing("svg .swap-a")).toEqual([[["changes-swap-a", 600, 1]]]);
+  expect(await timing("svg .swap-b")).toEqual([[["changes-swap-b", 600, 1]]]);
+  expect(await timing("svg .swap-down")).toEqual([[["changes-swap-down", 600, 1]]]);
+  expect(await timing("svg .swap-up")).toEqual([[["changes-swap-up", 600, 1]]]);
+  expect(await timing("svg .sway")).toEqual([[["changes-sway", 0, Infinity]]]);
+  // cell F's changing dots and vowels blink (the kit's shared blink loop)
+  expect(await timing("#cell-letters .ldot, #cell-letters .vmark")).toEqual(Array(6).fill([["blink", 0, Infinity]]));
+  // the swaps end where the reduced-motion page rests: no offset (both fill holds an identity matrix)
+  await expect.poll(() => page.locator("svg .swap-up").evaluate((e) => new DOMMatrix(getComputedStyle(e).transform).isIdentity), { timeout: 5000 }).toBe(true);
+  await expect.poll(() => page.locator("svg .ins").last().evaluate((e) => getComputedStyle(e).opacity), { timeout: 5000 }).toBe("1");
+});

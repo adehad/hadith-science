@@ -138,3 +138,33 @@ export function spanOverlap(a: [number, number], b: [number, number]): { x0: num
   if (x1 <= x0) return null;
   return { x0: f(x0), x1: f(x1), mid: f((x0 + x1) / 2) };
 }
+
+// one undotted letter outline, a dotless bāʾ bowl centred on (gx, gy), as an SVG path: the written shape that its
+// dots or vowels decide how to read (Names.astro's muʾtalif cell, Changes.astro's muṣaḥḥaf and muḥarraf cell).
+// Single letter shapes only, never words.
+export function letterShape(gx: number, gy: number): string {
+  return `M${f(gx - 26)} ${f(gy - 14)} Q${f(gx - 28)} ${f(gy + 8)} ${f(gx)} ${f(gy + 8)} Q${f(gx + 28)} ${f(gy + 8)} ${f(gx + 26)} ${f(gy - 14)}`;
+}
+
+// the dot patterns that read the outline as bāʾ (one below), tāʾ (two above) or thāʾ (three above), as offsets
+// from the letter's centre
+export const LETTER_DOTS = {
+  none: [],
+  below: [[0, 20]],
+  two: [[-6, -22], [6, -22]],
+  three: [[-6, -22], [6, -22], [0, -31]],
+} as const satisfies Record<string, readonly (readonly [number, number])[]>;
+
+// the dots of a letter centred on (cx, cy), each r in radius
+export function letterDots(cx: number, cy: number, dots: readonly (readonly [number, number])[], r = 3.6) {
+  return dots.map(([dx, dy]) => ({ cx: f(cx + dx), cy: f(cy + dy), r }));
+}
+
+// a short vowel over or under a letter centred on (cx, cy), as an SVG path to stroke: the fatḥa a slanted stroke
+// above, the kasra the same stroke below, the ḍamma a small curl above (Changes.astro's muḥarraf)
+export function vowelMark(cx: number, cy: number, kind: "fatha" | "damma" | "kasra"): string {
+  const p = (dx: number, dy: number) => `${f(cx + dx)} ${f(cy + dy)}`;
+  if (kind === "fatha") return `M${p(-7, -21)} L${p(7, -27)}`;
+  if (kind === "kasra") return `M${p(-7, 21)} L${p(7, 15)}`;
+  return `M${p(1, -22)} Q${p(-4, -22)} ${p(-3, -27)} Q${p(2, -31)} ${p(3, -25)} Q${p(3, -18)} ${p(-4, -16)}`;
+}

@@ -276,6 +276,39 @@
     - title: The hidden-defect picture
       section: §5.27
       note: "The book gives no example of a muʿallal report, so the middle panel is an illustration. One unnamed chain runs from the Prophet ﷺ through a Companion and a Successor, which looks connected. Gathering the other routes shows each of them going from the Successor straight to the Prophet ﷺ, with no Companion between: the narrator has joined up a mursal, one of the indications §5.27 names. The book names two more of the few who spoke on it, whose names in the translation are under query; they are left out of the panel until a ruling."
+- id: changes
+  division: al-mardud
+  moons: [1]
+  order: 6
+  title: What changed in the telling?
+  eyebrow: Rejected for going against the reliable · §5.28–5.32
+  lede: The seventh charge is going against reliable narrators, and what the narrator changed gives the report its name. He may run chains or words together, put names or words the wrong way round, add a narrator, change a narrator with no way to choose between the versions, or change letters while the word keeps its outline.
+  source: §5.23 Mukhālafa, §5.28 Mudraj, §5.29 Maqlūb, §5.30 al-Mazīd fī muttaṣil al-asānīd, §5.31 Muḍṭarib, §5.32 Muṣaḥḥaf and muḥarraf
+  diagram: Changes
+  width: 860
+  captions:
+    - term: mukhalafa
+      note: "The seventh cause of criticism: the narrator goes against the reliable narrators. What he changed names the report: how a chain is put together, or words slipped into a text (mudraj); one thing put before another (maqlūb); an added narrator (al-mazīd); a narrator changed, with no way to choose (muḍṭarib); or letters changed, the outline kept (muṣaḥḥaf, muḥarraf) (§5.23, §5.28–5.32)."
+    - term: mudraj
+      note: "Going against the reliable by changing how a chain is put together, or by slipping into a text words not part of it, without saying so. An insertion is known from a fuller version setting it apart, from a statement by the narrator or a versed imam, or because the Prophet ﷺ could not have said it. al-Khaṭīb wrote a book on it, which Ibn Ḥajar summarised and added to, twice over or more (§5.28)."
+    - term: mudraj-al-isnad
+      note: "Four kinds. Several chains of one ḥadīth are merged into one without saying so. Part of a text held through another chain is told with the first, or a part heard indirectly is told without the go-between. Two texts with two chains are told with one, or one gets words from the other. Or a narrator reads a chain, is distracted and speaks for himself, which a listener takes as its text (§5.28)."
+    - term: mudraj-al-matn
+      note: "Words that are not part of a text come into it: at its start, in its middle, or, most often, at its end, by joining one sentence to the next. Or the words of a Companion, or of someone after him, are merged into the words of the Prophet ﷺ without making that clear (§5.28)."
+    - term: maqlub
+      note: "Going against the reliable by putting first what comes later. In names: Murra ibn Kaʿb given as Kaʿb ibn Murra, since one's name is the other's father's; al-Khaṭīb's Rāfiʿ al-irtiyāb is on this. In a text: in Abū Hurayra's report in Muslim of the seven whom Allah will shade, a narrator mixed up the hands; in the two Ṣaḥīḥs, the left hand does not know what the right has spent (§5.29)."
+    - term: mazid
+      note: "Going against the reliable by adding a narrator inside a chain, when the version without him is more reliable. Its condition is that hearing is stated plainly at the place of the addition. If it is not, if that link is told with ʿan, for example, the version with the addition is preferred (§5.30)."
+    - term: mudtarib
+      note: "Versions change a narrator, and there is no way to prefer one. It is usually in the chain and sometimes in the text, though a ḥadīth master rarely calls a report muḍṭarib for its text alone. A change made on purpose to test someone, as with al-Bukhārī and al-ʿUqaylī, is allowed if it is not left standing; made for rarity, it is a kind of forgery; made by mistake, it is maqlūb or muʿallal (§5.31)."
+    - term: musahhaf
+      note: "Going against the reliable by changing a letter or letters while the word keeps its outline: if the change is in the dots, it is muṣaḥḥaf. Knowing it matters; al-ʿAskarī, al-Dāraquṭnī and others compiled books on it. It is most often in the text, and sometimes in the names in the chains (§5.32)."
+    - term: muharraf
+      note: "The same kind of change, a letter or letters changed while the word keeps its outline, but in its vowelling rather than its dots. Like muṣaḥḥaf, it is most often in the text and sometimes in the names in the chains (§5.32)."
+  extra:
+    - title: The illustrations
+      section: §5.28–5.32
+      note: "The book gives examples only for maqlūb: Murra ibn Kaʿb, and the hands in Abū Hurayra's report. For mudraj, al-mazīd, muḍṭarib, muṣaḥḥaf and muḥarraf it names none, so those cells are illustrations: unnamed chains, blank text cards and single letter shapes, not real reports. One undotted letter outline is read as different letters by the dots below or above it, and is voiced differently by a fatḥa, ḍamma or kasra."
 - id: unknown
   division: al-mardud
   moons: [1]

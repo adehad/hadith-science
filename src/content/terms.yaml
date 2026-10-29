@@ -500,6 +500,7 @@
   def: "The narrator departs from reliable narrators. Its forms are mudraj, maqlūb, mazīd, muḍṭarib and muṣaḥḥaf."
   section: "§5.23"
   division: al-mardud
+  scene: changes
 - id: mawdu
   translit: Mawḍūʿ
   ar: مَوْضُوعٌ
@@ -531,6 +532,7 @@
   def: "A chain or text altered by slipping in what does not belong there, without marking it."
   section: "§5.28"
   division: al-mardud
+  scene: changes
 - id: mudraj-al-isnad
   translit: Mudraj al-isnād
   ar: مُدْرَجُ الْإِسْنَادِ
@@ -538,6 +540,7 @@
   def: "Chains run together: several routes merged into one, or one text given another text's chain."
   section: "§5.28"
   division: al-mardud
+  scene: changes
 - id: mudraj-al-matn
   translit: Mudraj al-matn
   ar: مُدْرَجُ الْمَتْنِ
@@ -545,6 +548,7 @@
   def: "Someone else's words, a Companion's or a later narrator's, run into the Prophet's ﷺ without a break, most often at the end."
   section: "§5.28"
   division: al-mardud
+  scene: changes
 - id: maqlub
   translit: Maqlūb
   ar: مَقْلُوبٌ
@@ -552,6 +556,7 @@
   def: "Something swapped round, such as Murra ibn Kaʿb given as Kaʿb ibn Murra, or the right and left hands reversed in a text."
   section: "§5.29"
   division: al-mardud
+  scene: changes
 - id: mazid
   translit: al-Mazīd fī muttaṣil al-asānīd
   ar: الْمَزِيدُ فِي مُتَّصِلِ الْأَسَانِيدِ
@@ -559,13 +564,15 @@
   def: "One version adds a narrator inside a connected chain, while the more reliable version, which clearly heard directly, has no such link."
   section: "§5.30"
   division: al-mardud
+  scene: changes
 - id: mudtarib
   translit: Muḍṭarib
   ar: مُضْطَرِبٌ
   en: Inconsistent
-  def: "Versions swap a narrator, or the wording, with no way to prefer one. Mostly in the chain, rarely in the text."
+  def: "Versions swap a narrator, or the wording, with no way to prefer one. Usually in the chain, sometimes in the text."
   section: "§5.31"
   division: al-mardud
+  scene: changes
 - id: musahhaf
   translit: Muṣaḥḥaf
   ar: مُصَحَّفٌ
@@ -573,6 +580,7 @@
   def: "A word or name changed by its dots while the outline of the letters stays the same."
   section: "§5.32"
   division: al-mardud
+  scene: changes
 - id: muharraf
   translit: Muḥarraf
   ar: مُحَرَّفٌ
@@ -580,6 +588,7 @@
   def: "A word or name changed in its vowelling while the outline of the letters stays the same."
   section: "§5.32"
   division: al-mardud
+  scene: changes
 - id: ikhtisar-al-hadith
   translit: Ikhtiṣār al-ḥadīth
   ar: اِخْتِصَارُ الْحَدِيثِ

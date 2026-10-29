@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { CHIP_CHAR_W, CHIP_PAD, bracketPath, chipRow, chipWidth, diamondPath, discRow, dotCluster, gaugeCells, lifespanBar, scaleEnds, spanOverlap, stackY, sweepAt } from "../../src/lib/kit";
+import { CHIP_CHAR_W, CHIP_PAD, LETTER_DOTS, bracketPath, chipRow, chipWidth, diamondPath, discRow, dotCluster, gaugeCells, letterDots, letterShape, lifespanBar, scaleEnds, spanOverlap, stackY, sweepAt, vowelMark } from "../../src/lib/kit";
 
 describe("chipWidth", () => {
   it("grows with the text, plus padding", () => {
@@ -184,5 +184,41 @@ describe("spanOverlap", () => {
   });
   it("rounds away float noise", () => {
     expect(spanOverlap([0.1, 0.3], [0.2, 1])).toEqual({ x0: 0.2, x1: 0.3, mid: 0.25 });
+  });
+});
+
+describe("letterShape", () => {
+  it("is the undotted bowl Names draws, centred on (gx, gy)", () => {
+    expect(letterShape(80, 128)).toBe("M54 114 Q52 136 80 136 Q108 136 106 114");
+  });
+  it("rounds away float noise", () => {
+    expect(letterShape(0.1 + 0.2, 0)).toBe("M-25.7 -14 Q-27.7 8 0.3 8 Q28.3 8 26.3 -14");
+  });
+});
+
+describe("letterDots", () => {
+  it("places each dot at its offset from the letter's centre", () => {
+    expect(letterDots(80, 128, [[0, 20]])).toEqual([{ cx: 80, cy: 148, r: 3.6 }]);
+    expect(letterDots(10, 10, [[-6, -22], [6, -22]], 3)).toEqual([{ cx: 4, cy: -12, r: 3 }, { cx: 16, cy: -12, r: 3 }]);
+  });
+  it("has no dots for the bare outline", () => expect(letterDots(80, 128, [])).toEqual([]));
+  it("names the dot patterns of bāʾ, tāʾ and thāʾ: one below, two above, three above", () => {
+    expect(LETTER_DOTS.none).toEqual([]);
+    expect(LETTER_DOTS.below).toEqual([[0, 20]]);
+    expect(LETTER_DOTS.two).toEqual([[-6, -22], [6, -22]]);
+    expect(LETTER_DOTS.three).toEqual([[-6, -22], [6, -22], [0, -31]]);
+  });
+});
+
+describe("vowelMark", () => {
+  it("puts the fatḥa and ḍamma above the letter and the kasra below it", () => {
+    const top = (d: string) => Math.min(...[...d.matchAll(/-?[\d.]+ (-?[\d.]+)/g)].map((m) => Number(m[1])));
+    expect(top(vowelMark(80, 128, "fatha"))).toBeLessThan(128 - 14);
+    expect(top(vowelMark(80, 128, "damma"))).toBeLessThan(128 - 14);
+    expect(top(vowelMark(80, 128, "kasra"))).toBeGreaterThan(128 + 8);
+  });
+  it("draws the fatḥa and kasra as one slanted stroke each", () => {
+    expect(vowelMark(0, 0, "fatha")).toBe("M-7 -21 L7 -27");
+    expect(vowelMark(0, 0, "kasra")).toBe("M-7 21 L7 15");
   });
 });
