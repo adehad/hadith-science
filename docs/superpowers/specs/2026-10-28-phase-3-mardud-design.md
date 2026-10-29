@@ -206,7 +206,7 @@ Reuses `Narrator`, `Moon`, `Arrow` (`flow`, `skip`), `Chip`, `Glyph` (`clock`, `
 ### 2.9 Translation slips
 
 - **§5.17 (p.164) "more general than for a matter pertaining to the narrator's piety and his accuracy".** The sense is "whether it concerns his religion or his accuracy". The site says that.
-- **§5.23 (p.193) "his ignorance".** The eighth cause is jahāla, being unknown, not ignorance. The site says "being unknown", as `terms.yaml` does.
+- **§5.23 (p.194) "his ignorance".** The eighth cause is jahāla, being unknown, not ignorance. The site says "being unknown", as `terms.yaml` does.
 - **§5.23 "lewdness".** For fisq the site says "open sin", as `terms.yaml` does.
 
 ## 3. The existing scenes (`breaks`, `unknown`)
@@ -262,10 +262,10 @@ x→ 0   30   70        200 260│ 290  330          460 520│ 550  600   650  
     │              ╰qāla…╯   │              ╰─────╯      │   al-Nahdī]     Abī Ḥāzim]
 360 │   Mudallis (i)          │                           │   600,310       700,310
 392 │  “I heard him”, when he │ shown by: his own word,   │ ┌ irsāl, not tadlīs ┐ (pill)
-408 │  did not: a liar (mask) │ or a versed imam's        │ │ all agree         │
+408 │  did not: a liar (mask) │ or a versed imam's        │ │ scholars agree    │
 424 │                         │ statement                 │ └───────────────────┘
-448 │ (Held until he says     │ an extra narrator in some │ so meeting, not living at
-466 │  he heard)  pill        │ versions is no proof →    │ the same time, makes tadlīs
+448 │ (Not accepted until he  │ an extra narrator in some │ so meeting, not living at
+466 │  says he heard) pill    │ versions is no proof →    │ the same time, makes tadlīs
 484 │                         │ What changed? (al-mazīd)  │
 ```
 
@@ -277,12 +277,12 @@ x→ 0   30   70        200 260│ 290  330          460 520│ 550  600   650  
   - Panel 1's narrator is the `mudallis` figure (hand over mouth).
   - Panel 2's narrator is a reliable `later` figure. The book doesn't say a narrator who does this is a concealer, so he is not drawn as one.
 - **Speech bubbles:** `SpeechBubble` from the narrator, with transliteration only (the part's `ar` prop becomes optional, §4.8). Panel 1 has "ʿan…" over "qāla…"; panel 2 has "ʿan…". Each bubble is 142 wide, so the narrators sit at x=70 and x=330 to keep the bubble inside the panel.
-- **Panel 1 aside:** at y 392–408, a small mask glyph (the `liar` face at k=0.4) and the `.lbl` "“I heard him”, when he did not: a liar". Then a `Pill state="pause"` at (130,456): "Held until he says he heard".
+- **Panel 1 aside:** at y 392–408, a small mask glyph (the `liar` face at k=0.4) and the `.lbl` "“I heard him”, when he did not: a liar". Then a `Pill state="pause"` at (130,456): "Not accepted until he says he heard".
 - **Panel 2 footer:** at y 392–424, "shown by: his own word, or a versed imam's statement", with a `Glyph text`. At y 448–484, an in-SVG link to `changes` (the al-mazīd cell): "an extra narrator in some versions is no proof".
 - **Panel 3:**
   - A moon at (650,150), k=0.6. Two `tabii` figures at (600,310) and (700,310), k=0.7, with two-line names.
   - `skip` arrows from the moon to each, because the mukhaḍramūn report straight from the Prophet ﷺ without naming a source.
-  - The default view shows a `Pill state="accept"` "irsāl, not tadlīs" at (650,400), with the `.lbl` "all agree" under it, and the two-line `.lbl` conclusion at y 448–466.
+  - The default view shows a `Pill state="accept"` "irsāl, not tadlīs" at (650,400), with the `.lbl` "the ḥadīth scholars agree" under it, and the two-line `.lbl` conclusion at y 448–466.
 
 ### 4.4 Term triggers
 
@@ -302,8 +302,8 @@ The translation reports a rival definition of tadlīs (§5.22). Ibn Ḥajar's is
 
 | id | Label | Scholars | Note |
 |---|---|---|---|
-| `ibn-hajar` | Ibn Ḥajar: they met | §5.22; with al-Shāfiʿī, Abū Bakr al-Bazzār and al-Khaṭīb | Tadlīs is only from someone the narrator is known to have met. If they only lived at the same time and no meeting is known, it is a hidden mursal. The difference is fine but real; Ibn Ḥajar calls this the trusted opinion. |
-| `contemporary` | Some: living at the same time | "Whoever has added…", §5.22 | Some add to the definition of tadlīs "being a contemporary, even if they never met". That brings the hidden mursal inside tadlīs. Ibn Ḥajar answers that the mukhaḍramūn would then be mudallis, yet all agree their reports are irsāl. |
+| `ibn-hajar` | Ibn Ḥajar: they met | §5.22; with al-Shāfiʿī, Abū Bakr al-Bazzār and al-Khaṭīb | Tadlīs is only from someone the narrator is known to have met. If they only lived at the same time and no meeting is known, it is a hidden mursal. The two differ, and the correct opinion keeps them apart; Ibn Ḥajar calls requiring a meeting the trusted opinion. |
+| `contemporary` | Some: living at the same time | "Whoever has added…", §5.22 | Some add to the definition of tadlīs "being a contemporary, even if they never met". That brings the hidden mursal inside tadlīs. Ibn Ḥajar answers that the mukhaḍramūn would then be mudallis, yet the ḥadīth scholars agree their reports from the Prophet ﷺ are irsāl. |
 
 Under `contemporary`:
 
@@ -335,7 +335,7 @@ Reuses `Narrator` (with the new `mudallis` kind), `Moon`, `Arrow` (`flow`, `skip
 
 ### 4.9 Translation slips
 
-- **§5.22 (p.189) "The difference between mudallas and mursal khafī is intrinsic".** The Arabic is likely daqīq, "subtle" or "fine". The site says "fine but real".
+- **§5.22 (p.189) "The difference between mudallas and mursal khafī is intrinsic".** The Arabic is likely daqīq, "subtle" or "fine". The site says only that the two differ and the correct opinion keeps them apart.
 - **§5.21 heading "the Misrepresented".** The site uses `terms.yaml`'s "Concealed". Not a meaning slip.
 
 ## 5. Scene 4: Did he lie? (`lying`)
@@ -554,7 +554,7 @@ Reuses `Narrator` (`weak`, new `mukhtalit`), `Moon`, `Arrow` (`flow`, `skip`), `
 
 ### 6.9 Translation slips
 
-- **§5.23 (p.193) "his doubts, in that he reports ambiguously".** The sixth cause is wahm: he reports on a mistaken impression. The site says "mistaken impression", as `terms.yaml` does.
+- **§5.23 (p.194) "his doubts, in that he reports ambiguously".** The sixth cause is wahm: he reports on a mistaken impression. The site says "mistaken impression", as `terms.yaml` does.
 - **§5.27 (p.221) "Yaʿqūb ibn Abī Shayba".** Likely Yaʿqūb ibn Shayba. Left out of the expert chips until a ruling.
 - **§5.27 "Ibn Abī Ḥātim".** As in the §5.10.2 row, the Arabic likely names Abū Ḥātim. Left out until a ruling. Abū Zurʿa, whom the translation names here, is kept.
 - **§5.38 heading "Mukhtalaṭ – the Merged".** The site uses `terms.yaml`'s Mukhtaliṭ, "memory failed".
@@ -817,7 +817,7 @@ x→ 0  20      130       240 260│ 280       390       500 520│ 540      650
   - A view tag group at y 400–440 that changes with the view (§8.5).
 - **Panel 3:**
   - A card with one shaded word box at (550..770, 80..110).
-  - A shelf of five `Glyph book`s with `.lbl`s, in §5.34's order. Ibn al-Athīr's al-Nihāya gets a small gold star and "the easiest to consult".
+  - A shelf of four `Glyph book`s with `.lbl`s, in §5.34's order. Ibn al-Athīr's al-Nihāya gets a small gold star and "the easiest to consult".
   - Under "A common word, a special sense", one more book row for the works on the meanings of reports and on difficult reports, and their three authors.
 
 ### 8.4 Term triggers
@@ -869,7 +869,7 @@ Reuses `Matn`-style cards, `Glyph` (`check`, `cross`, `book`), `TermTitle` and `
 
 ### 8.9 Translation slips
 
-- **§5.33 (p.238) "the consensus on the permissibility of commentaries on sharʿa [sources] done by non-Arabs undertaken by their experts".** The sense is likely "explaining the Law to non-Arabs in their own language, by one who knows it". The site says that.
+- **§5.33 (p.237) "the consensus on the permissibility of commentaries on sharʿa [sources] done by non-Arabs undertaken by their experts".** The sense is likely "explaining the Law to non-Arabs in their own language, by one who knows it". The site says an expert "may put the Law into another language".
 - **§5.33 "or by changing it to divert the meaning, except by a scholar aware of the indications of the words".** The Arabic likely pairs "what words signify" with "what changes meanings". The notes say "how words carry meaning", which covers both.
 
 ## 9. Scene 8: Why is he unknown? (`identity`)
@@ -1089,7 +1089,7 @@ Reuses `Narrator` (`weak`), `Decision`, `Pill`, `Chip`, `Arrow`, `TermTitle` and
 ### 10.9 Translation slips
 
 - **§5.23 (p.194) "not out of conviction but with a shade of doubt".** The Arabic is likely "not out of defiance (muʿānada) but through some specious reasoning (shubha)". The site says "through a misreading, not out of defiance".
-- **§5.37 (p.261) "al-Jūzajānī, the shaykh of Abū Dāwūd, has clarified, as well as al-Nasāʾī in his book Maʿrifat al-ʿilal".** The Arabic likely reads "the shaykh of Abū Dāwūd and al-Nasāʾī, in his book Maʿrifat al-rijāl": the book is al-Jūzajānī's, and al-Nasāʾī is his student, not a second authority. The site credits al-Jūzajānī only and names no book.
+- **§5.37 (p.260) "al-Jūzajānī, the shaykh of Abū Dāwūd, has clarified, as well as al-Nasāʾī in his book Maʿrifat al-ʿilal".** The Arabic likely reads "the shaykh of Abū Dāwūd and al-Nasāʾī, in his book Maʿrifat al-rijāl": the book is al-Jūzajānī's, and al-Nasāʾī is his student, not a second authority. The site credits al-Jūzajānī only and names no book.
 - **§5.37 "the report of the agent".** No such word seems to stand there in the Arabic; the opinion is simply "accepted outright unless he holds lying allowed". The site avoids "agent", and says "one who calls to it" for the dāʿiya.
 - **§5.37 "Ibrāhīm Yaʿqūb al-Jurzjānī".** Likely Ibrāhīm ibn Yaʿqūb al-Jūzajānī. Spelling only.
 
@@ -1143,25 +1143,26 @@ These are the owner's PDF annotations on these pages (PDF pp.164–279), used or
 
 ## 14. Translation slips
 
-These are to be added to `notes/translation-queries.md`.
+These are to be added to `notes/translation-queries.md`. Pages are the PDF's, as the `=====PAGE` markers in `source/nuzhah.txt` number them and as that file cites them; the printed page is one less here (PDF p.194 is printed p.193).
 
 | § / page | Translation says | Query | Ruling |
 |---|---|---|---|
 | §5.17 (p.164) | "more general than for a matter pertaining to the narrator's piety and his accuracy" | The sense is "whether it concerns his religion or his accuracy". The site says that. | |
-| §5.22 (p.189) | "The difference between mudallas and mursal khafī is intrinsic" | Likely daqīq, "subtle". The site says "fine but real". | |
-| §5.23 (p.193) | "his doubts, in that he reports ambiguously" | Wahm: he reports on a mistaken impression. The site says "mistaken impression". | |
-| §5.23 (p.193) | "his ignorance, in that his credibility … is not identified" | The cause is jahāla, being unknown. The site says "being unknown". | |
+| §5.22 (p.189) | "The difference between mudallas and mursal khafī is intrinsic" | Likely daqīq, "subtle". The site says only that the two differ and the correct opinion keeps them apart. | |
+| §5.23 (p.194) | "his doubts, in that he reports ambiguously" | Wahm: he reports on a mistaken impression. The site says "mistaken impression". | |
+| §5.23 (p.194) | "his ignorance, in that his credibility … is not identified" | The cause is jahāla, being unknown. The site says "being unknown". | |
 | §5.23 (p.194) | "not out of conviction but with a shade of doubt" | Likely "not out of defiance (muʿānada) but through specious reasoning (shubha)". The site says "through a misreading, not out of defiance". | |
 | §5.24 (p.195) | "Ibn Daqīq al-ʿYd" | Spelling: al-ʿĪd. | |
 | §5.27 (p.221) | "Yaʿqūb ibn Abī Shayba" | Likely Yaʿqūb ibn Shayba. Left out of the expert chips until a ruling. | |
 | §5.27 (p.221) | "Ibn Abī Ḥātim" | As the §5.10.2 row: likely Abū Ḥātim. Left out until a ruling. | |
 | §5.28 (p.224) | "the changing of the text or the changing of the isnād" | Likely "a change in the arrangement (siyāq), that is, of the isnād". The site says "how a chain is put together". | |
+| §5.30 (p.230) | "Its condition is that clarification of hearing it [is found] in the place of addition" | Which version must state the hearing? The site reads it as the version without the added narrator, the more reliable one, stating the hearing at that link; if that version has only ʿan there, the addition is preferred. Confirm. | |
 | §5.32 (p.234) | "If the changing is because of the form [of the word], then muḥarraf" | As the §5.60 row: "form" renders shakl, vowelling. The site says "vowelling". | |
-| §5.33 (p.238) | "commentaries on sharʿa [sources] done by non-Arabs undertaken by their experts" | Likely "explaining the Law to non-Arabs in their own language, by one who knows it". The site says that. | |
+| §5.33 (p.237) | "commentaries on sharʿa [sources] done by non-Arabs undertaken by their experts" | Likely "explaining the Law to non-Arabs in their own language, by one who knows it". The site says an expert "may put the Law into another language". | |
 | §5.35 (p.251) | "al-Muwaḍḍiḥ li-awhām wa-al-tafrīq" | Usually al-Mūḍiḥ li-awhām al-jamʿ wa-l-tafrīq. Spelling only. | |
-| §5.37 (p.261) | "al-Jūzajānī, the shaykh of Abū Dāwūd … as well as al-Nasāʾī in his book Maʿrifat al-ʿilal" | Likely "the shaykh of Abū Dāwūd and al-Nasāʾī, in his book Maʿrifat al-rijāl". The site credits al-Jūzajānī only, and names no book. | |
+| §5.37 (p.260) | "al-Jūzajānī, the shaykh of Abū Dāwūd … as well as al-Nasāʾī in his book Maʿrifat al-ʿilal" | Likely "the shaykh of Abū Dāwūd and al-Nasāʾī, in his book Maʿrifat al-rijāl". The site credits al-Jūzajānī only, and names no book. | |
 | §5.37 (p.260) | "the report of the agent is accepted in general, except…" | "Agent" seems not to stand in the Arabic here. The site avoids it. | |
-| §5.37 (p.261) | "Ibrāhīm Yaʿqūb al-Jurzjānī" | Likely Ibrāhīm ibn Yaʿqūb al-Jūzajānī. Spelling only. | |
+| §5.37 (p.260) | "Ibrāhīm Yaʿqūb al-Jurzjānī" | Likely Ibrāhīm ibn Yaʿqūb al-Jūzajānī. Spelling only. | |
 
 ## 15. Term map (all 31)
 
@@ -1305,7 +1306,7 @@ As for the earlier divisions, the owner asked for development to continue while 
 - **Ordinals:** shown on the rungs, since they are the book's own count. The severity wedge has no numbers.
 - **Gauges, meters and records:** they show relative order only. No numbers, percentages or counts appear. The error records use marks, labelled as an illustration.
 - **Arabic quoted from the reports: not shown anywhere.** Only a few English words of the reports appear. Term names keep their Arabic. The delivery words ʿan and qāla are in transliteration. The muṣaḥḥaf cell's single letters are allowed, as in *Who is who?*.
-- **The suspect's figure:** the dashed mask and cracked seal, as designed. `/narrators/` is not changed in this build.
+- **The suspect's figure:** the dashed mask and cracked seal, as designed. It is not added to `/narrators/`; that page changes only where the faded head's outline does (see "All scenes" below).
 - **After the memory failed:** no verdict pill. p.272 stays a proposal.
 - **Abstract cells:** labelled diagrams with "the book names no example" in their Read as text, for muʿallal, mudraj, al-mazīd, muḍṭarib, muṣaḥḥaf, muḥarraf and wuḥdān's contrast figure.
 - **Generation colours from general knowledge:** acceptable. Each scene's Read as text names who is a Companion or a Successor only where the translation says so.
@@ -1313,6 +1314,20 @@ As for the earlier divisions, the owner asked for development to continue while 
 - **Munkar and shādhdh:** plain labels and links, never triggers, since those terms belong to `opposition`.
 - **Expert names under query:** Yaʿqūb ibn (Abī) Shayba and Ibn Abī Ḥātim are left out of the muʿallal chips until a ruling.
 - **Owner's annotations:** only the rows marked "used" in §13 go in. The "proposed" ones wait for approval in `notes/annotation-usage.md`.
-- **Translation slips:** all fifteen rows of §14 go to `notes/translation-queries.md`. The site uses the wording given there until a ruling.
+- **Translation slips:** all sixteen rows of §14 go to `notes/translation-queries.md`. The site uses the wording given there until a ruling.
 - **Links to unbuilt scenes:** the overview's rung links render only once their target scene exists, so no build ever ships a broken link.
 - **Motion that loops:** only cell E of `changes` (the swaying link) and the standard blinks; all stop under reduced motion.
+
+### Deviations in the build
+
+The built scenes follow this design except as below, as the reviews listed them. None changes a ruling or adds content beyond the translation.
+
+- **`causes`:** each rung links to its cause's term anchor (`#slug`) in the scene that draws it, resolved at build time. The cells' "OMISSION" and "CRITICISM" eyebrows became the subtitles "omission: …" and "criticism: …". The rung sub-lines are fuller (rung 6 adds "when close study of the chains finds it", rung 7 adds muḥarraf, rung 8 lists mubham, majhūl al-ʿayn and mastūr, rung 10 reads "for life: shādhdh, for some; later: mukhtaliṭ"). The munkar bracket says "going against others", not "opposition", and its link follows rung 5 in the tab order. The plain-drop box says "they were not of one time, or they never met", and both boxes link by the target scenes' titles. Cell A's skip arrows bow wide of the ghosts' Labels-mode names, and chain 1's lands on the collector chip's shoulder. A new Read as text item, "What each cause yields" (§5.24–5.38), replaces the source's "§5.26 Munkar".
+- **`hidden`:** panel 3 is "Lived in his time", sub-labelled "Ibn Ḥajar's evidence". Panel 1's pill reads "Not accepted until he says he heard", with "on the most correct opinion" under it; the small liar mask was dropped, so that point is text only. Panel 3 says "the ḥadīth scholars agree" (not "all agree"). The `contemporary` view's tag reads "counted as tadlīs too", its pill "then mudallis", with "yet the scholars call it irsāl" and a two-line conclusion. The ibn-hajar view's note says the two differ and the correct opinion keeps them apart (not "fine but real"). Panel 2's link to `changes` lands on `#mazid`.
+- **`lying`:** "mawḍūʿ" in panel 1 is plain text, not a link to panel 2. Panel 3's sources join the text card by curved feed lines, not a bracket, with "ascribed to the Prophet ﷺ" under it. Motive chips read "common sense", "loyalty to a school", "pleasing leaders" and "pious predecessors". Added: "suspected, not proven" by the suspect, panel 1's heading "Two charges / the graver first", a single-pointed wedge, card 1's "yet a ruling may rest on it" and panel 2's footer. The scene is 500 tall.
+- **`slips`:** the eyebrow is "Rejected for mistakes", and the lede speaks of how well a narrator keeps what he reports. The munkar block reads "if gross or excessive, his report is munkar", and adds "and so is the open sinner's", linking to `innovation`. The illustrations are labelled ("an illustration, not a count"; "the book names no example"), with a new extra, "The hidden-defect picture". The experts have the heading "Few have spoken on it". The lens sweeps the Companions' row; the ghafla check is a blinking dashed box. The gathered routes' moons stay unfaded, so the ﷺ keeps its contrast.
+- **`changes`:** cells B, D, E and F carry "an illustration: the book names no example", with a new extra, "The illustrations". In maqlūb only the names inside the chip and the slipped card's right and left trade places, and each text card quotes only a short fragment of the translation, with ellipses where words are cut: "…the right hand … what the left …" and "…the left hand … what the right …", the swapped word bold and underlined (§7.3). Al-mazīd's chip says "hearing stated". Muḍṭarib's heading is "When the change is made" and covers mistakes too; its chip says "to test someone". Each muṣaḥḥaf and muḥarraf letter is named under it. The sorter rows put the name first, and the cells have named ids (`#cell-mudraj` and so on).
+- **`wording`:** the eyebrow is "Changing the words on purpose, and rare words". The shelf has four books, not five, with Abū Mūsā al-Madīnī, "well arranged" and "gathered them all". The other views are labelled "Some: …", each tag with its attribution ("it is said"); the default tag reads "most scholars allow it", with "Ibn Ḥajar: the correct opinion". "Always better" became "better, without doubt"; the lede opens "On the correct opinion".
+- **`identity`:** the six faint figures start above six fixed name chips round him and merge; the chips don't fly, and dashed ties draw in after. The "taken for six men" label became the subtitle "many names, taken for a group, though he is one". Both cells end in links to *Who is this narrator?*; cell B adds "an illustration: the book names no example" and a new extra, "The illustration".
+- **`innovation`:** the eyebrow is "Rejected for open sin, and sometimes for innovation", and the lede adds "and on what he narrates". Each view has rounded attribution tags ("Ibn Ḥajar: the trusted opinion"; "it is said"; "the majority"), and the reject view adds Ibn Ḥajar's rebuttal under each panel. "Careful and pious?" is a condition label, not a question. Panel 1 adds "two kinds, by how far it goes" with a fork towards panels 2 and 3. The scene is 490 tall.
+- **All scenes:** the header's Motion switch stops every loop (WCAG 2.2.2), and `--muted` text on gold fills uses a mix of `--fg` that reaches 4.5:1 in both themes. These contrast fixes also change earlier divisions' scenes: every verdict pill state's text, the view tags and acted-on's "?" now mix their colour with `--fg`; the answer's tag in *Names* is `--fg`; the gold-fill text in *Delivery*, *Grades* and `causes` uses an 85% `--fg` mix; the gathered routes' moons in `slips` are at full opacity; and the faded head (mukhtaliṭ) keeps its dashed outline at full opacity, only its fill faded, which changes `/narrators/` too.

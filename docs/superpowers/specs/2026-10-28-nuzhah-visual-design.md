@@ -1,7 +1,7 @@
 # Nuzhat al-Naẓar, visualised: design
 
 Date: 2026-10-28
-Status: phase 1 (foundation) and phase 2 (the five mocked scenes) are built; phase 3 has begun, and divisions 1 (ʿAdad al-ṭuruq) and 2 (al-Maqbūl) are built
+Status: divisions 1–3 built (phases 1 and 2, then phase 3's ʿAdad al-ṭuruq, al-Maqbūl and al-Mardūd)
 Concept mockup: https://claude.ai/artifact/8V78csjQ1dFRqbjoWoZza1 (reference for look and motion; not production code)
 
 ## 1. Goal
@@ -180,6 +180,21 @@ The figure key from the mockup's "Reading a narrator" becomes `/narrators/`.
 | Does anyone else carry it? (`support`) | 5.13 | The crescent-moon report as a tree of routes, swept by the iʿtibār lens; brackets mark full and partial follow-ups and the shāhid | none |
 | Can both be acted on? (`acted-on`) | 5.14–5.16 | A decision path of five questions in Ibn Ḥajar's order, each answer dropping to an outcome card: muḥkam, mukhtalif al-ḥadīth, naskh, tarjīḥ, tawaqquf | none |
 
+**Phase 3: division 3** (al-Mardūd), designed in `docs/superpowers/specs/2026-10-28-phase-3-mardud-design.md`. The phase 2 `breaks` and `unknown` scenes stay as they were, moved to second and ninth place:
+
+| Scene | § | Form | Views |
+|---|---|---|---|
+| Why is a report rejected? (`causes`) | 5.17, 5.21, 5.23–5.38 | Two cells: omission as three mini chains with the drop in each of its three places, over the plain and hidden drops as lifespan boxes; criticism as a ladder of the ten causes in the book's order, gravest first, each rung a link to the scene that draws it | none |
+| Where does the chain break? (`breaks`) | 5.18–5.20 | Muʿallaq, mursal, muʿḍal and munqaṭiʿ as ghosts in a chain (phase 2, unchanged) | Most hadith scholars; Mālikīs, Kūfīs, Aḥmad (other opinion); al-Shāfiʿī |
+| Did he hear it from him? (`hidden`) | 5.21–5.22 | Three panels pairing lifespan bars with a chain fragment: tadlīs (they met), mursal khafī (no known meeting), and the mukhaḍramūn as Ibn Ḥajar's evidence | Ibn Ḥajar: they met; Some: living at the same time |
+| Did he lie? (`lying`) | 5.23–5.25 | Three panels: the liar and the suspect with what their reports are called, three clue cards for knowing a forgery, and the sources and motives of forged words | none |
+| Did he keep it right? (`slips`) | 5.23, 5.26–5.27, 5.38 | Three panels: a record strip of marked errors and an unticked check, a hidden defect found by gathering routes under a lens, and poor memory as a whole-life bar and a bar broken late in life | none |
+| What changed in the telling? (`changes`) | 5.23, 5.28–5.32 | Six cells: a sorter asking what changed, linking to a cell for each form (mudraj, maqlūb, al-mazīd, muḍṭarib, muṣaḥḥaf and muḥarraf) | none |
+| May the words be changed? (`wording`) | 5.33–5.34 | Three panels on one text card: cut short by an expert and by one who does not know, told in other words through a gate, and a shelf of the books on rare words | Most scholars; Some: single words only; Some: if he knows the words; Some: if he has forgotten them |
+| Why is he unknown? (`identity`) | 5.35–5.36 | Two cells: al-Kalbī's many names gathering into one man, and a narrator with one student against one with many | none |
+| Who is this narrator? (`unknown`) | 5.35–5.36 | Mubham and majhūl figures (phase 2, unchanged) | none |
+| Does his belief count against him? (`innovation`) | 5.23, 5.37 | Three panels: open sin against sin in belief, then a decision path for each kind of innovation | Ibn Ḥajar; Unless he allows lying; Reject |
+
 - Each division gets its own short design pass, written as a design doc in `docs/superpowers/specs/`. It is then built on its own branch and reviewed through its PR preview. At the owner's request, to keep development moving, this replaces the earlier step of a mockup in the concept artifact.
 - Design rules for every scene:
   - Prefer a real worked example from the book over a generic one.
@@ -259,15 +274,19 @@ Until a division is built, its planet still shows on the map, and its moons are 
 src/
   components/
     svg/          Moon, Narrator, Chain, Arrow, SpeechBubble, Pill, Term, TermTitle, LayerGuides,
-                  InfoIcon, Defs, NameTag, Chip, Gauge, Glyph, Scale, Matn, Decision, Bracket;
+                  InfoIcon, Defs, NameTag, Chip, Gauge, Glyph, Scale, Matn, Decision, Bracket,
+                  Lifespan (division 3: a rounded life bar, no axis or dates);
                   Glyph kinds: memory, book, check, cross (division 1: rejected or not reached), lens,
-                  pause, text, companion, clock;
-                  figures.ts (FIG / KIND_NAME), geom.ts (f, titleTrigger, rowTrigger, panelTrigger,
-                  SUBT_TRIGGER, ROW_TITLE_TRIGGER)
-    layout/       Header, Footer, Breadcrumb, Starfield, ThemeToggle, KeyToggle,
+                  pause, text, companion, clock, coin (dashed for a false one), scissors;
+                  Narrator faces: blank, faded, mask, mask-dashed (suspected, not proven), hand;
+                  figures.ts (FIG / KIND_NAME, with the division 3 kinds mudallis, liar, accused and
+                  mukhtalit), geom.ts (f, titleTrigger, rowTrigger, panelTrigger, SUBT_TRIGGER,
+                  ROW_TITLE_TRIGGER)
+    layout/       Header, Footer, Breadcrumb, Starfield, ThemeToggle, KeyToggle, MotionToggle,
                   ViewSwitch, ReadAsText, TermPopover, Legend, Carousel
     scenes/       Routes, Breaks, Unknown, Delivery, Names, Grades, Opposition, Support,
-                  ActedOn, Report, Sorting, Knowledge, Lone (one diagram per scene)
+                  ActedOn, Report, Sorting, Knowledge, Lone, Causes, Hidden, Lying, Slips,
+                  Changes, Wording, Identity, Innovation (one diagram per scene)
   content/
     divisions.yaml  the eight divisions (term, Arabic, English, §, order, moons)
     scenes.yaml     every scene (see 7.3)
@@ -277,7 +296,8 @@ src/
     terms.ts      slug → target path; ?t= / bare ?slug parsing
     views.ts      read/write ?view=
     staircase.ts  delivery step boxes per view
-    kit.ts        pure layout maths for the kit parts (chip widths and rows, gauge cells, scale ends, disc rows, the sweep timing, diamond path, bracketPath for Bracket, dotCluster for the mustafīḍ inset, stackY for name lines beside a figure)
+    kit.ts        pure layout maths for the kit parts (chip widths and rows, gauge cells, scale ends, disc rows, the sweep timing, diamond path, bracketPath for Bracket, dotCluster for the mustafīḍ inset, stackY for name lines beside a figure, pillWidth for a verdict pill, lifespanBar and spanOverlap for Lifespan, and the letter helpers letterShape, LETTER_DOTS, letterDots and vowelMark shared by Names and Changes)
+    motion.ts     the motion switch's state: motionAllowed(), setMotion(), onMotionChange() (§3.4)
     panels.ts     carousel track width and snap stops
     orbit.ts      map orbit maths
     scene.ts      caption lookup, popover JSON, DiagramProps

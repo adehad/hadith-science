@@ -2,6 +2,7 @@
 
 Places where the translation looks off. The site follows the Arabic term until the owner rules.
 Unless a row cites one, no matching PDF annotation was found for these (checked 2026-10-28).
+Page numbers are the PDF's, as the `=====PAGE` markers in `source/nuzhah.txt` number them; the printed page is one less in al-Mardūd's sections (PDF p.194 is printed p.193).
 
 | § / page | Translation says | Query | Ruling |
 |---|---|---|---|
@@ -26,3 +27,19 @@ Unless a row cites one, no matching PDF annotation was found for these (checked 
 | §5.7 (p.83) | "al-Isfarāʾinī" | Usually spelt al-Isfarāyīnī or al-Isfarāʾīnī. Spelling only; the site writes al-Isfarāʾīnī | |
 | §5.5 (p.74) | "they offer a contentious answer" | Possibly "an answer open to question" (fīhi naẓar). The site's extra avoids characterising the answer | |
 | §5.5 (p.75) | "the silence [of the Companions] does not necessitate that they could not have heard it from someone else" | As worded, this seems to argue the opponents' side. Ibn Ḥajar's point is likely that their silence does not show they had heard it from anyone but ʿUmar. The site says only that "their silence proves nothing" | |
+| §5.17 (p.164) | "more general than for a matter pertaining to the narrator's piety and his accuracy" | The sense is "whether it concerns his religion or his accuracy". The site says that ("touching his religion or his accuracy") | |
+| §5.22 (p.189) | "The difference between mudallas and mursal khafī is intrinsic" | Likely daqīq, "subtle" or "fine". The site says only that the two differ and the correct opinion keeps them apart | |
+| §5.23 (p.194) | "his doubts, in that he reports ambiguously" | Wahm: he reports on a mistaken impression. The site says "mistaken impression" | |
+| §5.23 (p.194) | "his ignorance, in that his credibility … is not identified" | The cause is jahāla, being unknown. The site says "being unknown" | |
+| §5.23 (p.194) | Innovation held "not out of conviction but with a shade of doubt" | Likely "not out of defiance (muʿānada) but through specious reasoning (shubha)". The site says "through a misreading, not out of defiance" | |
+| §5.24 (p.195) | "Ibn Daqīq al-ʿYd" | Spelling: al-ʿĪd. The site writes Ibn Daqīq al-ʿĪd | |
+| §5.27 (p.221) | "Yaʿqūb ibn Abī Shayba" among the masters of ʿilal | Likely Yaʿqūb ibn Shayba. The site leaves him out of the experts on *Did he keep it right?* until a ruling | |
+| §5.27 (p.221) | "Ibn Abī Ḥātim" among the masters of ʿilal | As the §5.10.2 row: likely Abū Ḥātim. The site leaves him out of the experts until a ruling | |
+| §5.28 (p.224) | "the changing of the text or the changing of the isnād" | Likely "a change in the arrangement (siyāq), that is, of the isnād". The site says "how a chain is put together" | |
+| §5.30 (p.230) | "Its condition is that clarification of hearing it [is found] in the place of addition" | Which version must state the hearing? The site reads it as the version without the added narrator, the more reliable one, stating the hearing at that link; if that version has only ʿan there, the addition is preferred. Confirm | |
+| §5.32 (p.234) | "If the changing is because of the form [of the word], then muḥarraf" | As the §5.60 row: "form" renders shakl, vowelling. The site says "vowelling" | |
+| §5.33 (p.237) | "commentaries on sharʿa [sources] done by non-Arabs undertaken by their experts" | Likely "explaining the Law to non-Arabs in their own language, by one who knows it". The site says an expert "may put the Law into another language" | |
+| §5.35 (p.251) | "al-Muwaḍḍiḥ li-awhām wa-al-tafrīq" | Usually al-Mūḍiḥ li-awhām al-jamʿ wa-l-tafrīq. Spelling only; the site writes al-Mūḍiḥ | |
+| §5.37 (p.260) | "the report of the agent is accepted in general, except…" | "Agent" seems not to stand in the Arabic here. The site avoids it | |
+| §5.37 (p.260) | "al-Jūzajānī, the shaykh of Abū Dāwūd … as well as al-Nasāʾī in his book Maʿrifat al-ʿilal" | Likely "the shaykh of Abū Dāwūd and al-Nasāʾī, in his book Maʿrifat al-rijāl". The site credits al-Jūzajānī only, as the shaykh of Abū Dāwūd, and names no book | |
+| §5.37 (p.260) | "Ibrāhīm Yaʿqūb al-Jurzjānī" | Likely Ibrāhīm ibn Yaʿqūb al-Jūzajānī. Spelling only | |

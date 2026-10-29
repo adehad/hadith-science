@@ -14,8 +14,15 @@ Owner's PDF annotations used in site text. The owner approves each row.
 | p.135 | Prefer the explicit definition of shādhdh: an *acceptable* narrator (sound or fair grade) | *Who outweighs whom?* caption `shadhdh` and def: "an acceptable narrator goes against one who is weightier" | |
 | p.140 | Full: same chain but the first person differs; partial: two chains to the same Companion | *Does anyone else carry it?*: the tree's layout (full follow-up at Mālik, partial ones joining at Ibn ʿUmar); no wording taken | |
 | p.142 | The order: both, then abrogation, then preference, then neither | *Can both be acted on?*: the left-to-right order of the decision path, and the lede ("first he tries to harmonise them, then he looks for abrogation, then he prefers one, and only then does he pause") | |
-| p.193 | Highlight on "negligence": better translated "naive" | `ghafla` def: "a naive carelessness" | |
+| p.182 | "Teacher told me" for what one did not hear is lying; qāla and ʿan are tadlīs | *Did he hear it from him?* panel 1: layout only (the mudallis's bubble with ʿan or qāla, and the "he would be a liar" aside, which follow §5.21); the owner's classmate story is not used | |
+| p.193 | Two main categories: a missing link (apparent or hidden) and issues with the narrator (integrity or accuracy) | *Why is a report rejected?*: structure only (the two cells, and cell A's plain and hidden boxes); no wording taken | |
+| p.193 | Highlight on "negligence": better translated "naive" | `ghafla` def: "a naive carelessness"; *Did he keep it right?* caption `ghafla` ("a naive carelessness about accuracy") | |
+| p.221 | After looking at all the chains, they find a problem with the ḥadīth | *Did he keep it right?* panel 2: layout only (the gathered routes under the lens) | |
+| p.224 | Something inserted without saying it was inserted, in the isnād or the content | *What changed in the telling?* cell B: structure only (its two rows, mudraj in the chain and in the text) | |
+| p.226 | Mawḍūʿ is intentional, unlike the mixed-up | *What changed in the telling?* cell E: structure only (the rows on a change made on purpose and by mistake) | |
 | p.231 | Muḍṭarib: "inconsistent", a paradox that cannot be resolved | `mudtarib` en: "Inconsistent" | |
+| p.231 | Muḍṭarib: two options of equal weight that can't be decided | *What changed in the telling?* cell E: layout only (the level scale, "neither version can be preferred"), which follows §5.31 | |
+| p.237–238 | Moving on to the intentional changes; daʿwa in other languages as a proof | *May the words be changed?*: structure only (the scene follows the mistakes of *What changed in the telling?* as the changes made on purpose, and the `riwaya-bil-mana` proof, which follows §5.33) | |
 | p.312 | Highlight on maqṭūʿ: meaning "cut" | `maqtu` en: "Cut off" | |
 | p.344 | Imlāʾ means dictating, narrating from memory | `imla` def: "recites from memory while students write"; delivery scene caption `imla` (dictation from memory) | |
 | p.345 | Highlight on mukātaba: literally "correspondence" | `mukataba` en: "Correspondence"; delivery scene caption `kataba-ilayya` ("mukātaba (correspondence)") | |
@@ -25,7 +32,7 @@ Owner's PDF annotations used in site text. The owner approves each row.
 
 ## Proposals
 
-Annotations the al-Maqbūl design (§8) and the ʿAdad al-ṭuruq design (§9) suggest using but the site does not use yet. Nothing here is in site text until the owner approves it.
+Annotations the al-Maqbūl design (§8), the ʿAdad al-ṭuruq design (§9) and the al-Mardūd design (§13) suggest using but the site does not use yet. Nothing here is in site text until the owner approves it.
 
 | Page | Annotation (short) | Proposed use | Approved |
 |---|---|---|---|
@@ -38,5 +45,8 @@ Annotations the al-Maqbūl design (§8) and the ʿAdad al-ṭuruq design (§9) s
 | p.80 | Raw materials checked for defects before they go into the factory | *Which reports are acted on?*: an image for the lede ("checked before use") | |
 | p.82 | The nobleman analogy: one witness plus known context gives near-certainty | *How sure can we be?*: an illustration of the signs (the owner's teacher's example) | |
 | p.82 | Certainty is about whether he said it, not about how to act on it | *How sure can we be?*: a sub-label on the meter ("sure he said it") | |
+| p.272 | Memory loss: narrated before (accept), after (don't accept), unknown | *Did he keep it right?* panel 3: a "not accepted" verdict pill on the "after" card. The translation names only "before" and "can't tell" | |
+| p.230 | Al-mazīd: the opposite of tadlīs; its conditions | *What changed in the telling?* cell D: a sub-label, "the opposite of tadlīs", linking to *Did he hear it from him?* (conditions 1–2 follow §5.30 and are already drawn) | |
+| p.182 | The classmate example: arriving late and asking a classmate | *Did he hear it from him?* panel 1: an illustration of the hidden source (the owner's teacher's example) | |
 
-Not proposed, since they go beyond the translation: p.126–127 (al-Tirmidhī's "ḥasan ṣaḥīḥ" is effectively ṣaḥīḥ in his time) and p.138 (munkar as weak against less weak, which conflicts with the translation's example).
+Not proposed, since they go beyond the translation: p.126–127 (al-Tirmidhī's "ḥasan ṣaḥīḥ" is effectively ṣaḥīḥ in his time) and p.138 (munkar as weak against less weak, which conflicts with the translation's example). For al-Mardūd: p.183 and p.272 (tadlīs al-shuyūkh), p.183 (Ibn Ḥajar's five ranks of mudallisīn), p.189 (the majority counting meeting-less contemporaries as tadlīs, which conflicts with "the trusted opinion"), p.194 (why innovation ranks below open sin), p.195–197 (the liar's grading, the forgers' stories), p.227 (maqlūb's conditions), p.238 (where telling by meaning is forbidden), p.251 (why narrators used many names) and p.261 (the muḥaddithūn's practice with innovators).
