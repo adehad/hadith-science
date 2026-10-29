@@ -11,6 +11,7 @@ export const PAIRS: [text: string, fill: string, what: string][] = [
   ["var(--pause-ink)", "var(--view-tint)", "view tag"],
   ["var(--pause-ink)", "var(--pause-wash)", "acted-on's ? on its pause card"],
   ["var(--gold-ink)", "var(--surface)", "gold ink on the page"],
+  ["var(--ok-on-moon)", "var(--moon)", "added words on a text card"],
   // the darkest step and rung; the paler ones are further from the text in both themes
   ["var(--on-gold)", stepFill(0), "words on a gold step or rung"],
 ];

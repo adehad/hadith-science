@@ -19,6 +19,8 @@
   /* an outcome card's fill (svg.css .card.<state>) */
   --ok-wash:color-mix(in srgb,var(--ok) 6%,var(--surface)); --pause-wash:color-mix(in srgb,var(--pause) 7%,var(--surface));
   --gap-wash:color-mix(in srgb,var(--gap) 6%,var(--surface)); --gold-wash:color-mix(in srgb,var(--gold-b) 9%,var(--surface));
+  /* added words on a text card (Matn.astro .added): the card is --moon in both themes, where --ok falls under 4.5:1 */
+  --ok-on-moon:color-mix(in srgb,var(--ok) 90%,var(--ink));
   /* text on a gold step or rung, where --muted falls under 4.5:1 in dark mode */
   --on-gold:color-mix(in srgb,var(--fg) 85%,var(--surface));
   --f-display:"Fraunces Variable",Georgia,"Amiri",serif; --f-body:"Source Sans 3 Variable","Amiri",system-ui,sans-serif; --f-ar:"Amiri","Times New Roman",serif;
