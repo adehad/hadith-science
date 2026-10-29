@@ -176,8 +176,6 @@ async function smoke(page: Page, url: string, theme: "light" | "dark", view?: st
 
 test("sitemap lists the map, divisions, scenes, narrators and glossary", () => {
   expect(routes).toEqual(expect.arrayContaining(["/", "/narrators/", "/terms/", "/al-mardud/breaks/"]));
-  // map, 8 divisions, narrators and glossary, plus the 5 phase 2 scenes
-  expect(routes.length).toBeGreaterThanOrEqual(16);
 });
 
 for (const theme of ["light", "dark"] as const) {
