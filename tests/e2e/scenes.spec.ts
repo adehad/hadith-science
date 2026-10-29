@@ -4,7 +4,8 @@ import { readFileSync } from "node:fs";
 import { parse } from "yaml";
 
 // scene pages (phase 2): term landings, views, the portrait carousel, Key/Labels mode, scene navigation
-const index = JSON.parse(readFileSync("dist/terms-index.json", "utf8")) as Record<string, string>;
+// the snapshot of dist this run serves (playwright.config.ts)
+const index = JSON.parse(readFileSync(`${process.env.E2E_DIST ?? "dist"}/terms-index.json`, "utf8")) as Record<string, string>;
 // built terms point at a scene; pending ones at their glossary entry
 const built = Object.entries(index)
   .filter(([, path]) => !path.startsWith("terms/"))
@@ -35,6 +36,14 @@ async function expectLanded(page: Page, slug: string, scene: string) {
   await expect(trigger(page, slug)).toBeInViewport();
 }
 
+// /?slug redirects once slugquery.ts has fetched the terms index. It swallows a failed fetch and stays on the map, so
+// check the fetch here: a failure then names the index instead of timing out on the URL
+async function gotoQuery(page: Page, slug: string) {
+  const index = page.waitForResponse((r) => new URL(r.url()).pathname.endsWith("/terms-index.json"));
+  await page.goto(`/?${slug}`);
+  expect((await index).status(), "terms-index.json").toBe(200);
+}
+
 test("every scene term is counted", () => {
   expect(built.length).toBeGreaterThanOrEqual(30);
   expect(panelScenes.size).toBe(13);
@@ -48,7 +57,7 @@ test.describe("landing, desktop", () => {
       await expectLanded(page, slug, scene);
     });
     test(`/?${slug} lands on ${scene}`, async ({ page }) => {
-      await page.goto(`/?${slug}`);
+      await gotoQuery(page, slug);
       await expectLanded(page, slug, scene);
     });
   }
@@ -58,7 +67,7 @@ test.describe("landing, portrait carousel", () => {
   test.use({ viewport: PORTRAIT });
   for (const { slug, scene } of built.filter((b) => panelScenes.has(b.scene))) {
     test(`/?${slug} lands inside the carousel on ${scene}`, async ({ page }) => {
-      await page.goto(`/?${slug}`);
+      await gotoQuery(page, slug);
       await expectLanded(page, slug, scene);
       // the carousel has been scrolled so the whole trigger sits inside the visible part of the scroller
       const scroller = page.locator(".carousel .scroller");

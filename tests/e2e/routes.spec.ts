@@ -2,10 +2,12 @@ import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { readFileSync, readdirSync } from "node:fs";
 
-// routes come from the built sitemap, so new pages are covered automatically; /t/ pages are redirects
-const sitemaps = readdirSync("dist").filter((f) => f.startsWith("sitemap-") && f !== "sitemap-index.xml");
+// routes come from the built sitemap (in the snapshot of dist this run serves, playwright.config.ts), so new pages are
+// covered automatically; /t/ pages are redirects
+const dist = process.env.E2E_DIST ?? "dist";
+const sitemaps = readdirSync(dist).filter((f) => f.startsWith("sitemap-") && f !== "sitemap-index.xml");
 const routes = sitemaps
-  .flatMap((f) => [...readFileSync(`dist/${f}`, "utf8").matchAll(/<loc>[^<]*?\/\/[^/]+(\/[^<]*)<\/loc>/g)].map((m) => m[1]))
+  .flatMap((f) => [...readFileSync(`${dist}/${f}`, "utf8").matchAll(/<loc>[^<]*?\/\/[^/]+(\/[^<]*)<\/loc>/g)].map((m) => m[1]))
   .filter((r) => !r.startsWith("/t/") && r.endsWith("/"));
 
 test("sitemap lists the map, divisions, scenes, narrators and glossary", () => {
