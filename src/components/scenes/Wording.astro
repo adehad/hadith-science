@@ -22,6 +22,7 @@ import Arrow from "../svg/Arrow.astro";
 import Glyph from "../svg/Glyph.astro";
 import Matn from "../svg/Matn.astro";
 import TermTitle from "../svg/TermTitle.astro";
+import ViewTag from "../svg/ViewTag.astro";
 import { SUBT_TRIGGER, f, titleTrigger } from "../svg/geom";
 import { cap, type DiagramProps } from "../../lib/scene";
 
@@ -212,8 +213,7 @@ const star = Array.from({ length: 10 }, (_, i) => {
   <text class="lbl sm" x="390" y="377">would stop</text>
   {TAGS.map((t) => (
     <g class:list={[{ off: t.view !== "most" }]} data-view-show={t.view}>
-      <rect class:list={["vtag", { dashed: t.dashed }]} x={390 - TAG_W / 2} y={TAG_Y} width={TAG_W} height="22" rx="11" />
-      <text class="vtag-t" x="390" y={TAG_Y + 15}>{t.text}</text>
+      <ViewTag cx={390} y={TAG_Y} w={TAG_W} text={t.text} dashed={t.dashed} />
       {t.lines.map((l, i) => <text class="lbl sm" x="390" y={TAG_Y + 42 + i * 14}>{l}</text>)}
     </g>
   ))}
@@ -258,12 +258,9 @@ const star = Array.from({ length: 10 }, (_, i) => {
   .gate rect.inner{fill:none;stroke-width:1}
   .gate-t{fill:var(--fg);font:700 12px var(--f-body);text-anchor:middle}
   .ret{fill:none;stroke:var(--line);stroke-width:1.6;stroke-dasharray:4 3}
-  .vtag{fill:color-mix(in srgb,var(--pause) 12%,var(--surface));stroke:var(--pause);stroke-width:1.4}
-  .vtag.dashed{stroke-dasharray:4 3}
-  .vtag-t{fill:color-mix(in srgb,var(--pause) 65%,var(--fg));font:700 11.5px var(--f-body);text-anchor:middle}
   /* panel 3: the rare word, and the easiest book */
   .rare{fill:color-mix(in srgb,var(--gold-b) 45%,transparent);stroke:var(--gold-a);stroke-width:1.2}
-  .best{fill:color-mix(in srgb,var(--gold-a) 55%,var(--fg))}
+  .best{fill:var(--gold-ink)}
   .star{fill:var(--gold-b);stroke:var(--gold-a);stroke-width:.8;stroke-linejoin:round}
 
   /* motion: each resting style is the end state, and each animation runs from its start state, once */

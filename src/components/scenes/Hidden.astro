@@ -23,6 +23,7 @@ import Glyph from "../svg/Glyph.astro";
 import Bracket from "../svg/Bracket.astro";
 import Lifespan from "../svg/Lifespan.astro";
 import TermTitle from "../svg/TermTitle.astro";
+import ViewTag from "../svg/ViewTag.astro";
 import XLink from "../svg/XLink.astro";
 import { FIG, KIND_NAME, RELIABLE } from "../svg/figures";
 import { ROW_TITLE_TRIGGER, SUBT_TRIGGER, titleTrigger } from "../svg/geom";
@@ -192,8 +193,7 @@ const mazidLink = changes && `al-mardud/${changes.id}${changes.captions.some((c)
   {/* ---- the other view: the hidden mursal counted as tadlīs ---- */}
   <g class="off" data-view-show="contemporary">
     <g class="dashed" aria-hidden="true"><Bracket x0={knot.mid} x1={318} y={136} ticks="up" /></g>
-    <rect class="vtag" x="320" y="125" width="140" height="22" rx="11" />
-    <text class="vtag-t" x="390" y="140">counted as tadlīs too</text>
+    <ViewTag cx={390} y={125} w={140} text="counted as tadlīs too" dashed />
   </g>
 </svg>
 <style>
@@ -205,6 +205,4 @@ const mazidLink = changes && `al-mardud/${changes.id}${changes.captions.some((c)
   /* the resting style is drawn; the animation runs from undrawn, once */
   @keyframes hidden-knot{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
   .dashed :global(rect),.dashed :global(path){stroke-dasharray:4 3}
-  .vtag{fill:color-mix(in srgb,var(--pause) 12%,var(--surface));stroke:var(--pause);stroke-width:1.4;stroke-dasharray:4 3}
-  .vtag-t{fill:color-mix(in srgb,var(--pause) 65%,var(--fg));font:700 11.5px var(--f-body);text-anchor:middle}
 </style>

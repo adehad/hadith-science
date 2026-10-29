@@ -18,6 +18,7 @@ import Chip from "../svg/Chip.astro";
 import Decision from "../svg/Decision.astro";
 import Pill from "../svg/Pill.astro";
 import TermTitle from "../svg/TermTitle.astro";
+import ViewTag from "../svg/ViewTag.astro";
 import XLink from "../svg/XLink.astro";
 import { FIG, KIND_NAME, RELIABLE } from "../svg/figures";
 import { f, rowTrigger } from "../svg/geom";
@@ -148,8 +149,7 @@ const TAG_W = 216;
     <text class="lbl sm" x={D2_NO} y="266">if he is careful in what</text>
     <text class="lbl sm" x={D2_NO} y="280">he reports, and pious</text>
     <Pill x={D2_NO} y={306} state="accept" text="Accepted" />
-    <rect class="vtag" x={P2 - TAG_W / 2} y="340" width={TAG_W} height="22" rx="11" />
-    <text class="vtag-t" x={P2} y="355">Ibn Ḥajar: the trusted opinion</text>
+    <ViewTag cx={P2} y={340} w={TAG_W} text="Ibn Ḥajar: the trusted opinion" />
     <text class="lbl sm" x={P2} y="386">not every such belief rejects him:</text>
     <text class="lbl sm" x={P2} y="400">every sect calls its opponents</text>
     <text class="lbl sm" x={P2} y="414">heretics, some even disbelievers</text>
@@ -192,8 +192,7 @@ const TAG_W = 216;
         <text class="lbl yn" x={cx + LIE_NO + 14} y="226" style="text-anchor:end">no</text>
         <Pill x={cx + LIE_YES} y={262} state="reject" text="Rejected" />
         <Pill x={cx + LIE_NO} y={262} state="accept" text="Accepted" />
-        <rect class="vtag dashed" x={cx - TAG_W / 2} y="300" width={TAG_W} height="22" rx="11" />
-        <text class="vtag-t" x={cx} y="315">{i === 0 ? "it is said" : "it is also said"}</text>
+        <ViewTag cx={cx} y={300} w={TAG_W} text={i === 0 ? "it is said" : "it is also said"} dashed />
         <text class="lbl sm" x={cx} y="346">{i === 0 ? "of this kind" : "of this kind too"}</text>
       </>
     ))}
@@ -203,12 +202,10 @@ const TAG_W = 216;
   <g class="off" data-view-show="reject">
     {[P2, P3].map((cx) => <Arrow x1={cx} y1={CHIP_Y + 11} x2={cx} y2={185} />)}
     {[P2, P3].map((cx) => <Pill x={cx} y={200} state="reject" text="Rejected" />)}
-    <rect class="vtag" x={P2 - TAG_W / 2} y="236" width={TAG_W} height="22" rx="11" />
-    <text class="vtag-t" x={P2} y="251">the majority</text>
+    <ViewTag cx={P2} y={236} w={TAG_W} text="the majority" />
     <text class="lbl sm" x={P2} y="282">Ibn Ḥajar: not every such</text>
     <text class="lbl sm" x={P2} y="296">belief rejects him</text>
-    <rect class="vtag dashed" x={P3 - TAG_W / 2} y="236" width={TAG_W} height="22" rx="11" />
-    <text class="vtag-t" x={P3} y="251">it is said: rejected outright</text>
+    <ViewTag cx={P3} y={236} w={TAG_W} text="it is said: rejected outright" dashed />
     <text class="lbl sm" x={P3} y="282">Ibn Ḥajar: far-fetched, for then</text>
     <text class="lbl sm" x={P3} y="296">even a report one who is no</text>
     <text class="lbl sm" x={P3} y="310">innovator shares would be rejected</text>
@@ -218,7 +215,4 @@ const TAG_W = 216;
   .yn{font-size:11px}
   .belief{fill:color-mix(in srgb,var(--pause) 22%,var(--surface));stroke:var(--pause);stroke-width:1.3;stroke-linejoin:round}
   .fork{fill:none;stroke:var(--line);stroke-width:1.5}
-  .vtag{fill:color-mix(in srgb,var(--pause) 12%,var(--surface));stroke:var(--pause);stroke-width:1.4}
-  .vtag.dashed{stroke-dasharray:4 3}
-  .vtag-t{fill:color-mix(in srgb,var(--pause) 65%,var(--fg));font:700 11.5px var(--f-body);text-anchor:middle}
 </style>

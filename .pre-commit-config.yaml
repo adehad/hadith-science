@@ -43,4 +43,4 @@ repos:
         entry: bun --bun vitest run --project unit
         language: system
         pass_filenames: false
-        files: ^(src/lib/|tests/unit/|vitest\.config\.ts$)
+        files: ^(src/(lib|styles|components)/|tests/unit/|vitest\.config\.ts$)

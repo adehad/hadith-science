@@ -210,9 +210,6 @@ const EXIT_X2 = CARD.x0 - 3;
   .dot{fill:var(--fg)}
   .iname{fill:var(--fg);font:italic 600 12px var(--f-body)}
   .card{fill:var(--surface);stroke:var(--rule);stroke-width:1.2}
-  .card.ok{fill:color-mix(in srgb,var(--ok) 6%,var(--surface));stroke:color-mix(in srgb,var(--ok) 55%,var(--surface))}
-  .card.pause{fill:color-mix(in srgb,var(--pause) 7%,var(--surface));stroke:color-mix(in srgb,var(--pause) 55%,var(--surface))}
-  .card.reject{fill:color-mix(in srgb,var(--gap) 6%,var(--surface));stroke:color-mix(in srgb,var(--gap) 55%,var(--surface))}
   .treated{fill:none;stroke:var(--pause);stroke-width:1.6;stroke-dasharray:4 3}
   /* each resting style is the end state; the animations run from the start state, once */
   .exit{fill:none;stroke:var(--line);stroke-width:2;stroke-dasharray:1;stroke-dashoffset:0;animation:sorting-draw .4s ease-out both;animation-delay:var(--d)}

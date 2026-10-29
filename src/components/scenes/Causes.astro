@@ -243,7 +243,7 @@ const R_END = rungs[rungs.length - 1].top + R_H;
   .hit{fill:transparent}
   /* text on the gold rungs: the .lbl surface halo would draw blobs on the fill, and --muted falls under 4.5:1 on the
      darker rungs in dark mode, so no halo and a mix of --fg that passes on rung 1 in both themes */
-  .rung-g .lbl,.munkar-lbl{stroke:none;fill:color-mix(in srgb,var(--fg) 85%,var(--surface))}
+  .rung-g .lbl,.munkar-lbl{stroke:none;fill:var(--on-gold)}
   :global(.xlink:is(:hover,:focus-visible)) :is(.lbl,.munkar-lbl){fill:var(--gold-a)}
   /* motion: the resting style is the end state; each rung fades in from the top, once */
   .rung-g{animation:causes-in .2s ease-out both}

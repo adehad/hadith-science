@@ -201,14 +201,11 @@ const startW = chipWidth(START);
   .kn{fill:var(--fg);font:600 10.5px var(--f-body);text-anchor:middle}
   .tlbl{fill:var(--muted);font:600 10.5px var(--f-body);text-anchor:middle;letter-spacing:.04em}
   .card{fill:var(--surface);stroke:var(--rule);stroke-width:1.2}
-  .card.ok{fill:color-mix(in srgb,var(--ok) 6%,var(--surface));stroke:color-mix(in srgb,var(--ok) 55%,var(--surface))}
-  .card.gold{fill:color-mix(in srgb,var(--gold-b) 9%,var(--surface));stroke:color-mix(in srgb,var(--gold-a) 55%,var(--surface))}
-  .card.pause{fill:color-mix(in srgb,var(--pause) 7%,var(--surface));stroke:color-mix(in srgb,var(--pause) 55%,var(--surface))}
   .bridge{fill:none;stroke:var(--ok);stroke-width:1.8}
   .time{fill:none;stroke:var(--muted);stroke-width:1.6}
   .stem{stroke:var(--muted);stroke-width:1.2}
   .pin{fill:var(--surface);stroke:var(--fg);stroke-width:1.8}
-  .unk{fill:color-mix(in srgb,var(--pause) 65%,var(--fg));font:700 22px var(--f-display);text-anchor:middle;animation:blink 2.4s ease-in-out infinite}
+  .unk{fill:var(--pause-ink);font:700 22px var(--f-display);text-anchor:middle;animation:blink 2.4s ease-in-out infinite}
   /* the strike's resting state is drawn; the animation runs from undrawn, once */
   .strike{fill:none;stroke:var(--gap);stroke-width:2.2;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:0;animation:acted-draw .8s ease-out 1s both}
   @keyframes acted-draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
