@@ -2,6 +2,7 @@
 import Page from "../../layouts/Page.astro";
 import { loadContent } from "../../lib/content";
 import { href } from "../../lib/url";
+import { scenesByMoon } from "../../lib/scene";
 export async function getStaticPaths() {
   const { divisions } = await loadContent();
   return divisions.map((d, i) => ({
@@ -14,7 +15,7 @@ const { terms, scenes } = await loadContent();
 const mine = terms.filter((t) => t.division === d.id);
 // the scenes under each moon; a scene can cover several moons, but only its first listed moon's dot carries
 // its view-transition-name, so names stay unique on the page
-const moonScenes = d.moons.map((_, k) => scenes.filter((s) => s.division === d.id && s.moons.includes(k)));
+const moonScenes = scenesByMoon(d, scenes);
 // the planet drawn large: moons ride a flattened ring around it, as on the map
 const R = 56, ring: [number, number] = [R + 30, (R + 30) * 0.5];
 const sats = d.moons.map((_, k) => {
