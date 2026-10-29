@@ -46,7 +46,7 @@ async function gotoQuery(page: Page, slug: string) {
 
 test("every scene term is counted", () => {
   expect(built.length).toBeGreaterThanOrEqual(30);
-  expect(panelScenes.size).toBe(14);
+  expect(panelScenes.size).toBe(15);
 });
 
 test.describe("landing, desktop", () => {
@@ -314,6 +314,52 @@ test.describe("views", () => {
     await expect(page.locator('.views button[data-v="forgot"]')).toHaveAttribute("aria-pressed", "true");
   });
 
+  test("innovation: each of the three views redraws both decision paths; panel 1 and both terms stay", async ({ page }) => {
+    await page.goto("/al-mardud/innovation/");
+    const part = (id: string) => page.locator(`svg [data-view-show="${id}"]`);
+    const svg = page.locator("svg.innovation");
+    // what each view's path group must show, in panels 2 and 3 together
+    const PATHS: Record<string, { questions: string[]; tags: string[]; rejected: number; accepted: number }> = {
+      "ibn-hajar": { questions: ["denies a mutawātir matter", "calls others", "narrates what"], tags: ["Ibn Ḥajar: the trusted opinion"], rejected: 3, accepted: 2 },
+      "unless-lying": { questions: ["holds lying"], tags: ["it is said", "it is also said"], rejected: 2, accepted: 2 },
+      reject: { questions: [], tags: ["the majority", "it is said: rejected outright"], rejected: 2, accepted: 0 },
+    };
+    const ids = Object.keys(PATHS);
+    for (const id of ids) {
+      if (id !== "ibn-hajar") {
+        await page.locator(`.views button[data-v="${id}"]`).click();
+        await expect(page).toHaveURL(new RegExp(`[?&]view=${id}\\b`));
+      }
+      await expect(page.locator(`.views button[data-v="${id}"]`)).toHaveAttribute("aria-pressed", "true");
+      await expect(part(id)).toBeVisible();
+      for (const other of ids.filter((x) => x !== id)) await expect(part(other)).toBeHidden();
+      for (const q of PATHS[id].questions) await expect(svg.locator(".decision:visible", { hasText: q }).first()).toBeVisible();
+      await expect(svg.locator(".decision:visible")).toHaveCount(id === "ibn-hajar" ? 3 : id === "unless-lying" ? 2 : 0);
+      for (const t of PATHS[id].tags) await expect(part(id).locator(".vtag-t", { hasText: new RegExp(`^${t}$`) })).toBeVisible();
+      await expect(svg.locator(".pill.reject:visible")).toHaveCount(PATHS[id].rejected);
+      await expect(svg.locator(".pill.accept:visible")).toHaveCount(PATHS[id].accepted);
+      // both start chips, panel 1 and both triggers are the same in every view
+      await expect(svg.locator(".chip:visible")).toHaveCount(2);
+      for (const slug of ["fisq", "bida"]) await expect(trigger(page, slug)).toBeVisible();
+      await expect(svg.locator("a.xlink")).toHaveAttribute("href", /\/al-mardud\/lying\/$/);
+      await expectNoAxeViolations(page);
+    }
+    // the reject view says it joins the majority's position on the first kind to a minority one on the second
+    await expect(page.locator('.views [data-view-show="reject"]')).toContainText("joins two positions");
+    await expect(page.locator('.views [data-view-show="reject"]')).toContainText("The majority, of the first kind; “It is said”, of the second");
+    await expect(page.locator('.views [data-view-show="unless-lying"]')).toContainText("doesn't name");
+    // the figures: the open sinner is weak, the innovator a plain narrator
+    await expect(page.locator(".legend")).toContainText("Weak");
+    await expect(page.locator(".legend")).toContainText("Later narrator");
+  });
+
+  test("innovation: opening bidʿa from ?view=reject keeps that view", async ({ page }) => {
+    await page.goto("/al-mardud/innovation/?view=reject#bida");
+    await expect(trigger(page, "bida")).toHaveAttribute("aria-expanded", "true");
+    await expect(page).toHaveURL(/[?&]view=reject\b/);
+    await expect(page.locator('.views button[data-v="reject"]')).toHaveAttribute("aria-pressed", "true");
+  });
+
   test("accept-all swaps the clash branch's Weigh them for Accepted; the scales stay", async ({ page }) => {
     await page.goto("/al-maqbul/opposition/");
     const branch = (id: string) => page.locator(`svg [data-view-show="${id}"]`);
@@ -396,7 +442,7 @@ test("Key and Labels modes swap the legend for labels, and the choice survives a
   await expectNoAxeViolations(page);
 });
 
-test("scene prev/next: breaks leads on to hidden, hidden to lying, lying to slips, slips to changes, changes to wording, wording to identity, and identity to unknown", async ({ page }) => {
+test("scene prev/next: breaks leads on to hidden, hidden to lying, lying to slips, slips to changes, changes to wording, wording to identity, identity to unknown, and unknown to innovation, the last", async ({ page }) => {
   await page.goto("/al-mardud/breaks/");
   await expect(page.locator('.pn a[rel="next"]')).toHaveAttribute("href", /\/al-mardud\/hidden\/$/);
   await page.goto("/al-mardud/hidden/");
@@ -419,6 +465,11 @@ test("scene prev/next: breaks leads on to hidden, hidden to lying, lying to slip
   await expect(page.locator('.pn a[rel="next"]')).toHaveAttribute("href", /\/al-mardud\/unknown\/$/);
   await page.goto("/al-mardud/unknown/");
   await expect(page.locator('.pn a[rel="prev"]')).toHaveAttribute("href", /\/al-mardud\/identity\/$/);
+  await expect(page.locator('.pn a[rel="next"]')).toHaveAttribute("href", /\/al-mardud\/innovation\/$/);
+  await page.goto("/al-mardud/innovation/");
+  await expect(page.locator('.pn a[rel="prev"]')).toHaveAttribute("href", /\/al-mardud\/unknown\/$/);
+  // the division's last scene
+  await expect(page.locator('.pn a[rel="next"]')).toHaveCount(0);
 });
 
 test("scene prev/next: the report scene opens its division and leads on to routes", async ({ page }) => {
@@ -572,6 +623,16 @@ test("identity: the legend, both terms visible, the illustration labelled and al
     "Muḥammad ibn al-Sāʾib ibn Bishr al-Kalbī", "Muḥammad ibn Bishr", "Ḥammād ibn al-Sāʾib", "Abū al-Naḍr", "Abū Saʿīd", "Abū Hishām",
   ]);
   await expectNoAxeViolations(page);
+});
+
+test("slips: the open sinner's line links on to Does his belief count against him?, now that it exists", async ({ page }) => {
+  await page.goto("/al-mardud/slips/");
+  const a = page.locator("svg.slips a.xlink", { hasText: "and so is the open sinner's" });
+  await expect(a).toHaveAttribute("href", /\/al-mardud\/innovation\/$/);
+  expect((await a.getAttribute("aria-label"))!.startsWith("and so is the open sinner's")).toBe(true);
+  await a.click();
+  await expect(page).toHaveURL(/\/al-mardud\/innovation\/$/);
+  await expect(page.locator("h1")).toHaveText("Does his belief count against him?");
 });
 
 test("identity: both cells link on to Who is this narrator?, named by their visible text", async ({ page }) => {

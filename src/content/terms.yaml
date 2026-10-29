@@ -485,6 +485,7 @@
   def: "Sinful deeds or words short of disbelief. Lying is a kind of it, listed on its own because it does hadith the most harm."
   section: "§5.23"
   division: al-mardud
+  scene: innovation
 - id: wahm
   translit: Wahm
   ar: وَهْمٌ
@@ -665,9 +666,10 @@
   translit: Bidʿa
   ar: بِدْعَةٌ
   en: Innovation
-  def: "A belief against what is established from the Prophet ﷺ. Rejected only if he denies a mass-transmitted, self-evident matter; otherwise accepted unless he promotes it or narrates what supports it."
+  def: "A belief against what is established from the Prophet ﷺ. If it amounts to disbelief, rejected only for denying a mutawātir matter known for certain; if not, only if he calls to it or narrates for it."
   section: "§5.37"
   division: al-mardud
+  scene: innovation
 - id: su-al-hifz
   translit: Sūʾ al-ḥifẓ
   ar: سُوءُ الْحِفْظِ

@@ -391,6 +391,45 @@
   panels:
     - { id: mubham, label: Mubham, x0: 0, x1: 480 }
     - { id: majhul, label: Majhūl, x0: 480, x1: 820 }
+- id: innovation
+  division: al-mardud
+  moons: [1]
+  order: 10
+  title: Does his belief count against him?
+  eyebrow: Rejected for open sin, and sometimes for innovation · §5.23, §5.37
+  lede: Open sin in deeds or words is the fifth charge. Innovation is the ninth, a belief against what is established from the Prophet ﷺ, held through a misreading rather than out of defiance. Whether an innovator's report is accepted depends on how far his belief goes, on whether he calls others to it, and on what he narrates.
+  source: §5.23 Fisq, §5.37 Bidʿa
+  diagram: Innovation
+  width: 780
+  captions:
+    - term: fisq
+      note: "The fifth cause of criticism: open sin, in deeds or words, that does not reach disbelief. Lying is a kind of it, but is listed on its own, and first, because it harms this field the most. For those who don't make going against others a condition of munkar, the report of one whose sin is plain is munkar. Sin in belief is explained later, as innovation (§5.23, §5.26)."
+    - term: bida
+      note: "The ninth cause: a belief against what is established from the Prophet ﷺ, held through a misreading, not out of defiance. If it amounts to disbelief, Ibn Ḥajar rejects only one who denies a mutawātir matter known for certain, or holds its opposite. If not, the most correct view accepts him unless he calls others to it, and the majority reject what he narrates in support of it (§5.23, §5.37)."
+  views:
+    - id: ibn-hajar
+      label: Ibn Ḥajar
+      scholars: Ibn Ḥajar, §5.37
+      note: "If the belief amounts to disbelief, the trusted opinion, he says, rejects only one who denies a mutawātir matter known for certain in the religion, or holds its opposite; one who is careful in what he reports, and pious, is accepted. If it falls short of disbelief, he is accepted unless he calls others to it (the most correct view) or narrates what supports it (the preferred view of the majority)."
+    - id: unless-lying
+      label: Unless he allows lying
+      scholars: "“It is said”, of both kinds, §5.37"
+      note: "Some, whom the book doesn't name, accept an innovator of either kind unless he holds that lying is allowed in support of his view. The book reports this once for each kind."
+    - id: reject
+      label: Reject
+      scholars: "The majority, of the first kind; “It is said”, of the second, §5.37"
+      note: "This view joins two positions the book reports apart. The majority do not accept one whose belief amounts to disbelief. Only some, again unnamed, reject the second kind outright too, and Ibn Ḥajar calls that far-fetched."
+  panels:
+    - { id: sin, label: Open sin, x0: 0, x1: 260 }
+    - { id: disbelief, label: Amounts to disbelief, x0: 260, x1: 520 }
+    - { id: short, label: Short of disbelief, x0: 520, x1: 780 }
+  extra:
+    - title: The other opinions
+      section: §5.37
+      note: "On belief that amounts to disbelief, the majority do not accept him; it is also said he is accepted outright, and it is said he is accepted if he does not hold lying allowed in support of his view. Ibn Ḥajar answers that not every such report is rejected: every sect claims its opponents are heretics, and some call them disbelievers, so taken generally that would make every sect disbelievers. On belief short of disbelief, it is said he is rejected outright, which Ibn Ḥajar calls far-fetched: the usual reason, that narrating from him promotes his belief, would reject even a report that one who is no innovator shares. It is also said he is accepted unless he holds lying allowed, and it is said he is accepted if he does not call others to it, the most correct view. Ibn Ḥibbān went too far in claiming that all agree to accept one who does not call to it, without further detail."
+    - title: al-Jūzajānī
+      section: §5.37
+      note: "Most accept an innovator who does not call others to his belief, but if he narrates what strengthens it, the preferred view of the majority rejects it. al-Jūzajānī, the shaykh of Abū Dāwūd, made this clear: describing a narrator who turns away from the truth, he said that if such a man is truthful and his ḥadīth is not munkar, nothing stops us accepting it, so long as he does not openly call to his belief. Ibn Ḥajar calls this strong: an innovator's report is rejected when its text seems to support his belief, even if he does not call to it openly."
 - id: delivery
   division: siyagh-al-ada
   moons: [0, 1, 2]

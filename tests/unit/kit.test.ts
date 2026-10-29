@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { CHIP_CHAR_W, CHIP_PAD, LETTER_DOTS, bracketPath, chipRow, chipWidth, diamondPath, discRow, dotCluster, gaugeCells, letterDots, letterShape, lifespanBar, scaleEnds, spanOverlap, stackY, sweepAt, vowelMark } from "../../src/lib/kit";
+import { CHIP_CHAR_W, CHIP_PAD, LETTER_DOTS, bracketPath, chipRow, chipWidth, diamondPath, discRow, dotCluster, gaugeCells, letterDots, letterShape, lifespanBar, pillWidth, scaleEnds, spanOverlap, stackY, sweepAt, vowelMark } from "../../src/lib/kit";
 
 describe("chipWidth", () => {
   it("grows with the text, plus padding", () => {
@@ -8,6 +8,16 @@ describe("chipWidth", () => {
   });
   it("rounds away float noise", () => {
     expect(chipWidth("abc", 1.1, 0.2)).toBe(3.5);
+  });
+});
+
+describe("pillWidth", () => {
+  it("is 6.6 units per character plus 24 of padding", () => {
+    expect(pillWidth("Rejected")).toBe(76.8);
+    expect(pillWidth("")).toBe(24);
+  });
+  it("rounds away float noise", () => {
+    expect(pillWidth("abc")).toBe(43.8);
   });
 });
 

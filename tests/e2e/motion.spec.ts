@@ -391,3 +391,24 @@ test("with motion, the identity scene's six figures slide together once and fade
   });
   await expect.poll(settled, { timeout: 6000 }).toBe(true);
 });
+
+test("with motion, the innovation scene's path arrows flow, in every view, and nothing else moves", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.goto("/al-mardud/innovation/");
+  // each shown arrow flows without end, top to bottom; every animation in the scene is one of them
+  const flows = () => page.locator("svg.innovation").evaluate((svg) => {
+    const shown = [...svg.querySelectorAll("path.flow")].filter((p) => !p.closest(".off"));
+    const anims = svg.getAnimations({ subtree: true }) as CSSAnimation[];
+    return {
+      shownFlow: shown.every((p) => p.getAnimations().some((a) => (a as CSSAnimation).animationName === "flow" && a.effect?.getTiming().iterations === Infinity)),
+      count: shown.length,
+      others: anims.filter((a) => a.animationName !== "flow").map((a) => a.animationName),
+    };
+  });
+  // panel 1's arrow, then each view's paths: Ibn Ḥajar's 3 + 5, unless-lying's 3 + 3, reject's 1 + 1
+  await expect.poll(flows).toEqual({ shownFlow: true, count: 1 + 3 + 5, others: [] });
+  await page.locator('.views button[data-v="unless-lying"]').click();
+  await expect.poll(flows).toEqual({ shownFlow: true, count: 1 + 3 + 3, others: [] });
+  await page.locator('.views button[data-v="reject"]').click();
+  await expect.poll(flows).toEqual({ shownFlow: true, count: 1 + 1 + 1, others: [] });
+});

@@ -11,6 +11,12 @@ export function chipWidth(text: string, charW = CHIP_CHAR_W, pad = CHIP_PAD): nu
   return f(text.length * charW + pad);
 }
 
+// a verdict pill (Pill.astro) is 11.5px bold: about 6.6 units per character, with 12 units of padding each side.
+// Scenes use it to keep a pill inside its panel.
+export function pillWidth(text: string): number {
+  return f(text.length * 6.6 + 24);
+}
+
 export interface RowChip { x: number; w: number; cx: number; text: string }
 
 // chips in a row from x0, gap units apart; links are the gaps between neighbours (where an arrow goes),

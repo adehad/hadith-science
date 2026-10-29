@@ -2,10 +2,11 @@
 // a verdict pill centred on (x, y) (ported from the mockup's pill()); its width follows the text length.
 // gold marks one of two reports acted on (phase 3 design §5.2); its text takes 45% --fg, for 4.5:1 in dark mode
 import { f } from "./geom";
+import { pillWidth } from "../../lib/kit";
 
 interface Props { x: number; y: number; text: string; state: "pause" | "accept" | "support" | "reject" | "gold" }
 const { x, y, text, state } = Astro.props;
-const w = f(text.length * 6.6 + 24);
+const w = pillWidth(text);
 ---
 <g class={`pill ${state}`}>
   <rect x={f(x - w / 2)} y={y - 12} width={w} height="24" rx="12" />
