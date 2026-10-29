@@ -37,7 +37,7 @@ async function expectLanded(page: Page, slug: string, scene: string) {
 
 test("every scene term is counted", () => {
   expect(built.length).toBeGreaterThanOrEqual(30);
-  expect(panelScenes.size).toBe(10);
+  expect(panelScenes.size).toBe(11);
 });
 
 test.describe("landing, desktop", () => {
@@ -237,6 +237,32 @@ test.describe("views", () => {
     expect(await at("nazari-only")).toBe(true);
   });
 
+  test("hidden: the contemporary view counts the hidden mursal as tadlīs and swaps panel 3's verdict", async ({ page }) => {
+    await page.goto("/al-mardud/hidden/");
+    const part = (id: string) => page.locator(`svg [data-view-show="${id}"]`);
+    await expect(part("ibn-hajar")).toContainText("irsāl, not tadlīs");
+    for (const g of await part("contemporary").all()) await expect(g).toBeHidden();
+    await page.locator('.views button[data-v="contemporary"]').click();
+    await expect(page).toHaveURL(/[?&]view=contemporary\b/);
+    await expect(page.locator('.views button[data-v="contemporary"]')).toHaveAttribute("aria-pressed", "true");
+    await expect(part("contemporary").filter({ hasText: "counted as tadlīs too" })).toBeVisible();
+    await expect(part("contemporary").filter({ hasText: "then mudallis" })).toBeVisible();
+    await expect(part("ibn-hajar")).toBeHidden();
+    await expect(page.locator('.views [data-view-show="contemporary"]')).toContainText("being a contemporary even if they have not met");
+    // every term renders in both views
+    for (const slug of ["mudallas", "mudallis", "mursal-khafi"]) await expect(trigger(page, slug)).toBeVisible();
+    // the legend names the concealer's figure
+    await expect(page.locator(".legend")).toContainText("Conceals (mudallis)");
+    await expectNoAxeViolations(page);
+  });
+
+  test("hidden: opening mursal khafī from ?view=contemporary keeps that view", async ({ page }) => {
+    await page.goto("/al-mardud/hidden/?view=contemporary#mursal-khafi");
+    await expect(trigger(page, "mursal-khafi")).toHaveAttribute("aria-expanded", "true");
+    await expect(page).toHaveURL(/[?&]view=contemporary\b/);
+    await expect(page.locator('.views button[data-v="contemporary"]')).toHaveAttribute("aria-pressed", "true");
+  });
+
   test("accept-all swaps the clash branch's Weigh them for Accepted; the scales stay", async ({ page }) => {
     await page.goto("/al-maqbul/opposition/");
     const branch = (id: string) => page.locator(`svg [data-view-show="${id}"]`);
@@ -319,9 +345,14 @@ test("Key and Labels modes swap the legend for labels, and the choice survives a
   await expectNoAxeViolations(page);
 });
 
-test("scene prev/next: breaks leads on to unknown", async ({ page }) => {
+test("scene prev/next: breaks leads on to hidden, and hidden to unknown", async ({ page }) => {
   await page.goto("/al-mardud/breaks/");
+  await expect(page.locator('.pn a[rel="next"]')).toHaveAttribute("href", /\/al-mardud\/hidden\/$/);
+  await page.goto("/al-mardud/hidden/");
+  await expect(page.locator('.pn a[rel="prev"]')).toHaveAttribute("href", /\/al-mardud\/breaks\/$/);
   await expect(page.locator('.pn a[rel="next"]')).toHaveAttribute("href", /\/al-mardud\/unknown\/$/);
+  await page.goto("/al-mardud/unknown/");
+  await expect(page.locator('.pn a[rel="prev"]')).toHaveAttribute("href", /\/al-mardud\/hidden\/$/);
 });
 
 test("scene prev/next: the report scene opens its division and leads on to routes", async ({ page }) => {

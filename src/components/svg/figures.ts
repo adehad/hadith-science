@@ -3,7 +3,7 @@
 import type { ComponentProps } from "astro/types";
 import type Narrator from "./Narrator.astro";
 
-export type Kind = "sahabi" | "tabii" | "later" | "majhul" | "mubham" | "weak" | "ghost";
+export type Kind = "sahabi" | "tabii" | "later" | "majhul" | "mubham" | "weak" | "mudallis" | "ghost";
 export type Fig = Omit<ComponentProps<typeof Narrator>, "x" | "y">;
 
 export const FIG: Record<Kind, Fig> = {
@@ -14,6 +14,8 @@ export const FIG: Record<Kind, Fig> = {
   mubham: { kind: "later", face: "blank", scroll: "slot", seal: "slot" },
   // named, so he keeps his scroll; the seal that vouches for him is cracked (spec §3.2)
   weak: { kind: "later", scroll: "yes", seal: "crack" },
+  // the /narrators/ concealer: scroll and seal, with a hand over his mouth (phase 3 al-Mardūd design §1)
+  mudallis: { kind: "later", face: "hand", scroll: "yes", seal: "yes" },
   ghost: { ghost: true },
 };
 
@@ -22,4 +24,4 @@ export const FIG: Record<Kind, Fig> = {
 export const RELIABLE = { scroll: "yes", seal: "yes" } as const satisfies Fig;
 
 // kind names shown in Labels mode
-export const KIND_NAME: Record<Kind, string> = { sahabi: "Companion", tabii: "Successor", later: "Narrator", majhul: "Unknown", mubham: "Unnamed", weak: "Weak", ghost: "Missing" };
+export const KIND_NAME: Record<Kind, string> = { sahabi: "Companion", tabii: "Successor", later: "Narrator", majhul: "Unknown", mubham: "Unnamed", weak: "Weak", mudallis: "Conceals", ghost: "Missing" };

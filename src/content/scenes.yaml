@@ -144,7 +144,7 @@
 - id: breaks
   division: al-mardud
   moons: [0]
-  order: 1
+  order: 2
   title: Where does the chain break?
   eyebrow: Rejected for a break in the chain · §5.18–5.20
   lede: All four lose narrators from the chain. What tells them apart is where the gap sits and how many links are missing one after another.
@@ -178,10 +178,44 @@
     - { id: muallaq, label: Muʿallaq, x0: 215, x1: 415 }
     - { id: mudal, label: Muʿḍal, x0: 415, x1: 615 }
     - { id: munqati, label: Munqaṭiʿ, x0: 615, x1: 820 }
+- id: hidden
+  division: al-mardud
+  moons: [0]
+  order: 3
+  title: Did he hear it from him?
+  eyebrow: Rejected for a hidden drop · §5.21–5.22
+  lede: Some drops are hidden. The narrator cites someone he could have heard from, in words that allow a meeting without claiming he heard. Whether the two are known to have met decides the name. It is tadlīs if they met, and a hidden mursal if they lived at the same time but no meeting is known.
+  source: §5.21 Mudallas, §5.22 Mursal khafī
+  diagram: Hidden
+  width: 780
+  captions:
+    - term: mudallas
+      note: "A hidden drop, found only by expert imams who know a ḥadīth's routes. The narrator does not name the one he heard it from, and cites someone above him in words of delivery that leave a meeting possible, such as ʿan (from) or qāla (he said). The name comes from dalas, the mixing of darkness: both involve concealment. In Ibn Ḥajar's usage, tadlīs is from someone he is known to have met (§5.21–5.22)."
+    - term: mudallis
+      note: "The narrator who conceals in this way. Had he used words of certainty for what he did not hear, he would be classed a liar. When it is proven that a reliable narrator has done this, his report is not accepted until he makes clear that he heard it, on the most correct opinion (§5.21)."
+    - term: mursal-khafi
+      note: "A narrator reports from a contemporary he is not known to have met, with someone missing between them. That they never met is known from the narrator's own word or a versed imam's firm statement. An extra narrator in some versions is not enough, since it may be an addition, so no firm ruling follows from it. al-Khaṭīb compiled a book on this (§5.22)."
+  views:
+    - id: ibn-hajar
+      label: "Ibn Ḥajar: they met"
+      scholars: §5.22; with al-Shāfiʿī, Abū Bakr al-Bazzār and al-Khaṭīb
+      note: "Tadlīs is only from someone the narrator is known to have met. If they lived at the same time and no meeting is known, it is a hidden mursal. The two differ, and the correct opinion keeps them apart. Ibn Ḥajar calls requiring a meeting the trusted opinion."
+    - id: contemporary
+      label: "Some: living at the same time"
+      scholars: "“Whoever has added”, §5.22"
+      note: "Some add to the definition of tadlīs “being a contemporary even if they have not met”. That brings the hidden mursal inside tadlīs too. Ibn Ḥajar answers that the mukhaḍramūn would then be mudallis, yet the ḥadīth scholars agree that their reports from the Prophet ﷺ are irsāl."
+  panels:
+    - { id: met, label: They met, x0: 0, x1: 260 }
+    - { id: never-met, label: Never known to meet, x0: 260, x1: 520 }
+    - { id: test, label: Lived in his time, x0: 520, x1: 780 }
+  extra:
+    - title: The mukhaḍramūn
+      section: §5.22
+      note: "Ibn Ḥajar's evidence that tadlīs needs a known meeting, not just a shared lifetime. The people of knowledge in ḥadīth agree that the reports of the mukhaḍramūn, such as Abū ʿUthmān al-Nahdī and Qays ibn Abī Ḥāzim, from the Prophet ﷺ are irsāl, not tadlīs. They certainly lived in his time, but it is not known whether they met him. If living at the same time were enough for tadlīs, they would be mudallis. al-Shāfiʿī and Abū Bakr al-Bazzār also require a meeting, and al-Khaṭīb's al-Kifāya stipulates it. Ibn Ḥajar calls this the trusted opinion."
 - id: unknown
   division: al-mardud
   moons: [1]
-  order: 2
+  order: 9
   title: Who is this narrator?
   eyebrow: Rejected for doubt about a narrator · §5.35–5.36
   lede: Both chains are unbroken, but in each one narrator cannot be checked. One is never named; the other is named, but too little is known of him.

@@ -121,3 +121,20 @@ export function dotCluster(n: number, cx: number, cy: number, gap: number): { x:
 export function stackY(y: number, j: number, n: number, lh = 14): number {
   return f(y + (j - (n - 1) / 2) * lh);
 }
+
+// a lifespan bar (Lifespan.astro): a rounded bar h tall centred on y, from x0 to x1, with its name's start point
+// gap units past the right end, on the bar's middle. The bars show overlap only: no axis, no dates.
+export function lifespanBar(x0: number, x1: number, y: number, { h = 8, gap = 6 } = {}) {
+  const [a, b] = x0 <= x1 ? [x0, x1] : [x1, x0];
+  if (b - a <= 0) throw new Error("lifespanBar: a bar with no length");
+  return { x: f(a), y: f(y - h / 2), w: f(b - a), h, rx: f(h / 2), name: { x: f(b + gap), y: f(y + 4) } };
+}
+
+// the stretch two spans [x0, x1] share, and its middle, or null if they only touch or don't meet: where two
+// lifespans overlap (the hidden scene's "met" knot and "?")
+export function spanOverlap(a: [number, number], b: [number, number]): { x0: number; x1: number; mid: number } | null {
+  const x0 = Math.max(Math.min(...a), Math.min(...b));
+  const x1 = Math.min(Math.max(...a), Math.max(...b));
+  if (x1 <= x0) return null;
+  return { x0: f(x0), x1: f(x1), mid: f((x0 + x1) / 2) };
+}

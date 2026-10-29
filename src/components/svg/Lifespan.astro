@@ -1,0 +1,18 @@
+---
+// a lifespan bar (phase 3 al-Mardūd design §4.8, §12): a rounded bar 8 tall from x0 to x1, centred on y, with an
+// optional name just past its right end. It shows only whether two lives overlap: no axis, no dates, no ticks, so
+// it is aria-hidden and the scene's notes carry the meaning. tone "moon" draws the Prophet's ﷺ bar in moon colour.
+import { lifespanBar } from "../../lib/kit";
+
+interface Props { x0: number; x1: number; y: number; name?: string; tone?: "moon" }
+const { x0, x1, y, name, tone } = Astro.props;
+const b = lifespanBar(x0, x1, y);
+---
+<g class:list={["life", tone]} aria-hidden="true">
+  <rect x={b.x} y={b.y} width={b.w} height={b.h} rx={b.rx} />
+  {name && <text class="lbl start sm" x={b.name.x} y={b.name.y}>{name}</text>}
+</g>
+<style>
+  .life rect{fill:color-mix(in srgb,var(--muted) 75%,var(--surface));stroke:var(--muted);stroke-width:1}
+  .life.moon rect{fill:var(--moon);stroke:var(--moon-ink)}
+</style>

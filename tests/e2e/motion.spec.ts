@@ -184,3 +184,22 @@ test("with motion, the lone scene's halos fade in one after another, panel by pa
   expect(delays).toEqual([600, 800, 1000, 1200, 1400, 1600, 1800].map((d) => [["lone-halo", d]]));
   await expect.poll(() => page.locator("svg .alone").last().evaluate((e) => getComputedStyle(e).opacity), { timeout: 6000 }).toBe("1");
 });
+
+test("reduced motion: the hidden scene's met knot rests drawn", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/al-mardud/hidden/");
+  expect(await page.locator("svg .knot").evaluate((e) => Number(getComputedStyle(e).strokeDashoffset.replace("px", "")))).toBe(0);
+});
+
+test("with motion, the hidden scene's met knot draws in once after a delay", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.goto("/al-mardud/hidden/");
+  const knot = page.locator("svg .knot");
+  const anims = await knot.evaluate((e) => e.getAnimations().map((a) => ({
+    name: (a as CSSAnimation).animationName,
+    delay: a.effect?.getTiming().delay,
+    iterations: a.effect?.getTiming().iterations,
+  })));
+  expect(anims).toContainEqual({ name: "hidden-knot", delay: 400, iterations: 1 });
+  await expect.poll(() => knot.evaluate((e) => Number(getComputedStyle(e).strokeDashoffset.replace("px", ""))), { timeout: 5000 }).toBe(0);
+});

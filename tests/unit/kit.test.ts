@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { CHIP_CHAR_W, CHIP_PAD, bracketPath, chipRow, chipWidth, diamondPath, discRow, dotCluster, gaugeCells, scaleEnds, stackY, sweepAt } from "../../src/lib/kit";
+import { CHIP_CHAR_W, CHIP_PAD, bracketPath, chipRow, chipWidth, diamondPath, discRow, dotCluster, gaugeCells, lifespanBar, scaleEnds, spanOverlap, stackY, sweepAt } from "../../src/lib/kit";
 
 describe("chipWidth", () => {
   it("grows with the text, plus padding", () => {
@@ -159,4 +159,30 @@ describe("stackY", () => {
   });
   it("puts a single line on y", () => expect(stackY(42, 0, 1)).toBe(42));
   it("rounds to 2 decimals", () => expect(stackY(10, 0, 2, 1 / 3)).toBe(9.83));
+});
+
+describe("lifespanBar", () => {
+  it("is a rounded bar centred on y, from x0 to x1, with its name just past the right end", () => {
+    expect(lifespanBar(30, 200, 78)).toEqual({ x: 30, y: 74, w: 170, h: 8, rx: 4, name: { x: 206, y: 82 } });
+  });
+  it("takes its height from h, and orders reversed ends", () => {
+    expect(lifespanBar(100, 40, 50, { h: 6, gap: 10 })).toEqual({ x: 40, y: 47, w: 60, h: 6, rx: 3, name: { x: 110, y: 54 } });
+  });
+  it("throws on a bar with no length", () => {
+    expect(() => lifespanBar(10, 10, 0)).toThrow(/no length/);
+  });
+});
+
+describe("spanOverlap", () => {
+  it("is the shared stretch of two spans, and its middle", () => {
+    expect(spanOverlap([30, 200], [80, 240])).toEqual({ x0: 80, x1: 200, mid: 140 });
+    expect(spanOverlap([80, 240], [30, 200])).toEqual({ x0: 80, x1: 200, mid: 140 });
+  });
+  it("is null when the spans only touch or don't meet", () => {
+    expect(spanOverlap([0, 10], [10, 20])).toBeNull();
+    expect(spanOverlap([0, 10], [15, 20])).toBeNull();
+  });
+  it("rounds away float noise", () => {
+    expect(spanOverlap([0.1, 0.3], [0.2, 1])).toEqual({ x0: 0.2, x1: 0.3, mid: 0.25 });
+  });
 });

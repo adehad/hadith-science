@@ -18,6 +18,7 @@ import Report from "../../components/scenes/Report.astro";
 import Sorting from "../../components/scenes/Sorting.astro";
 import Knowledge from "../../components/scenes/Knowledge.astro";
 import Lone from "../../components/scenes/Lone.astro";
+import Hidden from "../../components/scenes/Hidden.astro";
 import { loadContent } from "../../lib/content";
 import { captionsFor, type DiagramProps } from "../../lib/scene";
 import { href } from "../../lib/url";
@@ -41,7 +42,7 @@ const caps = captionsFor(scene, terms);
 
 // each scene task adds its diagram here; import only components that exist
 // typed by the props every diagram takes, so a misnamed or missing prop fails astro check
-const DIAGRAMS: Partial<Record<Diagram, (p: DiagramProps) => any>> = { Routes, Breaks, Unknown, Delivery, Names, Grades, Opposition, Support, ActedOn, Report, Sorting, Knowledge, Lone };
+const DIAGRAMS: Partial<Record<Diagram, (p: DiagramProps) => any>> = { Routes, Breaks, Unknown, Delivery, Names, Grades, Opposition, Support, ActedOn, Report, Sorting, Knowledge, Lone, Hidden };
 const D = DIAGRAMS[scene.diagram];
 if (!D) throw new Error(`no diagram component for ${scene.diagram}`);
 
@@ -62,6 +63,8 @@ const LEGEND: Partial<Record<Diagram, LegendKind[]>> = {
   Knowledge: ["moon", "sahabi", "tabii", "later"],
   // the four lone-narrator chains; the relative column's narrator below the Companion's students is a later one
   Lone: ["moon", "sahabi", "tabii", "later"],
+  // the mudallis in panel 1 hides his source; panel 2's narrator is a plain one; the mukhaḍramūn are Successors
+  Hidden: ["moon", "tabii", "later", "mudallis", "ghost"],
   // ActedOn and Sorting draw no narrator figures, so they have no legend and no Key/Labels switch (phase 3 designs §1)
 };
 const kinds = LEGEND[scene.diagram];
