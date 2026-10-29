@@ -149,6 +149,8 @@ const rows = ROWS.map(([name, tag, e], k) => ({ name, tag, e, y: 112 + k * 19 })
   .chip text{fill:var(--fg);font:700 11.5px var(--f-body);text-anchor:middle}
   .row{fill:var(--fg);font:600 11.5px var(--f-body)}
   .rowtag{fill:var(--muted);font:600 10px var(--f-body);text-anchor:end}
+  /* the answer's tag sits on the gold window, where --muted falls under 4.5:1 in dark mode */
+  .win + g .rowtag{fill:var(--fg)}
   .win{fill:color-mix(in srgb,var(--gold-b) 35%,transparent);animation:names-win 10s infinite}
   /* a 10s loop: chips appear one by one, each fading the rows it rules out, then the answer lights up */
   .c1{animation:names-c1 10s infinite} .c2{animation:names-c2 10s infinite}

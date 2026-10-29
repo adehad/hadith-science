@@ -173,10 +173,11 @@ const CARDS = [
   <Narrator x={A_X} y={N_Y} k={K} {...FIG.later} {...RELIABLE} label={KIND_NAME.later} />
 
   {/* routes B–D, gathered: from the Successor straight to the Prophet ﷺ. Their figures are route A's kinds, so only
-      route A's carry Labels-mode names, which would crowd and fade here */}
+      route A's carry Labels-mode names, which would crowd and fade here. Their moons stay out of the faded group: at
+      half opacity the ﷺ falls under 4.5:1 on the moon in both themes */}
+  {OTHERS.map((r) => <Moon cx={r.x} cy={MOON_Y} k={MK} />)}
   {OTHERS.map((r) => (
     <g class="route" style={`--d:${r.d}s`}>
-      <Moon cx={r.x} cy={MOON_Y} k={MK} />
       <Arrow x1={r.x} y1={MOON_Y + 24 * MK + 3} x2={r.x} y2={S_Y - HALF - 3} variant="skip" />
       <Arrow x1={r.x} y1={S_Y + HALF + 2} x2={r.x} y2={N_Y - HALF - 3} />
       <Narrator x={r.x} y={S_Y} k={K} {...FIG.tabii} {...RELIABLE} />
