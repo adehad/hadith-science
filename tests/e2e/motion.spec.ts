@@ -442,6 +442,71 @@ test("with motion, the causes scene's rungs fade in from the top once, one after
   await expect.poll(() => page.locator("svg .rung-g").evaluateAll((els) => els.every((e) => getComputedStyle(e).opacity === "1")), { timeout: 5000 }).toBe(true);
 });
 
+// M5: with animations stopped (reduced motion, or the switch off) a scene must rest where its motion ends. Each scene is
+// loaded with motion and each animated element's look read through its animations (at their start and a quarter,
+// half and three quarters in, since a there-and-back pulse starts and ends alike) and again once every finite
+// animation is finished; then the scene is loaded again under reduce and read again. The rest must equal the end, and
+// some read on the way must differ from it, so an animation that has stopped moving shows up too. Loops never end, so
+// they are left out.
+test("every scene moves with motion, and rests under reduced motion where its motion ends", async ({ page }) => {
+  test.setTimeout(60_000);
+  const PROPS = ["opacity", "transform", "translate", "rotate", "scale", "stroke-dashoffset"];
+  type Look = Record<string, Record<string, string>>;
+  // each animated element, by its path from <main>, with the properties as read: at the given paths, or at the
+  // finite animations' targets, on the way and at their end
+  const look = (paths: string[] | null) => page.evaluate(([props, paths]) => {
+    const main = document.querySelector("main")!;
+    const path = (e: Element) => {
+      const at: number[] = [];
+      for (let n = e; n !== main; n = n.parentElement!) at.unshift([...n.parentElement!.children].indexOf(n));
+      return at.join(".");
+    };
+    const byPath = (p: string) => p.split(".").reduce<Element | undefined>((n, i) => n?.children[+i], main);
+    // one value per property, with every way of writing "no change" as none and numbers to 2 places
+    const identity: Record<string, RegExp> = {
+      transform: /^matrix\(1, 0, 0, 1, 0, 0\)$/, translate: /^0(px)?( 0(px)?){0,2}$/, rotate: /^0(deg)?$/, scale: /^1( 1){0,2}$/,
+    };
+    const norm = (prop: string, v: string) => {
+      const r = v.replace(/-?\d*\.?\d+(e-?\d+)?/g, (n) => String(+(+n).toFixed(2)));
+      return identity[prop]?.test(r) ? "none" : r;
+    };
+    const read = (els: Element[]) => Object.fromEntries(els.map((e) => {
+      const cs = getComputedStyle(e);
+      return [path(e), Object.fromEntries(props.map((p) => [p, norm(p, cs.getPropertyValue(p))]))];
+    }));
+    if (paths) return { rest: read(paths.map(byPath).filter((e): e is Element => !!e)) };
+    const finite = document.getAnimations().filter((a) => a.effect?.getComputedTiming().iterations !== Infinity);
+    const els = [...new Set(finite.map((a) => (a.effect as KeyframeEffect).target)
+      .filter((t): t is Element => t instanceof Element && main.contains(t)))];
+    const way = [0, 0.25, 0.5, 0.75].map((k) => {
+      finite.forEach((a) => {
+        a.pause();
+        a.currentTime = (a.effect!.getTiming().delay ?? 0) + k * +(a.effect!.getComputedTiming().activeDuration ?? 0);
+      });
+      return read(els);
+    });
+    finite.forEach((a) => a.finish());
+    return { way, end: read(els) };
+  }, [PROPS, paths] as const) as Promise<{ way?: Look[]; end?: Look; rest?: Look }>;
+
+  let compared = 0;
+  for (const s of scenes) {
+    const route = `/${s.division}/${s.id}/`;
+    await page.emulateMedia({ reducedMotion: "no-preference" });
+    await page.goto(route);
+    await page.evaluate(() => document.fonts.ready);
+    const { way, end } = await look(null);
+    const still = Object.keys(end!).filter((p) => way!.every((w) => JSON.stringify(w[p]) === JSON.stringify(end![p])));
+    expect.soft(still, `${route}: animated but never moves`).toEqual([]);
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.goto(route);
+    await page.evaluate(() => document.fonts.ready);
+    expect.soft((await look(Object.keys(end!))).rest, route).toEqual(end);
+    compared += Object.keys(end!).length;
+  }
+  expect(compared).toBeGreaterThan(0);
+});
+
 test.describe("motion switch (WCAG 2.2.2)", () => {
   test.beforeEach(async ({ page }) => {
     await page.emulateMedia({ reducedMotion: "no-preference" });
