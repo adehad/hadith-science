@@ -1239,6 +1239,7 @@
   def: "A name of the form Abū or Umm so-and-so. Knowing narrators' kunyas stops one person, named two ways, being taken for two."
   section: "§5.65"
   division: marifat-al-ruwat
+  scene: aliases
 - id: laqab
   translit: Laqab
   ar: لَقَبٌ
@@ -1246,6 +1247,7 @@
   def: "A by-name, sometimes from a flaw, like al-Aʿmash (the bleary-eyed), sometimes from a trade."
   section: "§5.65"
   division: marifat-al-ruwat
+  scene: aliases
 - id: nisba
   translit: Nisba
   ar: نِسْبَةٌ
@@ -1253,6 +1255,7 @@
   def: "A name tying a narrator to a tribe, place or trade. Some mislead: al-Ḥadhdhāʾ (the cobbler) only kept cobblers' company."
   section: "§5.65"
   division: marifat-al-ruwat
+  scene: aliases
 - id: mawla
   translit: Mawlā
   ar: مَوْلًى
@@ -1260,6 +1263,7 @@
   def: "A narrator tied to a tribe by having been freed, by alliance, or by accepting Islam through it. One word covers all, so context decides."
   section: "§5.65"
   division: marifat-al-ruwat
+  scene: aliases
 - id: mufradat
   translit: al-Asmāʾ al-mufrada
   ar: الْأَسْمَاءُ الْمُفْرَدَةُ
@@ -1267,6 +1271,7 @@
   def: "Names, kunyas or nicknames borne by only one narrator, like Sandar."
   section: "§5.65"
   division: marifat-al-ruwat
+  scene: aliases
 - id: ikhwa
   translit: al-Ikhwa wa-l-akhawāt
   ar: الْإِخْوَةُ وَالْأَخَوَاتُ
@@ -1274,6 +1279,7 @@
   def: "Knowing which narrators are brothers and sisters; early scholars such as ʿAlī ibn al-Madīnī wrote on it."
   section: "§5.65"
   division: marifat-al-ruwat
+  scene: aliases
 - id: adab-al-shaykh-wa-al-talib
   translit: Ādāb al-shaykh wa-l-ṭālib
   ar: آدَابُ الشَّيْخِ وَالطَّالِبِ

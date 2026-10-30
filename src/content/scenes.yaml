@@ -1163,3 +1163,36 @@
     - title: Two warnings
       section: §5.64
       note: "al-Dhahabī, a master of judging men, said that two scholars of this field never agreed to call a weak narrator reliable, or a reliable one weak; so al-Nasāʾī would not abandon a man's ḥadīth until all of them rejected him. The critic must beware of carelessness either way: accrediting without care affirms what is not so, and he risks being counted among those who pass on a ḥadīth they think false; discrediting without care brands an innocent Muslim with a mark that stays with him forever."
+- id: aliases
+  division: marifat-al-ruwat
+  moons: [2]
+  order: 4
+  title: What is he called?
+  eyebrow: Knowing the narrators, kunyas, by-names and nisbas · §5.65
+  lede: One narrator may be called by his name, his kunya, a by-name or a nisba, and one name may stand for him alone. Knowing each keeps one man from being taken for two, and two from being taken for one.
+  source: §5.65 Kunya, laqab, nisba, mawlā, al-asmāʾ al-mufrada, al-ikhwa wa-l-akhawāt
+  diagram: Aliases
+  width: 860
+  captions:
+    - term: kunya
+      note: "Know the kunyas of those known by name, so a man is not taken for another when a report gives his kunya, and the names of those known by kunya. Some have a kunya for a name (rare), some disputed kunyas (common), some several, like Ibn Jurayj: Abū al-Walīd and Abū Khālid. A kunya may match the father's name, or the wife's, like Abū Ayyūb and Umm Ayyūb (§5.65)."
+    - term: laqab
+      note: "By-names, some of them unique. A laqab may come from a name or a kunya, from a defect, like al-Aʿmash, or from a trade. A nisba may serve as one: Khālid ibn Makhlad, a Kūfan, was nicknamed al-Qaṭawānī, which he disliked. Worth knowing too are the reasons behind by-names that do not mean what they seem (§5.65)."
+    - term: nisba
+      note: "A name tying a narrator to a tribe, more common in early names, or to a place, more common later: a town, a district or where he stayed; or to a craft or trade, like the tailor or the cloth seller. Some mislead: Khālid al-Ḥadhdhāʾ only kept the shoemakers' company, and Sulaymān al-Taymī only lived among Banū Taym (§5.65)."
+    - term: mawla
+      note: "Clients, higher and lower: tied to a people by reason of slavery, by alliance and protection, or by reason of accepting Islam. All are called mawlā, and only the context shows which is meant (§5.65)."
+    - term: mufradat
+      note: "Names borne by one narrator only. al-Bardījī wrote on them, and some entries were faulted: Ṣughdī ibn Sinān is no unique name, since Ibn Abī Ḥātim also has a Ṣughdī al-Kūfī, and al-ʿUqaylī a Ṣughdī ibn ʿAbd Allāh. A true case is Sandar, client of Zinbāʿ al-Judhāmī, known as Abū ʿAbd Allāh. Kunyas and by-names can be unique too (§5.65)."
+    - term: ikhwa
+      note: "Knowing which narrators are brothers and sisters. Early scholars wrote books on it, among them ʿAlī ibn al-Madīnī (§5.65)."
+  extra:
+    - title: Whose son?
+      section: §5.65
+      note: "Some are known by someone other than their father: al-Miqdād ibn al-Aswad was named after al-Aswad al-Zuhrī, who had adopted him, though he was al-Miqdād ibn ʿAmr. Some by their mother: Ibn ʿUlayya is Ismāʿīl ibn Ibrāhīm ibn Miqsam, a reliable narrator; ʿUlayya was his mother, and he disliked the name, so al-Shāfiʿī would name him as Ismāʿīl, known as Ibn ʿUlayya. Some by their grandfather. And a shaykh may share the father's name: in “Rabīʿ ibn Anas, from Anas”, Anas is his shaykh, not his father, whereas in “ʿĀmir ibn Saʿd, from Saʿd”, in al-Bukhārī's Ṣaḥīḥ, Saʿd is his father."
+    - title: One name, again and again
+      section: §5.65
+      note: "A man, his father and grandfather may share a name, like Ḥasan ibn al-Ḥasan ibn al-Ḥasan ibn ʿAlī ibn Abī Ṭālib, or Abū al-Yumn al-Kindī, Zayd ibn al-Ḥasan ibn Zayd ibn al-Ḥasan, and on. A narrator may share his name with his shaykh and his shaykh's shaykh: ʿImrān from ʿImrān from ʿImrān are ʿImrān al-Qaṣīr, Abū Rajāʾ al-ʿUṭāridī and Ibn Ḥuṣayn, the Companion. And a shaykh and a student may share a name, a form Ibn al-Ṣalāḥ did not come across: al-Bukhārī narrated from Muslim ibn Ibrāhīm al-Farāhīdī al-Baṣrī, and Muslim ibn al-Ḥajjāj al-Qushayrī narrated from him. Knowing it rules out a supposed repetition or swap in the chain."
+    - title: Books on the narrators
+      section: §5.65
+      note: "Some list them all, like Ibn Saʿd's Ṭabaqāt, the Tārīkhs of Abū Khaythama and al-Bukhārī, and Ibn Abī Ḥātim's al-Jarḥ wa-l-taʿdīl; some only the reliable (al-ʿIjlī, Ibn Ḥibbān, Ibn Shāhīn) or only the criticised (Ibn ʿAdī, Ibn Ḥibbān); some the men of one book, from al-Kalābādhī on al-Bukhārī's to scholars of the Maghrib on al-Tirmidhī's and al-Nasāʾī's. ʿAbd al-Ghanī al-Maqdisī's al-Kamāl covered the six books; al-Mizzī refined it, and Ibn Ḥajar summarised that as Tahdhīb al-tahdhīb, adding a third."

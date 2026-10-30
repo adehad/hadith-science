@@ -1,0 +1,227 @@
+---
+// "What is he called?" (phase 3 Maʿrifat al-ruwāt design §6): the ways a narrator is named (§5.65), as eight cells,
+// each its own 430x320 SVG in an HTML grid (the Names pattern): two columns on desktop, one in portrait. Six cells hold
+// the six terms; two more hold §5.65's own non-term cases (whose son, and one name up a chain), with plain titles.
+// Each cell has the same grammar: names as chips, a tie where two names are one man, a cross where a reading is wrong.
+// Names only as the translation gives them, spelt as the owner's p.398 highlights correct them (design §6.9); nothing
+// here says who was a Companion beyond what the translation does. Cells without a book example say so.
+// Not drawn again: the fork of one name into two men and the letter-dot glyphs (Who is who?), and al-Kalbī's many
+// names (Why is he unknown?), which cells B and C link to (design §2).
+// No views. No Arabic beyond the term names. Motion: A's tick and cross draw in; E's look-alike names enter one after
+// another; H's arrows flow; D's "?" blinks. The resting style is the end state.
+import Defs from "../svg/Defs.astro";
+import Narrator from "../svg/Narrator.astro";
+import Arrow from "../svg/Arrow.astro";
+import Chip from "../svg/Chip.astro";
+import Glyph from "../svg/Glyph.astro";
+import Bracket from "../svg/Bracket.astro";
+import TermTitle from "../svg/TermTitle.astro";
+import XLink from "../svg/XLink.astro";
+import { FIG } from "../svg/figures";
+import { f, titleTrigger } from "../svg/geom";
+import { cap, type DiagramProps } from "../../lib/scene";
+import { chipWidth, stagger } from "../../lib/kit";
+import { loadContent } from "../../lib/content";
+
+type Props = DiagramProps;
+const { caps, scene } = Astro.props;
+if (scene.views?.length) throw new Error("Aliases: expected no views");
+if (scene.panels?.length) throw new Error("Aliases: a grid of cells, not panels");
+
+const { scenes } = await loadContent();
+function sceneById(id: string) {
+  const s = scenes.find((x) => x.id === id);
+  if (!s) throw new Error(`Aliases: no scene ${id} to link to`);
+  return { title: s.title, to: `${s.division}/${s.id}` };
+}
+const identity = sceneById("identity");
+const names = sceneById("names");
+
+const CX = 215, TITLE_Y = 30;
+// a cell's 20px title as a term trigger, its Arabic name centred under it
+function title(slug: string) {
+  const c = cap(caps, slug);
+  return { c, ...titleTrigger(c.translit, CX, TITLE_Y), ar: { x: CX, y: TITLE_Y + 24, size: "sm" as const } };
+}
+const [kunya, laqab, nisba, mawla, mufradat, ikhwa] = ["kunya", "laqab", "nisba", "mawla", "mufradat", "ikhwa"].map(title);
+
+// a row of chips centred on cx, gap apart
+function row(texts: string[], cx: number, y: number, gap = 10) {
+  const ws = texts.map((t) => chipWidth(t));
+  let x = cx - (ws.reduce((a, b) => a + b, 0) + gap * (texts.length - 1)) / 2;
+  return texts.map((text, i) => {
+    const c = { text, x: f(x), w: ws[i], cx: f(x + ws[i] / 2), y };
+    x += ws[i] + gap;
+    return c;
+  });
+}
+
+// ---- A: kunya, the Abū Isḥāq example (§5.65) ----
+const ABU_ISHAQ = "Abū Isḥāq Ibrāhīm ibn Isḥāq al-Madanī";
+const ABU_W = chipWidth(ABU_ISHAQ);
+const JURAYJ = row(["Ibn Jurayj", "Abū al-Walīd", "Abū Khālid"], 262, 236);
+const AYYUB = row(["Abū Ayyūb", "Umm Ayyūb"], 262, 268);
+
+// ---- C: nisba (§5.65) ----
+const KINDS = row(["a tribe", "a place", "a craft or trade"], CX, 96, 56);
+const KIND_NOTES = ["more in early names", "more in later ones", "tailor, cloth seller"];
+
+// ---- D: mawlā (§5.65), an illustration ----
+const MAWLA = { x: 30, y: 158, w: chipWidth("mawlā") };
+const TIES = ["by reason of slavery", "by alliance and protection", "by reason of accepting Islam"].map((t, i) => ({ t, y: 106 + i * 52 }));
+
+// ---- E: unique names (§5.65) ----
+const SANDAR_W = chipWidth("Sandar");
+const SUGHDI = row(["Ṣughdī ibn Sinān", "Ṣughdī al-Kūfī", "Ṣughdī ibn ʿAbd Allāh"], CX, 204, 8).map((c, i) => ({ ...c, d: stagger(i, { start: 0.3, step: 0.3 }) }));
+
+// ---- G: whose son? (§5.65) ----
+const SONS: [string, string[]][] = [
+  ["al-Miqdād ibn al-Aswad", ["al-Miqdād ibn ʿAmr, named for al-Aswad", "al-Zuhrī, who had adopted him"]],
+  ["Ibn ʿUlayya", ["Ismāʿīl ibn Ibrāhīm ibn Miqsam: ʿUlayya", "was his mother; he disliked the name"]],
+  ["Rabīʿ ibn Anas, from Anas", ["Anas is his shaykh,", "not his father"]],
+  ["ʿĀmir ibn Saʿd, from Saʿd", ["Saʿd is his father, as in", "al-Bukhārī's Ṣaḥīḥ"]],
+];
+const sons = SONS.map(([name, lines], i) => ({ name, lines, y: 92 + i * 56, w: chipWidth(name) }));
+
+// ---- H: one name up the chain (§5.65) ----
+const IMRAN = [
+  { note: ["Ibn Ḥuṣayn,", "a Companion"], companion: true },
+  { note: ["Abū Rajāʾ", "al-ʿUṭāridī"], companion: false },
+  { note: ["ʿImrān", "al-Qaṣīr"], companion: false },
+].map((m, i) => ({ ...m, cx: 80 + i * 135, w: chipWidth("ʿImrān") }));
+const MUSLIM = row(["Muslim ibn Ibrāhīm", "al-Bukhārī", "Muslim ibn al-Ḥajjāj"], CX, 206, 34);
+---
+<div class="cells aliases">
+  <svg id="cell-kunya" viewBox="0 0 430 320" role="group" aria-label={`Kunya. ${ABU_ISHAQ}: his kunya matches his father's name, so a narrator should say "Abū Isḥāq informed me", not "Ibn Isḥāq informed me". Ibn Jurayj has two kunyas, Abū al-Walīd and Abū Khālid. Abū Ayyūb and Umm Ayyūb, two Companions, share a kunya as husband and wife. And the reverse, a name that is his father's kunya: Isḥāq ibn Abī Isḥāq al-Sabīʿī.`}>
+    <Defs />
+    <TermTitle c={kunya.c} x={CX} y={TITLE_Y} hit={kunya.hit} info={kunya.info} ar={kunya.ar} />
+    <Chip x={f(CX - ABU_W / 2)} y={86} text={ABU_ISHAQ} w={ABU_W} />
+    <Arrow x1={CX - 30} y1={98} x2={110} y2={124} bend={-6} />
+    <Arrow x1={CX + 30} y1={98} x2={320} y2={124} bend={6} />
+    <text class="lbl sm" x="110" y="142">“Abū Isḥāq informed me”</text>
+    <text class="lbl sm" x="320" y="142">“Ibn Isḥāq informed me”</text>
+    <g class="mk" style="--d:.5s"><Glyph kind="check" cx={110} cy={164} r={8} animate /></g>
+    <g class="mk" style="--d:.9s"><Glyph kind="cross" cx={320} cy={164} r={8} animate /></g>
+    <text class="lbl sm" x={CX} y="198">his kunya matches his father's name</text>
+    <text class="lbl start sm" x="20" y={JURAYJ[0].y + 4}>several:</text>
+    {JURAYJ.map((c, i) => <Chip x={c.x} y={c.y} text={c.text} w={c.w} dashed={i > 0} />)}
+    <text class="lbl start sm" x="20" y={AYYUB[0].y + 4}>his wife's:</text>
+    {AYYUB.map((c) => <Chip x={c.x} y={c.y} text={c.text} w={c.w} companion />)}
+    <text class="lbl sm" x={CX} y="296">and the reverse, his name his father's kunya:</text>
+    <text class="lbl sm" x={CX} y="310">Isḥāq ibn Abī Isḥāq al-Sabīʿī</text>
+  </svg>
+
+  <svg id="cell-laqab" viewBox="0 0 430 320" role="group" aria-label="Laqab, a by-name. One may come from a defect, like al-Aʿmash. A nisba may serve as one: Khālid ibn Makhlad, a Kūfan, was nicknamed al-Qaṭawānī, which he disliked. By-names also come from a name, a kunya or a trade, and some are unique.">
+    <TermTitle c={laqab.c} x={CX} y={TITLE_Y} hit={laqab.hit} info={laqab.info} ar={laqab.ar} />
+    <text class="layer" x="20" y="92">From a defect</text>
+    <Chip x={20} y={114} text="al-Aʿmash" />
+    <text class="layer" x="20" y="156">A nisba used as one</text>
+    <Chip x={20} y={178} text="Khālid ibn Makhlad" />
+    <path class="tie" d={`M${20 + chipWidth("Khālid ibn Makhlad") + 4} 178 H${232}`} />
+    <Chip x={236} y={178} text="al-Qaṭawānī" />
+    <text class="lbl start sm" x="20" y="206">a Kūfan, given this by-name, which he disliked</text>
+    <text class="layer" x="20" y="240">Also</text>
+    <text class="lbl start sm" x="20" y="258">from a name, a kunya or a trade; some are unique</text>
+    <text class="lbl sm" x={CX} y="284">many names, one man:</text>
+    <XLink to={identity.to} text={identity.title} x={CX} y={304} anchor="middle" />
+  </svg>
+
+  <svg id="cell-nisba" viewBox="0 0 430 320" role="group" aria-label="Nisba. A name tying a narrator to a tribe, more common in early names; to a place, more common later; or to a craft or trade, like the tailor or the cloth seller. Some mislead: Khālid al-Ḥadhdhāʾ was no shoemaker but kept the shoemakers' company, and Sulaymān al-Taymī was not of Banū Taym but lived among them.">
+    <TermTitle c={nisba.c} x={CX} y={TITLE_Y} hit={nisba.hit} info={nisba.info} ar={nisba.ar} />
+    {KINDS.map((k, i) => (
+      <>
+        <Chip x={k.x} y={k.y} text={k.text} w={k.w} />
+        <text class="lbl sm" x={k.cx} y={k.y + 26}>{KIND_NOTES[i]}</text>
+      </>
+    ))}
+    <text class="layer" x="20" y="160">Not what it seems</text>
+    <Chip x={20} y={184} text="Khālid al-Ḥadhdhāʾ" />
+    <text class="lbl start sm" x={34 + chipWidth("Khālid al-Ḥadhdhāʾ")} y="180">no shoemaker:</text>
+    <text class="lbl start sm" x={34 + chipWidth("Khālid al-Ḥadhdhāʾ")} y="194">he kept their company</text>
+    <Chip x={20} y={228} text="Sulaymān al-Taymī" />
+    <text class="lbl start sm" x={34 + chipWidth("Sulaymān al-Taymī")} y="224">not of Banū Taym:</text>
+    <text class="lbl start sm" x={34 + chipWidth("Sulaymān al-Taymī")} y="238">he lived among them</text>
+    <text class="lbl sm" x={CX} y="284">nisbas, like names, can look alike:</text>
+    <XLink to={names.to} text={names.title} x={CX} y={304} anchor="middle" />
+  </svg>
+
+  <svg id="cell-mawla" viewBox="0 0 430 320" role="group" aria-label="Mawlā, a client, higher or lower: tied to a people by reason of slavery, by alliance and protection, or by reason of accepting Islam. One word covers all three, and only the context shows which is meant. An illustration: the book names no example.">
+    <TermTitle c={mawla.c} x={CX} y={TITLE_Y} hit={mawla.hit} info={mawla.info} ar={mawla.ar} />
+    <Chip x={MAWLA.x} y={MAWLA.y} text="mawlā" w={MAWLA.w} />
+    {TIES.map((t) => (
+      <>
+        <path class="branch" d={`M${MAWLA.x + MAWLA.w + 4} ${MAWLA.y} C${130} ${MAWLA.y} ${120} ${t.y} ${160} ${t.y}`} />
+        <text class="lbl start" x="168" y={t.y + 4}>{t.t}</text>
+      </>
+    ))}
+    <text class="q" x="70" y="206">?</text>
+    <text class="lbl sm" x={CX} y="256">one word for all three, higher or lower:</text>
+    <text class="lbl sm" x={CX} y="272">only the context shows which</text>
+    <text class="lbl sm" x={CX} y="302">an illustration: the book names no example</text>
+  </svg>
+
+  <svg id="cell-unique" viewBox="0 0 430 320" role="group" aria-label="al-Asmāʾ al-mufrada, unique names. Sandar, a client of Zinbāʿ al-Judhāmī, known as Abū ʿAbd Allāh, bears a name no one else bears, as far as is known. al-Bardījī listed Ṣughdī ibn Sinān as unique and was faulted: Ṣughdī al-Kūfī and Ṣughdī ibn ʿAbd Allāh appear in other books. Kunyas and by-names can be unique too.">
+    <TermTitle c={mufradat.c} x={CX} y={TITLE_Y} hit={mufradat.hit} info={mufradat.info} ar={mufradat.ar} />
+    <Chip x={f(CX - SANDAR_W / 2)} y={96} text="Sandar" w={SANDAR_W} />
+    <path class="only" d={`M${f(CX - SANDAR_W / 2)} 112 h${SANDAR_W} M${f(CX - SANDAR_W / 2)} 116 h${SANDAR_W}`} />
+    <text class="lbl sm" x={CX} y="134">no one else bears it, as far as is known</text>
+    <text class="lbl sm" x={CX} y="150">client of Zinbāʿ al-Judhāmī · Abū ʿAbd Allāh</text>
+    <text class="layer" x="20" y="184">Listed as unique, but found again</text>
+    {SUGHDI.map((c) => <g class="m-enter" style={`--d:${c.d}`}><Chip x={c.x} y={c.y} text={c.text} w={c.w} /></g>)}
+    <text class="lbl sm" x={CX} y="236">al-Bardījī listed Ṣughdī ibn Sinān as unique, and</text>
+    <text class="lbl sm" x={CX} y="250">was faulted: the name is in other books too</text>
+    <text class="lbl sm" x={CX} y="286">kunyas and by-names can be unique too</text>
+  </svg>
+
+  <svg id="cell-siblings" viewBox="0 0 430 320" role="group" aria-label="al-Ikhwa wa-l-akhawāt, brothers and sisters among the narrators. Early scholars wrote on it, among them ʿAlī ibn al-Madīnī. An illustration: the book names no example.">
+    <TermTitle c={ikhwa.c} x={CX} y={TITLE_Y} hit={ikhwa.hit} info={ikhwa.info} ar={ikhwa.ar} />
+    <Bracket x0={165} x1={265} y={100} ticks="down" />
+    {[165, 215, 265].map((x) => <Narrator x={x} y={130} k={0.6} {...FIG.later} />)}
+    <text class="lbl" x={CX} y="176">brothers and sisters</text>
+    <Glyph kind="book" cx={128} cy={216} r={9} />
+    <text class="lbl start" x="144" y="220">ʿAlī ibn al-Madīnī wrote on it</text>
+    <text class="lbl sm" x={CX} y="286">an illustration: the book names no example</text>
+  </svg>
+
+  <svg id="cell-whose-son" viewBox="0 0 430 320" role="img" aria-label="Whose son? al-Miqdād ibn al-Aswad is al-Miqdād ibn ʿAmr, named for al-Aswad al-Zuhrī, who had adopted him. Ibn ʿUlayya is Ismāʿīl ibn Ibrāhīm ibn Miqsam: ʿUlayya was his mother, and he disliked the name. In Rabīʿ ibn Anas, from Anas, Anas is his shaykh, not his father; in ʿĀmir ibn Saʿd, from Saʿd, in al-Bukhārī's Ṣaḥīḥ, Saʿd is his father.">
+    <text class="title" x={CX} y={TITLE_Y}>Whose son?</text>
+    <text class="lbl sm" x={CX} y="54">whose son, or whose student?</text>
+    {sons.map((s) => (
+      <>
+        <Chip x={20} y={s.y} text={s.name} w={s.w} />
+        {s.lines.map((l, j) => <text class="lbl start sm" x={34 + s.w} y={s.y - 3 + j * 14}>{l}</text>)}
+      </>
+    ))}
+  </svg>
+
+  <svg id="cell-chain" viewBox="0 0 430 320" role="img" aria-label="One name, up the chain. ʿImrān from ʿImrān from ʿImrān: ʿImrān al-Qaṣīr, from Abū Rajāʾ al-ʿUṭāridī, from Ibn Ḥuṣayn, the Companion. And a shaykh and a student who share a name: al-Bukhārī narrated from Muslim ibn Ibrāhīm al-Farāhīdī al-Baṣrī, and Muslim ibn al-Ḥajjāj al-Qushayrī narrated from him. Knowing it rules out a repetition or a swap in the chain; it is a form Ibn al-Ṣalāḥ did not come across.">
+    <text class="title" x={CX} y={TITLE_Y}>One name, up the chain</text>
+    <text class="lbl sm" x={CX} y="54">each narrates from the one before</text>
+    {IMRAN.map((m, i) => (
+      <>
+        <Chip x={f(m.cx - m.w / 2)} y={96} text="ʿImrān" w={m.w} companion={m.companion} />
+        {m.note.map((l, j) => <text class="lbl sm" x={m.cx} y={124 + j * 14}>{l}</text>)}
+        {i > 0 && <Arrow x1={IMRAN[i - 1].cx + m.w / 2 + 6} y1={96} x2={f(m.cx - m.w / 2 - 6)} y2={96} />}
+      </>
+    ))}
+    <text class="layer" x="20" y="182">Shaykh and student, one name</text>
+    {MUSLIM.map((c, i) => (
+      <>
+        <Chip x={c.x} y={c.y} text={c.text} w={c.w} />
+        {i > 0 && <Arrow x1={MUSLIM[i - 1].x + MUSLIM[i - 1].w + 4} y1={c.y} x2={c.x - 4} y2={c.y} />}
+      </>
+    ))}
+    <text class="lbl sm" x={MUSLIM[0].cx} y="232">al-Farāhīdī al-Baṣrī</text>
+    <text class="lbl sm" x={MUSLIM[2].cx} y="232">al-Qushayrī</text>
+    <text class="lbl sm" x={CX} y="270">knowing it rules out a repetition or a swap</text>
+    <text class="lbl sm" x={CX} y="296">a form Ibn al-Ṣalāḥ did not come across</text>
+  </svg>
+</div>
+<style>
+  .aliases .layer{text-anchor:start}
+  .tie{fill:none;stroke:var(--line);stroke-width:1.2;stroke-dasharray:3 3}
+  .branch{fill:none;stroke:var(--line);stroke-width:1.4}
+  .only{fill:none;stroke:var(--gold-a);stroke-width:1.4}
+  .q{fill:var(--gap);font:700 18px var(--f-body);text-anchor:middle;animation:blink 2.4s ease-in-out infinite}
+  .mk{--dur:.4s}
+</style>
