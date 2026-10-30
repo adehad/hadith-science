@@ -1335,6 +1335,7 @@
   def: "Books gathering each Companion's reports together, ordered by precedence in Islam or alphabetically."
   section: "§5.70"
   division: marifat-al-ruwat
+  scene: books
 - id: abwab
   translit: al-Abwāb
   ar: الْأَبْوَابُ
@@ -1342,6 +1343,7 @@
   def: "Books arranged by legal or other topics. Best kept to sound and fair reports; any weak ones should be flagged."
   section: "§5.70"
   division: marifat-al-ruwat
+  scene: books
 - id: ilal
   translit: al-ʿIlal
   ar: الْعِلَلُ
@@ -1349,6 +1351,7 @@
   def: "Books giving each text with its routes and how they differ, to show hidden flaws; best arranged by chapter."
   section: "§5.70"
   division: marifat-al-ruwat
+  scene: books
 - id: atraf
   translit: al-Aṭrāf
   ar: الْأَطْرَافُ
@@ -1356,6 +1359,7 @@
   def: "Books citing just enough of each hadith to call the rest to mind, then gathering its chains."
   section: "§5.70"
   division: marifat-al-ruwat
+  scene: books
 - id: asbab-al-hadith
   translit: Asbāb al-ḥadīth
   ar: أَسْبَابُ الْحَدِيثِ
@@ -1363,3 +1367,4 @@
   def: "The occasions that prompted a hadith. Abū Ḥafṣ al-ʿUkbarī wrote a book on them."
   section: "§5.71"
   division: marifat-al-ruwat
+  scene: books

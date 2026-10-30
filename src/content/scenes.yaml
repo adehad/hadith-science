@@ -1219,3 +1219,28 @@
       note: "Checking a copy: reading it against the shaykh, with a reliable person, or alone, piece by piece. Listening has its manners too: nothing that distracts, such as copying, talking or tiredness (§5.68)."
     - term: rihla
       note: "Travel for ḥadīth begins only once the student has gathered all the reports of his own town; then he travels for what he does not have. His wish for more reports should outweigh his wish for more shaykhs (§5.69)."
+- id: books
+  division: marifat-al-ruwat
+  moons: [4]
+  order: 6
+  title: What kind of book is it?
+  eyebrow: Knowing the narrators, kinds of books and the reasons behind a ḥadīth · §5.70–5.71
+  lede: Ḥadīth books are arranged in four ways, by Companion, by topic, by a text and the ways its chains differ, or by a part of each text that recalls the rest. Some scholars also wrote on what prompted a ḥadīth. Ibn Ḥajar ends by sending the reader to the fuller books.
+  source: §5.70 al-Masānīd, al-abwāb, al-ʿilal, al-aṭrāf, §5.71 Asbāb al-ḥadīth
+  diagram: Books
+  width: 860
+  captions:
+    - term: masanid
+      note: "Musnads gather the reports of each Companion on their own. The compiler may order the Companions by their precedence in Islam, or alphabetically, which is easier to look things up in (§5.70)."
+    - term: abwab
+      note: "Books in chapters of law or the like: under each, the reports that affirm or deny a ruling. It is better to keep to the sound and the fair; a compiler who includes everything should explain why each weak report is there (§5.70)."
+    - term: ilal
+      note: "Books of hidden flaws give each text with its route and the ways its chains differ. They are best arranged by chapter, to make them easier to consult (§5.70)."
+    - term: atraf
+      note: "Indexes give just enough of each ḥadīth to call the rest to mind, then gather its chains: all of them, or only those in certain books (§5.70)."
+    - term: asbab-al-hadith
+      note: "Knowing what prompted a ḥadīth. Abū Ḥafṣ al-ʿUkbarī, the shaykh of al-Qāḍī Abū Yaʿlā ibn al-Farrāʾ al-Ḥanbalī, wrote a book on it. Ibn Daqīq al-ʿĪd said some scholars of his time began writing on it, perhaps not knowing of that book (§5.71)."
+  extra:
+    - title: The rest is in the fuller books
+      section: after §5.71
+      note: "Scholars have written books on most of the kinds touched on in this closing part. Ibn Ḥajar only introduced them by defining them, without their examples, since including them all would be hard; for their full reality, the reader should turn to the longer works."
