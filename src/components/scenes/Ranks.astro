@@ -1,0 +1,160 @@
+---
+// "What did the critics call him?" (phase 3 Maʿrifat al-ruwāt design §4): the ranks of praise and criticism (§5.63),
+// as two cells, each its own 430x560 SVG in an HTML grid (the Names pattern). Read in turn they make one scale:
+//   A  praise, from the highest rank at the top down to the mildest
+//   B  criticism, from the mildest at the top down to the worst
+// Side by side on desktop they read left then right; stacked in portrait, best at the top and worst at the bottom.
+// Each named rank is a rung whose first line is its term trigger; the translation's other words for that rank follow,
+// transliterated. A dashed rung marks "further ranks between" where the book says so, with no count: the rungs show
+// order only, so there are no ordinals and the wedges have no ticks (design §0). The three words spec §3.2 ties to a
+// figure (thiqa, ḍaʿīf, kadhdhāb) stand beside the reliable, weak and liar figures.
+// No views. No Arabic beyond the term names. Motion: each cell's rungs enter from the top, one after another; the
+// resting style is the end state, so with motion.css stopping every animation every rung is shown.
+import Narrator from "../svg/Narrator.astro";
+import TermTitle from "../svg/TermTitle.astro";
+import XLink from "../svg/XLink.astro";
+import { FIG, KIND_NAME, RELIABLE, type Fig } from "../svg/figures";
+import { f, rowTrigger, titleTrigger } from "../svg/geom";
+import { cap, type DiagramProps } from "../../lib/scene";
+import { chipWidth, stagger } from "../../lib/kit";
+import { stepFill } from "../../lib/staircase";
+import { gapFill } from "../../lib/palette";
+import { loadContent } from "../../lib/content";
+
+type Props = DiagramProps;
+const { caps, scene } = Astro.props;
+if (scene.views?.length) throw new Error("Ranks: expected no views");
+if (scene.panels?.length) throw new Error("Ranks: a grid of cells, not panels");
+
+const { scenes } = await loadContent();
+const causes = scenes.find((s) => s.id === "causes");
+if (!causes) throw new Error("Ranks: no causes scene to link to");
+
+const TITLE_Y = 30, SUB_Y = 54;
+// a cell's 20px title as a term trigger, with its Arabic name arOff past the (i)
+function title(slug: string, cx: number, arOff: number) {
+  const c = cap(caps, slug);
+  const t = titleTrigger(c.translit, cx, TITLE_Y);
+  return { c, cx, ...t, ar: { x: f(t.info.cx + arOff), y: TITLE_Y, size: "sm" as const } };
+}
+
+const R_X0 = 34, R_X1 = 412, TXT_X = 48;
+const FIG_X = 384, FK = 0.55;
+const SUPER = "afʿal: a superlative";
+const SUPER_W = chipWidth(SUPER, 5.4, 14);
+
+type Rung = { slug?: string; lines: string[]; h: number; fig?: Fig; figName?: string; superlative?: boolean };
+// strongest praise first (A), mildest criticism first (B); a rung with no slug is the dashed "further ranks between"
+const A: Rung[] = [
+  { slug: "awthaq-al-nas", lines: ["athbat al-nās · the last word in reliability", "the most reliable, the most firmly established"], h: 74, superlative: true },
+  { slug: "thiqa", lines: ["thiqa thiqa · thabt thabt · ʿadl ḍābiṭ", "a word of praise repeated, or two joined"], h: 74, fig: { ...FIG.later, ...RELIABLE }, figName: KIND_NAME.later },
+  { lines: ["further ranks between"], h: 28 },
+  { slug: "shaykh", lines: ["yurwā ḥadīthuhu · yuʿtabaru bihi", "lenient: the lowest words of praise"], h: 74 },
+];
+const B: Rung[] = [
+  { slug: "layyin", lines: ["sayyiʾ al-ḥifẓ · fīhi maqāl", "the mildest words of criticism"], h: 64 },
+  { slug: "daif", lines: ["laysa bi-l-qawī (not strong)"], h: 64, fig: FIG.weak, figName: KIND_NAME.weak },
+  { slug: "munkar-al-hadith", lines: ["matrūk · sāqiṭ · fāḥish al-ghalaṭ", "harsher than ḍaʿīf"], h: 64 },
+  { lines: ["further ranks between"], h: 28 },
+  { slug: "kadhdhab", lines: ["dajjāl · waḍḍāʿ", "they exaggerate, but short of the superlative"], h: 64, fig: FIG.liar, figName: KIND_NAME.liar },
+  { slug: "akdhab-al-nas", lines: ["the last word in fabrication · the pillar of lying", "the greatest of people in lying"], h: 74, superlative: true },
+];
+const R_Y0 = 80, R_GAP = 8;
+// the column the Arabic names are centred on: past the (i) of the longest name (Munkar al-ḥadīth), clear of the
+// superlative tags at the right
+const AR_X = 238;
+
+// lays a column of rungs out from R_Y0; tone picks the fill: gold for praise (deepest at the top), the gap tint for
+// criticism (deepest at the bottom), light enough that --fg text keeps 4.5:1 on it in both themes
+function layout(rungs: Rung[], tone: "gold" | "gap") {
+  let y = R_Y0;
+  const n = rungs.length;
+  return rungs.map((r, i) => {
+    const top = y;
+    y = top + r.h + R_GAP;
+    // praise steps down staircase.ts's gold steps; criticism deepens to GAP_MAX, the darkest rung, whose pair with
+    // --fg lib/palette.ts checks, as it does --fg on stepFill(0)
+    const fill = !r.slug ? "none" : tone === "gold" ? stepFill(i * 2) : gapFill(i, n);
+    const c = r.slug ? cap(caps, r.slug) : undefined;
+    const row = c ? rowTrigger(c.translit, TXT_X, top + 22, { charW: 7.4 }) : undefined;
+    // the Arabic names stand in one column, past the (i) of the longest name, so the gaps line up
+    const ar = c ? { x: AR_X, y: top + 22, size: "sm" as const } : undefined;
+    return { ...r, top, fill, c, row, ar, d: stagger(i, { start: 0.2, step: 0.12 }) };
+  });
+}
+const praise = layout(A, "gold");
+const criticism = layout(B, "gap");
+const A_END = praise[praise.length - 1].top + praise[praise.length - 1].h;
+const B_END = criticism[criticism.length - 1].top + criticism[criticism.length - 1].h;
+
+const tadil = title("maratib-al-tadil", 150, 66);
+const jarh = title("maratib-al-jarh", 150, 62);
+const cells = [
+  { id: "cell-praise", t: tadil, sub: "words of praise, from the highest down", rungs: praise, end: A_END, top: "highest", bottom: "milder", wedge: "gold",
+    label: "Marātib al-taʿdīl, the ranks of praise, from the highest down. Highest: awthaq al-nās, the most reliable of people, with athbat al-nās and the last word in reliability, superlatives. Next: thiqa, reliable, repeated as thiqa thiqa or thabt thabt, or joined to another word, as ʿadl ḍābiṭ. Further ranks lie between. Lowest: shaykh, with yurwā ḥadīthuhu and yuʿtabaru bihi, lenient words." },
+  { id: "cell-criticism", t: jarh, sub: "words of criticism, from the mildest down", rungs: criticism, end: B_END, top: "milder", bottom: "graver", wedge: "gap",
+    label: "Marātib al-jarḥ, the ranks of criticism, from the mildest down. Mildest: layyin, soft, with sayyiʾ al-ḥifẓ and fīhi maqāl. Then ḍaʿīf, weak, with laysa bi-l-qawī; then munkar al-ḥadīth, harsher, with matrūk, sāqiṭ and fāḥish al-ghalaṭ. Further ranks lie between. Then kadhdhāb, with dajjāl and waḍḍāʿ; and worst, akdhab al-nās, the greatest of people in lying, with the last word in fabrication and the pillar of lying, superlatives. Some criticism does not mean rejecting all his reports." },
+];
+---
+<div class="cells ranks">
+  {cells.map((cell) => (
+    <svg id={cell.id} viewBox="0 0 430 560" role="group" aria-label={cell.label}>
+      <TermTitle c={cell.t.c} x={cell.t.cx} y={TITLE_Y} hit={cell.t.hit} info={cell.t.info} ar={cell.t.ar} />
+      <text class="lbl" x="215" y={SUB_Y}>{cell.sub}</text>
+
+      {/* the wedge shows order only: no ticks, no numbers */}
+      <path class={`wedge ${cell.wedge}`} aria-hidden="true" d={cell.wedge === "gold" ? `M8 ${R_Y0} H24 L16 ${cell.end} Z` : `M16 ${R_Y0} L24 ${cell.end} H8 Z`} />
+      <text class="lbl start sm" x="4" y={R_Y0 - 8}>{cell.top}</text>
+      <text class="lbl start sm" x="4" y={cell.end + 16}>{cell.bottom}</text>
+
+      {cell.rungs.map((r) => (
+        <g class="rung-g m-enter" style={`--d:${r.d}`}>
+          {r.c && r.row ? (
+            <>
+              <rect class="rung" x={R_X0} y={r.top} width={R_X1 - R_X0} height={r.h} rx="6" style={`fill:${r.fill}`} />
+              <TermTitle c={r.c} x={TXT_X} y={r.top + 22} cls="rt" hit={r.row.hit} info={r.row.info} ar={r.ar} />
+              {r.lines.map((t, j) => <text class="rs" x={TXT_X} y={r.top + 42 + j * 15}>{t}</text>)}
+              {r.superlative && (
+                <g class="super">
+                  <rect x={R_X1 - 8 - SUPER_W} y={r.top + 9} width={SUPER_W} height="18" rx="9" />
+                  <text x={f(R_X1 - 8 - SUPER_W / 2)} y={r.top + 22}>{SUPER}</text>
+                </g>
+              )}
+              {r.fig && <Narrator x={FIG_X} y={f(r.top + r.h / 2 - 6)} k={FK} {...r.fig} label={r.figName} />}
+            </>
+          ) : (
+            <>
+              <rect class="between" x={R_X0} y={r.top} width={R_X1 - R_X0} height={r.h} rx="6" />
+              <text class="lbl sm" x={(R_X0 + R_X1) / 2} y={r.top + 18}>{r.lines[0]}</text>
+            </>
+          )}
+        </g>
+      ))}
+
+      {cell.wedge === "gold" ? (
+        <>
+          <text class="lbl sm" x="215" y={A_END + 52}>a narrator is known to be upright,</text>
+          <text class="lbl sm" x="215" y={A_END + 67}>known for open sin, or not known at all</text>
+          <text class="lbl sm" x="215" y={A_END + 95}>at both ends of the scale the words are superlatives</text>
+        </>
+      ) : (
+        <>
+          <text class="lbl sm" x="215" y={B_END + 40}>some criticism does not mean rejecting all his reports</text>
+          <XLink to={causes.division + "/" + causes.id} lead="the causes behind it: " text={causes.title} x={215} y={B_END + 64} anchor="middle" />
+        </>
+      )}
+    </svg>
+  ))}
+</div>
+<style>
+  .rung{stroke:var(--rule)}
+  .between{fill:none;stroke:var(--line);stroke-width:1.2;stroke-dasharray:4 4}
+  .ranks :global(.rt){fill:var(--fg)}
+  .rs{fill:var(--fg);font:600 11px var(--f-body)}
+  .rung-g :global(.title-ar){fill:var(--fg)}
+  .super rect{fill:var(--surface);stroke:var(--line);stroke-width:1;stroke-dasharray:3 2}
+  .super text{fill:var(--fg);font:700 10px var(--f-body);text-anchor:middle}
+  .wedge.gold{fill:var(--gold-edge);stroke:var(--gold-a);stroke-width:1}
+  .wedge.gap{fill:color-mix(in srgb,var(--gap) 45%,var(--surface));stroke:var(--gap);stroke-width:1}
+  .rung-g{--dur:.3s}
+</style>

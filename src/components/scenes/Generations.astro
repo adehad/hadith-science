@@ -1,0 +1,163 @@
+---
+// "When and where did he live?" (phase 3 Maʿrifat al-ruwāt design §3): generations, dates and homelands (§5.62),
+// in three panels of one 780-wide row, so it carousels in portrait:
+//   1  the Companions grouped two ways, side by side, as §5.62 gives them without preferring one: one generation by
+//      companionship alone (Ibn Ḥibbān), or several by when they accepted Islam, the great events and the Migration
+//      (Ibn Saʿd), with Anas ibn Mālik on the line between two of them
+//   2  two lifespan bars that never meet, under a claim to have met (an illustration, labelled so), crossed out
+//   3  one name, two men in two places (an illustration: the book names no example)
+// No views (design §3.5). No Arabic beyond the term names. Motion: panel 1's bands enter one after another and
+// Anas's tie follows; panel 2's bars enter, the "?" between them blinks and the cross draws in. The resting style
+// is the end state, so with motion.css stopping every animation the scene is as drawn.
+import Defs from "../svg/Defs.astro";
+import Narrator from "../svg/Narrator.astro";
+import Arrow from "../svg/Arrow.astro";
+import Chip from "../svg/Chip.astro";
+import Glyph from "../svg/Glyph.astro";
+import Lifespan from "../svg/Lifespan.astro";
+import SpeechBubble from "../svg/SpeechBubble.astro";
+import TermTitle from "../svg/TermTitle.astro";
+import XLink from "../svg/XLink.astro";
+import { FIG, KIND_NAME, RELIABLE } from "../svg/figures";
+import { f, titleTrigger, SUBT_TRIGGER } from "../svg/geom";
+import { cap, type DiagramProps } from "../../lib/scene";
+import { chipWidth, stagger } from "../../lib/kit";
+import { loadContent } from "../../lib/content";
+
+type Props = DiagramProps;
+const { caps, scene } = Astro.props;
+const W = 780, H = 460;
+if (scene.views?.length) throw new Error("Generations: expected no views");
+if ((scene.panels ?? []).length !== 3) throw new Error("Generations: expected three panels");
+
+const { scenes } = await loadContent();
+function sceneById(id: string) {
+  const s = scenes.find((x) => x.id === id);
+  if (!s) throw new Error(`Generations: no scene ${id} to link to`);
+  return { title: s.title, to: `${s.division}/${s.id}` };
+}
+const hidden = sceneById("hidden");
+const names = sceneById("names");
+
+// a panel's 15px title as a term trigger, its Arabic name centred under it
+const TITLE_Y = 30;
+function title(slug: string, cx: number) {
+  const c = cap(caps, slug);
+  return { c, cx, ...titleTrigger(c.translit, cx, TITLE_Y, SUBT_TRIGGER), ar: { x: cx, y: TITLE_Y + 22, size: "sm" as const } };
+}
+const tabaqa = title("tabaqa", 120);
+const dates = title("mawalid-wa-wafayat", 382);
+const lands = title("awtan", 642);
+const SUB_Y = 74;
+
+// ---- panel 1: the Companions grouped two ways (§5.62) ----
+const COL_Y = 96, BAND_Y0 = 120, BAND_Y1 = 306;
+const L = { x0: 14, x1: 104 }, R = { x0: 118, x1: 250 };
+const SK = 0.38;
+const LEFT_FIGS = [36, 59, 82].flatMap((x) => [152, 196, 240, 284].map((y) => ({ x, y })));
+// three bands, unlabelled: one caption names the factors, so no band reads as a named generation
+const BANDS = [0, 1, 2].map((i) => {
+  const h = (BAND_Y1 - BAND_Y0 - 8) / 3;
+  const y = f(BAND_Y0 + i * (h + 4));
+  return { y, h: f(h), d: stagger(i, { start: 0.3, step: 0.25 }) };
+});
+// Anas ibn Mālik: on the line between the first two bands, by his companionship in one and by his youth in the next
+const ANAS = { x: 234, y: f(BANDS[1].y - 2), k: 0.46 };
+const ANAS_NAME = "Anas ibn Mālik";
+const ANAS_W = chipWidth(ANAS_NAME);
+const ANAS_CHIP = { x: f(R.x1 - ANAS_W), y: 330 };
+
+// ---- panel 2: dates (§5.62) ----
+const BAR_A = { x0: 282, x1: 384, y: 112 }, BAR_B = { x0: 410, x1: 490, y: 140 };
+const GAP_X = f((BAR_A.x1 + BAR_B.x0) / 2);
+const CLAIM = { x: 302, y: 250, k: 0.8 };
+
+// ---- panel 3: homelands (§5.62), an illustration ----
+const SAME = "the same name";
+const SAME_W = chipWidth(SAME);
+const MEN = [{ x: 594, place: "one town" }, { x: 694, place: "another town" }];
+const MEN_Y = 196, MK = 0.8;
+---
+<svg viewBox={`0 0 ${W} ${H}`} class="generations" role="group" aria-label="Three panels. Ṭabaqa, a generation: narrators alike in age and in the shaykhs they met. The Companions can be counted as one generation by companionship alone, as Ibn Ḥibbān did, or as several by when they accepted Islam, the great events and the Migration, as Ibn Saʿd did; Anas ibn Mālik belongs to two, by his companionship and by his youth. The Successors are grouped the same two ways. Knowing generations guards against confusion, helps expose tadlīs and shows what an ʿanʿana means. Dates of birth and death expose a claim to have met someone the narrator never met: in an illustration, two lives that never overlap, under the claim, crossed out. Homelands keep two similar names apart: in an illustration, one name borne by two men from two towns.">
+  <Defs />
+  <line class="divider" x1="260" x2="260" y1="12" y2={H - 12} />
+  <line class="divider" x1="520" x2="520" y1="12" y2={H - 12} />
+
+  {/* ---- panel 1: generations ---- */}
+  <TermTitle c={tabaqa.c} x={tabaqa.cx} y={TITLE_Y} cls="subt" hit={tabaqa.hit} info={tabaqa.info} ar={tabaqa.ar} />
+  <text class="lbl sm" x="130" y={SUB_Y}>alike in age and in the shaykhs met</text>
+  <text class="colhead sm" x={(L.x0 + L.x1) / 2} y={COL_Y}>by companionship</text>
+  <text class="colhead sm" x={(R.x0 + R.x1) / 2} y={COL_Y}>by other factors</text>
+  <text class="lbl sm" x={(L.x0 + L.x1) / 2} y={COL_Y + 15}>Ibn Ḥibbān</text>
+  <text class="lbl sm" x={(R.x0 + R.x1) / 2} y={COL_Y + 15}>Ibn Saʿd</text>
+  <rect class="band" x={L.x0} y={BAND_Y0} width={L.x1 - L.x0} height={BAND_Y1 - BAND_Y0} rx="10" />
+  {LEFT_FIGS.map((p) => <Narrator x={p.x} y={p.y} k={SK} {...FIG.sahabi} />)}
+  {BANDS.map((b) => (
+    <g class="m-enter" style={`--d:${b.d}`}>
+      <rect class="band" x={R.x0} y={b.y} width={R.x1 - R.x0} height={b.h} rx="8" />
+      {[150, 184].map((x) => <Narrator x={x} y={f(b.y + b.h / 2 + 4)} k={SK} {...FIG.sahabi} />)}
+    </g>
+  ))}
+  <g class="anas m-enter">
+    <path class="tie" d={`M${ANAS.x} ${f(ANAS.y + 22 * ANAS.k + 4)} V${ANAS_CHIP.y - 12}`} />
+    <Narrator x={ANAS.x} y={ANAS.y} k={ANAS.k} {...FIG.sahabi} />
+  </g>
+  <Chip x={ANAS_CHIP.x} y={ANAS_CHIP.y} text={ANAS_NAME} w={ANAS_W} companion />
+  <text class="lbl sm" x={(L.x0 + L.x1) / 2} y="326">one generation</text>
+  <text class="lbl sm" x={(R.x0 + R.x1) / 2} y="356">in two: by companionship,</text>
+  <text class="lbl sm" x={(R.x0 + R.x1) / 2} y="370">and by his youth</text>
+  <text class="lbl sm" x="130" y="392">several: by when they accepted Islam,</text>
+  <text class="lbl sm" x="130" y="405">the great events, the Migration</text>
+  <text class="lbl sm" x="130" y="424">the Successors are grouped the same two ways</text>
+  <text class="lbl sm" x="130" y="440">it guards against confusion, shows what</text>
+  <text class="lbl sm" x="130" y="453">an ʿanʿana means, and helps expose tadlīs</text>
+
+  {/* ---- panel 2: births and deaths ---- */}
+  <TermTitle c={dates.c} x={dates.cx} y={TITLE_Y} cls="subt" hit={dates.hit} info={dates.info} ar={dates.ar} />
+  <text class="lbl sm" x="390" y={SUB_Y}>dates of birth and death</text>
+  <g class="bar m-enter" style="--d:.3s">
+    <Lifespan x0={BAR_A.x0} x1={BAR_A.x1} y={BAR_A.y} />
+    <text class="lbl start sm" x={BAR_A.x0} y={BAR_A.y - 10}>the shaykh</text>
+  </g>
+  <g class="bar m-enter" style="--d:.7s">
+    <Lifespan x0={BAR_B.x0} x1={BAR_B.x1} y={BAR_B.y} />
+    <text class="lbl start sm" x={BAR_B.x0} y={BAR_B.y + 22}>he</text>
+  </g>
+  <line class="gapline" x1={BAR_A.x1 + 4} x2={BAR_B.x0 - 4} y1={(BAR_A.y + BAR_B.y) / 2} y2={(BAR_A.y + BAR_B.y) / 2} />
+  <text class="q" x={GAP_X} y={(BAR_A.y + BAR_B.y) / 2 - 6}>?</text>
+  <Narrator x={CLAIM.x} y={CLAIM.y} k={CLAIM.k} {...FIG.later} {...RELIABLE} label={KIND_NAME.later} />
+  <SpeechBubble x={CLAIM.x} y={CLAIM.y} en="I met him" />
+  <g class="claim-x" style="--d:1.2s">
+    <Glyph kind="cross" cx={470} cy={206} r={8} animate />
+  </g>
+  <text class="lbl" x="390" y="306">the dates show he never met him</text>
+  <text class="lbl sm" x="390" y="324">an illustration: the book quotes no claim</text>
+  <text class="lbl sm" x="390" y="428">a drop he conceals:</text>
+  <XLink to={hidden.to} text={hidden.title} x={390} y={446} anchor="middle" />
+
+  {/* ---- panel 3: homelands, an illustration ---- */}
+  <TermTitle c={lands.c} x={lands.cx} y={TITLE_Y} cls="subt" hit={lands.hit} info={lands.info} ar={lands.ar} />
+  <text class="lbl sm" x="650" y={SUB_Y}>towns and lands</text>
+  <Chip x={f(644 - SAME_W / 2)} y={112} text={SAME} w={SAME_W} />
+  {MEN.map((m) => (
+    <>
+      <Arrow x1={644 + (m.x - 644) / 4} y1={124} x2={m.x} y2={f(MEN_Y - 22 * MK - 4)} bend={(m.x - 644) / 8} />
+      <Narrator x={m.x} y={MEN_Y} k={MK} {...FIG.later} {...RELIABLE} label={KIND_NAME.later} />
+      <Glyph kind="pin" cx={m.x} cy={244} r={9} />
+      <text class="lbl sm" x={m.x} y="270">{m.place}</text>
+    </>
+  ))}
+  <text class="lbl" x="650" y="306">kept apart by where they belong</text>
+  <text class="lbl sm" x="650" y="324">an illustration: the book names no example</text>
+  <text class="lbl sm" x="650" y="428">names alike, with a differing nisba:</text>
+  <XLink to={`${names.to}#mutashabih`} text={names.title} x={650} y={446} anchor="middle" />
+</svg>
+<style>
+  .colhead.sm{font-size:11.5px}
+  .band{fill:var(--gold-wash);stroke:var(--gold-edge);stroke-width:1}
+  .tie{fill:none;stroke:var(--line);stroke-width:1.2;stroke-dasharray:3 3}
+  .gapline{stroke:var(--gap);stroke-width:1.4;stroke-dasharray:3 3}
+  .q{fill:var(--gap);font:700 15px var(--f-body);text-anchor:middle;animation:blink 2.4s ease-in-out infinite}
+  .anas{--d:1.2s}
+  .bar{--from-t:translateX(-12px)}
+</style>

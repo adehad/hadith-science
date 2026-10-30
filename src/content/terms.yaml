@@ -1111,6 +1111,7 @@
   def: "A group of narrators close in age and in the teachers they met. Knowing it prevents confusion and helps expose concealment."
   section: "§5.62"
   division: marifat-al-ruwat
+  scene: generations
 - id: mawalid-wa-wafayat
   translit: al-Mawālīd wa-l-wafayāt
   ar: الْمَوَالِيدُ وَالْوَفَيَاتُ
@@ -1118,6 +1119,7 @@
   def: "Narrators' birth and death dates, which expose false claims to have met someone."
   section: "§5.62"
   division: marifat-al-ruwat
+  scene: generations
 - id: awtan
   translit: al-Buldān wa-l-awṭān
   ar: الْبُلْدَانُ وَالْأَوْطَانُ
@@ -1125,6 +1127,7 @@
   def: "Narrators' towns and lands, which keep apart two similar names from different places."
   section: "§5.62"
   division: marifat-al-ruwat
+  scene: generations
 - id: jarh
   translit: Jarḥ
   ar: جَرْحٌ
@@ -1132,6 +1135,7 @@
   def: "Faulting a narrator's integrity or accuracy. Taken only from a reliable, informed critic, never from one driven by prejudice."
   section: "§5.64"
   division: marifat-al-ruwat
+  scene: verdicts
 - id: tadil
   translit: Taʿdīl
   ar: تَعْدِيلٌ
@@ -1139,6 +1143,7 @@
   def: "Declaring a narrator reliable. One informed critic is enough, since it works like a verdict rather than testimony."
   section: "§5.64"
   division: marifat-al-ruwat
+  scene: verdicts
 - id: maratib-al-jarh
   translit: Marātib al-jarḥ
   ar: مَرَاتِبُ الْجَرْحِ
@@ -1146,6 +1151,7 @@
   def: "Words of criticism graded from the worst, superlatives like akdhab al-nās, down to the mildest, like layyin."
   section: "§5.63"
   division: marifat-al-ruwat
+  scene: ranks
 - id: maratib-al-tadil
   translit: Marātib al-taʿdīl
   ar: مَرَاتِبُ التَّعْدِيلِ
@@ -1153,6 +1159,7 @@
   def: "Words of praise graded from the highest, superlatives like awthaq al-nās, down to the mildest, like shaykh."
   section: "§5.63"
   division: marifat-al-ruwat
+  scene: ranks
 - id: akdhab-al-nas
   translit: Akdhab al-nās
   ar: أَكْذَبُ النَّاسِ
@@ -1160,6 +1167,7 @@
   def: "Worst rank of criticism: superlatives like this, or ‘the pillar of lying’."
   section: "§5.63"
   division: marifat-al-ruwat
+  scene: ranks
 - id: kadhdhab
   translit: Kadhdhāb
   ar: كَذَّابٌ
@@ -1167,6 +1175,7 @@
   def: "Next rank of criticism, with dajjāl and waḍḍāʿ: intensive forms, but short of the superlatives."
   section: "§5.63"
   division: marifat-al-ruwat
+  scene: ranks
 - id: munkar-al-hadith
   translit: Munkar al-ḥadīth
   ar: مُنْكَرُ الْحَدِيثِ
@@ -1174,6 +1183,7 @@
   def: "A middle rank of criticism, with matrūk, sāqiṭ and fāḥish al-ghalaṭ; harsher than ḍaʿīf."
   section: "§5.63"
   division: marifat-al-ruwat
+  scene: ranks
 - id: daif
   translit: Ḍaʿīf
   ar: ضَعِيفٌ
@@ -1181,6 +1191,7 @@
   def: "A lighter word of criticism, with laysa bi-l-qawī; less severe than munkar al-ḥadīth."
   section: "§5.63"
   division: marifat-al-ruwat
+  scene: ranks
 - id: layyin
   translit: Layyin
   ar: لَيِّنٌ
@@ -1188,6 +1199,7 @@
   def: "Among the mildest words of criticism, with sayyiʾ al-ḥifẓ and fīhi maqāl."
   section: "§5.63"
   division: marifat-al-ruwat
+  scene: ranks
 - id: awthaq-al-nas
   translit: Awthaq al-nās
   ar: أَوْثَقُ النَّاسِ
@@ -1195,6 +1207,7 @@
   def: "Top rank of praise: superlatives like this, athbat al-nās, or ‘the last word in reliability’."
   section: "§5.63"
   division: marifat-al-ruwat
+  scene: ranks
 - id: thiqa
   translit: Thiqa
   ar: ثِقَةٌ
@@ -1202,6 +1215,7 @@
   def: "A word of praise. Repeated (thiqa thiqa) or paired with another, like ʿadl ḍābiṭ, it marks the rank just below the superlatives."
   section: "§5.63"
   division: marifat-al-ruwat
+  scene: ranks
 - id: shaykh
   translit: Shaykh
   ar: شَيْخٌ
@@ -1209,6 +1223,7 @@
   def: "Among the mildest words of praise, with yurwā ḥadīthuhu and yuʿtabaru bihi."
   section: "§5.63"
   division: marifat-al-ruwat
+  scene: ranks
 - id: jarh-mufassar
   translit: Jarḥ mufassar
   ar: جَرْحٌ مُفَسَّرٌ
@@ -1216,6 +1231,7 @@
   def: "Criticism whose reason an expert states. It outweighs praise; unexplained criticism cannot unseat a narrator already shown to be upright."
   section: "§5.64"
   division: marifat-al-ruwat
+  scene: verdicts
 - id: kunya
   translit: Kunya
   ar: كُنْيَةٌ
@@ -1223,6 +1239,7 @@
   def: "A name of the form Abū or Umm so-and-so. Knowing narrators' kunyas stops one person, named two ways, being taken for two."
   section: "§5.65"
   division: marifat-al-ruwat
+  scene: aliases
 - id: laqab
   translit: Laqab
   ar: لَقَبٌ
@@ -1230,6 +1247,7 @@
   def: "A by-name, sometimes from a flaw, like al-Aʿmash (the bleary-eyed), sometimes from a trade."
   section: "§5.65"
   division: marifat-al-ruwat
+  scene: aliases
 - id: nisba
   translit: Nisba
   ar: نِسْبَةٌ
@@ -1237,6 +1255,7 @@
   def: "A name tying a narrator to a tribe, place or trade. Some mislead: al-Ḥadhdhāʾ (the cobbler) only kept cobblers' company."
   section: "§5.65"
   division: marifat-al-ruwat
+  scene: aliases
 - id: mawla
   translit: Mawlā
   ar: مَوْلًى
@@ -1244,6 +1263,7 @@
   def: "A narrator tied to a tribe by having been freed, by alliance, or by accepting Islam through it. One word covers all, so context decides."
   section: "§5.65"
   division: marifat-al-ruwat
+  scene: aliases
 - id: mufradat
   translit: al-Asmāʾ al-mufrada
   ar: الْأَسْمَاءُ الْمُفْرَدَةُ
@@ -1251,6 +1271,7 @@
   def: "Names, kunyas or nicknames borne by only one narrator, like Sandar."
   section: "§5.65"
   division: marifat-al-ruwat
+  scene: aliases
 - id: ikhwa
   translit: al-Ikhwa wa-l-akhawāt
   ar: الْإِخْوَةُ وَالْأَخَوَاتُ
@@ -1258,6 +1279,7 @@
   def: "Knowing which narrators are brothers and sisters; early scholars such as ʿAlī ibn al-Madīnī wrote on it."
   section: "§5.65"
   division: marifat-al-ruwat
+  scene: aliases
 - id: adab-al-shaykh-wa-al-talib
   translit: Ādāb al-shaykh wa-l-ṭālib
   ar: آدَابُ الشَّيْخِ وَالطَّالِبِ
@@ -1265,6 +1287,7 @@
   def: "Both need sincere intent and good character. The teacher narrates with dignity and stops when memory fails; the student honours him and records carefully."
   section: "§5.66"
   division: marifat-al-ruwat
+  scene: study
 - id: tahammul
   translit: Taḥammul
   ar: تَحَمُّلٌ
@@ -1272,6 +1295,7 @@
   def: "Taking in hadith, soundest from the age of understanding. A non-Muslim or sinner may receive and narrate later, once Muslim or reformed."
   section: "§5.67"
   division: marifat-al-ruwat
+  scene: study
 - id: ada
   translit: Adāʾ
   ar: أَدَاءٌ
@@ -1279,6 +1303,7 @@
   def: "Passing hadith on. There is no set age; what counts is need and ability. Mālik narrated younger than the age some scholars proposed."
   section: "§5.67"
   division: marifat-al-ruwat
+  scene: study
 - id: kitabat-al-hadith
   translit: Kitābat al-ḥadīth
   ar: كِتَابَةُ الْحَدِيثِ
@@ -1286,6 +1311,7 @@
   def: "Writing clearly, marking the vowels and dots of hard words, and adding missed text in the right-hand margin if there is room."
   section: "§5.68"
   division: marifat-al-ruwat
+  scene: study
 - id: ard
   translit: ʿArḍ
   ar: عَرْضٌ
@@ -1293,6 +1319,7 @@
   def: "Comparing one's written copy against the source, with the teacher, a reliable person, or alone, piece by piece."
   section: "§5.68"
   division: marifat-al-ruwat
+  scene: study
 - id: rihla
   translit: Riḥla
   ar: رِحْلَةٌ
@@ -1300,6 +1327,7 @@
   def: "Travelling for hadith after first gathering everything in one's own town. The aim is more reports, not more teachers."
   section: "§5.69"
   division: marifat-al-ruwat
+  scene: study
 - id: masanid
   translit: al-Masānīd
   ar: الْمَسَانِيدُ
@@ -1307,6 +1335,7 @@
   def: "Books gathering each Companion's reports together, ordered by precedence in Islam or alphabetically."
   section: "§5.70"
   division: marifat-al-ruwat
+  scene: books
 - id: abwab
   translit: al-Abwāb
   ar: الْأَبْوَابُ
@@ -1314,6 +1343,7 @@
   def: "Books arranged by legal or other topics. Best kept to sound and fair reports; any weak ones should be flagged."
   section: "§5.70"
   division: marifat-al-ruwat
+  scene: books
 - id: ilal
   translit: al-ʿIlal
   ar: الْعِلَلُ
@@ -1321,6 +1351,7 @@
   def: "Books giving each text with its routes and how they differ, to show hidden flaws; best arranged by chapter."
   section: "§5.70"
   division: marifat-al-ruwat
+  scene: books
 - id: atraf
   translit: al-Aṭrāf
   ar: الْأَطْرَافُ
@@ -1328,6 +1359,7 @@
   def: "Books citing just enough of each hadith to call the rest to mind, then gathering its chains."
   section: "§5.70"
   division: marifat-al-ruwat
+  scene: books
 - id: asbab-al-hadith
   translit: Asbāb al-ḥadīth
   ar: أَسْبَابُ الْحَدِيثِ
@@ -1335,3 +1367,4 @@
   def: "The occasions that prompted a hadith. Abū Ḥafṣ al-ʿUkbarī wrote a book on them."
   section: "§5.71"
   division: marifat-al-ruwat
+  scene: books

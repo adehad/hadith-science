@@ -224,6 +224,17 @@ The figure key from the mockup's "Reading a narrator" becomes `/narrators/`.
 | Did he give permission? (`permission`) | 5.55, 5.57–5.58 | Four panels: a sealed licence and the ways that need it, munāwala with a ladder down to ijāza muʿayyana, handing over against sending with no permission, and the two usages of mukātaba | Most scholars: not without permission; Some imams: like a book sent |
 | Whom may a permission name? (`licence`) | 5.58 | Four cells: seven stops from the narrowest permission to the loosest under a "counts" bracket that moves per view, with Ibn al-Ṣalāḥ's ranking, then a licence card for the unidentified, the unborn and the conditional | Ibn Ḥajar: none of them counts; al-Khaṭīb: all but the unidentified |
 
+**Phase 3: division 8** (Maʿrifat al-ruwāt), designed in `docs/superpowers/specs/2026-10-29-phase-3-ruwat-design.md`, built with the interim options its owner questions name:
+
+| Scene | § | Form | Views |
+|---|---|---|---|
+| When and where did he live? (`generations`) | 5.62 | Three panels: the Companions as one generation and as several, Anas ibn Mālik in two; lifespan bars that never meet under a claim to have met; one name in two towns | none |
+| What did the critics call him? (`ranks`) | 5.63 | Two cells that read as one scale: praise from the highest down, criticism from the mildest down to the worst, with the reliable, weak and liar figures at thiqa, ḍaʿīf and kadhdhāb | none |
+| Whose verdict counts? (`verdicts`) | 5.63–5.64 | Three panels: one critic adds a seal, one cracks it, and two scales for praise against criticism | Ibn Ḥajar; Some: two critics; A group: criticism always first |
+| What is he called? (`aliases`) | 5.65 | Eight cells: kunya, by-name, nisba, client, unique names, siblings, whose son, one name up a chain | none |
+| How is it learned and taught? (`study`) | 5.66–5.69 | Four cells: teacher and student, the age to receive and pass on, writing and checking, travel | none |
+| What kind of book is it? (`books`) | 5.70–5.71 | Six cells: a sorter, then musnad, chapters, hidden flaws, indexes, and the reasons behind a ḥadīth | none |
+
 - Each division gets its own short design pass, written as a design doc in `docs/superpowers/specs/`. It is then built on its own branch and reviewed through its PR preview. At the owner's request, to keep development moving, this replaces the earlier step of a mockup in the concept artifact.
 - Design rules for every scene:
   - Prefer a real worked example from the book over a generic one.
@@ -305,19 +316,22 @@ src/
     svg/          Moon, Narrator, Chain, Arrow, SpeechBubble, Pill, Term, TermTitle, LayerGuides,
                   InfoIcon, Defs, NameTag, Chip, Gauge, Glyph, Scale, Matn, Decision, Bracket,
                   Lifespan (division 3: a rounded life bar, no axis or dates),
-                  Beads (division 5: unnamed narrators as rings on a line);
+                  Beads (division 5: unnamed narrators as rings on a line),
+                  LicenceCard (division 6: a sealed card of up to three fields);
                   Glyph kinds: memory, book, check, cross (division 1: rejected or not reached), lens,
-                  pause, text, companion, clock, coin (dashed for a false one), scissors, handshake;
+                  pause, text, companion, clock, coin (dashed for a false one), scissors, handshake,
+                  letter (an envelope), pin (a place);
                   Narrator faces: blank, faded, mask, mask-dashed (suspected, not proven), hand;
+                  Narrator variants: ghost, unborn (division 6: a dashed outline);
                   figures.ts (FIG / KIND_NAME, with the division 3 kinds mudallis, liar, accused and
-                  mukhtalit), geom.ts (f, titleTrigger, rowTrigger, panelTrigger, SUBT_TRIGGER,
-                  ROW_TITLE_TRIGGER)
+                  mukhtalit), geom.ts (f, titleTrigger, rowTrigger, SUBT_TRIGGER, ROW_TITLE_TRIGGER)
     layout/       Header, Footer, Breadcrumb, Starfield, ThemeToggle, KeyToggle, MotionToggle,
                   ViewSwitch, ReadAsText, TermPopover, Legend, Carousel
     scenes/       Routes, Breaks, Unknown, Delivery, Names, Grades, Opposition, Support,
                   ActedOn, Report, Sorting, Knowledge, Lone, Causes, Hidden, Lying, Slips,
                   Changes, Wording, Identity, Innovation, Ends, Raised, Companions,
-                  Connected, Elevation, Meeting, Peers, Doubts (one diagram per scene)
+                  Connected, Elevation, Meeting, Peers, Doubts, Heard, Permission, Licence,
+                  Generations, Ranks, Verdicts, Aliases, Study, Books (one diagram per scene)
   content/
     divisions.yaml  the eight divisions (term, Arabic, English, §, order, moons)
     scenes.yaml     every scene (see 7.3)

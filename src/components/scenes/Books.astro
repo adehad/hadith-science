@@ -1,0 +1,177 @@
+---
+// "What kind of book is it?" (phase 3 Maʿrifat al-ruwāt design §8): the four kinds of ḥadīth book (§5.70) and the
+// reasons behind a ḥadīth (§5.71), as six cells, each its own 430x280 SVG in an HTML grid (the Names pattern):
+//   A  how are its reports arranged? four answers that jump to their cells (as Changes' sorter)
+//   B  musnad: a chapter for each Companion, ordered by precedence in Islam or by letter
+//   C  chapters: under each ruling, the reports that affirm or deny it; a weak one only with its reason
+//   D  hidden flaws: a text with its routes, which differ at one link
+//   E  indexes: enough of a text to recall it, with its chains gathered under it
+//   F  the reasons behind a ḥadīth, and Ibn Ḥajar's closing word: the rest is in the fuller books
+// The book names no example of the four kinds, so cells B–E say so. No views. No Arabic beyond the term names.
+// Motion: D's routes draw up to the text and the differing link blinks; E's chains enter one after another. The
+// resting style is the end state.
+import Defs from "../svg/Defs.astro";
+import Chip from "../svg/Chip.astro";
+import Glyph from "../svg/Glyph.astro";
+import Matn from "../svg/Matn.astro";
+import Bracket from "../svg/Bracket.astro";
+import Arrow from "../svg/Arrow.astro";
+import TermTitle from "../svg/TermTitle.astro";
+import XLink from "../svg/XLink.astro";
+import { f, titleTrigger } from "../svg/geom";
+import { cap, type DiagramProps } from "../../lib/scene";
+import { chipWidth, stagger } from "../../lib/kit";
+import { loadContent } from "../../lib/content";
+
+type Props = DiagramProps;
+const { caps, scene } = Astro.props;
+if (scene.views?.length) throw new Error("Books: expected no views");
+if (scene.panels?.length) throw new Error("Books: a grid of cells, not panels");
+
+const { scenes } = await loadContent();
+const slips = scenes.find((s) => s.id === "slips");
+if (!slips) throw new Error("Books: no slips scene to link to");
+
+const CX = 215, TITLE_Y = 30;
+const ILLUS = "an illustration: the book names no example";
+// a cell's 20px title as a term trigger, its Arabic name after the (i)
+function title(slug: string, arOff: number) {
+  const c = cap(caps, slug);
+  const t = titleTrigger(c.translit, CX - 30, TITLE_Y);
+  return { c, ...t, ar: { x: f(t.info.cx + arOff), y: TITLE_Y, size: "sm" as const } };
+}
+const masanid = title("masanid", 46);
+const abwab = title("abwab", 40);
+const ilal = title("ilal", 34);
+const atraf = title("atraf", 38);
+const asbab = title("asbab-al-hadith", 52);
+
+// the cells' ids, for cell A's in-page links; never a term slug, so a jump doesn't open a popover
+const CELL = { masanid: "cell-musnad", abwab: "cell-chapters", ilal: "cell-flaws", atraf: "cell-indexes", asbab: "cell-reasons" };
+const ANSWERS = [
+  { by: "by Companion", name: masanid.c.translit, id: CELL.masanid },
+  { by: "by topic", name: abwab.c.translit, id: CELL.abwab },
+  { by: "a text and its routes", name: ilal.c.translit, id: CELL.ilal },
+  { by: "a part, to recall it", name: atraf.c.translit, id: CELL.atraf },
+].map((a, i) => ({ ...a, y: 84 + i * 44 }));
+
+// B: a book of tabs, one per Companion
+const TABS = [0, 1, 2, 3, 4].map((i) => 92 + i * 50);
+// C: the reports under a ruling
+const AFFIRM = chipWidth("affirms"), DENY = chipWidth("denies"), WEAK = chipWidth("a weak one, with its reason");
+// D: three routes up to the text, the middle one differing at one link
+const ROUTES = [140, 215, 290];
+// E: three chains gathered under the text
+const CHAINS = [130, 215, 300].map((x, i) => ({ x, d: stagger(i, { start: 0.3, step: 0.3 }) }));
+---
+<div class="cells books">
+  <svg id="cell-sorter" viewBox="0 0 430 280" role="group" aria-label="How are its reports arranged? By Companion: al-Masānīd. By topic: al-Abwāb. A text with its routes: al-ʿIlal. A part of each text, to recall the rest, with its chains gathered: al-Aṭrāf. Each answer jumps to its cell.">
+    <Defs />
+    <text class="title" x={CX} y={TITLE_Y}>How is it arranged?</text>
+    <text class="lbl sm" x={CX} y="52">the four kinds of book differ in what they are arranged by</text>
+    {ANSWERS.map((a) => (
+      <>
+        <text class="lbl start" x="40" y={a.y + 14}>{a.by}</text>
+        <path class="lead" d={`M200 ${a.y + 10} H236`} />
+        <a class="xlink jump" href={`#${a.id}`}>
+          <text class="rp" x="244" y={a.y + 14}><tspan class="xu">{a.name}</tspan><tspan dx="5" aria-hidden="true">↓</tspan></text>
+        </a>
+      </>
+    ))}
+  </svg>
+
+  <svg id={CELL.masanid} viewBox="0 0 430 280" role="group" aria-label="al-Masānīd, musnads: the reports of each Companion gathered on their own, a chapter for each, ordered by precedence in Islam or alphabetically, which is easier to consult. An illustration: the book names no example.">
+    <TermTitle c={masanid.c} x={CX - 30} y={TITLE_Y} hit={masanid.hit} info={masanid.info} ar={masanid.ar} />
+    <text class="lbl sm" x={CX} y="52">{ILLUS}</text>
+    <rect class="book" x="70" y="78" width="290" height="96" rx="6" />
+    {TABS.map((x) => (
+      <>
+        <rect class="tab" x={x - 18} y="70" width="36" height="20" rx="4" />
+        <Glyph kind="companion" cx={x} cy={80} r={7} />
+        {[104, 120, 136, 152].map((y) => <line class="wl" x1={x - 18} x2={x + 18} y1={y} y2={y} />)}
+      </>
+    ))}
+    <text class="lbl" x={CX} y="200">a chapter for each Companion's reports</text>
+    <text class="lbl sm" x="120" y="232">by precedence in Islam</text>
+    <text class="lbl sm" x={CX} y="232">or</text>
+    <text class="lbl sm" x="310" y="232">by letter: easier to consult</text>
+  </svg>
+
+  <svg id={CELL.abwab} viewBox="0 0 430 280" role="group" aria-label="al-Abwāb, books in chapters of law or the like: under each, the reports that affirm or deny a ruling. Better kept to the sound and the fair; a weak report included only with its reason explained. An illustration: the book names no example.">
+    <TermTitle c={abwab.c} x={CX - 30} y={TITLE_Y} hit={abwab.hit} info={abwab.info} ar={abwab.ar} />
+    <text class="lbl sm" x={CX} y="52">{ILLUS}</text>
+    <rect class="book" x="60" y="74" width="310" height="120" rx="6" />
+    <text class="colhead" x={CX} y="96">a chapter: one ruling</text>
+    <Chip x={110} y={126} text="affirms" w={AFFIRM} />
+    <Chip x={320 - DENY} y={126} text="denies" w={DENY} />
+    <Chip x={f(CX - WEAK / 2)} y={166} text="a weak one, with its reason" w={WEAK} dashed />
+    <text class="lbl sm" x={CX} y="222">better kept to the sound and the fair</text>
+    <text class="lbl sm" x={CX} y="238">a weak report only with why it is there</text>
+  </svg>
+
+  <svg id={CELL.ilal} viewBox="0 0 430 280" role="group" aria-label="al-ʿIlal, books of hidden flaws: each text with its routes and the ways its chains differ, best arranged by chapter. An illustration: the book names no example.">
+    <TermTitle c={ilal.c} x={CX - 30} y={TITLE_Y} hit={ilal.hit} info={ilal.info} ar={ilal.ar} />
+    <text class="lbl sm" x={CX} y="52">{ILLUS}</text>
+    <Matn x={150} y={70} w={130} h={30} lines={["the text"]} />
+    {ROUTES.map((x, i) => (
+      <>
+        <path class="route m-draw" pathLength="1" style={`--d:${0.3 + i * 0.2}s`} d={`M${x} 196 V${132} Q${x} 112 ${f(CX + (x - CX) / 4)} 104`} />
+        {[184, 158, 132].map((y, j) => <circle class:list={["link", { odd: i === 1 && j === 1 }]} cx={x} cy={y} r="6" />)}
+      </>
+    ))}
+    <Glyph kind="lens" cx={350} cy={150} r={11} />
+    <text class="lbl sm" x={CX} y="222">its routes, and where they differ</text>
+    <text class="lbl sm" x={CX} y="238">best arranged by chapter, for reference</text>
+    <XLink to={`${slips.division}/${slips.id}#muallal`} lead="a hidden flaw: " text={slips.title} x={CX} y={264} anchor="middle" />
+  </svg>
+
+  <svg id={CELL.atraf} viewBox="0 0 430 280" role="group" aria-label="al-Aṭrāf, indexes: just enough of each ḥadīth to call the rest to mind, then its chains gathered, all of them or only those in certain books. An illustration: the book names no example.">
+    <TermTitle c={atraf.c} x={CX - 30} y={TITLE_Y} hit={atraf.hit} info={atraf.info} ar={atraf.ar} />
+    <text class="lbl sm" x={CX} y="52">{ILLUS}</text>
+    <g aria-hidden="true">
+      <rect class="book" x="110" y="72" width="210" height="30" rx="5" />
+      <line class="wl strong" x1="124" x2="180" y1="87" y2="87" />
+      <line class="wl faded" x1="190" x2="306" y1="87" y2="87" />
+    </g>
+    <text class="lbl sm" x="152" y="118">enough</text>
+    <text class="lbl sm" x="250" y="118">to recall the rest</text>
+    <Bracket x0={110} x1={320} y={132} ticks="down" />
+    {CHAINS.map((c) => (
+      <g class="m-enter" style={`--d:${c.d}`}>
+        {[150, 172, 194].map((y) => <circle class="link" cx={c.x} cy={y} r="6" />)}
+        <path class="pl" d={`M${c.x} 156 V166 M${c.x} 178 V188`} />
+      </g>
+    ))}
+    <text class="lbl sm" x={CX} y="226">its chains gathered under it:</text>
+    <text class="lbl sm" x={CX} y="242">all of them, or those in certain books</text>
+  </svg>
+
+  <svg id={CELL.asbab} viewBox="0 0 430 280" role="group" aria-label="Asbāb al-ḥadīth, the reasons behind a ḥadīth: what prompted it. Abū Ḥafṣ al-ʿUkbarī, the shaykh of al-Qāḍī Abū Yaʿlā ibn al-Farrāʾ al-Ḥanbalī, wrote a book on it; Ibn Daqīq al-ʿĪd said some of his own time began writing on it, perhaps not knowing of that book. Ibn Ḥajar ends: scholars wrote books on most of these kinds; he only defined them, so the reader should turn to the fuller works.">
+    <TermTitle c={asbab.c} x={CX - 30} y={TITLE_Y} hit={asbab.hit} info={asbab.info} ar={asbab.ar} />
+    <Glyph kind="clock" cx={110} cy={86} r={12} />
+    <text class="lbl sm" x="110" y="116">an occasion</text>
+    <Arrow x1={130} y1={86} x2={226} y2={86} />
+    <Matn x={232} y={70} w={110} h={32} lines={["the ḥadīth"]} />
+    <Glyph kind="book" cx={40} cy={152} r={9} />
+    <text class="lbl start" x="56" y="156">Abū Ḥafṣ al-ʿUkbarī wrote a book on it</text>
+    <text class="lbl start sm" x="56" y="172">later writers, perhaps unaware of it (Ibn Daqīq al-ʿĪd)</text>
+    <line class="rule" x1="20" x2="410" y1="198" y2="198" />
+    <text class="layer" x={CX} y="222" style="text-anchor:middle">The end of the book</text>
+    <text class="lbl sm" x={CX} y="242">scholars wrote on most of these kinds; Ibn Ḥajar only</text>
+    <text class="lbl sm" x={CX} y="256">defined them: the rest is in the fuller works</text>
+  </svg>
+</div>
+<style>
+  .lead{stroke:var(--line);stroke-width:1.2;stroke-dasharray:2 3}
+  .book{fill:var(--surface);stroke:var(--line);stroke-width:1.3}
+  .tab{fill:var(--gold-wash);stroke:var(--gold-edge);stroke-width:1}
+  .wl{stroke:var(--muted);stroke-width:2;stroke-linecap:round}
+  .wl.strong{stroke:var(--fg);stroke-width:3}
+  .wl.faded{stroke-dasharray:3 4}
+  .route{fill:none;stroke:var(--line);stroke-width:1.6;--dur:.6s}
+  .link{fill:var(--surface);stroke:var(--fg);stroke-width:1.4}
+  .link.odd{stroke:var(--gap);stroke-dasharray:3 2;animation:blink 2.4s ease-in-out infinite}
+  .pl{stroke:var(--line);stroke-width:1.4}
+  /* an in-page jump lands the cell with a little room above it */
+  .books > svg{scroll-margin-top:16px}
+</style>

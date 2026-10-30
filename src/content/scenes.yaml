@@ -1066,3 +1066,181 @@
       label: Stops at a Companion
       x0: 688
       x1: 860
+- id: generations
+  division: marifat-al-ruwat
+  moons: [0]
+  order: 1
+  title: When and where did he live?
+  eyebrow: Knowing the narrators, generations, dates and homelands · §5.62
+  lede: A ḥadīth master needs to know which generation each narrator belongs to, when he was born and died, and where he lived. These keep two men from being confused, expose a false claim to have met someone, and help uncover a concealed drop.
+  source: §5.62 Ṭabaqa, al-mawālīd wa-l-wafayāt, al-buldān wa-l-awṭān
+  diagram: Generations
+  width: 780
+  captions:
+    - term: tabaqa
+      note: "A group of narrators alike in age and in the shaykhs they met. Knowing it guards against confusion, helps expose tadlīs, and shows what an ʿanʿana really means. One man may belong to two: Anas ibn Mālik is counted by his companionship in the generation of the Ten, and by his youth in the one after. Ibn Saʿd's book is the most comprehensive (§5.62)."
+    - term: mawalid-wa-wafayat
+      note: "Narrators' dates of birth and death. With them the truth comes out when someone claims to have met a man he never met (§5.62)."
+    - term: awtan
+      note: "Narrators' towns and lands. Knowing them keeps apart two similar names whose bearers differ in where they belong (§5.62)."
+  panels:
+    - { id: generation, label: Generations, x0: 0, x1: 260 }
+    - { id: dates, label: Births and deaths, x0: 260, x1: 520 }
+    - { id: homelands, label: Homelands, x0: 520, x1: 780 }
+  extra:
+    - title: Grouping the Companions and the Successors
+      section: §5.62
+      note: "Whoever looks only at companionship makes all the Companions one generation, as Ibn Ḥibbān and others did. Whoever adds other factors, such as when they accepted Islam, or their part in the great events or the Migration, makes them many generations, as Muḥammad ibn Saʿd al-Baghdādī did. The Successors are the same: by taking from some Companions they are one generation, for Ibn Ḥibbān; by whom they met, several, for Ibn Saʿd. Each way has its reason. In the diagram, panel 1 sets the two ways side by side; the bands' figures are not particular Companions, and the speech bubble in panel 2 is an illustration, not a quoted claim."
+- id: ranks
+  division: marifat-al-ruwat
+  moons: [1]
+  order: 2
+  title: What did the critics call him?
+  eyebrow: Knowing the narrators, the ranks of praise and criticism · §5.63
+  lede: A narrator is known to be upright, known for open sin, or not known at all. The critics' words for him come in ranks, and the rank matters, because some criticism does not mean rejecting all his reports. At both ends the words are superlatives.
+  source: §5.63 Marātib al-taʿdīl and marātib al-jarḥ
+  diagram: Ranks
+  width: 860
+  captions:
+    - term: maratib-al-tadil
+      note: "Words of praise come in ranks. The highest is a superlative: awthaq al-nās, athbat al-nās, or calling him the last word in reliability. Next comes a word repeated, or two joined: thiqa thiqa, thabt thabt, ʿadl ḍābiṭ. The lowest are lenient words such as shaykh. Between the highest and the lowest lie further ranks (§5.63)."
+    - term: awthaq-al-nas
+      note: "The highest rank of praise, a superlative (afʿal) that exaggerates: the most reliable of people, or athbat al-nās, the most firmly established, or saying he is the last word in reliability (§5.63)."
+    - term: thiqa
+      note: "Reliable. Stressed by repeating it, as thiqa thiqa or thabt thabt, or joined to a second word of praise, as ʿadl ḍābiṭ (upright, accurate), it marks the rank just below the superlatives (§5.63)."
+    - term: shaykh
+      note: "Among the lowest words of praise, which show leniency in accrediting him, with yurwā ḥadīthuhu (his ḥadīth is narrated) and yuʿtabaru bihi (he is taken into account) (§5.63)."
+    - term: maratib-al-jarh
+      note: "Words of criticism come in ranks too, and the rank matters: critics may fault a man with something that does not mean rejecting all his reports. The worst is a superlative such as akdhab al-nās; next, intensive forms such as kadhdhāb; the mildest, words such as layyin. Between lie further ranks, such as munkar al-ḥadīth, harsher than ḍaʿīf (§5.63)."
+    - term: layyin
+      note: "Soft: among the mildest words of criticism, with sayyiʾ al-ḥifẓ (poor memory) and fīhi maqāl (there is talk about him) (§5.63)."
+    - term: daif
+      note: "Weak. With laysa bi-l-qawī (not strong), one of the ranks between the mildest and the worst, and milder than munkar al-ḥadīth (§5.63)."
+    - term: munkar-al-hadith
+      note: "One of the ranks between the mildest and the worst, with matrūk (abandoned), sāqiṭ (fallen) and fāḥish al-ghalaṭ (gross in error). It is harsher than ḍaʿīf and laysa bi-l-qawī (§5.63)."
+    - term: kadhdhab
+      note: "The rank after the worst: dajjāl, waḍḍāʿ (a great forger) and kadhdhāb (a great liar). These forms exaggerate too, but they rank below the superlatives (§5.63)."
+    - term: akdhab-al-nas
+      note: "The worst rank of criticism, a superlative (afʿal) that exaggerates: the greatest of people in lying, or calling him the last word in fabrication, or the pillar of lying (§5.63)."
+- id: verdicts
+  division: marifat-al-ruwat
+  moons: [1]
+  order: 3
+  title: Whose verdict counts?
+  eyebrow: Knowing the narrators, the rules of praise and criticism · §5.63–5.64
+  lede: Praise and criticism are taken only from a critic who is reliable and knows their grounds. One such critic is enough, because his word is a ruling, not testimony. When they disagree, criticism wins only if it is explained, unless he was never accredited.
+  source: §5.63 The narrator's three states, §5.64 Taʿdīl, jarḥ and jarḥ mufassar
+  diagram: Verdicts
+  width: 780
+  captions:
+    - term: tadil
+      note: "Accrediting is accepted from one who knows its grounds, not from one who goes by outward appearance without study. One such critic is enough, on the most authentic opinion: accrediting is a ruling, which needs no number, unlike testimony, given before a judge. Even when he passes on another's verdict, it seems no number is needed (§5.64)."
+    - term: jarh
+      note: "Criticism, like praise, is taken only from one who is reliable and well informed, not from one who is prejudiced and faults a narrator's ḥadīth with what does not warrant rejection. Prejudice may come from bad character or corrupt motives, which the early critics were mostly free of, or from a difference in creed, which alone should not count against him (§5.64)."
+    - term: jarh-mufassar
+      note: "Criticism comes before praise only when it is explained, by one who knows the grounds; unexplained criticism cannot unseat one whose integrity is proven. If no one ever accredited him, brief criticism from an expert is accepted, since his state is unknown and acting on it is better than ignoring it; Ibn al-Ṣalāḥ inclined to pause there (§5.64)."
+  views:
+    - id: ibn-hajar
+      label: Ibn Ḥajar
+      scholars: "Ibn Ḥajar, “the most authentic opinion”, §5.64"
+      note: "One informed critic is enough to accredit a narrator, since accrediting is a ruling. Criticism comes before praise only when it is explained by one who knows the grounds."
+    - id: two
+      label: "Some: two critics"
+      scholars: "“Those who specify…”, §5.64"
+      note: "Accrediting is accepted only from two, as testimony requires. Ibn Ḥajar answers that accrediting is a ruling, which needs no number, while testimony is given before a judge."
+    - id: criticism-first
+      label: "A group: criticism always first"
+      scholars: "“A group [of scholars] have said…”, §5.64"
+      note: "Criticism comes before praise unconditionally, explained or not. Ibn Ḥajar answers that unexplained criticism cannot unseat one whose integrity is proven."
+  panels:
+    - { id: accrediting, label: Accrediting, x0: 0, x1: 260 }
+    - { id: discrediting, label: Discrediting, x0: 260, x1: 520 }
+    - { id: disagree, label: When they disagree, x0: 520, x1: 780 }
+  extra:
+    - title: The narrator's three states
+      section: §5.63
+      note: "A narrator is known for his integrity, known for open sin, or nothing is known of him. Knowing which, and then the ranks of praise and criticism, matters, because critics sometimes fault a man with something that does not mean rejecting all his reports."
+    - title: Two warnings
+      section: §5.64
+      note: "al-Dhahabī, a master of judging men, said that two scholars of this field never agreed to call a weak narrator reliable, or a reliable one weak; so al-Nasāʾī would not abandon a man's ḥadīth until all of them rejected him. The critic must beware of carelessness either way: accrediting without care affirms what is not so, and he risks being counted among those who pass on a ḥadīth they think false; discrediting without care brands an innocent Muslim with a mark that stays with him forever."
+- id: aliases
+  division: marifat-al-ruwat
+  moons: [2]
+  order: 4
+  title: What is he called?
+  eyebrow: Knowing the narrators, kunyas, by-names and nisbas · §5.65
+  lede: One narrator may be called by his name, his kunya, a by-name or a nisba, and one name may stand for him alone. Knowing each keeps one man from being taken for two, and two from being taken for one.
+  source: §5.65 Kunya, laqab, nisba, mawlā, al-asmāʾ al-mufrada, al-ikhwa wa-l-akhawāt
+  diagram: Aliases
+  width: 860
+  captions:
+    - term: kunya
+      note: "Know the kunyas of those known by name, so a man is not taken for another when a report gives his kunya, and the names of those known by kunya. Some have a kunya for a name (rare), some disputed kunyas (common), some several, like Ibn Jurayj: Abū al-Walīd and Abū Khālid. A kunya may match the father's name, or the wife's, like Abū Ayyūb and Umm Ayyūb (§5.65)."
+    - term: laqab
+      note: "By-names, some of them unique. A laqab may come from a name or a kunya, from a defect, like al-Aʿmash, or from a trade. A nisba may serve as one: Khālid ibn Makhlad, a Kūfan, was nicknamed al-Qaṭawānī, which he disliked. Worth knowing too are the reasons behind by-names that do not mean what they seem (§5.65)."
+    - term: nisba
+      note: "A name tying a narrator to a tribe, more common in early names, or to a place, more common later: a town, a district or where he stayed; or to a craft or trade, like the tailor or the cloth seller. Some mislead: Khālid al-Ḥadhdhāʾ only kept the shoemakers' company, and Sulaymān al-Taymī only lived among Banū Taym (§5.65)."
+    - term: mawla
+      note: "Clients, higher and lower: tied to a people by reason of slavery, by alliance and protection, or by reason of accepting Islam. All are called mawlā, and only the context shows which is meant (§5.65)."
+    - term: mufradat
+      note: "Names borne by one narrator only. al-Bardījī wrote on them, and some entries were faulted: Ṣughdī ibn Sinān is no unique name, since Ibn Abī Ḥātim also has a Ṣughdī al-Kūfī, and al-ʿUqaylī a Ṣughdī ibn ʿAbd Allāh. A true case is Sandar, client of Zinbāʿ al-Judhāmī, known as Abū ʿAbd Allāh. Kunyas and by-names can be unique too (§5.65)."
+    - term: ikhwa
+      note: "Knowing which narrators are brothers and sisters. Early scholars wrote books on it, among them ʿAlī ibn al-Madīnī (§5.65)."
+  extra:
+    - title: Whose son?
+      section: §5.65
+      note: "Some are known by someone other than their father: al-Miqdād ibn al-Aswad was named after al-Aswad al-Zuhrī, who had adopted him, though he was al-Miqdād ibn ʿAmr. Some by their mother: Ibn ʿUlayya is Ismāʿīl ibn Ibrāhīm ibn Miqsam, a reliable narrator; ʿUlayya was his mother, and he disliked the name, so al-Shāfiʿī would name him as Ismāʿīl, known as Ibn ʿUlayya. Some by their grandfather. And a shaykh may share the father's name: in “Rabīʿ ibn Anas, from Anas”, Anas is his shaykh, not his father, whereas in “ʿĀmir ibn Saʿd, from Saʿd”, in al-Bukhārī's Ṣaḥīḥ, Saʿd is his father."
+    - title: One name, again and again
+      section: §5.65
+      note: "A man, his father and grandfather may share a name, like Ḥasan ibn al-Ḥasan ibn al-Ḥasan ibn ʿAlī ibn Abī Ṭālib, or Abū al-Yumn al-Kindī, Zayd ibn al-Ḥasan ibn Zayd ibn al-Ḥasan, and on. A narrator may share his name with his shaykh and his shaykh's shaykh: ʿImrān from ʿImrān from ʿImrān are ʿImrān al-Qaṣīr, Abū Rajāʾ al-ʿUṭāridī and Ibn Ḥuṣayn, the Companion. And a shaykh and a student may share a name, a form Ibn al-Ṣalāḥ did not come across: al-Bukhārī narrated from Muslim ibn Ibrāhīm al-Farāhīdī al-Baṣrī, and Muslim ibn al-Ḥajjāj al-Qushayrī narrated from him. Knowing it rules out a supposed repetition or swap in the chain."
+    - title: Books on the narrators
+      section: §5.65
+      note: "Some list them all, like Ibn Saʿd's Ṭabaqāt, the Tārīkhs of Abū Khaythama and al-Bukhārī, and Ibn Abī Ḥātim's al-Jarḥ wa-l-taʿdīl; some only the reliable (al-ʿIjlī, Ibn Ḥibbān, Ibn Shāhīn) or only the criticised (Ibn ʿAdī, Ibn Ḥibbān); some the men of one book, from al-Kalābādhī on al-Bukhārī's to scholars of the Maghrib on al-Tirmidhī's and al-Nasāʾī's. ʿAbd al-Ghanī al-Maqdisī's al-Kamāl covered the six books; al-Mizzī refined it, and Ibn Ḥajar summarised that as Tahdhīb al-tahdhīb, adding a third."
+- id: study
+  division: marifat-al-ruwat
+  moons: [3]
+  order: 5
+  title: How is it learned and taught?
+  eyebrow: Knowing the narrators, teacher and student · §5.66–5.69
+  lede: Teacher and student both need a sound intention and good character. A child may receive ḥadīth once he understands; there is no set age to pass it on. The student writes it clearly, checks his copy, and travels only once he has everything his own town holds.
+  source: §5.66 Ādāb, §5.67 Taḥammul and adāʾ, §5.68 Kitāba and ʿarḍ, §5.69 Riḥla
+  diagram: Study
+  width: 860
+  captions:
+    - term: adab-al-shaykh-wa-al-talib
+      note: "Both need a sound intention, freedom from worldly distraction and good character. The teacher narrates when needed, sends students to a more senior master in town, withholds from no one over his intention, narrates pure, seated and with dignity, and stops when illness or age may make him forget. The student honours him, passes on what he learns, writes it with care and revises (§5.66)."
+    - term: tahammul
+      note: "Receiving ḥadīth is soundest from the age of understanding. The masters brought their children to ḥadīth gatherings and recorded that they attended. What a non-Muslim received counts if he passes it on after becoming Muslim; so does an open sinner's, passed on after he repents and his integrity is proven again (§5.67)."
+    - term: ada
+      note: "Passing ḥadīth on has no set age; what counts is the need for it and the ability, which differ from one person to another. Ibn Khallād put it at fifty, with no blame at forty; this was criticised, since Mālik narrated before that age (§5.67)."
+    - term: kitabat-al-hadith
+      note: "Write the ḥadīth clearly, adding the vowels and dots to the difficult words. Anything missed goes in the right-hand margin if there is room, otherwise in the left (§5.68)."
+    - term: ard
+      note: "Checking a copy: reading it against the shaykh, with a reliable person, or alone, piece by piece. Listening has its manners too: nothing that distracts, such as copying, talking or tiredness (§5.68)."
+    - term: rihla
+      note: "Travel for ḥadīth begins only once the student has gathered all the reports of his own town; then he travels for what he does not have. His wish for more reports should outweigh his wish for more shaykhs (§5.69)."
+- id: books
+  division: marifat-al-ruwat
+  moons: [4]
+  order: 6
+  title: What kind of book is it?
+  eyebrow: Knowing the narrators, kinds of books and the reasons behind a ḥadīth · §5.70–5.71
+  lede: Ḥadīth books are arranged in four ways, by Companion, by topic, by a text and the ways its chains differ, or by a part of each text that recalls the rest. Some scholars also wrote on what prompted a ḥadīth. Ibn Ḥajar ends by sending the reader to the fuller books.
+  source: §5.70 al-Masānīd, al-abwāb, al-ʿilal, al-aṭrāf, §5.71 Asbāb al-ḥadīth
+  diagram: Books
+  width: 860
+  captions:
+    - term: masanid
+      note: "Musnads gather the reports of each Companion on their own. The compiler may order the Companions by their precedence in Islam, or alphabetically, which is easier to look things up in (§5.70)."
+    - term: abwab
+      note: "Books in chapters of law or the like: under each, the reports that affirm or deny a ruling. It is better to keep to the sound and the fair; a compiler who includes everything should explain why each weak report is there (§5.70)."
+    - term: ilal
+      note: "Books of hidden flaws give each text with its route and the ways its chains differ. They are best arranged by chapter, to make them easier to consult (§5.70)."
+    - term: atraf
+      note: "Indexes give just enough of each ḥadīth to call the rest to mind, then gather its chains: all of them, or only those in certain books (§5.70)."
+    - term: asbab-al-hadith
+      note: "Knowing what prompted a ḥadīth. Abū Ḥafṣ al-ʿUkbarī, the shaykh of al-Qāḍī Abū Yaʿlā ibn al-Farrāʾ al-Ḥanbalī, wrote a book on it. Ibn Daqīq al-ʿĪd said some scholars of his time began writing on it, perhaps not knowing of that book (§5.71)."
+  extra:
+    - title: The rest is in the fuller books
+      section: after §5.71
+      note: "Scholars have written books on most of the kinds touched on in this closing part. Ibn Ḥajar only introduced them by defining them, without their examples, since including them all would be hard; for their full reality, the reader should turn to the longer works."
