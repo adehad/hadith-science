@@ -98,9 +98,11 @@ bun run check         # astro check (types)
 bun run test          # unit tests (Vitest)
 bun run test:dist     # static checks over dist; needs a build first
 bun run test:e2e      # end-to-end tests (Playwright); needs a build first
-bun run screenshots   # regenerate docs/screenshots/; needs a build first
+bun run screenshots   # regenerate docs/screenshots/; needs a build first, and ffmpeg on PATH
 bun run test:base     # build under /hadith-science/, check every link keeps the base, and run the dist checks on it
 ```
+
+`bun run screenshots` assembles the animated PNGs (the map, and the routes and opposition scenes) with [ffmpeg](https://ffmpeg.org), and stops with a message if `ffmpeg` is not on your PATH.
 
 The end-to-end tests run against `bun run preview` on port 4321. If something else is already using that port, set `E2E_PORT` to use a different one. Locally, Playwright drives the system Microsoft Edge. CI installs Playwright's own Chromium instead (`bunx playwright install --with-deps chromium`).
 

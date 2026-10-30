@@ -32,6 +32,7 @@ export default defineConfig({
   use: { baseURL: `http://localhost:${port}` },
   projects: [
     { name: "e2e", testDir: "tests/e2e", use: { ...devices["Desktop Chrome"], channel } },
-    { name: "screenshots", testDir: "tests/screenshots", use: { ...devices["Desktop Chrome"], channel } },
+    // software raster on one thread, redrawing whole tiles, so the same page always rasters to the same pixels
+    { name: "screenshots", testDir: "tests/screenshots", use: { ...devices["Desktop Chrome"], channel, launchOptions: { args: ["--disable-gpu", "--num-raster-threads=1", "--disable-partial-raster"] } } },
   ],
 });
