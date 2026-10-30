@@ -449,6 +449,38 @@
     - title: al-Jūzajānī
       section: §5.37
       note: "Most accept an innovator who does not call others to his belief, but if he narrates what strengthens it, the preferred view of the majority rejects it. al-Jūzajānī, the shaykh of Abū Dāwūd, made this clear: describing a narrator who turns away from the truth, he said that if such a man is truthful and his ḥadīth is not munkar, nothing stops us accepting it, so long as he does not openly call to his belief. Ibn Ḥajar calls this strong: an innovator's report is rejected when its text seems to support his belief, even if he does not call to it openly."
+- id: elevation
+  division: lataif-al-isnad
+  moons: [0]
+  order: 1
+  title: How near is the chain?
+  eyebrow: Features of the chain, elevation and descent · §5.45, §5.47
+  lede: A chain with fewer narrators than another route of the same ḥadīth is elevated; one with more is descended. Every narrator might slip, so fewer links mean fewer chances of error, and scholars sought elevation keenly. It is counted either to the Prophet ﷺ or to a great imam.
+  source: §5.45 ʿUluww, absolute and relative; §5.47 Nuzūl
+  diagram: Elevation
+  width: 780
+  captions:
+    - term: uluww
+      note: "A chain is elevated when its narrators are fewer than in another chain of the same ḥadīth. The early scholars sought it so hard that it kept some from weightier matters. It is sought because it is nearer to soundness and to fewer mistakes: every narrator in a chain might err, so the longer the chain the more room for error, and the shorter the less (§5.45)."
+    - term: uluww-mutlaq
+      note: "Absolute elevation: the shorter chain reaches the Prophet ﷺ himself with fewer narrators than another chain of the same ḥadīth. If that short chain is also sound, it is the most desired of all. If it is not, it still has the form of elevation, so long as it is not forged, since a forged chain is as if it did not exist (§5.45)."
+    - term: uluww-nisbi
+      note: "Relative elevation: the narrators are fewer up to one of the great imams of ḥadīth, men known for memory, accuracy and writings, such as Shuʿba, Mālik, al-Thawrī, al-Shāfiʿī, al-Bukhārī and Muslim, even if the chain from that imam to its end is long. Muwāfaqa, badal, musāwāh and muṣāfaḥa are kinds of it (§5.45–5.47)."
+    - term: nuzul
+      note: "Descent, the opposite of elevation: more narrators in the chain. Each kind of elevation has its own opposite kind of descent, against those who think it has none. A descended chain is the better one when it has what the elevated lacks: more authoritative men, sharper memory, more learning in law, or a plainer connection (§5.45, §5.47)."
+  views:
+    - id: ibn-hajar
+      label: "Ibn Ḥajar: the weightier chain"
+      scholars: §5.45
+      note: "Elevation is sought because it is nearer to soundness. But when a longer chain has something the shorter lacks, such as more authoritative narrators, sharper memory, more learning in law or a plainer connection, there is no hesitation in calling the longer better."
+    - id: reward
+      label: "Some: always the longer"
+      scholars: Those who prefer it, §5.45
+      note: "Some prefer the longer chain in general, since studying more narrators takes more toil and so earns more reward. Ibn Ḥajar answers that this prefers it for a reason foreign to the matter, with no bearing on whether the ḥadīth is sound or weak."
+  panels:
+    - { id: absolute, label: Nearer the Prophet ﷺ, x0: 0, x1: 260 }
+    - { id: relative, label: Nearer a great imam, x0: 260, x1: 520 }
+    - { id: better, label: Is shorter always better?, x0: 520, x1: 780 }
 - id: peers
   division: lataif-al-isnad
   moons: [1]

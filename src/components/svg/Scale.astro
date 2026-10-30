@@ -4,7 +4,9 @@
 // The beam's resting transform is the final tilt and the pans rest translated to the beam's ends, so they hang
 // level; motion.css's `tip` keyframes animate both from level, once, unless the scale rests level. With animations
 // off (reduced motion) the scale simply rests tipped. crackLeft / crackRight crack that pan's discs, for a weak narrator.
-// Decorative: the term triggers under the pans carry the meaning.
+// A "left" or "right" slot replaces that pan's discs with the scene's own, drawn in the pan's untilted place (lib/kit.ts
+// scaleEnds gives its x; the dish sits drop below y) and moved with it, so a scene can vary them by view without
+// replaying the tip. Decorative: the term triggers under the pans carry the meaning.
 import { discRow, scaleEnds } from "../../lib/kit";
 import { f } from "./geom";
 
@@ -45,13 +47,14 @@ const pans = [
   };
 });
 const origin = `transform-box:view-box;transform-origin:${x}px ${y}px`;
+const own = [Astro.slots.has("left"), Astro.slots.has("right")];
 ---
 <g class:list={["scale", { level: tilt === 0 }]} aria-hidden="true">
   <path class="stand" d={`M${x} ${y} V${y + stand} M${x - 24} ${y + stand} H${x + 24}`} />
-  {pans.map((p) => (
+  {pans.map((p, i) => (
     <g class="pan" style={`transform:translateY(${p.dy}px)`}>
       <path class="string" d={p.strings} />
-      {p.discs.map((d) => (
+      {own[i] ? (i === 0 ? <slot name="left" /> : <slot name="right" />) : p.discs.map((d) => (
         <>
           <circle class="disc" cx={d.cx} cy={d.cy} r={R} />
           {p.crack && <path class="dcrack" d={`M${d.cx - 3} ${d.cy - 4} L${d.cx + 0.5} ${d.cy - 0.5} L${d.cx - 1} ${d.cy + 1.5} L${d.cx + 3} ${d.cy + 4.5}`} />}

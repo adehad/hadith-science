@@ -771,6 +771,7 @@
   def: "A chain with fewer narrators than other routes of the same hadith, prized as nearer the source and less open to error."
   section: "§5.45"
   division: lataif-al-isnad
+  scene: elevation
 - id: uluww-mutlaq
   translit: ʿUluww muṭlaq
   ar: عُلُوٌّ مُطْلَقٌ
@@ -778,6 +779,7 @@
   def: "Fewer narrators all the way to the Prophet ﷺ than another route of the same hadith."
   section: "§5.45"
   division: lataif-al-isnad
+  scene: elevation
 - id: uluww-nisbi
   translit: ʿUluww nisbī
   ar: عُلُوٌّ نِسْبِيٌّ
@@ -785,6 +787,7 @@
   def: "Fewer narrators up to a leading imam such as Mālik or al-Bukhārī, even if the chain beyond him is long."
   section: "§5.45"
   division: lataif-al-isnad
+  scene: elevation
 - id: muwafaqa
   translit: Muwāfaqa
   ar: مُوَافَقَةٌ
@@ -820,6 +823,7 @@
   def: "The opposite of elevation: more narrators in the chain. Each kind of elevation has a matching kind of descent."
   section: "§5.47"
   division: lataif-al-isnad
+  scene: elevation
 - id: aqran
   translit: Riwāyat al-aqrān
   ar: رِوَايَةُ الْأَقْرَانِ
