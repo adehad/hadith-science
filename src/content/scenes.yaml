@@ -1091,3 +1091,34 @@
     - title: Grouping the Companions and the Successors
       section: §5.62
       note: "Whoever looks only at companionship makes all the Companions one generation, as Ibn Ḥibbān and others did. Whoever adds other factors, such as when they accepted Islam, or their part in the great events or the Migration, makes them many generations, as Muḥammad ibn Saʿd al-Baghdādī did. The Successors are the same: by taking from some Companions they are one generation, for Ibn Ḥibbān; by whom they met, several, for Ibn Saʿd. Each way has its reason. In the diagram, panel 1 sets the two ways side by side; the bands' figures are not particular Companions, and the speech bubble in panel 2 is an illustration, not a quoted claim."
+- id: ranks
+  division: marifat-al-ruwat
+  moons: [1]
+  order: 2
+  title: What did the critics call him?
+  eyebrow: Knowing the narrators, the ranks of praise and criticism · §5.63
+  lede: A narrator is known to be upright, known for open sin, or not known at all. The critics' words for him come in ranks, and the rank matters, because some criticism does not mean rejecting all his reports. At both ends the words are superlatives.
+  source: §5.63 Marātib al-taʿdīl and marātib al-jarḥ
+  diagram: Ranks
+  width: 860
+  captions:
+    - term: maratib-al-tadil
+      note: "Words of praise come in ranks. The highest is a superlative: awthaq al-nās, athbat al-nās, or calling him the last word in reliability. Next comes a word repeated, or two joined: thiqa thiqa, thabt thabt, ʿadl ḍābiṭ. The lowest are lenient words such as shaykh. Between the highest and the lowest lie further ranks (§5.63)."
+    - term: awthaq-al-nas
+      note: "The highest rank of praise, a superlative (afʿal) that exaggerates: the most reliable of people, or athbat al-nās, the most firmly established, or saying he is the last word in reliability (§5.63)."
+    - term: thiqa
+      note: "Reliable. Stressed by repeating it, as thiqa thiqa or thabt thabt, or joined to a second word of praise, as ʿadl ḍābiṭ (upright, accurate), it marks the rank just below the superlatives (§5.63)."
+    - term: shaykh
+      note: "Among the lowest words of praise, which show leniency in accrediting him, with yurwā ḥadīthuhu (his ḥadīth is narrated) and yuʿtabaru bihi (he is taken into account) (§5.63)."
+    - term: maratib-al-jarh
+      note: "Words of criticism come in ranks too, and the rank matters: critics may fault a man with something that does not mean rejecting all his reports. The worst is a superlative such as akdhab al-nās; next, intensive forms such as kadhdhāb; the mildest, words such as layyin. Between lie further ranks, such as munkar al-ḥadīth, harsher than ḍaʿīf (§5.63)."
+    - term: layyin
+      note: "Soft: among the mildest words of criticism, with sayyiʾ al-ḥifẓ (poor memory) and fīhi maqāl (there is talk about him) (§5.63)."
+    - term: daif
+      note: "Weak. With laysa bi-l-qawī (not strong), one of the ranks between the mildest and the worst, and milder than munkar al-ḥadīth (§5.63)."
+    - term: munkar-al-hadith
+      note: "One of the ranks between the mildest and the worst, with matrūk (abandoned), sāqiṭ (fallen) and fāḥish al-ghalaṭ (gross in error). It is harsher than ḍaʿīf and laysa bi-l-qawī (§5.63)."
+    - term: kadhdhab
+      note: "The rank after the worst: dajjāl, waḍḍāʿ (a great forger) and kadhdhāb (a great liar). These forms exaggerate too, but they rank below the superlatives (§5.63)."
+    - term: akdhab-al-nas
+      note: "The worst rank of criticism, a superlative (afʿal) that exaggerates: the greatest of people in lying, or calling him the last word in fabrication, or the pillar of lying (§5.63)."

@@ -1149,6 +1149,7 @@
   def: "Words of criticism graded from the worst, superlatives like akdhab al-nās, down to the mildest, like layyin."
   section: "§5.63"
   division: marifat-al-ruwat
+  scene: ranks
 - id: maratib-al-tadil
   translit: Marātib al-taʿdīl
   ar: مَرَاتِبُ التَّعْدِيلِ
@@ -1156,6 +1157,7 @@
   def: "Words of praise graded from the highest, superlatives like awthaq al-nās, down to the mildest, like shaykh."
   section: "§5.63"
   division: marifat-al-ruwat
+  scene: ranks
 - id: akdhab-al-nas
   translit: Akdhab al-nās
   ar: أَكْذَبُ النَّاسِ
@@ -1163,6 +1165,7 @@
   def: "Worst rank of criticism: superlatives like this, or ‘the pillar of lying’."
   section: "§5.63"
   division: marifat-al-ruwat
+  scene: ranks
 - id: kadhdhab
   translit: Kadhdhāb
   ar: كَذَّابٌ
@@ -1170,6 +1173,7 @@
   def: "Next rank of criticism, with dajjāl and waḍḍāʿ: intensive forms, but short of the superlatives."
   section: "§5.63"
   division: marifat-al-ruwat
+  scene: ranks
 - id: munkar-al-hadith
   translit: Munkar al-ḥadīth
   ar: مُنْكَرُ الْحَدِيثِ
@@ -1177,6 +1181,7 @@
   def: "A middle rank of criticism, with matrūk, sāqiṭ and fāḥish al-ghalaṭ; harsher than ḍaʿīf."
   section: "§5.63"
   division: marifat-al-ruwat
+  scene: ranks
 - id: daif
   translit: Ḍaʿīf
   ar: ضَعِيفٌ
@@ -1184,6 +1189,7 @@
   def: "A lighter word of criticism, with laysa bi-l-qawī; less severe than munkar al-ḥadīth."
   section: "§5.63"
   division: marifat-al-ruwat
+  scene: ranks
 - id: layyin
   translit: Layyin
   ar: لَيِّنٌ
@@ -1191,6 +1197,7 @@
   def: "Among the mildest words of criticism, with sayyiʾ al-ḥifẓ and fīhi maqāl."
   section: "§5.63"
   division: marifat-al-ruwat
+  scene: ranks
 - id: awthaq-al-nas
   translit: Awthaq al-nās
   ar: أَوْثَقُ النَّاسِ
@@ -1198,6 +1205,7 @@
   def: "Top rank of praise: superlatives like this, athbat al-nās, or ‘the last word in reliability’."
   section: "§5.63"
   division: marifat-al-ruwat
+  scene: ranks
 - id: thiqa
   translit: Thiqa
   ar: ثِقَةٌ
@@ -1205,6 +1213,7 @@
   def: "A word of praise. Repeated (thiqa thiqa) or paired with another, like ʿadl ḍābiṭ, it marks the rank just below the superlatives."
   section: "§5.63"
   division: marifat-al-ruwat
+  scene: ranks
 - id: shaykh
   translit: Shaykh
   ar: شَيْخٌ
@@ -1212,6 +1221,7 @@
   def: "Among the mildest words of praise, with yurwā ḥadīthuhu and yuʿtabaru bihi."
   section: "§5.63"
   division: marifat-al-ruwat
+  scene: ranks
 - id: jarh-mufassar
   translit: Jarḥ mufassar
   ar: جَرْحٌ مُفَسَّرٌ
