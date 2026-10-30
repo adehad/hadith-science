@@ -987,6 +987,7 @@
   def: "The teacher gives his manuscript or a checked copy and says ‘narrate this from me’. With permission, and the student keeping it, the highest ijāza."
   section: "§5.55"
   division: siyagh-al-ada
+  scene: permission
 - id: mukataba
   translit: Mukātaba (kitāba)
   ar: مُكَاتَبَةٌ
@@ -994,6 +995,7 @@
   def: "Receiving by letter. Early scholars meant a teacher writing out hadith for a student; later ones also use it for a written permission alone."
   section: "§5.55"
   division: siyagh-al-ada
+  scene: permission
 - id: ijaza
   translit: Ijāza
   ar: إِجَازَةٌ
@@ -1001,6 +1003,7 @@
   def: "A teacher's licence to narrate his reports, given in person or by letter. Several weaker ways of receiving count only with it."
   section: "§5.55"
   division: siyagh-al-ada
+  scene: permission
 - id: ijaza-muayyana
   translit: Ijāza muʿayyana
   ar: إِجَازَةٌ مُعَيَّنَةٌ
@@ -1008,6 +1011,7 @@
   def: "Permission to narrate a named book of the teacher's, with the way of narrating it specified."
   section: "§5.55"
   division: siyagh-al-ada
+  scene: permission
 - id: muanan
   translit: Muʿanʿan
   ar: مُعَنْعَنٌ

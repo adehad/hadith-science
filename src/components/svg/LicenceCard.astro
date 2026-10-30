@@ -1,0 +1,46 @@
+---
+// a licence card (phase 3 Ṣiyagh al-adāʾ design §7): a teacher's permission to narrate, drawn as a rounded card with
+// his seal at its lower right. With fields it holds up to three "label: value" rows ("to", "book", "if"); a field
+// with slot has an empty box that blinks in place of its value, spec §3.2's sign for anything missing. Without
+// fields it shows two rule lines, a permission in general. Left edge at x, top at y, w wide; the height follows
+// the rows unless h is given.
+import { f } from "./geom";
+
+interface Field { label: string; value?: string; slot?: boolean }
+interface Props { x: number; y: number; w: number; h?: number; fields?: Field[]; dashed?: boolean }
+const { x, y, w, fields = [], dashed = false } = Astro.props;
+if (fields.length > 3) throw new Error("LicenceCard: at most three fields");
+const ROW = 16, PAD = 16;
+const h = Astro.props.h ?? (fields.length ? PAD + fields.length * ROW + 6 : 40);
+const LABEL_W = 34;
+---
+<g class:list={["licence", { dashed }]}>
+  <rect class="lcard" x={x} y={y} width={w} height={h} rx="6" />
+  {fields.length === 0 ? (
+    <path class="lrule" aria-hidden="true" d={`M${x + 10} ${y + 14} H${x + w - 22} M${x + 10} ${y + 24} H${x + w - 34}`} />
+  ) : fields.map((fd, i) => {
+    const by = y + PAD + i * ROW;
+    return (
+      <>
+        <text class="llabel" x={x + 8} y={by}>{fd.label}:</text>
+        {fd.slot
+          ? <rect class="lslot" x={x + 8 + LABEL_W} y={by - 10} width="26" height="13" rx="2" aria-hidden="true" />
+          : <text class="lvalue" x={x + 8 + LABEL_W} y={by}>{fd.value}</text>}
+      </>
+    );
+  })}
+  <g class="lseal" aria-hidden="true">
+    <circle cx={f(x + w - 10)} cy={f(y + h - 9)} r="5.2" />
+    <circle class="lsealin" cx={f(x + w - 10)} cy={f(y + h - 9)} r="2.6" />
+  </g>
+</g>
+<style>
+  .lcard{fill:var(--surface);stroke:var(--line);stroke-width:1.4}
+  .dashed .lcard{stroke-dasharray:4 3}
+  .lrule{fill:none;stroke:var(--line);stroke-width:1.6;stroke-linecap:round}
+  .llabel{fill:var(--muted);font:600 11px var(--f-body)}
+  .lvalue{fill:var(--fg);font:600 11px var(--f-body)}
+  .lslot{fill:none;stroke:var(--gap);stroke-width:1.3;stroke-dasharray:3 2;animation:blink 2.4s ease-in-out infinite}
+  .lseal circle{fill:var(--seal)}
+  .lseal .lsealin{fill:none;stroke:var(--surface);stroke-width:1}
+</style>

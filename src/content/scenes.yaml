@@ -646,6 +646,43 @@
     - title: The illustration
       section: §5.56
       note: "The book names no chain for this; the chain and the lifespans are an illustration of its three conditions."
+- id: permission
+  division: siyagh-al-ada
+  moons: [2]
+  order: 3
+  title: Did he give permission?
+  eyebrow: Permission, handing over and letters · §5.55
+  lede: Most of the weaker ways of receiving count only if the teacher gives permission to narrate. Handing the student his book with that permission is its highest form. Without permission, most scholars do not count a book handed over, and Ibn Ḥajar sees little difference between that and a book sent. A letter is mukātaba, though earlier and later scholars use the word differently.
+  source: §5.55 Mukātaba and munāwala, §5.57 Wijāda and waṣiyya, §5.58 Iʿlām and ijāza
+  diagram: Permission
+  width: 1040
+  captions:
+    - term: ijaza
+      note: "A teacher's permission to narrate his reports. Given by word of mouth it is called mushāfaha, and in writing, in the later scholars' usage, mukātaba. Wijāda and iʿlām count only with it, and for most scholars waṣiyya and munāwala too. Even the specified kind is strongly disputed, though the later scholars accept it, and all agree it is below hearing (§5.55, §5.57–5.58)."
+    - term: munawala
+      note: "The teacher gives the student his original manuscript or one checked against it, or the student is shown the teacher's original, and the teacher tells him these are his narrations, to narrate from him. With that permission, and the copy left in the student's hands to work from, it is the highest ijāza, since it is specific and in person (§5.55)."
+    - term: ijaza-muayyana
+      note: "Specified permission: the teacher permits a particular book of his and says how it is to be narrated. A munāwala whose copy is taken straight back is no longer the highest ijāza, but still ranks above this. Its acceptance is strongly disputed, though the later scholars accept it, and all agree it is below hearing (§5.55, §5.58)."
+    - term: mukataba
+      note: "Correspondence. The later scholars use it for permission given in writing. The earlier scholars kept the word for a teacher writing out ḥadīth for his student, whether or not he also gave permission, and did not call a letter that carries permission alone mukātaba (§5.55)."
+  views:
+    - id: majority
+      label: "Most scholars: not without permission"
+      scholars: §5.55
+      note: "Most scholars do not count a munāwala that comes with no permission. Ibn Ḥajar sees no strong difference between handing a book over and sending one from land to land when neither carries permission."
+    - id: sending
+      label: "Some imams: like a book sent"
+      scholars: §5.55
+      note: "Those who allow it compare it to sending a book from one land to another, and a group of the ḥadīth imams count a book sent even without permission, as if the sending itself were a sign of permission."
+  panels:
+    - { id: ijaza, label: Permission, x0: 0, x1: 260 }
+    - { id: handing, label: Handing over, x0: 260, x1: 520 }
+    - { id: no-permission, label: Without permission, x0: 520, x1: 780 }
+    - { id: letters, label: By letter, x0: 780, x1: 1040 }
+  extra:
+    - title: The illustration
+      section: §5.55
+      note: "The book names no teacher or student for these forms; the figures are an illustration."
 - id: names
   division: al-asma
   moons: [0, 1, 2]
