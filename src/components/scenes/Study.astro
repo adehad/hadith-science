@@ -1,0 +1,172 @@
+---
+// "How is it learned and taught?" (phase 3 Maʿrifat al-ruwāt design §7): teacher and student (§5.66), the age to
+// receive and to pass on (§5.67), writing and checking a copy (§5.68), and travel (§5.69), as four cells, each its own
+// 430x340 SVG in an HTML grid (the Names pattern). The pairs §5.67 and §5.68 join share a cell, with a title trigger
+// for each half. The ways of receiving themselves are on "How was it received?", which cell B links to (design §2).
+// No views. No Arabic beyond the term names. Motion: B's arrow flows and its cross draws in; C's insertion line draws
+// to the margin; D's routes draw out from the town, and the scale tips once. The resting style is the end state.
+import Defs from "../svg/Defs.astro";
+import Narrator from "../svg/Narrator.astro";
+import Arrow from "../svg/Arrow.astro";
+import Chip from "../svg/Chip.astro";
+import Glyph from "../svg/Glyph.astro";
+import Scale from "../svg/Scale.astro";
+import TermTitle from "../svg/TermTitle.astro";
+import XLink from "../svg/XLink.astro";
+import { FIG, RELIABLE } from "../svg/figures";
+import { f, titleTrigger, SUBT_TRIGGER } from "../svg/geom";
+import { cap, type DiagramProps } from "../../lib/scene";
+import { chipWidth } from "../../lib/kit";
+import { loadContent } from "../../lib/content";
+
+type Props = DiagramProps;
+const { caps, scene } = Astro.props;
+if (scene.views?.length) throw new Error("Study: expected no views");
+if (scene.panels?.length) throw new Error("Study: a grid of cells, not panels");
+
+const { scenes } = await loadContent();
+const delivery = scenes.find((s) => s.id === "delivery");
+if (!delivery) throw new Error("Study: no delivery scene to link to");
+
+const CX = 215, TITLE_Y = 30;
+// a title as a term trigger, its Arabic name centred under it; sub picks the 15px face, which keeps cell C's two
+// triggers either side of its divider
+function title(slug: string, cx: number, sub = false) {
+  const c = cap(caps, slug);
+  return { c, cx, cls: sub ? "subt" : "title", ...titleTrigger(c.translit, cx, TITLE_Y, sub ? SUBT_TRIGGER : { gap: 22 }), ar: { x: cx, y: TITLE_Y + 22, size: "sm" as const } };
+}
+const adab = title("adab-al-shaykh-wa-al-talib", CX);
+const tahammul = title("tahammul", 104);
+const ada = title("ada", 316);
+const kitaba = title("kitabat-al-hadith", 104, true);
+const ard = title("ard", 316, true);
+const rihla = title("rihla", CX);
+
+// ---- A: teacher and student (§5.66) ----
+const BOTH = ["a sound intention", "free of the world", "good character"];
+let bx = CX - (BOTH.reduce((s, t) => s + chipWidth(t), 0) + 10 * (BOTH.length - 1)) / 2;
+const both = BOTH.map((text) => { const c = { text, x: f(bx), w: chipWidth(text) }; bx += c.w + 10; return c; });
+const TEACHER = ["narrates when it is needed", "refers them to a senior master", "withholds from none over his intention", "pure, seated, with dignity", "stops when he may forget"];
+const STUDENT = ["honours him, does not trouble him", "passes on what he learns", "no shame or pride in learning", "writes it with care", "revises it often"];
+
+// ---- C: a page, with an insertion carried to the right margin (§5.68) ----
+const PAGE = { x: 24, y: 80, w: 168, h: 92 }, MARGIN_X = 158;
+const LINES = [100, 120, 140, 160];
+
+// ---- D: the town's reports, then travel (§5.69) ----
+const TOWN = { x: 92, y: 150, r: 50 };
+// the town's reports: a grid of dots inside its circle
+const DOTS = [-2, -1, 0, 1, 2].flatMap((i) => [-2, -1, 0, 1, 2].map((j) => ({ x: TOWN.x + i * 15, y: TOWN.y + j * 15 }))).filter((d) => Math.hypot(d.x - TOWN.x, d.y - TOWN.y) < TOWN.r - 10);
+const PINS = [{ x: 268, y: 112 }, { x: 340, y: 184 }];
+---
+<div class="cells study">
+  <svg id="cell-etiquette" viewBox="0 0 430 340" role="group" aria-label="Ādāb al-shaykh wa-l-ṭālib, the etiquette of teacher and student. Both need a sound intention, freedom from worldly distraction and good character. The teacher narrates when it is needed, refers students to a more senior master in his town, withholds from no one over his intention, narrates pure, seated and with dignity, and stops when illness or age may make him forget. The student honours him and does not trouble him, passes on what he learns, is held back by neither shame nor pride, writes it with care and revises it often.">
+    <Defs />
+    <TermTitle c={adab.c} x={CX} y={TITLE_Y} hit={adab.hit} info={adab.info} ar={adab.ar} />
+    <text class="layer" x={CX} y="82" style="text-anchor:middle">Both need</text>
+    {both.map((c) => <Chip x={c.x} y={102} text={c.text} w={c.w} />)}
+    <Narrator x={110} y={150} k={0.7} {...FIG.later} {...RELIABLE} label="Teacher" />
+    <Narrator x={320} y={150} k={0.7} {...FIG.later} label="Student" />
+    <text class="colhead" x="110" y="198">The teacher</text>
+    <text class="colhead" x="320" y="198">The student</text>
+    {TEACHER.map((t, i) => <text class="lbl sm" x="110" y={220 + i * 17}>{t}</text>)}
+    {STUDENT.map((t, i) => <text class="lbl sm" x="320" y={220 + i * 17}>{t}</text>)}
+  </svg>
+
+  <svg id="cell-ages" viewBox="0 0 430 340" role="group" aria-label="Taḥammul, receiving: soundest from the age of understanding; the masters brought their children to ḥadīth gatherings and recorded their attendance. What a non-Muslim received counts if he passes it on after becoming Muslim, and an open sinner's if he passes it on after repenting, once his integrity is proven again. Adāʾ, passing it on: no set age; what counts is need and ability. Ibn Khallād put it at fifty, with no blame at forty; this was criticised, since Mālik narrated younger.">
+    <TermTitle c={tahammul.c} x={tahammul.cx} y={TITLE_Y} cls={tahammul.cls} hit={tahammul.hit} info={tahammul.info} ar={tahammul.ar} />
+    <TermTitle c={ada.c} x={ada.cx} y={TITLE_Y} cls={ada.cls} hit={ada.hit} info={ada.info} ar={ada.ar} />
+    <line class="divider" x1="215" x2="215" y1="20" y2="290" />
+    <text class="lbl sm" x="110" y="76">from the age of understanding</text>
+    <Narrator x={42} y={122} k={0.5} {...FIG.later} label="Child" />
+    <Arrow x1={60} y1={122} x2={104} y2={122} />
+    <Glyph kind="text" cx={124} cy={122} r={10} />
+    <Glyph kind="check" cx={150} cy={122} r={8} />
+    <text class="lbl sm" x="110" y="160">brought to the gatherings,</text>
+    <text class="lbl sm" x="110" y="174">their attendance recorded</text>
+    <text class="layer" x="16" y="210">Received before, passed on after</text>
+    <text class="lbl start sm" x="16" y="232">a non-Muslim: passed on once Muslim</text>
+    <text class="lbl start sm" x="16" y="256">an open sinner: once he repents</text>
+    <text class="lbl start sm" x="16" y="270">and his integrity is proven again</text>
+
+    <text class="lbl sm" x="322" y="76">no set age</text>
+    <text class="lbl" x="322" y="106">need and ability</text>
+    <text class="lbl sm" x="322" y="122">which differ from one to another</text>
+    <text class="lbl sm" x="322" y="158">Ibn Khallād: at fifty,</text>
+    <text class="lbl sm" x="322" y="172">and no blame at forty</text>
+    <g class="mk"><Glyph kind="cross" cx={322} cy={196} r={8} animate /></g>
+    <text class="lbl sm" x="322" y="228">criticised: Mālik narrated</text>
+    <text class="lbl sm" x="322" y="242">before that age</text>
+    <text class="lbl sm" x={CX} y="306">the ways of receiving:</text>
+    <XLink to={`${delivery.division}/${delivery.id}`} text={delivery.title} x={CX} y={326} anchor="middle" />
+  </svg>
+
+  <svg id="cell-writing" viewBox="0 0 430 340" role="group" aria-label="Kitābat al-ḥadīth, writing it: clearly, with the vowels and dots on the difficult words; anything missed goes in the right-hand margin if there is room, otherwise the left. ʿArḍ, checking a copy: reading it against the shaykh, with a reliable person, or alone, piece by piece. Listening has its manners too: nothing that distracts, such as copying, talking or tiredness.">
+    <TermTitle c={kitaba.c} x={kitaba.cx} y={TITLE_Y} cls={kitaba.cls} hit={kitaba.hit} info={kitaba.info} ar={kitaba.ar} />
+    <TermTitle c={ard.c} x={ard.cx} y={TITLE_Y} cls={ard.cls} hit={ard.hit} info={ard.info} ar={ard.ar} />
+    <line class="divider" x1="215" x2="215" y1="20" y2="310" />
+    <g aria-hidden="true">
+      <rect class="page" x={PAGE.x} y={PAGE.y} width={PAGE.w} height={PAGE.h} rx="4" />
+      <line class="marg" x1={MARGIN_X} x2={MARGIN_X} y1={PAGE.y + 8} y2={PAGE.y + PAGE.h - 8} />
+      {LINES.map((y, i) => i === 2
+        ? <><line class="wl" x1="36" x2="90" y1={y} y2={y} /><line class="wl" x1="100" x2="148" y1={y} y2={y} /></>
+        : <line class="wl" x1="36" x2="148" y1={y} y2={y} />)}
+      {/* vowels and dots over a hard word on the first line */}
+      <path class="mark" d="M58 92 l8 -3 M80 92 l8 -3" />
+      <circle class="mark-dot" cx="112" cy="107" r="1.8" /><circle class="mark-dot" cx="118" cy="107" r="1.8" />
+      {/* the missed words: a caret in the line, carried up to the right margin */}
+      <path class="ins m-draw" pathLength="1" d={`M95 ${LINES[2] + 2} V${LINES[2] - 8} Q95 ${LINES[1] + 4} ${MARGIN_X + 4} ${LINES[1] + 6} H${MARGIN_X + 22}`} />
+    </g>
+    <text class="lbl sm" x="110" y="196">vowels and dots on the hard words</text>
+    <text class="lbl sm" x="110" y="218">anything missed: in the right</text>
+    <text class="lbl sm" x="110" y="232">margin, if there is room, else the left</text>
+
+    <g aria-hidden="true">
+      <rect class="page" x="242" y="82" width="56" height="70" rx="3" />
+      <rect class="page" x="346" y="82" width="56" height="70" rx="3" />
+      {[98, 112, 126, 140].map((y) => <><line class="wl" x1="250" x2="290" y1={y} y2={y} /><line class="wl" x1="354" x2="394" y1={y} y2={y} /></>)}
+      <path class="swap" d="M304 108 H340 M334 103 L340 108 L334 113 M340 126 H304 M310 121 L304 126 L310 131" />
+    </g>
+    <text class="lbl sm" x="270" y="168">his copy</text>
+    <text class="lbl sm" x="374" y="168">the source</text>
+    <text class="lbl sm" x="322" y="196">with the shaykh, a reliable</text>
+    <text class="lbl sm" x="322" y="210">person, or alone, piece by piece</text>
+    <text class="layer" x="232" y="250">Listening</text>
+    <text class="lbl start sm" x="232" y="270">nothing that distracts:</text>
+    <text class="lbl start sm" x="232" y="284">copying, talking, tiredness</text>
+    <Glyph kind="cross" cx={404} cy={276} r={7} />
+  </svg>
+
+  <svg id="cell-travel" viewBox="0 0 430 340" role="group" aria-label="Riḥla, travel for ḥadīth: first the student gathers all the reports of his own town, then he travels for what he does not have. His wish for more reports should outweigh his wish for more shaykhs.">
+    <TermTitle c={rihla.c} x={CX} y={TITLE_Y} hit={rihla.hit} info={rihla.info} ar={rihla.ar} />
+    <circle class="town" cx={TOWN.x} cy={TOWN.y} r={TOWN.r} />
+    {DOTS.map((d) => <circle class="rdot" cx={d.x} cy={d.y} r="3.2" />)}
+    {PINS.map((p, i) => (
+      <>
+        <path class="route m-draw" pathLength="1" style={`--d:${0.6 + i * 0.4}s`} d={`M${TOWN.x + TOWN.r + 4} ${TOWN.y} Q${f((TOWN.x + p.x) / 2 + 30)} ${f((TOWN.y + p.y) / 2 - 20)} ${p.x - 10} ${p.y + 4}`} />
+        <Glyph kind="pin" cx={p.x} cy={p.y} r={10} />
+      </>
+    ))}
+    <text class="lbl sm" x={TOWN.x} y="222">first: all his own</text>
+    <text class="lbl sm" x={TOWN.x} y="236">town's reports</text>
+    <text class="lbl sm" x="320" y="222">then: what he</text>
+    <text class="lbl sm" x="320" y="236">does not have</text>
+    <Scale x={CX} y={256} w={120} tilt={-8} left={3} right={1} pw={50} stand={44} drop={26} />
+    <text class="lbl sm" x="150" y="326">more reports</text>
+    <text class="lbl sm" x="282" y="326">more shaykhs</text>
+  </svg>
+</div>
+<style>
+  .study .layer{text-anchor:start}
+  .page{fill:var(--surface);stroke:var(--line);stroke-width:1.3}
+  .marg{stroke:var(--rule);stroke-width:1;stroke-dasharray:2 3}
+  .wl{stroke:var(--muted);stroke-width:2;stroke-linecap:round}
+  .mark{fill:none;stroke:var(--fg);stroke-width:1.6;stroke-linecap:round}
+  .mark-dot{fill:var(--fg)}
+  .ins{fill:none;stroke:var(--gold-a);stroke-width:2;stroke-linecap:round;--d:.6s;--dur:.8s}
+  .swap{fill:none;stroke:var(--line);stroke-width:1.5;stroke-linejoin:round}
+  .town{fill:var(--gold-wash);stroke:var(--gold-edge);stroke-width:1.2}
+  .rdot{fill:var(--gold-a)}
+  .route{fill:none;stroke:var(--line);stroke-width:1.6;--dur:.6s}
+  .mk{--d:.8s;--dur:.4s}
+</style>

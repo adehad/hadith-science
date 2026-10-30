@@ -1287,6 +1287,7 @@
   def: "Both need sincere intent and good character. The teacher narrates with dignity and stops when memory fails; the student honours him and records carefully."
   section: "§5.66"
   division: marifat-al-ruwat
+  scene: study
 - id: tahammul
   translit: Taḥammul
   ar: تَحَمُّلٌ
@@ -1294,6 +1295,7 @@
   def: "Taking in hadith, soundest from the age of understanding. A non-Muslim or sinner may receive and narrate later, once Muslim or reformed."
   section: "§5.67"
   division: marifat-al-ruwat
+  scene: study
 - id: ada
   translit: Adāʾ
   ar: أَدَاءٌ
@@ -1301,6 +1303,7 @@
   def: "Passing hadith on. There is no set age; what counts is need and ability. Mālik narrated younger than the age some scholars proposed."
   section: "§5.67"
   division: marifat-al-ruwat
+  scene: study
 - id: kitabat-al-hadith
   translit: Kitābat al-ḥadīth
   ar: كِتَابَةُ الْحَدِيثِ
@@ -1308,6 +1311,7 @@
   def: "Writing clearly, marking the vowels and dots of hard words, and adding missed text in the right-hand margin if there is room."
   section: "§5.68"
   division: marifat-al-ruwat
+  scene: study
 - id: ard
   translit: ʿArḍ
   ar: عَرْضٌ
@@ -1315,6 +1319,7 @@
   def: "Comparing one's written copy against the source, with the teacher, a reliable person, or alone, piece by piece."
   section: "§5.68"
   division: marifat-al-ruwat
+  scene: study
 - id: rihla
   translit: Riḥla
   ar: رِحْلَةٌ
@@ -1322,6 +1327,7 @@
   def: "Travelling for hadith after first gathering everything in one's own town. The aim is more reports, not more teachers."
   section: "§5.69"
   division: marifat-al-ruwat
+  scene: study
 - id: masanid
   translit: al-Masānīd
   ar: الْمَسَانِيدُ

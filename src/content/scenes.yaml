@@ -1196,3 +1196,26 @@
     - title: Books on the narrators
       section: §5.65
       note: "Some list them all, like Ibn Saʿd's Ṭabaqāt, the Tārīkhs of Abū Khaythama and al-Bukhārī, and Ibn Abī Ḥātim's al-Jarḥ wa-l-taʿdīl; some only the reliable (al-ʿIjlī, Ibn Ḥibbān, Ibn Shāhīn) or only the criticised (Ibn ʿAdī, Ibn Ḥibbān); some the men of one book, from al-Kalābādhī on al-Bukhārī's to scholars of the Maghrib on al-Tirmidhī's and al-Nasāʾī's. ʿAbd al-Ghanī al-Maqdisī's al-Kamāl covered the six books; al-Mizzī refined it, and Ibn Ḥajar summarised that as Tahdhīb al-tahdhīb, adding a third."
+- id: study
+  division: marifat-al-ruwat
+  moons: [3]
+  order: 5
+  title: How is it learned and taught?
+  eyebrow: Knowing the narrators, teacher and student · §5.66–5.69
+  lede: Teacher and student both need a sound intention and good character. A child may receive ḥadīth once he understands; there is no set age to pass it on. The student writes it clearly, checks his copy, and travels only once he has everything his own town holds.
+  source: §5.66 Ādāb, §5.67 Taḥammul and adāʾ, §5.68 Kitāba and ʿarḍ, §5.69 Riḥla
+  diagram: Study
+  width: 860
+  captions:
+    - term: adab-al-shaykh-wa-al-talib
+      note: "Both need a sound intention, freedom from worldly distraction and good character. The teacher narrates when needed, sends students to a more senior master in town, withholds from no one over his intention, narrates pure, seated and with dignity, and stops when illness or age may make him forget. The student honours him, passes on what he learns, writes it with care and revises (§5.66)."
+    - term: tahammul
+      note: "Receiving ḥadīth is soundest from the age of understanding. The masters brought their children to ḥadīth gatherings and recorded that they attended. What a non-Muslim received counts if he passes it on after becoming Muslim; so does an open sinner's, passed on after he repents and his integrity is proven again (§5.67)."
+    - term: ada
+      note: "Passing ḥadīth on has no set age; what counts is the need for it and the ability, which differ from one person to another. Ibn Khallād put it at fifty, with no blame at forty; this was criticised, since Mālik narrated before that age (§5.67)."
+    - term: kitabat-al-hadith
+      note: "Write the ḥadīth clearly, adding the vowels and dots to the difficult words. Anything missed goes in the right-hand margin if there is room, otherwise in the left (§5.68)."
+    - term: ard
+      note: "Checking a copy: reading it against the shaykh, with a reliable person, or alone, piece by piece. Listening has its manners too: nothing that distracts, such as copying, talking or tiredness (§5.68)."
+    - term: rihla
+      note: "Travel for ḥadīth begins only once the student has gathered all the reports of his own town; then he travels for what he does not have. His wish for more reports should outweigh his wish for more shaykhs (§5.69)."
