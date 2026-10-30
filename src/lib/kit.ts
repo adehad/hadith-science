@@ -149,6 +149,19 @@ export function spanOverlap(a: [number, number], b: [number, number]): { x0: num
   return { x0: f(x0), x1: f(x1), mid: f((x0 + x1) / 2) };
 }
 
+// a run of n unnamed narrators as rings (Beads.astro, phase 3 lataif design §11): each ring's centre, every gap
+// units from (x, y) down the page or to the right, and the edge points where a chain's arrow meets the first ring
+// (start) and leaves the last (end), so scenes join their arrows to a run without repeating the ring radius
+export const BEAD_R = 4;
+export function beadRun(x: number, y: number, n: number, gap: number, dir: "down" | "right" = "down") {
+  const down = dir === "down";
+  const rings = Array.from({ length: n }, (_, i) => (down ? { x, y: f(y + i * gap) } : { x: f(x + i * gap), y }));
+  const first = rings[0], last = rings[n - 1];
+  const start = down ? { x, y: f(first.y - BEAD_R) } : { x: f(first.x - BEAD_R), y };
+  const end = down ? { x, y: f(last.y + BEAD_R) } : { x: f(last.x + BEAD_R), y };
+  return { rings, start, end };
+}
+
 // one undotted letter outline, a dotless bāʾ bowl centred on (gx, gy), as an SVG path: the written shape that its
 // dots or vowels decide how to read (Names.astro's muʾtalif cell, Changes.astro's muṣaḥḥaf and muḥarraf cell).
 // Single letter shapes only, never words.

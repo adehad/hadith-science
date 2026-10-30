@@ -827,6 +827,7 @@
   def: "A narrator reports from a peer, someone close to him in age or in the teachers they share."
   section: "§5.48"
   division: lataif-al-isnad
+  scene: peers
 - id: mudabbaj
   translit: Mudabbaj
   ar: مُدَبَّجٌ
@@ -834,6 +835,7 @@
   def: "Two peers each narrate from the other. Every mudabbaj is a peers' narration, but not the reverse."
   section: "§5.48"
   division: lataif-al-isnad
+  scene: peers
 - id: akabir-an-asaghir
   translit: Riwāyat al-akābir ʿan al-aṣāghir
   ar: رِوَايَةُ الْأَكَابِرِ عَنِ الْأَصَاغِرِ
@@ -841,6 +843,7 @@
   def: "Someone narrates from a person younger, lower in rank or later to the teachers, like a father from his son or a Companion from a Successor."
   section: "§5.49"
   division: lataif-al-isnad
+  scene: peers
 - id: abna-an-aba
   translit: Riwāyat al-abnāʾ ʿan al-ābāʾ
   ar: رِوَايَةُ الْأَبْنَاءِ عَنِ الْآبَاءِ
@@ -848,6 +851,7 @@
   def: "A narrator reports from his father, often on from his grandfather; such family chains can run to fourteen fathers."
   section: "§5.50"
   division: lataif-al-isnad
+  scene: peers
 - id: sabiq-wa-lahiq
   translit: al-Sābiq wa-l-lāḥiq
   ar: السَّابِقُ وَاللَّاحِقُ

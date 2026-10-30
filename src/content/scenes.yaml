@@ -449,6 +449,30 @@
     - title: al-Jūzajānī
       section: §5.37
       note: "Most accept an innovator who does not call others to his belief, but if he narrates what strengthens it, the preferred view of the majority rejects it. al-Jūzajānī, the shaykh of Abū Dāwūd, made this clear: describing a narrator who turns away from the truth, he said that if such a man is truthful and his ḥadīth is not munkar, nothing stops us accepting it, so long as he does not openly call to his belief. Ibn Ḥajar calls this strong: an innovator's report is rejected when its text seems to support his belief, even if he does not call to it openly."
+- id: peers
+  division: lataif-al-isnad
+  moons: [1]
+  order: 3
+  title: Who narrates from whom?
+  eyebrow: Features of the chain, who narrates from whom · §5.48–5.50
+  lede: Usually a younger man narrates from an older one. But peers narrate from each other, sometimes both ways; a senior may narrate from a junior; and a son may narrate from his father and grandfather, generation after generation.
+  source: §5.48 Aqrān and mudabbaj, §5.49 Seniors from juniors, §5.50 Sons from fathers
+  diagram: Peers
+  width: 1040
+  captions:
+    - term: aqran
+      note: "A narrator reports from someone like himself in a matter of narration, such as age, or taking from the same shaykhs. It is named after the aqrān, peers, because the narrator is his like. Abū al-Shaykh al-Iṣbahānī wrote a book on it (§5.48)."
+    - term: mudabbaj
+      note: "Each of two peers reports from the other. Every mudabbaj is a peers' narration, but not the reverse. When a shaykh and his student report from each other, it is debated; apparently it is not mudabbaj but seniors from juniors, since the name comes from the two cheeks of the face, alike on both sides. al-Dāraquṭnī wrote a book on it (§5.48)."
+    - term: akabir-an-asaghir
+      note: "A narrator reports from someone below him: younger, lower in rank, or one who met fewer shaykhs, or met them later. It includes fathers from sons, Companions from Successors and a shaykh from his student. The reverse is common, being the usual way. Knowing it tells the ranks apart and puts people in their place. al-Khaṭīb wrote on fathers from sons and on Companions from Successors (§5.49)."
+    - term: abna-an-aba
+      note: "The opposite case: a narrator reports from his father, from his grandfather. al-ʿAlāʾī compiled a large volume on those who did so up to the Prophet ﷺ, sorting them by whether “his” in “from his grandfather” is the narrator or his father. Ibn Ḥajar summarised it and added many more. The longest run from father to son he found was fourteen fathers (§5.50)."
+  panels:
+    - { id: peers, label: Peers, x0: 0, x1: 260 }
+    - { id: mutual, label: Each from the other, x0: 260, x1: 520 }
+    - { id: seniors, label: Senior from junior, x0: 520, x1: 780 }
+    - { id: fathers, label: Son from father, x0: 780, x1: 1040 }
 - id: delivery
   division: siyagh-al-ada
   moons: [0, 1, 2]
