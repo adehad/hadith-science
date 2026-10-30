@@ -4,6 +4,7 @@
 // pause: two bars in a ring; text: a page of lines; companion: a bust with a star, in the Companions' gold; clock: a
 // face with two hands, for dates; cross: a drawn ✕ in a box, for rejected or not reached, the same stroke as check.
 // coin: a disc with an inner ring, for the money-changer (phase 3 al-Mardūd design §6); dashed draws a false one.
+// letter: an envelope, for a permission or ḥadīth sent in writing (Ṣiyagh al-adāʾ design §7).
 // scissors: a pair pointing down, closed, for cutting a text short (al-Mardūd design §8). Each half (handle ring and
 // blade) is a .sblade group pivoting on the screw, so a scene can open and close them with a rotation.
 // handshake: two forearms meeting in a clasp, for muṣāfaḥa (phase 3 lataif design §11).
@@ -12,7 +13,7 @@
 // timed by the --d and --dur the scene sets on a wrapping group.
 import { f } from "./geom";
 
-interface Props { kind: "memory" | "book" | "check" | "cross" | "lens" | "pause" | "text" | "companion" | "clock" | "coin" | "scissors" | "handshake"; cx: number; cy: number; r?: number; dashed?: boolean; animate?: boolean }
+interface Props { kind: "memory" | "book" | "check" | "cross" | "lens" | "pause" | "text" | "companion" | "clock" | "coin" | "scissors" | "handshake" | "letter"; cx: number; cy: number; r?: number; dashed?: boolean; animate?: boolean }
 const { kind, cx, cy, r = 7, dashed = false, animate = false } = Astro.props;
 const p = (dx: number, dy: number) => `${f(cx + dx * r)} ${f(cy + dy * r)}`;
 ---
@@ -59,6 +60,9 @@ const p = (dx: number, dy: number) => `${f(cx + dx * r)} ${f(cy + dy * r)}`;
       <path class="gold-line" d={`M${p(-0.85, 1)} Q${p(-0.85, 0.15)} ${p(-0.15, 0.15)} Q${p(0.55, 0.15)} ${p(0.55, 1)}`} />
       <path class="gstar" d={`M${p(0.72, -1)} L${p(0.82, -0.72)} L${p(1.1, -0.72)} L${p(0.88, -0.55)} L${p(0.96, -0.27)} L${p(0.72, -0.44)} L${p(0.48, -0.27)} L${p(0.56, -0.55)} L${p(0.34, -0.72)} L${p(0.62, -0.72)} Z`} />
     </>
+  )}
+  {kind === "letter" && (
+    <path class="gline" d={`M${p(-1, -0.65)} L${p(1, -0.65)} L${p(1, 0.65)} L${p(-1, 0.65)} Z M${p(-1, -0.65)} L${p(0, 0.1)} L${p(1, -0.65)}`} />
   )}
   {kind === "clock" && (
     <>

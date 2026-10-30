@@ -58,3 +58,8 @@ Page numbers are the PDF's, as the `=====PAGE` markers in `source/nuzhah.txt` nu
 | §5.51 (p.332) | "al-Salafī" / "al-Silafī"; "al-Burdānī" | The spelling varies. The site writes al-Silafī and al-Burdānī | |
 | §5.52 (p.337) | "Whosoever desires a comprehensive and accurate means … then muhmal [as a means] is required" | The sense seems to be that the muhmal is identified when the narrator is known to keep company with one of the two. The site leaves this out until a ruling | |
 | §5.52 (p.337) | "‘Muḥammad’ … of the people of ʿIrāq" | Does this describe Muḥammad, or the people he narrates from? The site names only the two candidates | |
+| §5.55 (p.345) | "because it entails specification and [exact] personage" | Likely taʿyīn and tashkhīṣ: the book specified and the handing in person. The site says "it is specific and in person" | |
+| §5.55 (p.346) | "control over the manuscript, either through ownership or lease so that he may transfer it and study it" | "Lease" may render a loan, and "transfer it and study it" copying from it and checking against it. The site says only "left in the student's hands to work from" | |
+| §5.58 (p.358) | "Likewise [permission is required] for the ijāza majhūl" (and for maʿdūm and the conditional) | The sense is that these are likewise not counted, as ijāza ʿāmma is not. The site says "does not count" | |
+| §5.58 (p.358) | "I give permission to you and whoever you bore" | Likely "whoever is born to you". The site says so | |
+| §5.58 (p.359) | "The attached [form of permission] has been used too, by Abū Bakr ibn Abī Khaythama" | "Attached" likely renders muʿallaqa, the permission hung on a wish. The site reads it so | |

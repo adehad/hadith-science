@@ -45,7 +45,7 @@ const scenes = defineCollection({
     eyebrow: z.string(),
     lede: z.string(),
     source: z.string(), // "§5.3 Mutawātir, §5.4 Mashhūr"; page adds the book and translator
-    diagram: z.enum(["Routes", "Breaks", "Causes", "Unknown", "Delivery", "Names", "Grades", "Opposition", "Support", "ActedOn", "Report", "Sorting", "Knowledge", "Lone", "Hidden", "Lying", "Slips", "Changes", "Wording", "Identity", "Innovation", "Ends", "Raised", "Companions", "Connected", "Peers", "Doubts", "Elevation", "Meeting"]),
+    diagram: z.enum(["Routes", "Breaks", "Causes", "Unknown", "Delivery", "Names", "Grades", "Opposition", "Support", "ActedOn", "Report", "Sorting", "Knowledge", "Lone", "Hidden", "Lying", "Slips", "Changes", "Wording", "Identity", "Innovation", "Ends", "Raised", "Companions", "Connected", "Peers", "Doubts", "Elevation", "Meeting", "Heard", "Permission", "Licence"]),
     width: z.number().positive(), // diagram viewBox width, for panels
     // note: the longer paraphrase for this scene's popover and "Read as text"; terms.yaml def stays the glossary line
     captions: z.array(z.object({ term: slug, note: z.string().max(420) })).min(1),

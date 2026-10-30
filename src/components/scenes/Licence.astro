@@ -1,0 +1,199 @@
+---
+// "Whom may a permission name?" (phase 3 Ṣiyagh al-adāʾ design §5): the loose forms of permission in §5.58. Four
+// cells, each its own 430x320 SVG in the .cells grid: side by side on desktop, one column in portrait.
+//   A  how far it may reach: seven stops from a named man and book to permission on another's wish, with a
+//      "counts" bracket over the stops each view accepts (it eases between views), and the ranking of §5.58
+//   B  to the unidentified: a licence card with the person, or the book, left as a blinking empty slot
+//   C  to the unborn: "whoever shall be born", alone or joined to someone living, and who used it
+//   D  hung on another's wish, against "if you wish", and who used it
+// The "Other views" switch (§5.58): Ibn Ḥajar counts none of these; al-Khaṭīb allowed all but the unidentified.
+// The groups outside the default view are built with class="off". The book names no one who received these, so
+// the cards and figures are illustrations; the formulas are English field values, never Arabic.
+// Motion: the stops come in left to right once, the slots blink, the bracket eases on a view switch. Each resting
+// style is the end state.
+import Defs from "../svg/Defs.astro";
+import Narrator from "../svg/Narrator.astro";
+import Bracket from "../svg/Bracket.astro";
+import Chip from "../svg/Chip.astro";
+import LicenceCard from "../svg/LicenceCard.astro";
+import Pill from "../svg/Pill.astro";
+import TermTitle from "../svg/TermTitle.astro";
+import ViewTag from "../svg/ViewTag.astro";
+import XLink from "../svg/XLink.astro";
+import { FIG, KIND_NAME } from "../svg/figures";
+import { SUBT_TRIGGER, f, titleTrigger } from "../svg/geom";
+import { cap, type DiagramProps } from "../../lib/scene";
+import { chipWidth, stagger } from "../../lib/kit";
+import { stepFill } from "../../lib/staircase";
+import { viewAttrs } from "../../lib/views";
+
+type Props = DiagramProps;
+const { caps, scene } = Astro.props;
+const VIEW_IDS = ["ibn-hajar", "khatib"];
+if ((scene.views ?? []).map((v) => v.id).join() !== VIEW_IDS.join()) throw new Error(`Licence: expected views ${VIEW_IDS.join(", ")}`);
+if (scene.panels?.length) throw new Error("Licence: a grid of cells, not panels");
+
+const TITLE_Y = 30, AR_Y = 54, SUB_Y = 76;
+function title(slug: string, extra = 0) {
+  const c = cap(caps, slug);
+  return { c, ...titleTrigger(c.translit, 215, TITLE_Y, { ...SUBT_TRIGGER, extra }) };
+}
+
+// ---- cell A: the stops, narrowest first ----
+// accepted says who counts the form: everyone (a solid dot), al-Khaṭīb only (a hollow dot; Ibn Ḥajar does not), or
+// no one (a red dashed dot). The bracket above says which count in the view shown.
+const LINE_Y = 106, STOP_X0 = 36, STOP_DX = 60;
+type Accepted = "all" | "khatib" | "none";
+const STOPS: { lines: string[]; accepted: Accepted; to?: string; x?: number }[] = [
+  { lines: ["named man,", "named book"], accepted: "all" },
+  { lines: ["one land", "(nearest)"], accepted: "khatib" },
+  { lines: ["all alive", "in my time"], accepted: "khatib" },
+  { lines: ["all", "Muslims"], accepted: "khatib" },
+  { lines: ["someone", "unidentified"], accepted: "none", to: "cell-unidentified" },
+  { lines: ["not yet", "born"], accepted: "khatib", to: "cell-unborn" },
+  { lines: ["another's", "wish"], accepted: "khatib", to: "cell-conditional" },
+];
+const stops = STOPS.map((s, i) => ({ ...s, x: STOP_X0 + i * STOP_DX }));
+// the general forms (stops 2–4), under one bracket, link to ijāza ʿāmma on "How was it received?"
+const GENERAL = { x0: stops[1].x - 18, x1: stops[3].x + 18, cx: stops[2].x };
+// the "counts" bracket is drawn 24 wide from x 0 and placed by the view: over stop 1 alone for Ibn Ḥajar, stretched
+// over stops 1–4 for al-Khaṭīb (whose second bracket, over stops 6–7, shows only in his view)
+const B_W = 24, B_X = stops[0].x - 12;
+const khatibW = stops[3].x + 12 - B_X;
+const bracket = viewAttrs({ v: { "ibn-hajar": `translate(${B_X}px,0px) scale(1,1)`, khatib: `translate(${B_X}px,0px) scale(${f(khatibW / B_W)},1)` } }, VIEW_IDS);
+// the second rung's "specified permission" is a link to ijāza muʿayyana; the rest of its line follows it
+const RANKS = ["hearing", "", "these loose forms: a disliked leniency (Ibn al-Ṣalāḥ)"];
+const RANK_Y = 206, RANK_H = 18, RANK_GAP = 4;
+const rankY = (i: number) => RANK_Y + i * (RANK_H + RANK_GAP);
+
+const majhul = title("ijaza-majhul", 2);
+const madum = title("ijaza-madum", 2);
+const muallaqa = title("ijaza-muallaqa", 2);
+
+const usedBy = (names: string[], y: number) => {
+  let x = 70;
+  return names.map((text) => {
+    const w = chipWidth(text);
+    const c = { text, x, w, y };
+    x = f(x + w + 8);
+    return c;
+  });
+};
+const madumUsers = usedBy(["Abū Bakr ibn Abī Dāwūd", "Abū ʿAbd Allāh ibn Manda"], 296);
+const muallaqaUsers = usedBy(["Abū Bakr ibn Abī Khaythama"], 290);
+---
+<div class="cells licence-scene">
+  <svg id="cell-reach" viewBox="0 0 430 320" role="group" aria-label="How far a permission may reach, from the narrowest to the loosest: a named man and a named book; the people of one land, the nearest of the general forms; everyone alive in the teacher's time; all Muslims; someone unidentified; someone not yet born; or whoever another person wishes. Ibn Ḥajar counts only the first; al-Khaṭīb all but the unidentified. Ranked: hearing, then specified permission, disputed though the later scholars accept it, then these loose forms, a disliked leniency as Ibn al-Ṣalāḥ says, and below them a muʿḍal report.">
+    <Defs />
+    <text class="subt" x="215" y={TITLE_Y}>How far may it reach?</text>
+    <text class="lbl" x="215" y="52">from the narrowest permission to the loosest</text>
+
+    <g class="reach-b" aria-hidden="true" {...bracket}>
+      <Bracket x0={0} x1={B_W} y={84} ticks="down" />
+    </g>
+    <g class="off" data-view-show="khatib" aria-hidden="true">
+      <Bracket x0={stops[5].x - 12} x1={stops[6].x + 12} y={84} ticks="down" />
+    </g>
+    <text class="lbl sm start" x={B_X} y="74">counts</text>
+
+    <line class="reach" x1={stops[0].x} x2={stops[6].x} y1={LINE_Y} y2={LINE_Y} />
+    {stops.map((s, i) => (
+      <g class="m-enter" style={`--d:${stagger(i, { start: 0.2, step: 0.1 })}`}>
+        <circle class={`stop ${s.accepted}`} cx={s.x} cy={LINE_Y} r="5" />
+        {s.to ? (
+          <a class="xlink jump" href={`#${s.to}`}>
+            {/* a continuation line leads with a plain space, outside the underline, so the name reads as words */}
+            <text class="rp sm" x={s.x} y={LINE_Y + 22} text-anchor="middle">{s.lines.map((t, j) => (
+              <tspan x={s.x} dy={j ? 13 : 0}>{j ? " " : ""}<tspan class="xu">{t}</tspan></tspan>
+            ))}<tspan x={s.x} dy="13" aria-hidden="true">↓</tspan></text>
+          </a>
+        ) : (
+          s.lines.map((t, j) => <text class="lbl sm" x={s.x} y={LINE_Y + 22 + j * 13}>{t}</text>)
+        )}
+      </g>
+    ))}
+    <g aria-hidden="true"><Bracket x0={GENERAL.x0} x1={GENERAL.x1} y={164} ticks="up" /></g>
+    <XLink to="siyagh-al-ada/delivery#ijaza-amma" lead="to all: " text="ijāza ʿāmma" x={GENERAL.cx} y={182} anchor="middle" />
+
+    <text class="layer" x="20" y="200">Ranked (§5.58)</text>
+    {RANKS.map((t, i) => (
+      <>
+        <rect class="rank" x="20" y={rankY(i) - 2} width="390" height={RANK_H} rx="4" style={`fill:${stepFill(i * 2)}`} />
+        {t && <text class="rankt" x="30" y={rankY(i) + 11}>{t}</text>}
+      </>
+    ))}
+    <XLink to="siyagh-al-ada/permission#ijaza-muayyana" text="specified permission" x={30} y={rankY(1) + 11} cls="rankx" />
+    <text class="rankt" x="160" y={rankY(1) + 11}>disputed; the later scholars accept it</text>
+    <rect class="rank" x="20" y={rankY(3) - 2} width="390" height={RANK_H} rx="4" style={`fill:${stepFill(6)}`} />
+    <XLink to="al-mardud/breaks#mudal" lead="weaker still: " text="a muʿḍal report" x={30} y={rankY(3) + 11} cls="rankx" />
+    <text class="lbl sm" x="215" y="312">stronger above, weaker below</text>
+  </svg>
+
+  <svg id="cell-unidentified" viewBox="0 0 430 320" role="group" aria-label="Ijāza li-l-majhūl, an illustration: one licence names no one it is to, another names no book. Not valid; even al-Khaṭīb did not allow it.">
+    <TermTitle c={majhul.c} x={215} y={TITLE_Y} cls="subt" hit={majhul.hit} info={majhul.info} ar={{ x: 215, y: AR_Y, size: "sm" }} />
+    <text class="lbl" x="215" y={SUB_Y}>to someone, or for a book, not identified</text>
+    <LicenceCard x={40} y={100} w={160} fields={[{ label: "to", slot: true }, { label: "book", value: "his book" }]} />
+    <LicenceCard x={230} y={100} w={160} fields={[{ label: "to", value: "a student" }, { label: "book", slot: true }]} />
+    <text class="lbl sm" x="120" y="174">no one named</text>
+    <text class="lbl sm" x="310" y="174">no book named</text>
+    <Pill x={215} y={210} state="reject" text="not valid" />
+    <text class="lbl" x="215" y="242">even al-Khaṭīb did not allow it</text>
+    <text class="lbl sm" x="215" y="300">an illustration: the book names no example</text>
+  </svg>
+
+  <svg id="cell-unborn" viewBox="0 0 430 320" role="group" aria-label="Ijāza li-l-maʿdūm, an illustration: permission to whoever shall be born, or to you and whoever is born to you, joined to someone living. Some say the joined form is valid; Ibn Ḥajar holds that neither is. Abū Bakr ibn Abī Dāwūd and Abū ʿAbd Allāh ibn Manda used it.">
+    <TermTitle c={madum.c} x={215} y={TITLE_Y} cls="subt" hit={madum.hit} info={madum.info} ar={{ x: 215, y: AR_Y, size: "sm" }} />
+    <text class="lbl" x="215" y={SUB_Y}>to someone not yet born</text>
+    <LicenceCard x={24} y={96} w={236} fields={[{ label: "to", value: "whoever shall be born" }]} />
+    <Narrator x={330} y={112} k={0.6} {...FIG.unborn} label={KIND_NAME.unborn} />
+    <LicenceCard x={24} y={150} w={236} fields={[{ label: "to", value: "you, and whoever is born to you" }]} />
+    <line class="tie" x1="306" x2="350" y1="168" y2="168" />
+    <Narrator x={300} y={168} k={0.55} {...FIG.later} />
+    <Narrator x={356} y={168} k={0.55} {...FIG.unborn} />
+    <ViewTag cx={142} y={196} w={124} text="some say: valid" dashed />
+    <g data-view-show="ibn-hajar">
+      <Pill x={215} y={244} state="reject" text="not valid" />
+      <text class="lbl sm" x="215" y="272">nor when joined to someone living</text>
+    </g>
+    <g class="off" data-view-show="khatib">
+      <Pill x={140} y={244} state="support" text="allowed" />
+      <ViewTag cx={292} y={233} w={170} text="al-Khaṭīb and his shaykhs" dashed />
+    </g>
+    <text class="lbl sm start" x="20" y="300">used by:</text>
+    {madumUsers.map((u) => <Chip x={u.x} y={u.y} text={u.text} w={u.w} />)}
+  </svg>
+
+  <svg id="cell-conditional" viewBox="0 0 430 320" role="group" aria-label="Ijāza muʿallaqa, an illustration: permission to you if so-and-so wishes, or to whomever so-and-so wishes, is not valid; permission to you if you wish is. Abū Bakr ibn Abī Khaythama used it; al-Khaṭīb allowed it.">
+    <TermTitle c={muallaqa.c} x={215} y={TITLE_Y} cls="subt" hit={muallaqa.hit} info={muallaqa.info} ar={{ x: 215, y: AR_Y, size: "sm" }} />
+    <text class="lbl" x="215" y={SUB_Y}>hung on someone else's wish</text>
+    <LicenceCard x={30} y={100} w={180} fields={[{ label: "to", value: "you" }, { label: "if", value: "so-and-so wishes" }]} />
+    <LicenceCard x={240} y={100} w={160} fields={[{ label: "to", value: "you" }, { label: "if", value: "you wish" }]} />
+    <text class="lbl sm" x="120" y="174">or: to whomever so-and-so wishes</text>
+    <g data-view-show="ibn-hajar">
+      <Pill x={120} y={210} state="reject" text="not valid" />
+    </g>
+    <g class="off" data-view-show="khatib">
+      <Pill x={120} y={210} state="support" text="allowed" />
+      <ViewTag cx={120} y={228} w={90} text="al-Khaṭīb" dashed />
+    </g>
+    <Pill x={320} y={210} state="accept" text="valid" />
+    <text class="lbl sm start" x="20" y="294">used by:</text>
+    {muallaqaUsers.map((u) => <Chip x={u.x} y={u.y} text={u.text} w={u.w} />)}
+  </svg>
+</div>
+<style>
+  .licence-scene .layer{text-anchor:start}
+  .reach{stroke:var(--line);stroke-width:1.6}
+  .stop{stroke-width:1.4}
+  .stop.all{fill:var(--fg);stroke:var(--fg)}
+  .stop.khatib{fill:var(--surface);stroke:var(--fg)}
+  .stop.none{fill:var(--surface);stroke:var(--gap);stroke-dasharray:2.5 2}
+  .rp.sm{font-size:11px}
+  /* the bracket is stretched by the view, so its stroke keeps its width; the view switch eases it */
+  .reach-b{transition:transform .6s ease}
+  .reach-b :global(.bracket){vector-effect:non-scaling-stroke}
+  .rank{stroke:var(--rule)}
+  .rankt{fill:var(--on-gold);font:600 11px var(--f-body)}
+  .licence-scene :global(.rankx text){font-size:11px;fill:var(--on-gold)}
+  .tie{stroke:var(--line);stroke-width:1.2;stroke-dasharray:3 3}
+</style>

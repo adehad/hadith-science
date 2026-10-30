@@ -1,0 +1,308 @@
+{
+  "division": "siyagh-al-ada",
+  "title": "Ṣiyagh al-adāʾ: the rest of the forms of transmission",
+  "scenes": [
+    {
+      "id": "heard",
+      "question": "Did ʿan mean he heard it?",
+      "terms": ["muanan"],
+      "summary": "A chain linked by ʿan, then a decision path of three questions (lived at the same time, a concealer, met at least once) with an outcome for each failure.",
+      "blocked_by": ["q1", "q2", "q4", "q7"],
+      "built_with_interim": true
+    },
+    {
+      "id": "permission",
+      "question": "Did he give permission?",
+      "terms": ["ijaza", "munawala", "ijaza-muayyana", "mukataba"],
+      "summary": "Four panels: permission and the ways it is given, munāwala with a ladder down to ijāza muʿayyana, handing over against sending with no permission, and the two meanings of mukātaba.",
+      "blocked_by": ["q1", "q3", "q7", "q10"],
+      "built_with_interim": true
+    },
+    {
+      "id": "licence",
+      "question": "Whom may a permission name?",
+      "terms": ["ijaza-majhul", "ijaza-madum", "ijaza-muallaqa"],
+      "summary": "Four cells: a strip from the narrowest permission to the loosest with a moving 'counts' bracket and Ibn al-Ṣalāḥ's ranking, then a licence card for each loose form.",
+      "blocked_by": ["q5", "q6", "q12"],
+      "built_with_interim": true
+    }
+  ],
+  "questions": [
+    {
+      "id": "q1",
+      "scene": null,
+      "question": "Should muʿanʿan have a scene of its own?",
+      "context": "Muʿanʿan is one term, but it is the division's own moon 1 and its test (§5.56) is a three-step decision with its own outcomes. A scene of one trigger is thin; folding it elsewhere mixes two ideas.",
+      "options": [
+        {
+          "id": "a",
+          "label": "Its own scene (three new scenes)",
+          "description": "'Did ʿan mean he heard it?' stands alone, matching moon 1. The chain and the decision path get a full four-panel row.",
+          "svg": "<svg viewBox='0 0 160 90' fill='none' stroke='currentColor' stroke-width='1.5'><rect x='4' y='10' width='46' height='70' rx='4'/><rect x='57' y='10' width='46' height='70' rx='4'/><rect x='110' y='10' width='46' height='70' rx='4'/><text x='27' y='50' font-size='9' text-anchor='middle' fill='currentColor' stroke='none'>ʿan</text><text x='80' y='50' font-size='9' text-anchor='middle' fill='currentColor' stroke='none'>leave</text><text x='133' y='50' font-size='9' text-anchor='middle' fill='currentColor' stroke='none'>forms</text></svg>",
+          "recommended": true
+        },
+        {
+          "id": "b",
+          "label": "Fold it into 'Did he give permission?'",
+          "description": "Two new scenes. Muʿanʿan becomes a fifth panel of the permission scene, with the decision path squeezed into one 260-wide panel.",
+          "svg": "<svg viewBox='0 0 160 90' fill='none' stroke='currentColor' stroke-width='1.5'><rect x='4' y='10' width='100' height='70' rx='4'/><line x1='84' y1='10' x2='84' y2='80'/><rect x='110' y='10' width='46' height='70' rx='4'/><text x='94' y='50' font-size='8' text-anchor='middle' fill='currentColor' stroke='none'>ʿan</text><text x='44' y='50' font-size='9' text-anchor='middle' fill='currentColor' stroke='none'>leave</text><text x='133' y='50' font-size='9' text-anchor='middle' fill='currentColor' stroke='none'>forms</text></svg>",
+          "recommended": false
+        }
+      ],
+      "interim": "a"
+    },
+    {
+      "id": "q2",
+      "scene": "heard",
+      "question": "Show 'living at the same time is enough' as an Other view?",
+      "context": "§5.56 states contemporaneity as the condition, then says a meeting is also required on the chosen opinion (ʿAlī ibn al-Madīnī, al-Bukhārī). Ibn Ḥajar's chosen view is the default.",
+      "options": [
+        {
+          "id": "a",
+          "label": "Two views",
+          "description": "In the 'contemporary' view the third question disappears and the spine runs straight to 'counted as heard', with a tag saying nothing then rules out a hidden mursal.",
+          "svg": "<svg viewBox='0 0 160 90' fill='none' stroke='currentColor' stroke-width='1.5'><path d='M20 30 l12 -12 l12 12 l-12 12z'/><path d='M70 30 l12 -12 l12 12 l-12 12z'/><path d='M120 30 l12 -12 l12 12 l-12 12z' stroke-dasharray='3 3'/><line x1='44' y1='30' x2='70' y2='30'/><path d='M94 30 Q132 60 150 30'/><rect x='110' y='60' width='44' height='16' rx='8'/></svg>",
+          "recommended": true
+        },
+        {
+          "id": "b",
+          "label": "No views; a label on the third question",
+          "description": "The third question always shows, with a small 'chosen view' tag and a note that some stop at the first condition.",
+          "svg": "<svg viewBox='0 0 160 90' fill='none' stroke='currentColor' stroke-width='1.5'><path d='M20 30 l12 -12 l12 12 l-12 12z'/><path d='M70 30 l12 -12 l12 12 l-12 12z'/><path d='M120 30 l12 -12 l12 12 l-12 12z'/><line x1='44' y1='30' x2='70' y2='30'/><line x1='94' y1='30' x2='120' y2='30'/><rect x='104' y='58' width='52' height='14' rx='7' stroke-dasharray='3 2'/></svg>",
+          "recommended": false
+        }
+      ],
+      "interim": "a"
+    },
+    {
+      "id": "q3",
+      "scene": "permission",
+      "question": "How to show the dispute over handing over a book with no permission?",
+      "context": "§5.55: most scholars do not count it; those who do compare it to sending a book, and a group of imams count a book sent without permission. Ibn Ḥajar only says he sees no strong difference between handing and sending. He gives no ruling of his own, so the default view is the majority's.",
+      "options": [
+        {
+          "id": "a",
+          "label": "Two views, the majority first",
+          "description": "Panel 3 shows handing = sending; its verdict pill is 'not counted' (most scholars) or, in the 'sending' view, a dashed 'counted' with 'a group of the ḥadīth imams'.",
+          "svg": "<svg viewBox='0 0 160 90' fill='none' stroke='currentColor' stroke-width='1.5'><rect x='14' y='20' width='22' height='16'/><line x1='40' y1='28' x2='60' y2='28'/><text x='80' y='32' font-size='14' text-anchor='middle' fill='currentColor' stroke='none'>=</text><rect x='100' y='20' width='22' height='16'/><line x1='126' y1='28' x2='150' y2='28' stroke-dasharray='3 3'/><rect x='48' y='58' width='64' height='16' rx='8'/><text x='80' y='70' font-size='8' text-anchor='middle' fill='currentColor' stroke='none'>not counted</text></svg>",
+          "recommended": true
+        },
+        {
+          "id": "b",
+          "label": "No views; both rulings as labelled rows",
+          "description": "Under handing = sending, two rows: 'most scholars: not counted' and 'a group of imams: counted'. Simpler, but a rival ruling then reads like a naming habit.",
+          "svg": "<svg viewBox='0 0 160 90' fill='none' stroke='currentColor' stroke-width='1.5'><rect x='14' y='14' width='22' height='16'/><text x='80' y='26' font-size='14' text-anchor='middle' fill='currentColor' stroke='none'>=</text><rect x='100' y='14' width='22' height='16'/><rect x='30' y='46' width='100' height='14' rx='7'/><rect x='30' y='66' width='100' height='14' rx='7' stroke-dasharray='3 2'/></svg>",
+          "recommended": false
+        }
+      ],
+      "interim": "a"
+    },
+    {
+      "id": "q4",
+      "scene": "heard",
+      "question": "The muʿanʿan scene's title.",
+      "context": "Scene titles are questions. The scene asks whether a link joined by ʿan counts as heard.",
+      "options": [
+        {
+          "id": "a",
+          "label": "Did ʿan mean he heard it?",
+          "description": "Speaks from the reader's side: what does this one word tell us.",
+          "svg": "<svg viewBox='0 0 160 90'><text x='80' y='50' font-size='11' text-anchor='middle' fill='currentColor'>Did ʿan mean he heard it?</text></svg>",
+          "recommended": true
+        },
+        {
+          "id": "b",
+          "label": "Is a chain of ʿan heard?",
+          "description": "Closer to the term itself (a chain of ʿan), a little more technical.",
+          "svg": "<svg viewBox='0 0 160 90'><text x='80' y='50' font-size='11' text-anchor='middle' fill='currentColor'>Is a chain of ʿan heard?</text></svg>",
+          "recommended": false
+        }
+      ],
+      "interim": "a"
+    },
+    {
+      "id": "q5",
+      "scene": "licence",
+      "question": "How to draw someone not yet born?",
+      "context": "Ijāza li-l-maʿdūm names someone who doesn't exist yet. Spec §3.2 has no such figure; the red dashed ghost already means a dropped link.",
+      "options": [
+        {
+          "id": "a",
+          "label": "A new dashed outline figure",
+          "description": "The narrator shape in a grey dashed outline, no fill, no scroll, no seal, in the legend as 'Not yet born'. Clearly not the red ghost.",
+          "svg": "<svg viewBox='0 0 160 90' fill='none' stroke='currentColor' stroke-width='1.5' stroke-dasharray='3 2'><circle cx='80' cy='30' r='10'/><path d='M62 70 Q62 46 80 46 Q98 46 98 70 Z'/></svg>",
+          "recommended": true
+        },
+        {
+          "id": "b",
+          "label": "The unknown figure with a label",
+          "description": "Reuse the majhūl figure (scroll, empty seal slot) with the label 'not yet born'. No new figure, but it says 'unknown', which is a different thing.",
+          "svg": "<svg viewBox='0 0 160 90' fill='none' stroke='currentColor' stroke-width='1.5'><circle cx='80' cy='26' r='10'/><path d='M62 66 Q62 42 80 42 Q98 42 98 66 Z'/><rect x='92' y='52' width='10' height='10' stroke-dasharray='2 2'/><text x='80' y='84' font-size='9' text-anchor='middle' fill='currentColor' stroke='none'>not yet born</text></svg>",
+          "recommended": false
+        }
+      ],
+      "interim": "a"
+    },
+    {
+      "id": "q6",
+      "scene": "licence",
+      "question": "Does al-Khaṭīb's view include the general permission?",
+      "context": "§5.58: 'al-Khaṭīb has permitted all of these forms bar the majhūl'. The list before it begins with ijāza ʿāmma, so 'all' seems to include it; delivery's ijaza-amma note already says al-Khaṭīb allowed it.",
+      "options": [
+        {
+          "id": "a",
+          "label": "Yes: the bracket covers the general forms too",
+          "description": "In al-Khaṭīb's view the 'counts' bracket stretches over every stop except 'unidentified'.",
+          "svg": "<svg viewBox='0 0 160 90' fill='none' stroke='currentColor' stroke-width='1.5'><line x1='10' y1='50' x2='150' y2='50'/><circle cx='15' cy='50' r='3'/><circle cx='37' cy='50' r='3'/><circle cx='59' cy='50' r='3'/><circle cx='81' cy='50' r='3'/><circle cx='103' cy='50' r='3' stroke-dasharray='2 2'/><circle cx='125' cy='50' r='3'/><circle cx='147' cy='50' r='3'/><path d='M10 36 V30 H86 V36'/><path d='M120 36 V30 H152 V36'/></svg>",
+          "recommended": true
+        },
+        {
+          "id": "b",
+          "label": "No: only the unborn and the conditional",
+          "description": "The bracket adds just the last two stops; the general forms stay outside in both views.",
+          "svg": "<svg viewBox='0 0 160 90' fill='none' stroke='currentColor' stroke-width='1.5'><line x1='10' y1='50' x2='150' y2='50'/><circle cx='15' cy='50' r='3'/><circle cx='37' cy='50' r='3'/><circle cx='59' cy='50' r='3'/><circle cx='81' cy='50' r='3'/><circle cx='103' cy='50' r='3' stroke-dasharray='2 2'/><circle cx='125' cy='50' r='3'/><circle cx='147' cy='50' r='3'/><path d='M10 36 V30 H20 V36'/><path d='M120 36 V30 H152 V36'/></svg>",
+          "recommended": false
+        }
+      ],
+      "interim": "a"
+    },
+    {
+      "id": "q7",
+      "scene": null,
+      "question": "Scene order in the division.",
+      "context": "The moons list muʿanʿan (moon 1) before the ways of receiving (moon 2); the book discusses munāwala and mukātaba (§5.55) before muʿanʿan (§5.56).",
+      "options": [
+        {
+          "id": "a",
+          "label": "Moon order: delivery, heard, permission, licence",
+          "description": "Follows the planet's moons, and ʿan picks up straight from the staircase's last step.",
+          "svg": "<svg viewBox='0 0 160 90'><text x='80' y='50' font-size='10' text-anchor='middle' fill='currentColor'>stairs · ʿan · leave · forms</text></svg>",
+          "recommended": true
+        },
+        {
+          "id": "b",
+          "label": "Book order: delivery, permission, heard, licence",
+          "description": "Follows §5.55–5.58 exactly, but splits the two permission scenes.",
+          "svg": "<svg viewBox='0 0 160 90'><text x='80' y='50' font-size='10' text-anchor='middle' fill='currentColor'>stairs · leave · ʿan · forms</text></svg>",
+          "recommended": false
+        }
+      ],
+      "interim": "a"
+    },
+    {
+      "id": "q8",
+      "scene": "delivery",
+      "question": "Delivery's moons now that muʿanʿan has a scene.",
+      "context": "Delivery declares moons [0, 1, 2]. It still draws ʿan (step 8) and the weaker ways, so it touches all three.",
+      "options": [
+        {
+          "id": "a",
+          "label": "Keep [0, 1, 2]",
+          "description": "Moon 1 then lists both delivery and the new heard scene.",
+          "svg": "<svg viewBox='0 0 160 90' fill='none' stroke='currentColor' stroke-width='1.5'><circle cx='30' cy='45' r='10'/><circle cx='80' cy='45' r='10'/><circle cx='130' cy='45' r='10'/><path d='M30 70 H130'/></svg>",
+          "recommended": true
+        },
+        {
+          "id": "b",
+          "label": "Narrow to [0, 2]",
+          "description": "Moon 1 points only at the new scene; delivery stays under the ranks and the ways of receiving.",
+          "svg": "<svg viewBox='0 0 160 90' fill='none' stroke='currentColor' stroke-width='1.5'><circle cx='30' cy='45' r='10'/><circle cx='80' cy='45' r='10' stroke-dasharray='3 2'/><circle cx='130' cy='45' r='10'/><path d='M30 70 H50 M110 70 H130'/></svg>",
+          "recommended": false
+        }
+      ],
+      "interim": "a"
+    },
+    {
+      "id": "q9",
+      "scene": "delivery",
+      "question": "Delivery, madinah view: the imlāʾ trigger is cut off in portrait.",
+      "context": "'best of all: dictated (imlāʾ)' rides above step 1. In the madinah view step 1 moves to the second column, so the label runs from x 113 to 280, past panel 1's edge at 220, and the portrait carousel cuts it. Nothing changes in this phase; this asks which fix to make.",
+      "options": [
+        {
+          "id": "a",
+          "label": "Wrap onto two lines",
+          "description": "'best of all:' over 'dictated (imlāʾ)', about 85 wide, so it fits inside step 1's column in every view. Same words, one line taller.",
+          "svg": "<svg viewBox='0 0 160 90' fill='none' stroke='currentColor' stroke-width='1.5'><rect x='60' y='40' width='44' height='46' rx='3'/><line x1='106' y1='4' x2='106' y2='86' stroke-dasharray='3 3'/><text x='62' y='18' font-size='8' fill='currentColor' stroke='none'>best of all:</text><text x='62' y='30' font-size='8' fill='currentColor' stroke='none'>dictated</text></svg>",
+          "recommended": true
+        },
+        {
+          "id": "b",
+          "label": "Shorten to 'best: dictated'",
+          "description": "One short line of about 70 units that fits the column. The transliteration imlāʾ moves into the popover only.",
+          "svg": "<svg viewBox='0 0 160 90' fill='none' stroke='currentColor' stroke-width='1.5'><rect x='60' y='40' width='44' height='46' rx='3'/><line x1='106' y1='4' x2='106' y2='86' stroke-dasharray='3 3'/><text x='62' y='30' font-size='8' fill='currentColor' stroke='none'>best: dictated</text></svg>",
+          "recommended": false
+        },
+        {
+          "id": "c",
+          "label": "Move it below step 1",
+          "description": "The label sits under step 1's words, inside the step, so it moves with the step and never leaves its column; the step gets a little taller.",
+          "svg": "<svg viewBox='0 0 160 90' fill='none' stroke='currentColor' stroke-width='1.5'><rect x='60' y='14' width='44' height='72' rx='3'/><line x1='106' y1='4' x2='106' y2='86' stroke-dasharray='3 3'/><text x='63' y='76' font-size='7' fill='currentColor' stroke='none'>dictated</text></svg>",
+          "recommended": false
+        }
+      ],
+      "interim": "none: Delivery is unchanged in this phase"
+    },
+    {
+      "id": "q10",
+      "scene": "permission",
+      "question": "Use the p.343 note on asking for an ijāza by letter?",
+      "context": "The owner's note: to this day one writes a letter asking and gets a reply with the ijāza (Shaykh Maʿan). It is a teacher's account, not the translation.",
+      "options": [
+        {
+          "id": "a",
+          "label": "Leave it a proposal",
+          "description": "The mukātaba panel draws only what §5.55 says: two letters and two usages.",
+          "svg": "<svg viewBox='0 0 160 90' fill='none' stroke='currentColor' stroke-width='1.5'><rect x='30' y='30' width='40' height='28'/><path d='M30 30 l20 14 l20 -14'/><rect x='90' y='30' width='40' height='28'/><path d='M90 30 l20 14 l20 -14'/></svg>",
+          "recommended": true
+        },
+        {
+          "id": "b",
+          "label": "Draw it as an illustration",
+          "description": "A small 'letter asking, letter granting' pair under the panel, labelled as the owner's teacher's account.",
+          "svg": "<svg viewBox='0 0 160 90' fill='none' stroke='currentColor' stroke-width='1.5'><rect x='20' y='30' width='36' height='24'/><path d='M60 42 H100' /><rect x='104' y='30' width='36' height='24'/><circle cx='132' cy='50' r='5'/></svg>",
+          "recommended": false
+        }
+      ],
+      "interim": "a"
+    },
+    {
+      "id": "q11",
+      "scene": null,
+      "question": "Rule on the five translation slips (§9 of the design).",
+      "context": "§5.55 'specification and personage', 'ownership or lease … transfer it and study it'; §5.58 the '[permission is required]' brackets, 'whoever you bore', and 'the attached' form.",
+      "options": [
+        {
+          "id": "a",
+          "label": "Neutral wording until a ruling",
+          "description": "The site uses the wording given in the design's slips table, which avoids the doubtful reading.",
+          "svg": "<svg viewBox='0 0 160 90'><text x='80' y='50' font-size='10' text-anchor='middle' fill='currentColor'>neutral wording</text></svg>",
+          "recommended": true
+        }
+      ],
+      "interim": "a"
+    },
+    {
+      "id": "q12",
+      "scene": "licence",
+      "question": "Change ijaza-madum's glossary definition?",
+      "context": "terms.yaml's def gives 'whoever will be born to you' as the example; that is the form joined to a living person, which §5.58 treats as a separate case. The translation's plain example is 'whom shall soon be born'.",
+      "options": [
+        {
+          "id": "a",
+          "label": "Use the unattached example",
+          "description": "Def: permission to someone not yet born, such as 'whoever shall be born'; Ibn Ḥajar holds it invalid, even joined to someone living.",
+          "svg": "<svg viewBox='0 0 160 90'><text x='80' y='50' font-size='10' text-anchor='middle' fill='currentColor'>“whoever shall be born”</text></svg>",
+          "recommended": true
+        },
+        {
+          "id": "b",
+          "label": "Keep the def",
+          "description": "The glossary keeps 'whoever will be born to you'; only the scene note separates the two cases.",
+          "svg": "<svg viewBox='0 0 160 90'><text x='80' y='50' font-size='10' text-anchor='middle' fill='currentColor'>“… born to you”</text></svg>",
+          "recommended": false
+        }
+      ],
+      "interim": "a"
+    }
+  ]
+}

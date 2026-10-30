@@ -615,6 +615,107 @@
     - { id: steps-3-4, label: Steps 3–4, x0: 220, x1: 430 }
     - { id: steps-5-6, label: Steps 5–6, x0: 430, x1: 640 }
     - { id: steps-7-8, label: Steps 7–8, x0: 640, x1: 860 }
+- id: heard
+  division: siyagh-al-ada
+  moons: [1]
+  order: 2
+  title: Did ʿan mean he heard it?
+  eyebrow: A chain joined by ʿan · §5.55–5.56
+  lede: The word ʿan says neither that a narrator heard the report nor that he did not. A chain joined by it counts as heard when the two in each link lived at the same time and the narrator is no concealer. Ibn Ḥajar's chosen view asks one thing more, that the two are known to have met, even once.
+  source: §5.55 ʿAn and its likes, §5.56 Muʿanʿan
+  diagram: Heard
+  width: 1040
+  captions:
+    - term: muanan
+      note: "A chain joined throughout by ʿan, a word that could mean he heard, had permission, or did not hear at all. Between two who lived at the same time it counts as heard; between two who did not, the report is mursal or munqaṭiʿ; from a concealer it does not count. Ibn Ḥajar's chosen view, with ʿAlī ibn al-Madīnī and al-Bukhārī, also asks for proof that they met, even once (§5.55–5.56)."
+  views:
+    - id: ibn-hajar
+      label: "Ibn Ḥajar: they met at least once"
+      scholars: §5.56; with ʿAlī ibn al-Madīnī, al-Bukhārī and others
+      note: "Living at the same time is not enough: there must be evidence that the two met, even once, so that the chain is kept clear of a hidden mursal. Ibn Ḥajar calls this the chosen opinion."
+    - id: contemporary
+      label: Living at the same time is enough
+      scholars: §5.56
+      note: "The first condition alone: ʿan between two who lived at the same time counts as heard, unless the narrator is a concealer. No meeting has to be shown, so nothing rules out a hidden mursal."
+  panels:
+    - { id: chain, label: A chain of ʿan, x0: 0, x1: 260 }
+    - { id: same-time, label: Lived at the same time?, x0: 260, x1: 520 }
+    - { id: concealer, label: A concealer?, x0: 520, x1: 780 }
+    - { id: met, label: "Met, even once?", x0: 780, x1: 1040 }
+  extra:
+    - title: The illustration
+      section: §5.56
+      note: "The book names no chain for this; the chain and the lifespans are an illustration of its three conditions."
+- id: permission
+  division: siyagh-al-ada
+  moons: [2]
+  order: 3
+  title: Did he give permission?
+  eyebrow: Permission, handing over and letters · §5.55
+  lede: Most of the weaker ways of receiving count only if the teacher gives permission to narrate. Handing the student his book with that permission is its highest form. Without permission, most scholars do not count a book handed over, and Ibn Ḥajar sees little difference between that and a book sent. A letter is mukātaba, though earlier and later scholars use the word differently.
+  source: §5.55 Mukātaba and munāwala, §5.57 Wijāda and waṣiyya, §5.58 Iʿlām and ijāza
+  diagram: Permission
+  width: 1040
+  captions:
+    - term: ijaza
+      note: "A teacher's permission to narrate his reports. Given by word of mouth it is called mushāfaha, and in writing, in the later scholars' usage, mukātaba. Wijāda and iʿlām count only with it, and for most scholars waṣiyya and munāwala too. Even the specified kind is strongly disputed, though the later scholars accept it, and all agree it is below hearing (§5.55, §5.57–5.58)."
+    - term: munawala
+      note: "The teacher gives the student his original manuscript or one checked against it, or the student is shown the teacher's original, and the teacher tells him these are his narrations, to narrate from him. With that permission, and the copy left in the student's hands to work from, it is the highest ijāza, since it is specific and in person (§5.55)."
+    - term: ijaza-muayyana
+      note: "Specified permission: the teacher permits a particular book of his and says how it is to be narrated. A munāwala whose copy is taken straight back is no longer the highest ijāza, but still ranks above this. Its acceptance is strongly disputed, though the later scholars accept it, and all agree it is below hearing (§5.55, §5.58)."
+    - term: mukataba
+      note: "Correspondence. The later scholars use it for permission given in writing. The earlier scholars kept the word for a teacher writing out ḥadīth for his student, whether or not he also gave permission, and did not call a letter that carries permission alone mukātaba (§5.55)."
+  views:
+    - id: majority
+      label: "Most scholars: not without permission"
+      scholars: §5.55
+      note: "Most scholars do not count a munāwala that comes with no permission. Ibn Ḥajar sees no strong difference between handing a book over and sending one from land to land when neither carries permission."
+    - id: sending
+      label: "Some imams: like a book sent"
+      scholars: §5.55
+      note: "Those who allow it compare it to sending a book from one land to another, and a group of the ḥadīth imams count a book sent even without permission, as if the sending itself were a sign of permission."
+  panels:
+    - { id: ijaza, label: Permission, x0: 0, x1: 260 }
+    - { id: handing, label: Handing over, x0: 260, x1: 520 }
+    - { id: no-permission, label: Without permission, x0: 520, x1: 780 }
+    - { id: letters, label: By letter, x0: 780, x1: 1040 }
+  extra:
+    - title: The illustration
+      section: §5.55
+      note: "The book names no teacher or student for these forms; the figures are an illustration."
+- id: licence
+  division: siyagh-al-ada
+  moons: [2]
+  order: 4
+  title: Whom may a permission name?
+  eyebrow: The loose forms of permission · §5.58
+  lede: A permission names a student and a book. Some teachers gave it far more loosely, to everyone, to someone unidentified, to someone not yet born, or on someone else's wish. Ibn Ḥajar counts none of these; al-Khaṭīb allowed all but the unidentified. Even at best they are far weaker than hearing, though better than a muʿḍal report.
+  source: §5.58 Ijāza ʿāmma, li-l-majhūl, li-l-maʿdūm and muʿallaqa
+  diagram: Licence
+  width: 860
+  captions:
+    - term: ijaza-majhul
+      note: "Permission that names someone who is not identified, or a book that is not identified. It does not count. al-Khaṭīb, who allowed the other loose forms and cited a group of his shaykhs for them, made an exception of this one (§5.58)."
+    - term: ijaza-madum
+      note: "Permission to someone not yet born, as in “whom shall soon be born”. Some say it is valid when joined to someone living, as in permission to you and whoever is born to you. Ibn Ḥajar: nearer the truth, it is not valid either. Abū Bakr ibn Abī Dāwūd and Abū ʿAbd Allāh ibn Manda used it (§5.58)."
+    - term: ijaza-muallaqa
+      note: "Permission that hangs on someone else's wish: to you if so-and-so wishes, or to whomever so-and-so wishes. It does not count, unlike permission to you if you wish. Abū Bakr ibn Abī Khaythama used it, and al-Khaṭīb allowed it, as he did the unborn and the general forms (§5.58)."
+  views:
+    - id: ibn-hajar
+      label: "Ibn Ḥajar: none of them counts"
+      scholars: §5.58
+      note: "The correct opinion is that none of these forms counts: not the general ones, the unidentified, the unborn or the conditional. Of the general forms, permission to the people of one land comes nearest, being the most restricted."
+    - id: khatib
+      label: "al-Khaṭīb: all but the unidentified"
+      scholars: §5.58; with a group of his shaykhs
+      note: "al-Khaṭīb allowed every one of these forms except permission to someone or something unidentified, citing a group of his shaykhs for it. Many others allowed the general permission."
+  extra:
+    - title: The ranking
+      section: §5.58
+      note: "As Ibn al-Ṣalāḥ says, all these forms are a disliked leniency. Even specified permission is strongly disputed, though the later scholars accept it, and all agree it is below hearing, so these forms are much weaker still. Yet they are better than narrating the report muʿḍal. Many scholars allowed the general permission, so many that some ḥāfiẓs gathered them in a book in alphabetical order."
+    - title: The illustrations
+      section: §5.58
+      note: "The book names no one who received these permissions; the cards and figures are illustrations of its formulas."
 - id: names
   division: al-asma
   moons: [0, 1, 2]

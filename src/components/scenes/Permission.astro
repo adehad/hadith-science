@@ -1,0 +1,187 @@
+---
+// "Did he give permission?" (phase 3 Ṣiyagh al-adāʾ design §4): ijāza, munāwala, ijāza muʿayyana and mukātaba
+// (§5.55, with §5.57–5.58 for the ways that need permission). Four panels of one 1040-wide row, so it carousels:
+//   1  permission itself: a sealed licence passing from teacher to student, given by word of mouth or in writing,
+//      and the weaker ways that need it, wijāda and iʿlām always, waṣiyya and munāwala for most (§5.57–5.58)
+//   2  munāwala: the teacher hands over his book and says "narrate them from me"; a ladder of three rungs in the
+//      book's order: kept with permission, taken back with permission, then ijāza muʿayyana
+//   3  no permission: a book handed over "=" a book sent from land to land, since Ibn Ḥajar sees no strong
+//      difference; the verdict is the view: most scholars do not count the book handed over (§5.55 says the
+//      majority only of munāwala); a group of imams count a book sent, and those who allow munāwala compare it
+//   4  mukātaba: a letter of ḥadīth written out and a letter of permission alone, against the earlier and later
+//      scholars' usage
+// The book names no teacher or student, so the figures are an illustration. The ladder shows order only.
+// Motion: the hand-over arrows flow and the rungs come in one after another, once. Each resting style is the end
+// state, so with motion stopped every rung shows and nothing flows.
+import Defs from "../svg/Defs.astro";
+import Narrator from "../svg/Narrator.astro";
+import Arrow from "../svg/Arrow.astro";
+import Glyph from "../svg/Glyph.astro";
+import LicenceCard from "../svg/LicenceCard.astro";
+import Pill from "../svg/Pill.astro";
+import SpeechBubble from "../svg/SpeechBubble.astro";
+import TermTitle from "../svg/TermTitle.astro";
+import ViewTag from "../svg/ViewTag.astro";
+import XLink from "../svg/XLink.astro";
+import { FIG, RELIABLE } from "../svg/figures";
+import { SUBT_TRIGGER, rowTrigger, titleTrigger } from "../svg/geom";
+import { cap, type DiagramProps } from "../../lib/scene";
+import { stagger } from "../../lib/kit";
+import { stepFill } from "../../lib/staircase";
+
+type Props = DiagramProps;
+const { caps, scene } = Astro.props;
+
+const W = 1040, H = 470;
+const VIEW_IDS = ["majority", "sending"];
+if ((scene.views ?? []).map((v) => v.id).join() !== VIEW_IDS.join()) throw new Error(`Permission: expected views ${VIEW_IDS.join(", ")}`);
+if ((scene.panels ?? []).length !== 4) throw new Error("Permission: expected four panels");
+
+const TITLE_Y = 30, AR_Y = 54;
+function title(slug: string, cx: number, extra = 0) {
+  const c = cap(caps, slug);
+  return { c, cx, ...titleTrigger(c.translit, cx, TITLE_Y, { ...SUBT_TRIGGER, extra }) };
+}
+const ijaza = title("ijaza", 130, 2);
+const munawala = title("munawala", 390, 3);
+const mukataba = title("mukataba", 910, 3);
+const TEACHER = { ...FIG.later, ...RELIABLE };
+
+// ---- panel 2: the ladder, highest first ----
+const RUNG = { x0: 276, x1: 504, y0: 224, h: 42, gap: 6 };
+const rungY = (i: number) => RUNG.y0 + i * (RUNG.h + RUNG.gap);
+const RUNGS = [
+  { line: "with permission, his to keep", sub: "the highest ijāza" },
+  { line: "with permission, taken back at once", sub: "below that, above the next" },
+  { line: "", sub: "a named book, the way named" },
+];
+const muayyana = (() => {
+  const c = cap(caps, "ijaza-muayyana");
+  const y = rungY(2) + 18;
+  return { c, x: 288, y, ...rowTrigger(c.translit, 288, y) };
+})();
+
+// ---- panel 4: two letters against two usages ----
+const COL = { early: 948, late: 1004 };
+const LETTERS = [
+  { y: 150, text: "ḥadīth written out", seal: false, early: "check", late: "check" },
+  { y: 192, text: "permission alone", seal: true, early: "cross", late: "check" },
+] as const;
+---
+<svg viewBox={`0 0 ${W} ${H}`} class="permission" role="group" aria-label="Four panels on the teacher's permission to narrate. Ijāza: a sealed permission passes from teacher to student, by word of mouth or in writing; wijāda and iʿlām count only with it, and for most scholars waṣiyya and munāwala too; all agree specified permission is below hearing. Munāwala: the teacher hands over his book and says narrate them from me; kept with permission it is the highest ijāza, taken back at once it ranks lower, and above ijāza muʿayyana, a named book with the way named. Without permission, most scholars do not count a book handed over, and Ibn Ḥajar sees no strong difference between that and a book sent from land to land. Mukātaba: the earlier scholars used the word for ḥadīth written out for a student, the later scholars also for a written permission alone.">
+  <Defs />
+  <line class="divider" x1="260" x2="260" y1="12" y2={H - 12} />
+  <line class="divider" x1="520" x2="520" y1="12" y2={H - 12} />
+  <line class="divider" x1="780" x2="780" y1="12" y2={H - 12} />
+
+  {/* ---- panel 1: permission ---- */}
+  <TermTitle c={ijaza.c} x={ijaza.cx} y={TITLE_Y} cls="subt" hit={ijaza.hit} info={ijaza.info} ar={{ x: 130, y: AR_Y, size: "sm" }} />
+  <Arrow x1={52} y1={112} x2={204} y2={112} />
+  <Narrator x={34} y={112} k={0.6} {...TEACHER} label="Teacher" />
+  <Narrator x={226} y={112} k={0.6} {...FIG.later} label="Student" />
+  <LicenceCard x={80} y={92} w={100} />
+  <text class="lbl sm role" x="34" y="139">teacher</text>
+  <text class="lbl sm role" x="226" y="139">student</text>
+  <text class="layer" x="16" y="182">Given</text>
+  <g aria-hidden="true">
+    <circle class="head" cx="22" cy="202" r="4" /><circle class="head" cx="33" cy="202" r="4" />
+  </g>
+  <XLink to="siyagh-al-ada/delivery#shafahani" lead="by word of mouth: " text="the sixth step" x={46} y={206} />
+  <Glyph kind="letter" cx={27} cy={228} r={8} />
+  <XLink to="siyagh-al-ada/delivery#kataba-ilayya" lead="in writing: " text="the seventh step" x={46} y={232} />
+  <text class="layer" x="16" y="272">Counts only with it</text>
+  <XLink to="siyagh-al-ada/delivery#wijada" lead="found in his hand: " text="wijāda" x={16} y={296} />
+  <XLink to="siyagh-al-ada/delivery#ilam" lead="told he narrates a book: " text="iʿlām" x={16} y={318} />
+  <text class="layer" x="16" y="346">And, for most</text>
+  <XLink to="siyagh-al-ada/delivery#wasiyya" lead="books bequeathed: " text="waṣiyya" x={16} y={370} />
+  <text class="lbl start sm" x="16" y="390">a book handed over: munāwala</text>
+  <text class="lbl sm" x="130" y="420">all agree: specified permission</text>
+  <text class="lbl sm" x="130" y="434">is below hearing</text>
+  <text class="lbl sm" x="130" y="458">an illustration: the book names no example</text>
+
+  {/* ---- panel 2: munāwala ---- */}
+  <TermTitle c={munawala.c} x={munawala.cx} y={TITLE_Y} cls="subt" hit={munawala.hit} info={munawala.info} ar={{ x: 390, y: AR_Y, size: "sm" }} />
+  <Arrow x1={306} y1={152} x2={472} y2={152} />
+  <circle class="bookbg" cx="400" cy="152" r="11" aria-hidden="true" />
+  <Glyph kind="book" cx={400} cy={152} r={9} />
+  <Narrator x={288} y={152} k={0.6} {...TEACHER} />
+  <Narrator x={492} y={152} k={0.6} {...FIG.later} />
+  <SpeechBubble x={288} y={120} en="“narrate them from me”" />
+  <text class="lbl sm" x="390" y="190">his own copy, or a checked one;</text>
+  <text class="lbl sm" x="390" y="204">or the teacher's original is shown</text>
+  {RUNGS.map((r, i) => (
+    <g class="m-enter" style={`--d:${stagger(i, { start: 0.3, step: 0.15 })}`}>
+      <rect class="rung" x={RUNG.x0} y={rungY(i)} width={RUNG.x1 - RUNG.x0} height={RUNG.h} rx="6" style={`fill:${stepFill(i * 2)}`} />
+      {r.line && <text class="rungt" x={RUNG.x0 + 12} y={rungY(i) + 18}>{r.line}</text>}
+      <text class="rungs" x={RUNG.x0 + 12} y={rungY(i) + 33}>{r.sub}</text>
+    </g>
+  ))}
+  <TermTitle c={muayyana.c} x={muayyana.x} y={muayyana.y} cls="rt" hit={muayyana.hit} info={muayyana.info} />
+  <text class="lbl sm" x="390" y="384">ranked as the book ranks them</text>
+
+  {/* ---- panel 3: no permission ---- */}
+  <text class="subt" x="650" y={TITLE_Y}>Without permission</text>
+  <text class="lbl" x="650" y={AR_Y}>a book handed over, or sent</text>
+  <Arrow x1={562} y1={120} x2={604} y2={120} />
+  <Narrator x={548} y={120} k={0.5} {...TEACHER} />
+  <Narrator x={618} y={120} k={0.5} {...FIG.later} />
+  <circle class="bookbg" cx="583" cy="104" r="9" aria-hidden="true" />
+  <Glyph kind="book" cx={583} cy={104} r={7} />
+  <text class="lbl sm" x="583" y="152">handed over</text>
+  <text class="eq" x="650" y="126" aria-hidden="true">=</text>
+  <Arrow x1={676} y1={120} x2={764} y2={120} />
+  <circle class="bookbg" cx="720" cy="120" r="10" aria-hidden="true" />
+  <Glyph kind="book" cx={720} cy={120} r={8} />
+  <text class="lbl sm" x="720" y="152">sent from</text>
+  <text class="lbl sm" x="720" y="166">land to land</text>
+  <text class="lbl" x="650" y="198">Ibn Ḥajar: no strong</text>
+  <text class="lbl" x="650" y="213">difference between them</text>
+  <g data-view-show="majority">
+    <Pill x={583} y={252} state="reject" text="not counted" />
+    <text class="lbl sm" x="583" y="280">most scholars:</text>
+    <text class="lbl sm" x="583" y="294">a book handed over</text>
+  </g>
+  <g class="off" data-view-show="sending">
+    <Pill x={583} y={252} state="support" text="counted" />
+    <Pill x={720} y={252} state="support" text="counted" />
+    <ViewTag cx={650} y={278} w={184} text="a group of the ḥadīth imams" dashed />
+    <text class="lbl sm" x="650" y="324">a book sent counts even without</text>
+    <text class="lbl sm" x="650" y="338">permission: the sending itself</text>
+    <text class="lbl sm" x="650" y="352">is a sign of it; handing over is</text>
+    <text class="lbl sm" x="650" y="366">compared to it</text>
+  </g>
+
+  {/* ---- panel 4: mukātaba ---- */}
+  <TermTitle c={mukataba.c} x={mukataba.cx} y={TITLE_Y} cls="subt" hit={mukataba.hit} info={mukataba.info} ar={{ x: 910, y: AR_Y, size: "sm" }} />
+  <text class="lbl" x="910" y="78">correspondence</text>
+  <text class="colh" x={COL.early} y="118">earlier</text>
+  <text class="colh" x={COL.late} y="118">later</text>
+  {LETTERS.map((l) => (
+    <>
+      <Glyph kind="letter" cx={802} cy={l.y} r={10} />
+      {l.seal && <circle class="lsmall" cx="810" cy={l.y + 6} r="3.6" aria-hidden="true" />}
+      <text class="lbl start sm" x="820" y={l.y + 4}>{l.text}</text>
+      <Glyph kind={l.early} cx={COL.early} cy={l.y} r={8} />
+      <Glyph kind={l.late} cx={COL.late} cy={l.y} r={8} />
+    </>
+  ))}
+  <text class="lbl sm" x="910" y="242">earlier scholars: only a teacher</text>
+  <text class="lbl sm" x="910" y="257">writing ḥadīth out for his student,</text>
+  <text class="lbl sm" x="910" y="272">with permission or without</text>
+  <text class="lbl sm" x="910" y="302">later scholars: a permission</text>
+  <text class="lbl sm" x="910" y="317">given in writing, too</text>
+  <XLink to="siyagh-al-ada/delivery#kataba-ilayya" lead="with ijāza: " text="the seventh step" x={910} y={356} anchor="middle" />
+</svg>
+<style>
+  /* in Labels mode the figures name themselves (Teacher, Student) where these words stand */
+  :global(:root[data-mode="labels"]) .role{display:none}
+  .head{fill:var(--fg)}
+  .bookbg{fill:var(--surface)}
+  .eq{fill:var(--fg);font:700 24px var(--f-display);text-anchor:middle}
+  .rung{stroke:var(--rule)}
+  .rungt{fill:var(--on-gold);font:700 12px var(--f-body)}
+  .rungs{fill:var(--on-gold);font:600 11px var(--f-body)}
+  .permission :global(.rt){fill:var(--on-gold)}
+  .colh{fill:var(--fg);font:700 11px var(--f-body);text-anchor:middle}
+  .lsmall{fill:var(--seal)}
+</style>

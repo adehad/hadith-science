@@ -215,6 +215,15 @@ The figure key from the mockup's "Reading a narrator" becomes `/narrators/`.
 | Does the doubt harm it? (`doubts`) | 5.52–5.53 | Three panels: al-Bukhārī's unspecified "Aḥmad" splitting into two reliable men; a shaykh who denies outright; and a shaykh who does not recall, with the Suhayl loop | Ibn Ḥajar: accepted; Some: not accepted |
 | What runs through every link? (`chained`) | 5.54 | Three panels: chains with the same tag at every link, and the Awwaliyya chain, whose tags stop at Sufyān ibn ʿUyayna (not yet built) | none |
 
+**Phase 3: division 6** (Ṣiyagh al-adāʾ), designed in `docs/superpowers/specs/2026-10-29-phase-3-siyagh-design.md`. The phase 2 `delivery` scene stays as it was, first:
+
+| Scene | § | Form | Views |
+|---|---|---|---|
+| How was it received? (`delivery`) | 5.55–5.58 | Ranked staircase of the eight delivery words, with the weaker ways below the stairs (phase 2, unchanged) | Ibn Ḥajar's ranking; Some scholars of Madīna; al-Bukhārī and many others |
+| Did ʿan mean he heard it? (`heard`) | 5.55–5.56 | A chain linked by ʿan, then a decision path in the acted-on pattern: lived at the same time, a concealer, known to have met | Ibn Ḥajar: they met at least once; Living at the same time is enough |
+| Did he give permission? (`permission`) | 5.55, 5.57–5.58 | Four panels: a sealed licence and the ways that need it, munāwala with a ladder down to ijāza muʿayyana, handing over against sending with no permission, and the two usages of mukātaba | Most scholars: not without permission; Some imams: like a book sent |
+| Whom may a permission name? (`licence`) | 5.58 | Four cells: seven stops from the narrowest permission to the loosest under a "counts" bracket that moves per view, with Ibn al-Ṣalāḥ's ranking, then a licence card for the unidentified, the unborn and the conditional | Ibn Ḥajar: none of them counts; al-Khaṭīb: all but the unidentified |
+
 - Each division gets its own short design pass, written as a design doc in `docs/superpowers/specs/`. It is then built on its own branch and reviewed through its PR preview. At the owner's request, to keep development moving, this replaces the earlier step of a mockup in the concept artifact.
 - Design rules for every scene:
   - Prefer a real worked example from the book over a generic one.
