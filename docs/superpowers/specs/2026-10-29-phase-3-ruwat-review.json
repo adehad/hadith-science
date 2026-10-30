@@ -1,0 +1,441 @@
+{
+  "division": "marifat-al-ruwat",
+  "title": "Maʿrifat al-ruwāt: knowing the narrators",
+  "scenes": [
+    {
+      "id": "generations",
+      "question": "When and where did he live?",
+      "terms": [
+        "tabaqa",
+        "mawalid-wa-wafayat",
+        "awtan"
+      ],
+      "summary": "Three panels: the Companions grouped as one generation and as several with Anas ibn Mālik in two, lifespan bars that never meet under a claim to have met, and one name in two towns.",
+      "blocked_by": [
+        "q1",
+        "q2"
+      ]
+    },
+    {
+      "id": "ranks",
+      "question": "What did the critics call him?",
+      "terms": [
+        "maratib-al-tadil",
+        "awthaq-al-nas",
+        "thiqa",
+        "shaykh",
+        "maratib-al-jarh",
+        "layyin",
+        "daif",
+        "munkar-al-hadith",
+        "kadhdhab",
+        "akdhab-al-nas"
+      ],
+      "summary": "Two cells that read as one scale: praise from the highest down, then criticism from the mildest down to the worst.",
+      "blocked_by": [
+        "q3",
+        "q4",
+        "q5"
+      ]
+    },
+    {
+      "id": "verdicts",
+      "question": "Whose verdict counts?",
+      "terms": [
+        "tadil",
+        "jarh",
+        "jarh-mufassar"
+      ],
+      "summary": "Three panels: one critic adds a seal, one cracks a seal, and two balance scales for praise against criticism, with three views from §5.64.",
+      "blocked_by": [
+        "q6"
+      ]
+    },
+    {
+      "id": "aliases",
+      "question": "What is he called?",
+      "terms": [
+        "kunya",
+        "laqab",
+        "nisba",
+        "mawla",
+        "mufradat",
+        "ikhwa"
+      ],
+      "summary": "Eight cells, one per way a narrator is named, using the book's examples from Abū Isḥāq to ʿImrān from ʿImrān from ʿImrān.",
+      "blocked_by": [
+        "q7",
+        "q8"
+      ]
+    },
+    {
+      "id": "study",
+      "question": "How is it learned and taught?",
+      "terms": [
+        "adab-al-shaykh-wa-al-talib",
+        "tahammul",
+        "ada",
+        "kitabat-al-hadith",
+        "ard",
+        "rihla"
+      ],
+      "summary": "Four cells: teacher and student, the age to receive and to pass on, writing and checking a copy, and travel.",
+      "blocked_by": [
+        "q9",
+        "q10"
+      ]
+    },
+    {
+      "id": "books",
+      "question": "What kind of book is it?",
+      "terms": [
+        "masanid",
+        "abwab",
+        "ilal",
+        "atraf",
+        "asbab-al-hadith"
+      ],
+      "summary": "Six cells: a sorter by how a book is arranged, then musnad, chapters, hidden flaws, indexes, and the reasons behind a ḥadīth.",
+      "blocked_by": [
+        "q11"
+      ]
+    }
+  ],
+  "questions": [
+    {
+      "id": "q1",
+      "scene": "generations",
+      "question": "How should panel 2 show the false claim to have met someone?",
+      "context": "§5.62 says birth and death dates expose a claim to have met someone; the translation quotes no claim.",
+      "options": [
+        {
+          "id": "a",
+          "label": "Speech bubble",
+          "description": "The narrator says “I met him” in a bubble labelled as an illustration, crossed out once the two lifespan bars show no overlap.",
+          "svg": "<svg viewBox=\"0 0 160 90\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><rect x=\"15\" y=\"20\" width=\"55\" height=\"7\" rx=\"3.5\"/><rect x=\"95\" y=\"34\" width=\"50\" height=\"7\" rx=\"3.5\"/><circle cx=\"40\" cy=\"67\" r=\"3.5999999999999996\"/><path d=\"M34 81 Q34 73 40 73 Q46 73 46 81Z\"/><rect x=\"55\" y=\"52\" width=\"60\" height=\"18\" rx=\"6\"/><text x=\"85\" y=\"64\" font-size=\"8\" fill=\"currentColor\" stroke=\"none\" text-anchor=\"middle\">I met him</text><path d=\"M118 50l12 12M130 50l-12 12\"/></svg>",
+          "recommended": true
+        },
+        {
+          "id": "b",
+          "label": "Label only",
+          "description": "No bubble: the plain label “claims to have met him” under the bars, with the cross beside it.",
+          "svg": "<svg viewBox=\"0 0 160 90\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><rect x=\"15\" y=\"20\" width=\"55\" height=\"7\" rx=\"3.5\"/><rect x=\"95\" y=\"34\" width=\"50\" height=\"7\" rx=\"3.5\"/><circle cx=\"40\" cy=\"67\" r=\"3.5999999999999996\"/><path d=\"M34 81 Q34 73 40 73 Q46 73 46 81Z\"/><text x=\"100\" y=\"70\" font-size=\"7\" fill=\"currentColor\" stroke=\"none\" text-anchor=\"middle\">claims to have met him</text></svg>",
+          "recommended": false
+        }
+      ],
+      "interim": "a"
+    },
+    {
+      "id": "q2",
+      "scene": "generations",
+      "question": "How should Ibn Ḥibbān's and Ibn Saʿd's groupings of the Companions be shown?",
+      "context": "§5.62 gives both ways (one generation by companionship; many by other factors) and says each has its reason, preferring neither.",
+      "options": [
+        {
+          "id": "a",
+          "label": "Side by side",
+          "description": "Two columns in panel 1: one band of Companions, and three bands with Anas ibn Mālik straddling two.",
+          "svg": "<svg viewBox=\"0 0 160 90\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><rect x=\"15\" y=\"15\" width=\"50\" height=\"65\" rx=\"6\"/><rect x=\"95\" y=\"15\" width=\"50\" height=\"20\" rx=\"4\"/><rect x=\"95\" y=\"38\" width=\"50\" height=\"20\" rx=\"4\"/><rect x=\"95\" y=\"61\" width=\"50\" height=\"19\" rx=\"4\"/><circle cx=\"120\" cy=\"36\" r=\"4\" fill=\"currentColor\"/></svg>",
+          "recommended": true
+        },
+        {
+          "id": "b",
+          "label": "Other views",
+          "description": "One column that switches between the two groupings with the Other views buttons.",
+          "svg": "<svg viewBox=\"0 0 160 90\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><rect x=\"55\" y=\"15\" width=\"50\" height=\"65\" rx=\"6\" stroke-dasharray=\"4 3\"/><text x=\"80\" y=\"50\" font-size=\"16\" fill=\"currentColor\" stroke=\"none\" text-anchor=\"middle\">⇄</text></svg>",
+          "recommended": false
+        }
+      ],
+      "interim": "a"
+    },
+    {
+      "id": "q3",
+      "scene": "ranks",
+      "question": "Where does fīhi maqāl go?",
+      "context": "The translation lists it with the mildest words and again with ḍaʿīf. The owner's p.377 highlight reads it as the minimum level.",
+      "options": [
+        {
+          "id": "a",
+          "label": "Mildest only",
+          "description": "It appears once, on the mildest rung (layyin).",
+          "svg": "<svg viewBox=\"0 0 160 90\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><rect x=\"20\" y=\"15\" width=\"120\" height=\"18\" rx=\"4\"/><rect x=\"20\" y=\"40\" width=\"120\" height=\"18\" rx=\"4\"/><rect x=\"20\" y=\"65\" width=\"120\" height=\"18\" rx=\"4\"/><text x=\"80\" y=\"27\" font-size=\"7\" fill=\"currentColor\" stroke=\"none\" text-anchor=\"middle\">layyin · fīhi maqāl</text><text x=\"80\" y=\"52\" font-size=\"7\" fill=\"currentColor\" stroke=\"none\" text-anchor=\"middle\">ḍaʿīf</text></svg>",
+          "recommended": true
+        },
+        {
+          "id": "b",
+          "label": "Both places",
+          "description": "It appears on both rungs, with a small “?” noting the duplicate.",
+          "svg": "<svg viewBox=\"0 0 160 90\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><rect x=\"20\" y=\"15\" width=\"120\" height=\"18\" rx=\"4\"/><rect x=\"20\" y=\"40\" width=\"120\" height=\"18\" rx=\"4\"/><text x=\"80\" y=\"27\" font-size=\"7\" fill=\"currentColor\" stroke=\"none\" text-anchor=\"middle\">layyin · fīhi maqāl</text><text x=\"80\" y=\"52\" font-size=\"7\" fill=\"currentColor\" stroke=\"none\" text-anchor=\"middle\">ḍaʿīf · fīhi maqāl ?</text></svg>",
+          "recommended": false
+        }
+      ],
+      "interim": "a"
+    },
+    {
+      "id": "q4",
+      "scene": "ranks",
+      "question": "Should narrator figures stand beside the rungs?",
+      "context": "Spec §3.2 already maps ثِقَةٌ, ضَعِيفٌ and كَذَّابٌ to the reliable, weak and liar figures.",
+      "options": [
+        {
+          "id": "a",
+          "label": "Three figures",
+          "description": "Reliable, weak and liar figures beside thiqa, ḍaʿīf and kadhdhāb.",
+          "svg": "<svg viewBox=\"0 0 160 90\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><rect x=\"15\" y=\"15\" width=\"100\" height=\"18\" rx=\"4\"/><rect x=\"15\" y=\"40\" width=\"100\" height=\"18\" rx=\"4\"/><rect x=\"15\" y=\"65\" width=\"100\" height=\"18\" rx=\"4\"/><circle cx=\"135\" cy=\"18\" r=\"3.0\"/><path d=\"M130 32 Q130 24 135 24 Q140 24 140 32Z\"/><circle cx=\"135\" cy=\"43\" r=\"3.0\"/><path d=\"M130 57 Q130 49 135 49 Q140 49 140 57Z\"/><circle cx=\"135\" cy=\"68\" r=\"3.0\"/><path d=\"M130 82 Q130 74 135 74 Q140 74 140 82Z\"/></svg>",
+          "recommended": true
+        },
+        {
+          "id": "b",
+          "label": "Words only",
+          "description": "The rungs carry words only.",
+          "svg": "<svg viewBox=\"0 0 160 90\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><rect x=\"15\" y=\"15\" width=\"130\" height=\"18\" rx=\"4\"/><rect x=\"15\" y=\"40\" width=\"130\" height=\"18\" rx=\"4\"/><rect x=\"15\" y=\"65\" width=\"130\" height=\"18\" rx=\"4\"/></svg>",
+          "recommended": false
+        }
+      ],
+      "interim": "a"
+    },
+    {
+      "id": "q5",
+      "scene": "ranks",
+      "question": "Add the owner's p.378 reading, from honesty to accuracy, as a label?",
+      "context": "The owner's note says the worst words concern trustworthiness and ḍaʿīf usually accuracy or memory. The translation does not say it.",
+      "options": [
+        {
+          "id": "a",
+          "label": "No label",
+          "description": "Keep it as a proposal until approved.",
+          "svg": "<svg viewBox=\"0 0 160 90\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M20 15v65l6-8M20 80l-6-8\"/><text x=\"60\" y=\"50\" font-size=\"9\" fill=\"currentColor\" stroke=\"none\" text-anchor=\"middle\">graver</text></svg>",
+          "recommended": true
+        },
+        {
+          "id": "b",
+          "label": "Wedge label",
+          "description": "A label down the criticism wedge: “honesty → accuracy”.",
+          "svg": "<svg viewBox=\"0 0 160 90\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M20 15v65l6-8M20 80l-6-8\"/><text x=\"80\" y=\"30\" font-size=\"9\" fill=\"currentColor\" stroke=\"none\" text-anchor=\"middle\">accuracy</text><text x=\"80\" y=\"75\" font-size=\"9\" fill=\"currentColor\" stroke=\"none\" text-anchor=\"middle\">honesty</text></svg>",
+          "recommended": false
+        }
+      ],
+      "interim": "a"
+    },
+    {
+      "id": "q6",
+      "scene": "verdicts",
+      "question": "Should Whose verdict counts? have Other views?",
+      "context": "§5.64 reports that some require two critics like testimony, that a group puts criticism first unconditionally, and that Ibn al-Ṣalāḥ paused on the unaccredited narrator.",
+      "options": [
+        {
+          "id": "a",
+          "label": "Three views",
+          "description": "Ibn Ḥajar (default), Some: two critics, A group: criticism always first. Each changes one panel; Ibn al-Ṣalāḥ's pause is a tag.",
+          "svg": "<svg viewBox=\"0 0 160 90\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><rect x=\"10\" y=\"10\" width=\"40\" height=\"14\" rx=\"7\"/><rect x=\"58\" y=\"10\" width=\"40\" height=\"14\" rx=\"7\" stroke-dasharray=\"3 2\"/><rect x=\"106\" y=\"10\" width=\"44\" height=\"14\" rx=\"7\" stroke-dasharray=\"3 2\"/><path d=\"M50 70h60M80 70v-30M50 50l60-8\"/></svg>",
+          "recommended": true
+        },
+        {
+          "id": "b",
+          "label": "No views",
+          "description": "One picture; the rival opinions are told in Read as text.",
+          "svg": "<svg viewBox=\"0 0 160 90\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M50 70h60M80 70v-30M50 50l60-8\"/><text x=\"80\" y=\"25\" font-size=\"8\" fill=\"currentColor\" stroke=\"none\" text-anchor=\"middle\">Read as text: rivals</text></svg>",
+          "recommended": false
+        }
+      ],
+      "interim": "a"
+    },
+    {
+      "id": "q7",
+      "scene": "aliases",
+      "question": "Eight cells or six on What is he called??",
+      "context": "§5.65 also lists ascription to someone other than the father and names repeating up a chain; neither has a term.",
+      "options": [
+        {
+          "id": "a",
+          "label": "Eight cells",
+          "description": "Six term cells plus “Whose son?” and “One name up the chain”, the book's own vivid examples.",
+          "svg": "<svg viewBox=\"0 0 160 90\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><rect x=\"20\" y=\"8\" width=\"58\" height=\"16\" rx=\"2\"/><rect x=\"82\" y=\"8\" width=\"58\" height=\"16\" rx=\"2\"/><rect x=\"20\" y=\"28\" width=\"58\" height=\"16\" rx=\"2\"/><rect x=\"82\" y=\"28\" width=\"58\" height=\"16\" rx=\"2\"/><rect x=\"20\" y=\"48\" width=\"58\" height=\"16\" rx=\"2\"/><rect x=\"82\" y=\"48\" width=\"58\" height=\"16\" rx=\"2\"/><rect x=\"20\" y=\"68\" width=\"58\" height=\"16\" rx=\"2\"/><rect x=\"82\" y=\"68\" width=\"58\" height=\"16\" rx=\"2\"/></svg>",
+          "recommended": true
+        },
+        {
+          "id": "b",
+          "label": "Six cells",
+          "description": "Six term cells; the other cases go in Read as text.",
+          "svg": "<svg viewBox=\"0 0 160 90\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><rect x=\"20\" y=\"10\" width=\"58\" height=\"21\" rx=\"2\"/><rect x=\"82\" y=\"10\" width=\"58\" height=\"21\" rx=\"2\"/><rect x=\"20\" y=\"35\" width=\"58\" height=\"21\" rx=\"2\"/><rect x=\"82\" y=\"35\" width=\"58\" height=\"21\" rx=\"2\"/><rect x=\"20\" y=\"60\" width=\"58\" height=\"21\" rx=\"2\"/><rect x=\"82\" y=\"60\" width=\"58\" height=\"21\" rx=\"2\"/></svg>",
+          "recommended": false
+        }
+      ],
+      "interim": "a"
+    },
+    {
+      "id": "q8",
+      "scene": "aliases",
+      "question": "Was Sandar a Companion?",
+      "context": "The translation says “the mawlā of Zinbāʿ al-Judhāmī, who has companionship and narrations”; the Arabic likely gives the companionship to Sandar.",
+      "options": [
+        {
+          "id": "a",
+          "label": "Leave it out",
+          "description": "Neutral wording and a plain chip until a ruling.",
+          "svg": "<svg viewBox=\"0 0 160 90\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><rect x=\"40\" y=\"35\" width=\"80\" height=\"20\" rx=\"10\"/><text x=\"80\" y=\"49\" font-size=\"10\" fill=\"currentColor\" stroke=\"none\" text-anchor=\"middle\">Sandar</text></svg>",
+          "recommended": true
+        },
+        {
+          "id": "b",
+          "label": "A Companion",
+          "description": "Say Sandar was a Companion and give his chip the gold edge.",
+          "svg": "<svg viewBox=\"0 0 160 90\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><rect x=\"40\" y=\"35\" width=\"80\" height=\"20\" rx=\"10\" stroke-width=\"3\"/><text x=\"80\" y=\"49\" font-size=\"10\" fill=\"currentColor\" stroke=\"none\" text-anchor=\"middle\">Sandar ★</text></svg>",
+          "recommended": false
+        }
+      ],
+      "interim": "a"
+    },
+    {
+      "id": "q9",
+      "scene": "study",
+      "question": "Four paired cells or six on How is it learned and taught??",
+      "context": "§5.67 pairs receiving with delivering, and §5.68 writing with checking.",
+      "options": [
+        {
+          "id": "a",
+          "label": "Four cells",
+          "description": "Teacher and student; receiving and delivering; writing and checking; travel.",
+          "svg": "<svg viewBox=\"0 0 160 90\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><rect x=\"25\" y=\"10\" width=\"53\" height=\"33\" rx=\"2\"/><rect x=\"82\" y=\"10\" width=\"53\" height=\"33\" rx=\"2\"/><rect x=\"25\" y=\"47\" width=\"53\" height=\"33\" rx=\"2\"/><rect x=\"82\" y=\"47\" width=\"53\" height=\"33\" rx=\"2\"/></svg>",
+          "recommended": true
+        },
+        {
+          "id": "b",
+          "label": "Six cells",
+          "description": "One cell per term.",
+          "svg": "<svg viewBox=\"0 0 160 90\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><rect x=\"25\" y=\"8\" width=\"53\" height=\"22\" rx=\"2\"/><rect x=\"82\" y=\"8\" width=\"53\" height=\"22\" rx=\"2\"/><rect x=\"25\" y=\"33\" width=\"53\" height=\"22\" rx=\"2\"/><rect x=\"82\" y=\"33\" width=\"53\" height=\"22\" rx=\"2\"/><rect x=\"25\" y=\"58\" width=\"53\" height=\"22\" rx=\"2\"/><rect x=\"82\" y=\"58\" width=\"53\" height=\"22\" rx=\"2\"/></svg>",
+          "recommended": false
+        }
+      ],
+      "interim": "a"
+    },
+    {
+      "id": "q10",
+      "scene": "study",
+      "question": "Mention the children's ijāza (§5.67)?",
+      "context": "The translation says permission must be sought from the shaykh; the Arabic likely means an ijāza from the one who makes them hear.",
+      "options": [
+        {
+          "id": "a",
+          "label": "Leave it out",
+          "description": "Say nothing about it until the translation query is ruled on.",
+          "svg": "<svg viewBox=\"0 0 160 90\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><circle cx=\"50\" cy=\"52\" r=\"3.5999999999999996\"/><path d=\"M44 66 Q44 58 50 58 Q56 58 56 66Z\"/><path d=\"M65 55h30\"/><rect x=\"100\" y=\"40\" width=\"40\" height=\"30\" rx=\"3\"/></svg>",
+          "recommended": true
+        },
+        {
+          "id": "b",
+          "label": "State it",
+          "description": "Add “an ijāza is needed”, linking to How was it received?.",
+          "svg": "<svg viewBox=\"0 0 160 90\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><circle cx=\"50\" cy=\"52\" r=\"3.5999999999999996\"/><path d=\"M44 66 Q44 58 50 58 Q56 58 56 66Z\"/><path d=\"M65 55h30\"/><rect x=\"100\" y=\"40\" width=\"40\" height=\"30\" rx=\"3\"/><text x=\"120\" y=\"30\" font-size=\"8\" fill=\"currentColor\" stroke=\"none\" text-anchor=\"middle\">ijāza →</text></svg>",
+          "recommended": false
+        }
+      ],
+      "interim": "a"
+    },
+    {
+      "id": "q11",
+      "scene": "books",
+      "question": "Open What kind of book is it? with a sorter?",
+      "context": "The four kinds differ in what the compiler arranges by.",
+      "options": [
+        {
+          "id": "a",
+          "label": "Sorter first",
+          "description": "A first cell asks how the reports are arranged, with links to the four book cells.",
+          "svg": "<svg viewBox=\"0 0 160 90\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><rect x=\"20\" y=\"10\" width=\"58\" height=\"70\" rx=\"2\"/><path d=\"M28 22h40l-4-3M68 22l-4 3\"/><path d=\"M28 37h40l-4-3M68 37l-4 3\"/><path d=\"M28 52h40l-4-3M68 52l-4 3\"/><path d=\"M28 67h40l-4-3M68 67l-4 3\"/><rect x=\"84\" y=\"10\" width=\"58\" height=\"33\" rx=\"2\"/><rect x=\"84\" y=\"47\" width=\"58\" height=\"33\" rx=\"2\"/></svg>",
+          "recommended": true
+        },
+        {
+          "id": "b",
+          "label": "No sorter",
+          "description": "Five content cells and a closing-note cell.",
+          "svg": "<svg viewBox=\"0 0 160 90\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><rect x=\"20\" y=\"8\" width=\"58\" height=\"22\" rx=\"2\"/><rect x=\"82\" y=\"8\" width=\"58\" height=\"22\" rx=\"2\"/><rect x=\"20\" y=\"33\" width=\"58\" height=\"22\" rx=\"2\"/><rect x=\"82\" y=\"33\" width=\"58\" height=\"22\" rx=\"2\"/><rect x=\"20\" y=\"58\" width=\"58\" height=\"22\" rx=\"2\"/><rect x=\"82\" y=\"58\" width=\"58\" height=\"22\" rx=\"2\"/></svg>",
+          "recommended": false
+        }
+      ],
+      "interim": "a"
+    },
+    {
+      "id": "q12",
+      "scene": null,
+      "question": "Add an overview scene for the division?",
+      "context": "Division 3 opens with a hub scene; division 8's five moons are already distinct topics.",
+      "options": [
+        {
+          "id": "a",
+          "label": "No overview",
+          "description": "Six scenes in the book's order.",
+          "svg": "<svg viewBox=\"0 0 160 90\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><circle cx=\"20\" cy=\"45\" r=\"8\"/><circle cx=\"44\" cy=\"45\" r=\"8\"/><circle cx=\"68\" cy=\"45\" r=\"8\"/><circle cx=\"92\" cy=\"45\" r=\"8\"/><circle cx=\"116\" cy=\"45\" r=\"8\"/><circle cx=\"140\" cy=\"45\" r=\"8\"/></svg>",
+          "recommended": true
+        },
+        {
+          "id": "b",
+          "label": "Overview first",
+          "description": "A hub scene linking to the six.",
+          "svg": "<svg viewBox=\"0 0 160 90\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><circle cx=\"80\" cy=\"45\" r=\"12\"/><circle cx=\"20\" cy=\"80\" r=\"5\"/><path d=\"M80 57L20 75\"/><circle cx=\"44\" cy=\"80\" r=\"5\"/><path d=\"M80 57L44 75\"/><circle cx=\"68\" cy=\"80\" r=\"5\"/><path d=\"M80 57L68 75\"/><circle cx=\"92\" cy=\"80\" r=\"5\"/><path d=\"M80 57L92 75\"/><circle cx=\"116\" cy=\"80\" r=\"5\"/><path d=\"M80 57L116 75\"/><circle cx=\"140\" cy=\"80\" r=\"5\"/><path d=\"M80 57L140 75\"/></svg>",
+          "recommended": false
+        }
+      ],
+      "interim": "a"
+    },
+    {
+      "id": "q13",
+      "scene": null,
+      "question": "Use any of the proposed annotations?",
+      "context": "p.378 (honesty to accuracy; shaykh means ḥasan), p.403 (referring on is sincerity), p.413 (why the right margin), p.414 (many shaykhs were fashionable), p.418 (aṭrāf give the beginning and end).",
+      "options": [
+        {
+          "id": "a",
+          "label": "Keep them out",
+          "description": "Nothing beyond the translation until each row is approved in notes/annotation-usage.md.",
+          "recommended": true
+        },
+        {
+          "id": "b",
+          "label": "Approve some",
+          "description": "Name the rows to use; each becomes a sub-label in its scene.",
+          "recommended": false
+        }
+      ],
+      "interim": "a"
+    },
+    {
+      "id": "q14",
+      "scene": null,
+      "question": "Rule on the fourteen translation slips (design §13).",
+      "context": "Spellings, the fīhi maqāl duplicate, the solitary names, Sandar, the children's ijāza and others.",
+      "options": [
+        {
+          "id": "a",
+          "label": "Follow the design meanwhile",
+          "description": "The site uses the wording in the design's §13 until each row is ruled on.",
+          "recommended": true
+        }
+      ],
+      "interim": "a"
+    },
+    {
+      "id": "q15",
+      "scene": "names",
+      "question": "How faint should the ruled-out rows of “Which one is he?” rest?",
+      "context": "On the existing Who is who? scene (division 7) the ruled-out rows rest at 12% opacity, about 1.3:1 contrast, marked incidental so the contrast check skips them.",
+      "options": [
+        {
+          "id": "a",
+          "label": "Keep faint",
+          "description": "Keep them faint as decoration; the names are in the caption.",
+          "svg": "<svg viewBox=\"0 0 160 90\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><rect x=\"15\" y=\"10\" width=\"130\" height=\"14\" rx=\"3\"/><path d=\"M20 36h90\" opacity=\".12\"/><path d=\"M20 48h80\" opacity=\".12\"/><path d=\"M20 60h70\" opacity=\".12\"/><rect x=\"15\" y=\"70\" width=\"130\" height=\"12\" rx=\"3\" fill=\"currentColor\" fill-opacity=\".25\"/></svg>",
+          "recommended": true
+        },
+        {
+          "id": "b",
+          "label": "Clearly muted",
+          "description": "Raise them to about 4.5:1, so they read as clearly muted.",
+          "svg": "<svg viewBox=\"0 0 160 90\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><rect x=\"15\" y=\"10\" width=\"130\" height=\"14\" rx=\"3\"/><path d=\"M20 36h90\" opacity=\".55\"/><path d=\"M20 48h80\" opacity=\".55\"/><path d=\"M20 60h70\" opacity=\".55\"/><rect x=\"15\" y=\"70\" width=\"130\" height=\"12\" rx=\"3\" fill=\"currentColor\" fill-opacity=\".25\"/></svg>",
+          "recommended": false
+        }
+      ],
+      "interim": "a"
+    }
+  ]
+}
