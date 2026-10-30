@@ -271,7 +271,7 @@ The four terms differ only in *who stands where* and *which way the arrow runs*.
 3. **Seniors from juniors**: three pairs (father and son, Companion and Successor, shaykh and student) whose arrow *climbs*, with the usual falling arrow faint beside each.
 4. **Sons from fathers**: a family column falling from the Prophet ﷺ, the two readings of "his grandfather", and the book's fourteen fathers as a tall stack of rings.
 
-Panel 3's title is the longest, so the panels are uneven.
+The two long titles (panels 3 and 4) are set in the 13px bold face, so the panels can be equal (see Deviations in the build).
 
 ### 4.3 Sketch (1040 × 500)
 
@@ -317,9 +317,9 @@ None. The mudabbaj debate (§5.48) is about a name, shown as a plain label, as t
 
 | id | Label | x0 | x1 |
 |---|---|---|---|
-| `peers` | Peers | 0 | 240 |
-| `mutual` | Each from the other | 240 | 480 |
-| `seniors` | Senior from junior | 480 | 780 |
+| `peers` | Peers | 0 | 260 |
+| `mutual` | Each from the other | 260 | 520 |
+| `seniors` | Senior from junior | 520 | 780 |
 | `fathers` | Son from father | 780 | 1040 |
 
 ### 4.7 Motion
@@ -652,7 +652,7 @@ Each is in the review sheet (`2026-10-29-phase-3-lataif-review.json`) with optio
 
 As for the earlier divisions, the owner asked for development to continue while they review.
 
-- **Built now:** `peers` and `doubts` (no open question touches them); `elevation` with the `reward` view and `meeting` with the counts in words, both cheap to change (`built_with_interim` in the review sheet).
+- **Built:** `peers` and `doubts` (no open question touches them); `elevation` with the `reward` view (q4) and `meeting` with the counts in words and no musāwāh remark (q2, q5), both cheap to change (`built_with_interim` in the review sheet).
 - **Left for the owner:** `early-late` and `chained`, which q1 may fold into other scenes, and q3 and q6 reshape.
 - **Generation colours** where the chain or general knowledge gives them (Abū Hurayra, Abū Ṣāliḥ; a figure reporting straight from the Prophet ﷺ is gold).
 - **Arabic quoted from the reports: none.** A few English words of the translation in bubbles and tags.
@@ -661,3 +661,15 @@ As for the earlier divisions, the owner asked for development to continue while 
 - **Owner's annotations:** only "used" rows go in. "Proposed" rows wait in `notes/annotation-usage.md`.
 - **Translation slips:** all eight rows of §12 go to `notes/translation-queries.md`; the site uses the wording given there until a ruling.
 - **Links** to scenes not yet built render only once their target exists (XLink throws otherwise), so scene 4's links wait for it.
+
+### Deviations in the build
+
+The four built scenes follow this design except as below. None changes a ruling or adds content beyond the translation.
+
+- **`peers`:** the four panels are equal (260 each), with the two long titles (panels 3 and 4) in the 13px bold face so their triggers fit; panel 3's title sits 10 left of centre for its (i). Panel 1 has no shared-shaykh name under the peers, and the "illustration" line covers panels 1–3 in one footer. In panel 4 column (a)'s names sit to the left, column (b)'s to the right, with "one generation skipped" beside (b)'s long arrow, and the fourteen rings run in a row along the foot. Panel 3 says "or met fewer shaykhs, or later", with no visible bracket. The nested rings use `--gold-tint`.
+- **`doubts`:** the bubbles quote the shortest exact fragments, "I did not report this" and "I do not remember", so they fit the kit bubble; the student has no bubble, but a label, "his student reports it from him". The view's tags are the translation's "core" and "periphery". In panel 1 the second example reads "another: an unspecified “Muḥammad”", and the general fallback stands apart under it. Panel 1's links read "its opposite: Who is who?" and "no name at all: Who is this narrator?". The Suhayl loop runs left to right from the moon, then down to Rabīʿa and back to al-Darāwardī, with the closing words "Suhayl, later: “Rabīʿa informed me”". The cross on the rejected card pops in (`m-enter`) rather than drawing. The scene is 572 tall.
+- **`elevation`:** panel 3's pills read "Most desired", "Elevated in form" and "No elevation", with "sound", "with a weak link" and "forged" under the mini routes; the default view adds a tag "Ibn Ḥajar: the weightier chain". The scale's longer pan holds two large gold weights in Ibn Ḥajar's view and four plain ones under `reward` (the `Scale` right slot). Panel 2's imam list sits under "a great imam", its routes start lower, and a link, "its four kinds", leads to *Where does our route meet theirs?*.
+- **`meeting`:** cell A's tree has Qutayba and al-Qaʿnabī a step above the first route row (both routes take the same first step), and the footer reads "each ring is a narrator · both names are mostly said when the route is shorter, but not only then". al-Qaʿnabī's elided route stops part-way with "to us by another route: no count given" and has no "us" chip. Cell B draws one level tie (al-Nasāʾī to the musāwāh "us"); the muṣāfaḥa row is shown by height and the line "our second route is level with his student", then the handshake glyph (two cuffed forearms and a joined band).
+- **Checks run:** `bun run check`, `bun run build`, `bun run test`, `bun run test:dist`, and e2e `routes.spec.ts` (narrowed to this division), `views.spec.ts` and `motion.spec.ts` with `--workers=1`, all passing. No tests were added.
+- **Shared styles:** `.lbl.end`, `.nm.mid`, `.level line` and `.bead` live in `src/styles/svg.css`; the scenes, *Where is the narrator alone?* included, no longer copy them.
+- **Task 8 done:** the spec §4.3 table and §7.2 layout list, the eight slip rows in `notes/translation-queries.md`, and the used, proposed and not-proposed annotation rows in `notes/annotation-usage.md`.

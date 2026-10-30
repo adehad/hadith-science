@@ -5,46 +5,85 @@
     {
       "id": "elevation",
       "question": "How near is the chain?",
-      "terms": ["uluww", "uluww-mutlaq", "uluww-nisbi", "nuzul"],
+      "terms": [
+        "uluww",
+        "uluww-mutlaq",
+        "uluww-nisbi",
+        "nuzul"
+      ],
       "summary": "Height is nearness: two routes to the Prophet ﷺ, two routes to a great imam, and when a longer chain is the better one.",
-      "blocked_by": ["q4"],
-      "built_with_interim": true
+      "blocked_by": [
+        "q4"
+      ],
+      "built_with_interim": true,
+      "status": "built_with_interim"
     },
     {
       "id": "meeting",
       "question": "Where does our route meet theirs?",
-      "terms": ["muwafaqa", "badal", "musawah", "musafaha"],
+      "terms": [
+        "muwafaqa",
+        "badal",
+        "musawah",
+        "musafaha"
+      ],
       "summary": "Two cells of bead chains with the book's own counts: routes meeting al-Bukhārī at Qutayba or Mālik, and routes level with al-Nasāʾī or his student.",
-      "blocked_by": ["q2", "q5"],
-      "built_with_interim": true
+      "blocked_by": [
+        "q2",
+        "q5"
+      ],
+      "built_with_interim": true,
+      "status": "built_with_interim"
     },
     {
       "id": "peers",
       "question": "Who narrates from whom?",
-      "terms": ["aqran", "mudabbaj", "akabir-an-asaghir", "abna-an-aba"],
+      "terms": [
+        "aqran",
+        "mudabbaj",
+        "akabir-an-asaghir",
+        "abna-an-aba"
+      ],
       "summary": "Height is seniority: peers side by side, peers both ways, a senior hearing from a junior (an arrow that climbs), and a family chain up to fourteen fathers.",
-      "blocked_by": []
+      "blocked_by": [],
+      "status": "built"
     },
     {
       "id": "early-late",
       "question": "How far apart did they die?",
-      "terms": ["sabiq-wa-lahiq"],
+      "terms": [
+        "sabiq-wa-lahiq"
+      ],
       "summary": "Life bars for the usual cause, then al-Silafī's and al-Sarrāj's students who died far apart.",
-      "blocked_by": ["q1", "q3"]
+      "blocked_by": [
+        "q1",
+        "q3"
+      ],
+      "status": "blocked"
     },
     {
       "id": "doubts",
       "question": "Does the doubt harm it?",
-      "terms": ["muhmal", "man-haddatha-wa-nasiya"],
+      "terms": [
+        "muhmal",
+        "man-haddatha-wa-nasiya"
+      ],
       "summary": "One name that splits into two reliable men, a shaykh who denies outright, and a shaykh who does not recall, with the Suhayl loop.",
-      "blocked_by": []
+      "blocked_by": [],
+      "status": "built"
     },
     {
       "id": "chained",
       "question": "What runs through every link?",
-      "terms": ["musalsal"],
+      "terms": [
+        "musalsal"
+      ],
       "summary": "Chains where every link carries the same tag, and the Awwaliyya chain whose tags stop at Sufyān ibn ʿUyayna.",
-      "blocked_by": ["q1", "q6"]
+      "blocked_by": [
+        "q1",
+        "q6"
+      ],
+      "status": "blocked"
     }
   ],
   "questions": [

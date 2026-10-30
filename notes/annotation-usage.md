@@ -27,6 +27,14 @@ Owner's PDF annotations used in site text. The owner approves each row.
 | p.312 | Highlight on maqṭūʿ: meaning "cut" | `maqtu` en: "Cut off" | |
 | p.312 | Mawqūf said bare means a Companion; "mawqūf on Mālik" names who | *Where does the chain end?* caption `mawquf` ("mawqūf on him, naming him"), which follows §5.43 | |
 | p.314 | Musnad, "visibly": looks fine; looks fine with a hidden gap; a clear gap (not musnad) | *Does it look connected?*: structure only (its three panels) | |
+| p.321 | Muwāfaqa: going via the shaykh of one of the top muḥaddithūn | *Where does our route meet theirs?* cell A: layout only (our routes join at Qutayba, al-Bukhārī's shaykh) | |
+| p.321 | Badal: "the grand shaykh", the shaykh's shaykh | *Where does our route meet theirs?* cell A: layout only (al-Qaʿnabī joins at Mālik) | |
+| p.322 | Even a longer chain can carry these terms, though that isn't what people aim for | *Where does our route meet theirs?* cell A: structure only (the footer line, which follows §5.46) | |
+| p.324 | Peers are those who narrate from the same or a similar shaykh | *Who narrates from whom?* panel 1: layout only (the peers under a shared shaykh) | |
+| p.332 | A shaykh narrating from his student, then the student's student using that chain | Agrees with §5.51's al-Bukhārī and al-Sarrāj. For *How far apart did they die?* panel 3 (not yet built): layout only | |
+| p.339 | Both are certain: the teacher that he didn't narrate it, the student that he did | *Does the doubt harm it?* panel 2: layout only (the shaykh's denial against the student who is sure) | |
+| p.339 | Forgetting is possible; saying you know something carries more weight than denying it | *Does the doubt harm it?* panel 3: structure only (the reason line "affirming comes before denying" follows §5.53) | |
+| p.341 | Musalsal by a phrase, or by an action (dates, holding the beard) | Agrees with §5.54. For *What runs through every link?* panels 1–2 (not yet built): structure only | |
 | p.344 | Imlāʾ means dictating, narrating from memory | `imla` def: "recites from memory while students write"; delivery scene caption `imla` (dictation from memory) | |
 | p.345 | Highlight on mukātaba: literally "correspondence" | `mukataba` en: "Correspondence"; delivery scene caption `kataba-ilayya` ("mukātaba (correspondence)") | |
 | p.345 | Highlight on "its equivalent": a verified copy | `munawala` def: "a checked copy"; delivery scene caption `nawalana` ("a checked copy of it") | |
@@ -35,7 +43,7 @@ Owner's PDF annotations used in site text. The owner approves each row.
 
 ## Proposals
 
-Annotations the al-Maqbūl design (§8), the ʿAdad al-ṭuruq design (§9) and the al-Mardūd design (§13) and the Muntahā al-isnād design (§8) suggest using but the site does not use yet. Nothing here is in site text until the owner approves it.
+Annotations the al-Maqbūl design (§8), the ʿAdad al-ṭuruq design (§9), the al-Mardūd design (§13), the Muntahā al-isnād design (§8) and the Laṭāʾif al-isnād design (§9) suggest using but the site does not use yet. Nothing here is in site text until the owner approves it.
 
 | Page | Annotation (short) | Proposed use | Approved |
 |---|---|---|---|
@@ -54,5 +62,11 @@ Annotations the al-Maqbūl design (§8), the ʿAdad al-ṭuruq design (§9) and 
 | p.313 | Athar: the majority say it is the same as ḥadīth | *Where does the chain end?* caption `athar`: a line; beyond the translation's §5.43 | |
 | p.314 | Musnad also names a collection ordered by Companion | *Does it look connected?*: a Read as text extra | |
 | p.182 | The classmate example: arriving late and asking a classmate | *Did he hear it from him?* panel 1: an illustration of the hidden source (the owner's teacher's example) | |
+| p.323 | Musāwāh is a kind of relative elevation, yet its example counts to the Prophet ﷺ | *Where does our route meet theirs?* cell B: a remark under the al-Nasāʾī example (the Laṭāʾif al-isnād design's open question q5) | |
+| p.325, p.327 | The terms are kept so the report isn't taken for a mistake: one might think the names were swapped, unless one knows the two narrated from each other | *Who narrates from whom?* panels 2–3: a sub-label, "otherwise the names might be taken as swapped", linking to maqlūb | |
+| p.341 | Musalsal bi-l-awwaliyya: the first ḥadīth heard from the shaykh | *What runs through every link?* panel 3: a sub-label on the Awwaliyya chain | |
+| p.340–341 | al-Darāwardī went straight to Suhayl for a shorter chain; Suhayl's later chain keeps every link | *Does the doubt harm it?* panel 3: a link from the Suhayl loop to *How near is the chain?*, and a sub-label, "every link kept" | |
+| p.337 | One candidate from Iraq and one from the Ḥijāz: knowing where the ḥadīth was told narrows it down | *Does the doubt harm it?* panel 1: a clue under the fallback line | |
+| p.327 | The Prophet ﷺ reporting the story of the Dajjāl from a Companion | *Who narrates from whom?* panel 3: a real example of seniors from juniors, once the owner supplies a checked source and wording | |
 
-Not proposed, since they go beyond the translation: p.126–127 (al-Tirmidhī's "ḥasan ṣaḥīḥ" is effectively ṣaḥīḥ in his time) and p.138 (munkar as weak against less weak, which conflicts with the translation's example). For al-Mardūd: p.183 and p.272 (tadlīs al-shuyūkh), p.183 (Ibn Ḥajar's five ranks of mudallisīn), p.189 (the majority counting meeting-less contemporaries as tadlīs, which conflicts with "the trusted opinion"), p.194 (why innovation ranks below open sin), p.195–197 (the liar's grading, the forgers' stories), p.227 (maqlūb's conditions), p.238 (where telling by meaning is forbidden), p.251 (why narrators used many names) and p.261 (the muḥaddithūn's practice with innovators).
+Not proposed, since they go beyond the translation: p.126–127 (al-Tirmidhī's "ḥasan ṣaḥīḥ" is effectively ṣaḥīḥ in his time) and p.138 (munkar as weak against less weak, which conflicts with the translation's example). For al-Mardūd: p.183 and p.272 (tadlīs al-shuyūkh), p.183 (Ibn Ḥajar's five ranks of mudallisīn), p.189 (the majority counting meeting-less contemporaries as tadlīs, which conflicts with "the trusted opinion"), p.194 (why innovation ranks below open sin), p.195–197 (the liar's grading, the forgers' stories), p.227 (maqlūb's conditions), p.238 (where telling by meaning is forbidden), p.251 (why narrators used many names) and p.261 (the muḥaddithūn's practice with innovators). For Laṭāʾif al-isnād: p.316 (ʿuluww as the shortest *connected* chain, where the translation keeps the form of ʿuluww for a short chain that is not sound), p.323 (dying or hearing earlier as a kind of elevation), p.325 (the benefits of naming peers), p.337 (muhmal as a name with nothing else known, which reads like majhūl and conflicts with §5.52), p.340 (al-Dāraquṭnī's memory, and his book lost but summarised) and p.341 (musalsal by a day, a place or a type of narrator, and most musalsal being weak).

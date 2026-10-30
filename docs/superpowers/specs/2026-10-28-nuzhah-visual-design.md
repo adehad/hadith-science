@@ -204,6 +204,17 @@ The figure key from the mockup's "Reading a narrator" becomes `/narrators/`.
 | Who met whom? (`companions`) | 5.41–5.42 | Four panels: the Companion's gates, how Companionship is known, the Successor's gates with "in him" struck, and the mukhaḍram between two eras | Ibn Ḥajar: senior Successors; Some: among the Companions |
 | Does it look connected? (`connected`) | 5.44 | Five chains with verdict pills: connected, a hidden gap, a Successor raising it, one below him raising it, and one stopping at a Companion | Ibn Ḥajar; al-Khaṭīb: connected; Ibn ʿAbd al-Barr: raised |
 
+**Phase 3: division 5** (Laṭāʾif al-isnād), designed in `docs/superpowers/specs/2026-10-29-phase-3-lataif-design.md`. `early-late` and `chained` wait for the owner's review (the design's open questions q1, q3 and q6). The other four are built; `elevation` and `meeting` use interim choices:
+
+| Scene | § | Form | Views |
+|---|---|---|---|
+| How near is the chain? (`elevation`) | 5.45, 5.47 | Three panels where height is nearness: two routes to the Prophet ﷺ, two routes below a great imam, and short routes (sound, with a weak link, forged) beside a scale on which a weightier longer chain wins. A wedge names ʿuluww and nuzūl | Ibn Ḥajar: the weightier chain; Some: always the longer |
+| Where does our route meet theirs? (`meeting`) | 5.46–5.47 | Two cells of ring chains on level rows, drawn to the book's counts: routes meeting al-Bukhārī at Qutayba or reaching al-Qaʿnabī (muwāfaqa, badal), and routes level with al-Nasāʾī or with his student (musāwāh, muṣāfaḥa) | none |
+| Who narrates from whom? (`peers`) | 5.48–5.50 | Four panels where height is seniority: peers side by side; peers each narrating from the other, with nested rings; the senior hearing from the junior (a climbing arrow); and a family chain read two ways, with the book's fourteen fathers as rings | none |
+| How far apart did they die? (`early-late`) | 5.51 | Three panels: life bars for the usual cause, then al-Silafī's and al-Sarrāj's students with their death years (not yet built) | none |
+| Does the doubt harm it? (`doubts`) | 5.52–5.53 | Three panels: al-Bukhārī's unspecified "Aḥmad" splitting into two reliable men; a shaykh who denies outright; and a shaykh who does not recall, with the Suhayl loop | Ibn Ḥajar: accepted; Some: not accepted |
+| What runs through every link? (`chained`) | 5.54 | Three panels: chains with the same tag at every link, and the Awwaliyya chain, whose tags stop at Sufyān ibn ʿUyayna (not yet built) | none |
+
 - Each division gets its own short design pass, written as a design doc in `docs/superpowers/specs/`. It is then built on its own branch and reviewed through its PR preview. At the owner's request, to keep development moving, this replaces the earlier step of a mockup in the concept artifact.
 - Design rules for every scene:
   - Prefer a real worked example from the book over a generic one.
@@ -284,9 +295,10 @@ src/
   components/
     svg/          Moon, Narrator, Chain, Arrow, SpeechBubble, Pill, Term, TermTitle, LayerGuides,
                   InfoIcon, Defs, NameTag, Chip, Gauge, Glyph, Scale, Matn, Decision, Bracket,
-                  Lifespan (division 3: a rounded life bar, no axis or dates);
+                  Lifespan (division 3: a rounded life bar, no axis or dates),
+                  Beads (division 5: unnamed narrators as rings on a line);
                   Glyph kinds: memory, book, check, cross (division 1: rejected or not reached), lens,
-                  pause, text, companion, clock, coin (dashed for a false one), scissors;
+                  pause, text, companion, clock, coin (dashed for a false one), scissors, handshake;
                   Narrator faces: blank, faded, mask, mask-dashed (suspected, not proven), hand;
                   figures.ts (FIG / KIND_NAME, with the division 3 kinds mudallis, liar, accused and
                   mukhtalit), geom.ts (f, titleTrigger, rowTrigger, panelTrigger, SUBT_TRIGGER,
@@ -296,7 +308,7 @@ src/
     scenes/       Routes, Breaks, Unknown, Delivery, Names, Grades, Opposition, Support,
                   ActedOn, Report, Sorting, Knowledge, Lone, Causes, Hidden, Lying, Slips,
                   Changes, Wording, Identity, Innovation, Ends, Raised, Companions,
-                  Connected (one diagram per scene)
+                  Connected, Elevation, Meeting, Peers, Doubts (one diagram per scene)
   content/
     divisions.yaml  the eight divisions (term, Arabic, English, §, order, moons)
     scenes.yaml     every scene (see 7.3)
