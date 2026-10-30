@@ -4,11 +4,7 @@ A visual guide to Ibn Ḥajar al-ʿAsqalānī's *Nuzhat al-Naẓar*, his short b
 
 Live site: <https://adehad.github.io/hadith-science/>
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/map-desktop-dark.png">
-  <source media="(prefers-color-scheme: light)" srcset="docs/screenshots/map-desktop-light.png">
-  <img alt="The map of the book: eight planets, one for each of Ibn Ḥajar's divisions, orbiting a full moon" src="docs/screenshots/map-desktop-light.png">
-</picture>
+![The map of the book, animated: eight planets, one for each of Ibn Ḥajar's divisions, circling a full moon for the Prophet ﷺ, each with its moons for the sub-divisions. The light theme is shown above the diagonal and the dark theme below it](docs/screenshots/map.png)
 
 ## What's covered so far
 
@@ -24,10 +20,12 @@ Live site: <https://adehad.github.io/hadith-science/>
 
 Terms without a scene yet are marked "scene coming soon" in the glossary. Later phases draw the rest, one division at a time.
 
-| | Light | Dark |
-|---|---|---|
-| Figure key | ![Figure key, light](docs/screenshots/narrators-desktop-light.png) | ![Figure key, dark](docs/screenshots/narrators-desktop-dark.png) |
-| Phone | ![Map on a phone, light](docs/screenshots/map-mobile-light.png) | ![Glossary on a phone, dark](docs/screenshots/terms-mobile-dark.png) |
+![The figure key: eight narrator figures (reliable, unknown, unnamed, weak, liar, memory failed, conceals and missing link), each marked by its name scroll and seal, and below them a reliable narrator of each generation from the Prophet ﷺ to later narrators](docs/screenshots/narrators.png)
+
+<p>
+  <img width="71%" alt="How sound is it? with the popover for ṣaḥīḥ li-dhātihi open over the diagram: the term in Arabic, a paraphrased definition, its § reference, and buttons to copy its link, share it or see it in the glossary" src="docs/screenshots/popover.png">
+  <img width="24%" alt="How many routes carry it? on a phone: the first panel of the carousel, a single chain from the Prophet ﷺ labelled gharīb, with the carousel's arrows and dots below it" src="docs/screenshots/phone.png">
+</p>
 
 ## Scenes
 
@@ -61,19 +59,29 @@ Terms without a scene yet are marked "scene coming soon" in the glossary. Later 
 
 Figure scenes can show a key under the diagram (**Key**) or write each narrator's kind beside the figure (**Labels**), and the choice is remembered. Where the book gives more than one position, **Other views** switches the diagram to it and keeps the view in the link (`?view=`). On a portrait phone a wide diagram becomes a swipe carousel, one panel at a time.
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/breaks-desktop-dark.png">
-  <source media="(prefers-color-scheme: light)" srcset="docs/screenshots/breaks-desktop-light.png">
-  <img alt="Where does the chain break? Four chains from the Prophet ﷺ, each with a missing narrator in a different place, and a verdict above each" src="docs/screenshots/breaks-desktop-light.png">
-</picture>
+**ʿAdad al-ṭuruq** (how a report reached us)
 
-| | Light | Dark |
-|---|---|---|
-| Can both be acted on? | ![Can both be acted on? A decision path of five questions, each answer dropping to an outcome card, light](docs/screenshots/acted-on-desktop-light.png) | ![Can both be acted on? A decision path of five questions, each answer dropping to an outcome card, dark](docs/screenshots/acted-on-desktop-dark.png) |
-| Where is the narrator alone? | ![Where is the narrator alone? Four chains from the Prophet ﷺ, each lone narrator on a soft halo, light](docs/screenshots/lone-desktop-light.png) | ![Where is the narrator alone? Four chains from the Prophet ﷺ, each lone narrator on a soft halo, dark](docs/screenshots/lone-desktop-dark.png) |
-| How was it received? | ![The delivery staircase, light](docs/screenshots/delivery-desktop-light.png) | ![The delivery staircase, dark](docs/screenshots/delivery-desktop-dark.png) |
-| Why is a report rejected? | ![Why is a report rejected? Three chains each missing a narrator beside a ladder of the ten causes of criticism, light](docs/screenshots/causes-desktop-light.png) | ![Why is a report rejected? Three chains each missing a narrator beside a ladder of the ten causes of criticism, dark](docs/screenshots/causes-desktop-dark.png) |
-| Phone | ![How many routes carry it? on a phone, first carousel panel, light](docs/screenshots/routes-mobile-light.png) | ![Who is who? on a phone, the cells in one column, dark](docs/screenshots/names-mobile-dark.png) |
+![What is a report? The anatomy of a report: a chain of narrators from the Prophet ﷺ down to al-Bukhārī leading to the text "actions are judged by intentions", with the isnād and the matn labelled, beside a circle showing khabar and ḥadīth as two names for one thing](docs/screenshots/report.png)
+
+![How many routes carry it? animated: four chains from the Prophet ﷺ with one, two, three and five narrators in each generation, labelled gharīb, ʿazīz, mashhūr and mutawātir, their dashed arrows flowing down](docs/screenshots/routes.png)
+
+**al-Maqbūl** (accepted reports)
+
+![How sound is it? The five conditions of a ṣaḥīḥ report ticked beside a chain, the four ranks of sound chains with their accuracy, reports raised to sound or fair by support, and al-Tirmidhī's double grade ḥasan ṣaḥīḥ](docs/screenshots/grades.png)
+
+![Who outweighs whom? animated: added words checked for a clash, then balance scales that tip, maḥfūẓ outweighing shādhdh when both sides are reliable and maʿrūf outweighing munkar when the loser is weak](docs/screenshots/opposition.png)
+
+**al-Mardūd** (rejected reports)
+
+![Why is a report rejected? Three chains each missing a narrator in a different place, for omission (saqṭ), beside a ladder of the ten causes of criticism (ṭaʿn) from the gravest down](docs/screenshots/causes.png)
+
+![Where does the chain break? Four chains from the Prophet ﷺ, each with a missing narrator in a different place, labelled mursal, muʿallaq, muʿḍal and munqaṭiʿ, with a verdict above each](docs/screenshots/breaks.png)
+
+**Other divisions**
+
+![How was it received? A staircase of the eight ranks of delivery words, from hearing the teacher alone down to ʿan and qāla, where hearing is not certain, each step with its Arabic words and an arrow that thins as contact grows less certain, and the weaker ways of receiving below the stairs](docs/screenshots/delivery.png)
+
+![Who is who? Four cells: one name shared by two different men, letters told apart only by their dots, two names that differ by a vowel, and a list of similar names with the one meant highlighted](docs/screenshots/names.png)
 
 ## Source and copyright
 
