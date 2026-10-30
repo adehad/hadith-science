@@ -1,0 +1,190 @@
+---
+// "Did ʿan mean he heard it?" (phase 3 Ṣiyagh al-adāʾ design §3): muʿanʿan (§5.55–5.56). Four panels of one
+// 1040-wide row, so it carousels in portrait:
+//   1  a chain linked by ʿan, one link bracketed for testing, and the eighth step's words
+//   2–4  the test of a link as a decision path in the acted-on pattern: lived at the same time (no: mursal or
+//      munqaṭiʿ), a concealer (yes: not counted), known to have met even once (no: could be a hidden mursal);
+//      the answer that goes on runs along the spine to "heard"
+// The "Other views" switch (§5.56) drops the third question: living at the same time is enough. The groups outside
+// the default view are built with class="off". The book names no chain, so the figures are an illustration.
+// No Arabic report wording: ʿan is in transliteration only.
+// Motion: the chain's arrows flow; the "?" blinks. Nothing runs once, so reduced motion simply stops the loops.
+import Defs from "../svg/Defs.astro";
+import Moon from "../svg/Moon.astro";
+import Narrator from "../svg/Narrator.astro";
+import Arrow from "../svg/Arrow.astro";
+import Bracket from "../svg/Bracket.astro";
+import Decision from "../svg/Decision.astro";
+import Lifespan from "../svg/Lifespan.astro";
+import Pill from "../svg/Pill.astro";
+import TermTitle from "../svg/TermTitle.astro";
+import ViewTag from "../svg/ViewTag.astro";
+import XLink from "../svg/XLink.astro";
+import { FIG, KIND_NAME, RELIABLE } from "../svg/figures";
+import { SUBT_TRIGGER, f, titleTrigger } from "../svg/geom";
+import { cap, type DiagramProps } from "../../lib/scene";
+import { spanOverlap } from "../../lib/kit";
+
+type Props = DiagramProps;
+const { caps, scene } = Astro.props;
+
+const W = 1040, H = 480;
+const VIEW_IDS = ["ibn-hajar", "contemporary"];
+if ((scene.views ?? []).map((v) => v.id).join() !== VIEW_IDS.join()) throw new Error(`Heard: expected views ${VIEW_IDS.join(", ")}`);
+if ((scene.panels ?? []).length !== 4) throw new Error("Heard: expected four panels");
+
+// ---- panel 1: the chain of ʿan ----
+const TITLE_Y = 30;
+const muanan = (() => {
+  const c = cap(caps, "muanan");
+  return { c, cx: 130, ...titleTrigger(c.translit, 130, TITLE_Y, { ...SUBT_TRIGGER, extra: 4 }) };
+})();
+const CX = 80, K = 0.6, HALF = 22 * K;
+const MOON = { y: 92, k: 0.5 };
+const ROWS = [
+  { y: 160, fig: { ...FIG.sahabi, ...RELIABLE }, label: KIND_NAME.sahabi },
+  { y: 230, fig: { ...FIG.tabii, ...RELIABLE }, label: KIND_NAME.tabii },
+  { y: 300, fig: { ...FIG.later, ...RELIABLE }, label: KIND_NAME.later },
+  { y: 370, fig: { ...FIG.later, ...RELIABLE }, label: KIND_NAME.later },
+];
+// each arrow starts below the figure's Labels-mode name (14 under its feet) and stops above the next head
+const LINKS = [
+  { y1: MOON.y + 24 * MOON.k + 4, y2: ROWS[0].y - HALF - 4 },
+  ...ROWS.slice(1).map((r, i) => ({ y1: ROWS[i].y + HALF + 18, y2: r.y - HALF - 4 })),
+];
+// the link under test: the Successor to the narrator below him
+const TEST = { y0: ROWS[1].y + HALF + 16, y1: ROWS[2].y - HALF - 2 };
+
+// ---- panels 2–4: the decision path (ActedOn's pattern) ----
+const CY = 100, DH = 60, DW = 124;
+const Q = [
+  { cx: 370, lines: ["Lived at the", "same time?"] },
+  { cx: 630, lines: ["Is he a", "concealer?"] },
+  { cx: 870, lines: ["Known to have", "met, even once?"] },
+];
+const right = (i: number) => Q[i].cx + DW / 2 + 2, left = (i: number) => Q[i].cx - DW / 2 - 3;
+const PILL = { x: 1004, y: CY };
+const CARD_Y = 170, CARD_B = 330;
+const CARDS = [
+  { x0: 272, x1: 508, state: "reject" },
+  { x0: 532, x1: 768, state: "reject" },
+  { x0: 792, x1: 1030, state: "pause" },
+];
+// panel 2's lives that never meet, panel 4's that overlap with no known meeting
+const APART = { a: [300, 370] as [number, number], b: [410, 480] as [number, number] };
+const OVER = { a: [820, 930] as [number, number], b: [870, 990] as [number, number] };
+if (spanOverlap(APART.a, APART.b)) throw new Error("Heard: panel 2's lives must not overlap");
+const q4 = spanOverlap(OVER.a, OVER.b);
+if (!q4) throw new Error("Heard: panel 4's lives must overlap");
+const BAR1 = 214, BAR2 = 230;
+---
+<svg viewBox={`0 0 ${W} ${H}`} class="heard" role="group" aria-label="A chain whose every link says ʿan, then the test of one link, left to right. Did the two live at the same time? If not, the report is mursal or munqaṭiʿ. Is the narrator a concealer? If so, it is not counted as heard. On Ibn Ḥajar's chosen view, with ʿAlī ibn al-Madīnī and al-Bukhārī: are they known to have met, even once? If not, it could be a hidden mursal. If every answer passes, the link counts as heard.">
+  <Defs />
+  <line class="divider" x1="260" x2="260" y1="12" y2={H - 12} />
+  <line class="divider" x1="520" x2="520" y1="12" y2={H - 12} />
+  <line class="divider" x1="780" x2="780" y1="12" y2={H - 12} />
+
+  {/* ---- panel 1: the chain ---- */}
+  <TermTitle c={muanan.c} x={muanan.cx} y={TITLE_Y} cls="subt" hit={muanan.hit} info={muanan.info} ar={{ x: 130, y: 54, size: "sm" }} />
+  <Moon cx={CX} cy={MOON.y} k={MOON.k} />
+  {LINKS.map((l) => (
+    <>
+      <Arrow x1={CX} y1={l.y1} x2={CX} y2={l.y2} />
+      <text class="an" x={CX + 9} y={f((l.y1 + l.y2) / 2 + 4)}>ʿan</text>
+    </>
+  ))}
+  {ROWS.map((r) => <Narrator x={CX} y={r.y} k={K} {...r.fig} label={r.label} />)}
+  <g aria-hidden="true"><Bracket vertical y0={TEST.y0} y1={TEST.y1} x={124} ticks="left" /></g>
+  <text class="lbl start sm" x="132" y={f((TEST.y0 + TEST.y1) / 2 - 3)}>test each</text>
+  <text class="lbl start sm" x="132" y={f((TEST.y0 + TEST.y1) / 2 + 11)}>link</text>
+  <text class="lbl start sm" x="150" y="150">an illustration:</text>
+  <text class="lbl start sm" x="150" y="164">the book names</text>
+  <text class="lbl start sm" x="150" y="178">no example</text>
+  <text class="lbl sm" x="130" y="424">ʿan · qāla · dhakara · rawā: heard?</text>
+  <text class="lbl sm" x="130" y="439">permission? or not heard at all</text>
+  <XLink to="siyagh-al-ada/delivery#an" text="the eighth step" x={130} y={462} anchor="middle" />
+
+  {/* ---- the outcome cards, behind the path ---- */}
+  {CARDS.map((c, i) => (
+    <rect class={`card ${c.state}`} x={c.x0} y={CARD_Y} width={c.x1 - c.x0} height={CARD_B - CARD_Y} rx="8" data-view-show={i === 2 ? "ibn-hajar" : undefined} />
+  ))}
+
+  {/* ---- the path; hidden from screen readers, since the aria-label narrates it ---- */}
+  <g aria-hidden="true">
+    <Arrow x1={right(0)} y1={CY} x2={left(1)} y2={CY} />
+    <text class="lbl yn" x="548" y={CY - 8}>yes</text>
+    <g data-view-show="ibn-hajar">
+      <Arrow x1={right(1)} y1={CY} x2={left(2)} y2={CY} />
+      <text class="lbl yn" x="800" y={CY - 8}>no</text>
+      <Arrow x1={right(2)} y1={CY} x2={PILL.x - 31} y2={CY} />
+      <text class="lbl yn" x="952" y={CY - 8}>yes</text>
+      <Arrow x1={Q[2].cx} y1={CY + DH / 2 + 2} x2={Q[2].cx} y2={CARD_Y - 3} />
+      <text class="lbl yn start" x={Q[2].cx + 8} y={CY + DH / 2 + 20}>no</text>
+      <Decision cx={Q[2].cx} cy={CY} w={DW} h={DH} lines={Q[2].lines} />
+    </g>
+    <g class="off" data-view-show="contemporary">
+      <Arrow x1={right(1)} y1={CY} x2={PILL.x - 31} y2={CY} />
+      <text class="lbl yn" x="800" y={CY - 8}>no</text>
+    </g>
+    {[0, 1].map((i) => (
+      <>
+        <Arrow x1={Q[i].cx} y1={CY + DH / 2 + 2} x2={Q[i].cx} y2={CARD_Y - 3} />
+        <text class="lbl yn start" x={Q[i].cx + 8} y={CY + DH / 2 + 20}>{i === 0 ? "no" : "yes"}</text>
+        <Decision cx={Q[i].cx} cy={CY} w={DW} h={DH} lines={Q[i].lines} />
+      </>
+    ))}
+  </g>
+
+  {/* ---- the outcome: heard ---- */}
+  <text class="lbl sm" x={PILL.x} y={CY - 22}>counts as</text>
+  <Pill x={PILL.x} y={CY} state="accept" text="heard" />
+  <text class="lbl sm" x={PILL.x} y={CY + 28}>(samāʿ)</text>
+
+  {/* ---- panel 2: not of one time ---- */}
+  <text class="cardh" x="390" y="194">not heard</text>
+  <g aria-hidden="true">
+    <Lifespan x0={APART.a[0]} x1={APART.a[1]} y={BAR1} />
+    <Lifespan x0={APART.b[0]} x1={APART.b[1]} y={BAR2} />
+  </g>
+  <text class="lbl sm" x="390" y="256">they did not live at the same time</text>
+  <text class="lbl" x="390" y="282">mursal or munqaṭiʿ</text>
+  <XLink to="al-mardud/breaks" text="Where does the chain break?" x={390} y={316} anchor="middle" />
+
+  {/* ---- panel 3: a concealer ---- */}
+  <text class="cardh" x="650" y="194">not counted as heard</text>
+  <Narrator x={620} y={236} k={0.6} {...FIG.mudallis} label={KIND_NAME.mudallis} />
+  <text class="lbl start sm" x="642" y="232">he hides the one</text>
+  <text class="lbl start sm" x="642" y="246">he heard it from</text>
+  <XLink to="al-mardud/hidden#mudallas" text="Did he hear it from him?" x={650} y={316} anchor="middle" />
+
+  {/* ---- panel 4: no known meeting (the chosen view) ---- */}
+  <g data-view-show="ibn-hajar">
+    <text class="cardh" x="911" y="194">could be a hidden mursal</text>
+    <g aria-hidden="true">
+      <Lifespan x0={OVER.a[0]} x1={OVER.a[1]} y={BAR1} />
+      <Lifespan x0={OVER.b[0]} x1={OVER.b[1]} y={BAR2} />
+    </g>
+    <text class="q" x={q4.mid} y={(BAR1 + BAR2) / 2 + 5} aria-hidden="true">?</text>
+    <text class="lbl sm" x="911" y="256">same time, no known meeting</text>
+    <XLink to="al-mardud/hidden#mursal-khafi" text="Did he hear it from him?" x={911} y={316} anchor="middle" />
+    <ViewTag cx={911} y={350} w={124} text="the chosen view" />
+    <text class="lbl sm" x="911" y="392">with ʿAlī ibn al-Madīnī,</text>
+    <text class="lbl sm" x="911" y="407">al-Bukhārī and others</text>
+  </g>
+  <g class="off" data-view-show="contemporary">
+    <ViewTag cx={890} y={154} w={208} text="living at the same time is enough" dashed />
+    <rect class="card pause dashed" x="792" y="200" width="238" height="80" rx="8" />
+    <text class="cardh" x="911" y="232">no meeting asked for</text>
+    <text class="lbl sm" x="911" y="254">so nothing rules out</text>
+    <text class="lbl sm" x="911" y="269">a hidden mursal</text>
+  </g>
+</svg>
+<style>
+  .an{fill:var(--muted);font:italic 600 11px var(--f-body)}
+  .yn{font-size:11px}
+  .yn.start{text-anchor:start}
+  .cardh{fill:var(--fg);font:700 12.5px var(--f-body);text-anchor:middle}
+  .heard .card{stroke-width:1.2}
+  .card.dashed{stroke-dasharray:4 3}
+  .q{fill:var(--gap);font:700 15px var(--f-body);text-anchor:middle;stroke:var(--surface);stroke-width:3px;paint-order:stroke;animation:blink 2.4s ease-in-out infinite}
+</style>

@@ -1015,6 +1015,7 @@
   def: "A chain linked by ʿan. It counts as heard between contemporaries, not from a concealer; Ibn Ḥajar also wants proof they met at least once."
   section: "§5.56"
   division: siyagh-al-ada
+  scene: heard
 - id: wijada
   translit: Wijāda
   ar: وِجَادَةٌ

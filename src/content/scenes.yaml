@@ -615,6 +615,37 @@
     - { id: steps-3-4, label: Steps 3–4, x0: 220, x1: 430 }
     - { id: steps-5-6, label: Steps 5–6, x0: 430, x1: 640 }
     - { id: steps-7-8, label: Steps 7–8, x0: 640, x1: 860 }
+- id: heard
+  division: siyagh-al-ada
+  moons: [1]
+  order: 2
+  title: Did ʿan mean he heard it?
+  eyebrow: A chain joined by ʿan · §5.55–5.56
+  lede: The word ʿan says neither that a narrator heard the report nor that he did not. A chain joined by it counts as heard when the two in each link lived at the same time and the narrator is no concealer. Ibn Ḥajar's chosen view asks one thing more, that the two are known to have met, even once.
+  source: §5.55 ʿAn and its likes, §5.56 Muʿanʿan
+  diagram: Heard
+  width: 1040
+  captions:
+    - term: muanan
+      note: "A chain joined throughout by ʿan, a word that could mean he heard, had permission, or did not hear at all. Between two who lived at the same time it counts as heard; between two who did not, the report is mursal or munqaṭiʿ; from a concealer it does not count. Ibn Ḥajar's chosen view, with ʿAlī ibn al-Madīnī and al-Bukhārī, also asks for proof that they met, even once (§5.55–5.56)."
+  views:
+    - id: ibn-hajar
+      label: "Ibn Ḥajar: they met at least once"
+      scholars: §5.56; with ʿAlī ibn al-Madīnī, al-Bukhārī and others
+      note: "Living at the same time is not enough: there must be evidence that the two met, even once, so that the chain is kept clear of a hidden mursal. Ibn Ḥajar calls this the chosen opinion."
+    - id: contemporary
+      label: Living at the same time is enough
+      scholars: §5.56
+      note: "The first condition alone: ʿan between two who lived at the same time counts as heard, unless the narrator is a concealer. No meeting has to be shown, so nothing rules out a hidden mursal."
+  panels:
+    - { id: chain, label: A chain of ʿan, x0: 0, x1: 260 }
+    - { id: same-time, label: Lived at the same time?, x0: 260, x1: 520 }
+    - { id: concealer, label: A concealer?, x0: 520, x1: 780 }
+    - { id: met, label: "Met, even once?", x0: 780, x1: 1040 }
+  extra:
+    - title: The illustration
+      section: §5.56
+      note: "The book names no chain for this; the chain and the lifespans are an illustration of its three conditions."
 - id: names
   division: al-asma
   moons: [0, 1, 2]

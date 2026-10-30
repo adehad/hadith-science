@@ -10,6 +10,7 @@ import Breaks from "../../components/scenes/Breaks.astro";
 import Causes from "../../components/scenes/Causes.astro";
 import Unknown from "../../components/scenes/Unknown.astro";
 import Delivery from "../../components/scenes/Delivery.astro";
+import Heard from "../../components/scenes/Heard.astro";
 import Names from "../../components/scenes/Names.astro";
 import Grades from "../../components/scenes/Grades.astro";
 import Opposition from "../../components/scenes/Opposition.astro";
@@ -56,7 +57,7 @@ Astro.locals.panels = scene.panels;
 
 // each scene task adds its diagram here; import only components that exist
 // typed by the props every diagram takes, so a misnamed or missing prop fails astro check
-const DIAGRAMS: Partial<Record<Diagram, (p: DiagramProps) => any>> = { Routes, Breaks, Causes, Unknown, Delivery, Names, Grades, Opposition, Support, ActedOn, Report, Sorting, Knowledge, Lone, Hidden, Lying, Slips, Changes, Wording, Identity, Innovation, Ends, Raised, Companions, Connected, Peers, Doubts, Elevation, Meeting };
+const DIAGRAMS: Partial<Record<Diagram, (p: DiagramProps) => any>> = { Routes, Breaks, Causes, Unknown, Delivery, Names, Grades, Opposition, Support, ActedOn, Report, Sorting, Knowledge, Lone, Hidden, Lying, Slips, Changes, Wording, Identity, Innovation, Ends, Raised, Companions, Connected, Peers, Doubts, Elevation, Meeting, Heard };
 const D = DIAGRAMS[scene.diagram];
 if (!D) throw new Error(`no diagram component for ${scene.diagram}`);
 
@@ -104,6 +105,8 @@ const LEGEND: Partial<Record<Diagram, LegendKind[]>> = {
   Elevation: ["moon", "later", "weak", "liar"],
   // the named narrators of both examples are reliable later ones; the unnamed links are rings, not figures
   Meeting: ["moon", "later"],
+  // the chain of ʿan is drawn reliable; the third panel's narrator is the concealer
+  Heard: ["moon", "sahabi", "tabii", "later", "mudallis"],
   // ActedOn, Sorting and Wording draw no narrator figures, so they have no legend and no Key/Labels switch (phase 3
   // designs §1)
 };
