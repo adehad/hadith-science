@@ -1,0 +1,26 @@
+---
+// a term trigger with its visible title: the Term hit area, the title text and its (i), then, when given, the
+// term's Arabic name. The Arabic sits outside the trigger, so the trigger's accessible name (translit: en) matches
+// its visible text. cls picks the face: "title" (20px display), "subt" (15px display) or a scene's own row class.
+import Term from "./Term.astro";
+import InfoIcon from "./InfoIcon.astro";
+import type { Cap } from "../../lib/scene";
+
+interface Props {
+  c: Cap;
+  /** the title's anchor and baseline */
+  x: number;
+  y: number;
+  cls?: string;
+  hit: { x: number; y: number; w: number; h: number };
+  info: { cx: number; cy: number; r?: number };
+  /** where the Arabic name goes, and its size class (svg.css .title-ar.sm / .md); left out, none is drawn */
+  ar?: { x: number; y: number; size?: "sm" | "md" };
+}
+const { c, x, y, cls = "title", hit, info, ar } = Astro.props;
+---
+<Term slug={c.slug} json={c.json} label={`${c.translit}: ${c.en}`} {...hit}>
+  <text class={cls} x={x} y={y}>{c.translit}</text>
+  <InfoIcon {...info} />
+</Term>
+{ar && <text class={ar.size ? `title-ar ${ar.size}` : "title-ar"} lang="ar" direction="rtl" x={ar.x} y={ar.y}>{c.ar}</text>}

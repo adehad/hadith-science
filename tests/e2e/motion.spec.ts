@@ -60,3 +60,66 @@ test.describe("map layout", () => {
     await expect(page.locator(".tree")).toBeHidden();
   });
 });
+
+test("reduced motion: the opposition scales rest tipped, not level", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/al-maqbul/opposition/");
+  const beams = await page.locator("svg .scale .beam").evaluateAll((els) => els.map((e) => getComputedStyle(e).transform));
+  expect(beams).toHaveLength(2);
+  for (const t of beams) expect(t).not.toBe("none");
+  // the heavier pan has sunk: panel 2 tips left (maḥfūẓ), panel 3 right (maʿrūf)
+  const pans = await page.locator("svg .scale .pan").evaluateAll((els) => els.map((e) => new DOMMatrix(getComputedStyle(e).transform).f));
+  expect(pans[0]).toBeGreaterThan(0);
+  expect(pans[1]).toBeLessThan(0);
+  expect(pans[2]).toBeLessThan(0);
+  expect(pans[3]).toBeGreaterThan(0);
+});
+
+test("reduced motion: the support scene shows the iʿtibār sweep's end state", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/al-maqbul/support/");
+  // the lens rests at its heading, not on the book row where the sweep starts
+  expect(await page.locator("svg .lens").evaluate((e) => getComputedStyle(e).transform)).toBe("none");
+  // every found route is lit, the brackets are in, and "alone?" is struck through
+  const ops = await page.locator("svg .route, svg .brk").evaluateAll((els) => els.map((e) => getComputedStyle(e).opacity));
+  expect(ops).toHaveLength(6);
+  for (const o of ops) expect(o).toBe("1");
+  expect(await page.locator("svg .strike").evaluate((e) => Number(getComputedStyle(e).strokeDashoffset.replace("px", "")))).toBe(0);
+});
+
+test("with motion, the support scene's routes start faint and the lens sweeps the book row", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.goto("/al-maqbul/support/");
+  const last = page.locator("svg .route").last();
+  expect(Number(await last.evaluate((e) => getComputedStyle(e).opacity))).toBeLessThan(0.5);
+  // the brackets wait for the sweep, but start half in, so a visitor landing on ?mutabi can see the bracket
+  expect(Number(await page.locator("svg .brk").evaluate((e) => getComputedStyle(e).opacity))).toBeGreaterThanOrEqual(0.5);
+  expect(await page.locator("svg .lens").evaluate((e) => getComputedStyle(e).transform)).not.toBe("none");
+  await expect.poll(() => last.evaluate((e) => getComputedStyle(e).opacity), { timeout: 10000 }).toBe("1");
+  await expect.poll(() => page.locator("svg .lens").evaluate((e) => getComputedStyle(e).transform), { timeout: 10000 }).toBe("none");
+});
+
+test("reduced motion: the acted-on scene shows the abrogated ruling struck and the preference scale tipped", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/al-maqbul/acted-on/");
+  expect(await page.locator("svg .strike").evaluate((e) => Number(getComputedStyle(e).strokeDashoffset.replace("px", "")))).toBe(0);
+  // the preferred report's pan has sunk: the beam tips left
+  const pans = await page.locator("svg .scale .pan").evaluateAll((els) => els.map((e) => new DOMMatrix(getComputedStyle(e).transform).f));
+  expect(pans).toHaveLength(2);
+  expect(pans[0]).toBeGreaterThan(0);
+  expect(pans[1]).toBeLessThan(0);
+});
+
+test("with motion, the acted-on scene's strike draws across the abrogated ruling after a delay", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.goto("/al-maqbul/acted-on/");
+  const strike = page.locator("svg .strike");
+  // the draw is set up with its 1s delay; its current offset isn't checked, since a loaded runner may be past it
+  const anims = await strike.evaluate((e) => e.getAnimations().map((a) => ({
+    name: (a as CSSAnimation).animationName,
+    delay: a.effect?.getTiming().delay,
+  })));
+  expect(anims).toContainEqual({ name: "acted-draw", delay: 1000 });
+  const offset = () => strike.evaluate((e) => Number(getComputedStyle(e).strokeDashoffset.replace("px", "")));
+  await expect.poll(offset, { timeout: 5000 }).toBe(0);
+});

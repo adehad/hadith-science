@@ -3,7 +3,7 @@
 import type { ComponentProps } from "astro/types";
 import type Narrator from "./Narrator.astro";
 
-export type Kind = "sahabi" | "tabii" | "later" | "majhul" | "mubham" | "ghost";
+export type Kind = "sahabi" | "tabii" | "later" | "majhul" | "mubham" | "weak" | "ghost";
 export type Fig = Omit<ComponentProps<typeof Narrator>, "x" | "y">;
 
 export const FIG: Record<Kind, Fig> = {
@@ -12,8 +12,14 @@ export const FIG: Record<Kind, Fig> = {
   later: { kind: "later" },
   majhul: { kind: "later", scroll: "yes", seal: "slot" },
   mubham: { kind: "later", face: "blank", scroll: "slot", seal: "slot" },
+  // named, so he keeps his scroll; the seal that vouches for him is cracked (spec §3.2)
+  weak: { kind: "later", scroll: "yes", seal: "crack" },
   ghost: { ghost: true },
 };
 
+// named narrators are drawn reliable, with scroll and seal, unless the book says otherwise (spec §3.2, phase 3
+// design §1)
+export const RELIABLE = { scroll: "yes", seal: "yes" } as const satisfies Fig;
+
 // kind names shown in Labels mode
-export const KIND_NAME: Record<Kind, string> = { sahabi: "Companion", tabii: "Successor", later: "Narrator", majhul: "Unknown", mubham: "Unnamed", ghost: "Missing" };
+export const KIND_NAME: Record<Kind, string> = { sahabi: "Companion", tabii: "Successor", later: "Narrator", majhul: "Unknown", mubham: "Unnamed", weak: "Weak", ghost: "Missing" };

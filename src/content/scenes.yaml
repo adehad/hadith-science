@@ -163,3 +163,177 @@
       ar: عَبْدُ اللَّهِ بْنُ زَيْدٍ
       section: §5.61
       note: "Many narrators bear this name. Two are Companions, both of the Anṣār: one reported the hadith on the call to prayer (adhān), and his grandfather was ʿAbd Rabbih; the other reported the hadith on ablution (wuḍūʾ), and his grandfather was ʿĀṣim. ʿAbd Allāh ibn Yazīd, one letter more in the father's name, is a second crowd, among them the Companion al-Khaṭmī and al-Qārī, named in ʿĀʾisha's report. Close by are ʿAbd Allāh ibn Yaḥyā, ʿAbd Allāh ibn Nujayy (a Successor who reported from ʿAlī), and names in swapped order: Yazīd ibn ʿAbd Allāh against ʿAbd Allāh ibn Yazīd, al-Aswad ibn Yazīd against Yazīd ibn al-Aswad. In the diagram each name part added, ʿAbd Allāh, ibn Zayd, al-Anṣārī, then ibn ʿAbd Rabbih, narrows the list until only the Companion of the adhān is left."
+- id: grades
+  division: al-maqbul
+  moons: [0]
+  order: 1
+  title: How sound is it?
+  eyebrow: Accepted reports, the four grades · §5.9–5.10
+  lede: Ibn Ḥajar sorts accepted reports into four grades by asking two questions. Are the qualities that make a report acceptable all present at their fullest? If not, does something outside the report make up the gap?
+  source: §5.9 Ṣaḥīḥ, §5.10 Ḥasan
+  diagram: Grades
+  width: 860
+  captions:
+    - term: sahih-li-dhatihi
+      note: "A report carried by upright narrators of complete accuracy, through a connected chain, with no anomaly (shādhdh) and no hidden defect (muʿallal). It is the first of the four accepted grades, where every quality of acceptance is present at its highest. Calling it sound in itself sets it apart from a report graded sound because of something outside it (§5.9)."
+    - term: adl
+      note: "Upright: a settled quality that holds the narrator to piety (taqwā) and decent conduct. Piety here means keeping away from evil deeds: associating partners with Allah, immorality and innovation. The word “upright” in the definition shuts out reports carried by narrators who are not upright (§5.9)."
+    - term: dabt
+      note: "Accuracy, of two kinds: of memory and of the book. The definition asks for complete accuracy, to mark the higher rank. When accuracy is a little lighter but every other condition holds, the report is fair in itself (ḥasan li-dhātihi) instead (§5.9, §5.10)."
+    - term: dabt-sadr
+      note: "Accuracy of memory: he keeps what he heard so firmly that he can bring it out whenever he wishes (§5.9)."
+    - term: dabt-kitab
+      note: "Accuracy of the book: he guards his written copy, keeping it safe where no one can alter it, from the time he heard it and checked it until he narrates from it (§5.9)."
+    - term: ittisal
+      note: "A connected chain is free of any drop: every man in it heard the report from the shaykh he names. A chain with a drop fails this condition; the kinds of drop are set out later, under rejected reports (§5.9, §5.17)."
+    - term: asahh-al-asanid
+      note: "Sound reports differ in rank with the strength of their narrators. At the top are chains some imams named the soundest: al-Zuhrī from Sālim from his father Ibn ʿUmar; Ibn Sīrīn from ʿUbayda from ʿAlī; al-Nakhaʿī from ʿAlqama from Ibn Masʿūd. Ibn Ḥajar's settled view is to crown no single chain, though those they named rank above the rest (§5.9)."
+    - term: hasan-li-dhatihi
+      note: "Every condition of the sound holds, but the narrator's accuracy is lighter. It is used as proof like the sound, though ranked below it, and it too has ranks. Ibn Ḥajar's examples of chains that are fair only: Muḥammad ibn Isḥāq from ʿĀṣim ibn ʿUmar from Jābir, and ʿAmr ibn Shuʿayb from his father from his grandfather (§5.9, §5.10)."
+    - term: sahih-li-ghayrihi
+      note: "Sound, but not in itself. The report's qualities fall short of the highest, and something makes up the shortfall, such as many routes. Ibn Ḥajar's case: a chain that is fair in itself is called sound when its routes multiply, because together they have a strength that makes up for its narrator's lighter accuracy (§5.9, §5.10)."
+    - term: hasan-li-ghayrihi
+      note: "Fair, but not in itself. A report that had been held back is raised to fair when an indication tips it towards acceptance. Ibn Ḥajar's example is the report of a mastūr, a narrator whose state is not known, once its routes multiply (§5.9, §5.10)."
+    - term: hasan-sahih
+      note: "al-Tirmidhī and others sometimes call one report “ḥasan ṣaḥīḥ”. With one route it records doubt: ḥasan to some, ṣaḥīḥ to others, as if “or” had been dropped, so it ranks below plain ṣaḥīḥ. With two routes it means one is ṣaḥīḥ and the other ḥasan, so it ranks above a ṣaḥīḥ with only one route, since more routes strengthen (§5.10)."
+  views:
+    - id: ibn-hajar
+      label: Ibn Ḥajar
+      scholars: §5.10
+      note: "Fair in itself: every condition of the sound, with the narrator's accuracy a little lighter. It ranks below sound, and many routes raise it to sound."
+    - id: tirmidhi
+      label: al-Tirmidhī, in his book
+      scholars: §5.10
+      note: "al-Tirmidhī calls a report ḥasan when no narrator in it is accused of lying, it comes by more than one such route, and it is not anomalous. Ibn Ḥajar points out that he gave this definition for his own book (“according to us”), and only for the plain grade."
+  extra:
+    - title: Ḥasan in al-Tirmidhī's book
+      section: §5.10
+      note: "al-Tirmidhī defined ḥasan for his own book, and only for the plain grade: no narrator accused of lying, more than one such route, and not anomalous. He said “according to us”, so his “ḥasan gharīb” (“we do not know of it except by this path”) does not contradict that definition, which never covered the compound grades. He left those, like plain ṣaḥīḥ and gharīb, undefined, seemingly because the people of the field already knew them."
+    - title: Ranks by the two Ṣaḥīḥs
+      section: §5.9
+      note: "Ibn Ḥajar ranks sound reports by where they are found: first what al-Bukhārī and Muslim both record; then what al-Bukhārī alone records; then what Muslim alone records; then what meets both their conditions; then what meets al-Bukhārī's condition; then what meets Muslim's. A seventh type meets neither. A stronger factor can override this order: a mashhūr report in Muslim that yields knowledge outranks one al-Bukhārī records alone, and a soundest chain such as Mālik from Nāfiʿ from Ibn ʿUmar, recorded by neither, outranks a report only one of them records, especially when that one's chain holds a narrator in doubt."
+- id: opposition
+  division: al-maqbul
+  moons: [1]
+  order: 2
+  title: Who outweighs whom?
+  eyebrow: Accepted reports, when narrators disagree · §5.10–5.12
+  lede: One narrator may add words to a report, or tell it differently from others. An addition that clashes with nothing is accepted; when two versions clash, the weightier is kept. What the winner and the loser are called depends on whether the narrator who lost was reliable or weak.
+  source: §5.10 Ziyādat al-thiqa, §5.11 Shādhdh and maḥfūẓ, §5.12 Maʿrūf and munkar
+  diagram: Opposition
+  width: 780
+  captions:
+    - term: ziyadat-al-thiqa
+      note: "Extra words that a narrator of a sound or fair report gives and others leave out. If they clash with nothing, they are accepted, like a report a reliable narrator gives alone. If accepting them would mean rejecting the other version, the two are weighed: the weightier is accepted and the other rejected. None of the early masters is known to have accepted additions outright (§5.10)."
+    - term: mahfuz
+      note: "The weightier version, which wins. Ibn ʿUyayna gave the report of a man who died leaving no heir but a slave he had freed from ʿAmr ibn Dīnār, from ʿAwsaja, from Ibn ʿAbbās, and Ibn Jurayj and others gave it the same way. Ibn Abī Ḥātim judged Ibn ʿUyayna's version maḥfūẓ (§5.11)."
+    - term: shadhdh
+      note: "An acceptable narrator goes against one who is weightier: by firmer accuracy, by numbers, or on some other ground. Ḥammād ibn Zayd, accurate and trustworthy, gave the same report from ʿAmr ibn Dīnār, from ʿAwsaja, without Ibn ʿAbbās. His version lost because the other side had more narrators. Ibn Ḥajar calls this the settled sense of the term (§5.11)."
+    - term: munkar
+      note: "A weak narrator goes against a stronger one. Ḥubayyib ibn Ḥabīb, brother of Ḥamza al-Zayyāt, gave from Abū Isḥāq, from al-ʿAyzār ibn Ḥurayth, from Ibn ʿAbbās, as the Prophet's ﷺ words: whoever prays, gives zakāt, makes the ḥajj, fasts and honours his guest enters Paradise. Ibn Abī Ḥātim called it munkar (§5.12)."
+    - term: maruf
+      note: "The stronger version, which wins against a weak narrator. Reliable narrators gave the same report from Abū Isḥāq without carrying it up to the Prophet ﷺ, and Ibn Abī Ḥātim called theirs maʿrūf. Shādhdh and munkar share the opposition but differ in the narrator, reliable in one and weak in the other; Ibn Ḥajar calls treating them as one ignorance (§5.12)."
+  views:
+    - id: ibn-hajar
+      label: Ibn Ḥajar and the early masters
+      scholars: §5.10
+      note: "Weigh an addition when it clashes. Examining additions is reported from ʿAbd al-Raḥmān ibn Mahdī, Yaḥyā al-Qaṭṭān, Aḥmad, Ibn Maʿīn, ʿAlī ibn al-Madīnī, al-Bukhārī, Abū Zurʿa al-Rāzī, al-Nasāʾī, al-Dāraquṭnī and others; none of them is known to have accepted it outright. al-Shāfiʿī's own words point the same way."
+    - id: accept-all
+      label: Accept every addition
+      scholars: §5.10
+      note: "A well-known opinion accepts a reliable narrator's addition outright, without weighing. Ibn Ḥajar finds it surprising from hadith scholars who make “not being shādhdh” a condition of the sound and the fair, and more surprising from some Shāfiʿīs who hold it, since al-Shāfiʿī said a longer version that goes against the memorisers can harm a report."
+  panels:
+    - id: added-words
+      label: Added words
+      x0: 0
+      x1: 260
+    - id: shadhdh
+      label: Shādhdh · maḥfūẓ
+      x0: 260
+      x1: 520
+    - id: munkar
+      label: Munkar · maʿrūf
+      x0: 520
+      x1: 780
+  extra:
+    - title: The freed slave's report
+      section: §5.11
+      note: "The report in the shādhdh example: a man died in the Prophet's ﷺ time and left no heir but a slave he had freed. al-Tirmidhī, al-Nasāʾī and Ibn Māja recorded it through Ibn ʿUyayna, whose version names Ibn ʿAbbās; Ḥammād ibn Zayd's leaves him out."
+    - title: The Paradise report
+      section: §5.12
+      note: "The report in the munkar example: whoever prays, gives zakāt, makes the ḥajj, fasts and honours his guest enters Paradise. Ḥubayyib ibn Ḥabīb carried it up to the Prophet ﷺ; the reliable narrators did not."
+- id: support
+  division: al-maqbul
+  moons: [2]
+  order: 3
+  title: Does anyone else carry it?
+  eyebrow: Accepted reports, corroboration · §5.13
+  lede: A report thought to rest on one narrator may turn out to have company, either another route to the same Companion or a matching text from a different Companion. Searching the collections is how they are found.
+  source: §5.13 Mutābiʿ, shāhid and iʿtibār
+  diagram: Support
+  width: 780
+  captions:
+    - term: itibar
+      note: "Going through the chains in the collections, the jāmiʿs, musnads and juzʾs, to learn whether a report thought to be solitary has a follow-up. Ibn al-Ṣalāḥ's heading, “Knowing the iʿtibār, the mutābaʿāt and the shawāhid”, led some to take it for a kind beside the other two. It is not: it is the way both are found (§5.13)."
+    - term: mutabi
+      note: "A report first thought to be solitary, a relative gharīb (fard nisbī), turns out to have others agreeing with it; the agreeing route is a mutābiʿ, and its benefit is strength. Full or partial, it need not repeat the exact words, since the same meaning is enough, but it must come from the same Companion (§5.13)."
+    - term: mutabaa-tamma
+      note: "Full follow-up: the agreement is with the narrator himself. al-Shāfiʿī gave Mālik's report with “complete the period [of] thirty” in al-Umm, and a group took it for one of his gharīb reports, since Mālik's other students have “count for it”. But al-Qaʿnabī also gave it from Mālik, as al-Bukhārī records (§5.13)."
+    - term: mutabaa-qasira
+      note: "Partial follow-up: the agreement is with the narrator's teacher, or joins further along the chain. For the same report, Ibn Khuzayma's Ṣaḥīḥ has ʿĀṣim ibn Muḥammad, from his father Muḥammad ibn Zayd, from ʿAbd Allāh ibn ʿUmar: “complete thirty”. Muslim's Ṣaḥīḥ has ʿUbayd Allāh ibn ʿUmar, from Nāfiʿ, from Ibn ʿUmar: “count thirty” (§5.13)."
+    - term: shahid
+      note: "A text narrated from another Companion that resembles the report in wording and meaning, or in meaning alone. In wording: al-Nasāʾī's version through Muḥammad ibn Jubayr from Ibn ʿAbbās, like ʿAbd Allāh ibn Dīnār's from Ibn ʿUmar. In meaning: al-Bukhārī's through Muḥammad ibn Ziyād from Abū Hurayra, “complete the period of Shaʿbān thirty” (§5.13)."
+  panels:
+    - { id: lone, label: The lone route and a full follow-up, x0: 0, x1: 260 }
+    - { id: partial, label: Partial follow-ups, x0: 260, x1: 520 }
+    - { id: witness, label: Witnesses, x0: 520, x1: 780 }
+  extra:
+    - title: Sorting them by wording
+      section: §5.13
+      note: "A group of scholars draw the line differently: a report that matches in wording is a mutābiʿ, whether or not it comes from the same Companion, and one that matches in meaning is a shāhid. The two names are also sometimes used for each other. Ibn Ḥajar says the matter is easy. The diagram follows his own definitions, which sort the routes by Companion."
+- id: acted-on
+  division: al-maqbul
+  moons: [3]
+  order: 4
+  title: Can both be acted on?
+  eyebrow: Accepted reports, acted on or not · §5.14–5.16
+  lede: An accepted report that nothing contradicts is acted on, and such reports are many. When two accepted reports seem to clash, Ibn Ḥajar works through a fixed order. First he tries to harmonise them, then he looks for abrogation, then he prefers one, and only then does he pause.
+  source: §5.14 Muḥkam, §5.15 Mukhtalif al-ḥadīth, §5.16 Nāsikh and mansūkh
+  diagram: ActedOn
+  width: 1040
+  captions:
+    - term: muhkam
+      note: "Accepted reports also divide into those acted on and those not. An accepted report that no other report contradicts is muḥkam, and its examples are many. If the report opposing it is a rejected one, the opposition has no effect, since a weak report cannot unsettle a strong one (§5.14)."
+    - term: mukhtalif-al-hadith
+      note: "Two accepted reports of equal standing seem to clash, but their meanings can be harmonised without strain. Ibn al-Ṣalāḥ's example, both sound: “There is no contagion or evil fortune” and “Flee from a leper as you would from a lion”. Ibn Ḥajar's best harmony keeps the denial general, since the Prophet ﷺ asked who infected the first; the order to flee keeps a person from thinking contact made him ill (§5.15)."
+    - term: naskh
+      note: "If harmony fails and the date is known, the later report abrogates the earlier. Naskh is the lifting of a ruling of the Law by a later proof of the Law. A report from a Companion who became Muslim late does not abrogate an earlier one on that ground alone, unless he heard it from the Prophet ﷺ himself and narrated nothing from him before his Islām. Consensus does not abrogate; it only points to abrogation (§5.16)."
+    - term: mansukh
+      note: "The abrogated report: the earlier one, whose ruling was lifted. A Companion may say which came last. Jābir said that the last of the two commands from the Messenger ﷺ was to leave off ablution for what fire has touched, as the compilers of the Sunan record; so the earlier command, to make ablution for it, is the abrogated one. Many cases are known from the dates (§5.16)."
+    - term: nasikh
+      note: "The abrogating report: the one that shows the earlier ruling was lifted. The name is a figure of speech, since the one who truly abrogates is Allah. It is known most clearly from the text itself, as in Burayda's report in Ṣaḥīḥ Muslim: “I had forbidden you to visit graves. Visit them; for indeed it reminds of the hereafter.” It is also known from a Companion's word, or from the dates (§5.16)."
+    - term: tarjih
+      note: "If harmony fails and the date is unknown, one report may be preferred over the other by one of the many means of preference found in its text or its chain. If a preference can be made, the preferred report is singled out. This is what sorting accepted reports into kinds is for: preference when they conflict (§5.13, §5.16)."
+    - term: tawaqquf
+      note: "If no preference can be made, the two are paused upon: neither is acted on for now. Calling them paused is better than calling them dropped, because the failure to prefer one is only the researcher's, at that moment; what is hidden from him may become clear to someone else (§5.16)."
+  panels:
+    - id: steps-1-2
+      label: Steps 1–2
+      x0: 0
+      x1: 260
+    - id: step-3
+      label: Step 3
+      x0: 260
+      x1: 520
+    - id: step-4
+      label: Step 4
+      x0: 520
+      x1: 780
+    - id: step-5
+      label: Step 5
+      x0: 780
+      x1: 1040
+  extra:
+    - title: The contagion reports
+      section: §5.15
+      note: "Ibn al-Ṣalāḥ harmonised the pair this way: illnesses do not infect by their nature, but Allah has made mixing with the ill a cause of a healthy person falling ill, which sometimes does not happen, as with other causes. Ibn Ḥajar prefers to keep the Prophet's ﷺ denial general. When someone said that a sick camel mixes with healthy camels and they fall ill, the Prophet ﷺ asked, “Then who infected the first?”: Allah began the illness in the second as He did in the first. The order to flee from the leper closes the way to a wrong belief, so that someone who mixes with the ill and falls ill does not think contagion caused it. al-Shāfiʿī wrote a book on this type, Ikhtilāf al-ḥadīth, and Ibn Qutayba, al-Ṭaḥāwī and others wrote after him."

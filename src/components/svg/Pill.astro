@@ -1,8 +1,9 @@
 ---
-// a verdict pill centred on (x, y) (ported from the mockup's pill()); its width follows the text length
+// a verdict pill centred on (x, y) (ported from the mockup's pill()); its width follows the text length.
+// gold marks one of two reports acted on (phase 3 design §5.2); its text takes 45% --fg, for 4.5:1 in dark mode
 import { f } from "./geom";
 
-interface Props { x: number; y: number; text: string; state: "pause" | "accept" | "support" | "reject" }
+interface Props { x: number; y: number; text: string; state: "pause" | "accept" | "support" | "reject" | "gold" }
 const { x, y, text, state } = Astro.props;
 const w = f(text.length * 6.6 + 24);
 ---
@@ -17,4 +18,5 @@ const w = f(text.length * 6.6 + 24);
   .pill.accept rect{fill:color-mix(in srgb,var(--ok) 16%,var(--surface));stroke:var(--ok)} .pill.accept text{fill:var(--ok)}
   .pill.support rect{fill:color-mix(in srgb,var(--ok) 10%,var(--surface));stroke:var(--ok);stroke-dasharray:4 3} .pill.support text{fill:var(--ok)}
   .pill.reject rect{fill:color-mix(in srgb,var(--gap) 12%,var(--surface));stroke:var(--gap)} .pill.reject text{fill:var(--gap)}
+  .pill.gold rect{fill:color-mix(in srgb,var(--gold-b) 22%,var(--surface));stroke:var(--gold-a)} .pill.gold text{fill:color-mix(in srgb,var(--gold-a) 55%,var(--fg))}
 </style>

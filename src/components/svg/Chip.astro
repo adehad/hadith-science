@@ -1,0 +1,19 @@
+---
+// a small rounded name or label chip (phase 3 design §7), left edge at x and centred on y, 20 tall. Its width
+// follows the text (lib/kit.ts chipWidth) unless w is given. companion gives it the Companions' gold edge.
+import { CHIP_H, chipWidth } from "../../lib/kit";
+import { f } from "./geom";
+
+interface Props { x: number; y: number; text: string; w?: number; companion?: boolean; dashed?: boolean }
+const { x, y, text, w = chipWidth(text), companion = false, dashed = false } = Astro.props;
+---
+<g class:list={["chip", { companion, dashed }]}>
+  <rect x={x} y={f(y - CHIP_H / 2)} width={w} height={CHIP_H} rx={CHIP_H / 2} />
+  <text x={f(x + w / 2)} y={f(y + 4)}>{text}</text>
+</g>
+<style>
+  .chip rect{fill:var(--surface);stroke:var(--line);stroke-width:1.2}
+  .chip.companion rect{stroke:var(--gold-a);stroke-width:2}
+  .chip.dashed rect{stroke-dasharray:3 2.5}
+  .chip text{fill:var(--fg);font:600 11px var(--f-body);text-anchor:middle}
+</style>

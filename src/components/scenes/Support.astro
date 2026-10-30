@@ -1,0 +1,229 @@
+---
+// "Does anyone else carry it?" (phase 3 design §4): mutābiʿ, shāhid and iʿtibār (§5.13) as one branching tree of
+// the book's crescent-moon chains, in three panels of one 780-wide row, so it carousels in portrait.
+//   1  the lone route: Ibn ʿUmar, ʿAbd Allāh ibn Dīnār, Mālik, al-Shāfiʿī (al-Umm), with al-Qaʿnabī beside him
+//      (al-Bukhārī): a full follow-up, agreeing with al-Shāfiʿī at Mālik
+//   2  partial follow-ups, joining at Ibn ʿUmar: ʿĀṣim (Ibn Khuzayma) and ʿUbayd Allāh (Muslim)
+//   3  witnesses, from other Companions: Ibn ʿAbbās (al-Nasāʾī) and Abū Hurayra (al-Bukhārī)
+// Brackets group the routes by Ibn Ḥajar's definitions, which turn on where a new route joins the old one. Where
+// the book gives no lower chain, an elided arrow runs on to the collector. No views: the group that sorts by
+// wording is in Read as text only (phase 3 design §13).
+// The iʿtibār sweep (design §4.7) is animation only: the resting styles are the end state (every route lit, the
+// strike drawn, the lens at its heading, the brackets in), so with motion.css stopping every animation the end
+// state shows.
+import Defs from "../svg/Defs.astro";
+import Moon from "../svg/Moon.astro";
+import Narrator from "../svg/Narrator.astro";
+import Arrow from "../svg/Arrow.astro";
+import TermTitle from "../svg/TermTitle.astro";
+import Chip from "../svg/Chip.astro";
+import Glyph from "../svg/Glyph.astro";
+import { FIG, KIND_NAME, RELIABLE, type Kind } from "../svg/figures";
+import { SUBT_TRIGGER, f, panelTrigger } from "../svg/geom";
+import { cap, type DiagramProps } from "../../lib/scene";
+import { CHIP_CHAR_W, chipWidth, sweepAt } from "../../lib/kit";
+
+type Props = DiagramProps;
+const { caps, scene } = Astro.props;
+
+const W = 780, H = 600;
+if (scene.views?.length) throw new Error("Support: expected no views");
+const PANELS = scene.panels ?? [];
+
+const K = 0.7;
+const HALF = 22 * K; // half a figure's height
+
+// rows: the moon, the Companions, then each narrator below; students of Mālik; wording and book chips; brackets
+const MOON = { x: 150, y: 46 };
+const Y = { c: 120, t: 196, l: 272, s: 348 };
+const WORD_Y = 422, BOOK_Y = 450;
+const B1 = 474, B2 = 534;
+
+// [name lines, x, y, kind]; names sit to the right of each figure (Ibn ʿUmar's to the left, clear of his arrows)
+type Fig = { lines: string[]; x: number; y: number; kind: Kind; left?: boolean };
+const IBN_UMAR: Fig = { lines: ["Ibn ʿUmar"], x: 150, y: Y.c, kind: "sahabi", left: true };
+const LONE: Fig[] = [
+  IBN_UMAR,
+  { lines: ["ʿAbd Allāh", "ibn Dīnār"], x: 80, y: Y.t, kind: "tabii" },
+  { lines: ["Mālik"], x: 80, y: Y.l, kind: "later" },
+];
+const MALIK = LONE[2];
+const STU = { shafii: 46, qanabi: 132, others: 216 };
+
+// the sweep: the lens moves along the book row from x0 to x1 between t0 and t1 seconds; each route lights as the
+// lens reaches its book
+const SWEEP = { x0: 40, x1: 740, t0: 0.8, t1: 4.8 };
+const delay = (x: number) => `${sweepAt(x, SWEEP)}s`;
+// the lens rests at the iʿtibār heading, top right
+const LENS = { x: 548, y: 31 };
+
+// a found route: its figures from the top down, where its first arrow comes from, its wording and its book
+// plainWord: the wording chip describes the wording rather than giving it, so it is not set in italic like the rest
+interface Route {
+  id: string; x: number; figs: Fig[]; from: { x: number; y: number }; bend?: number; arc?: string;
+  word: string; plainWord?: boolean; book: string; note?: string;
+  /** the key for the elided arrows, drawn in this route's group so it fades in with it; y is its last baseline */
+  key?: { x: number; y: number; lines: string[] };
+}
+const ROUTES: Route[] = [
+  {
+    id: "asim", x: 300, from: { x: 158, y: Y.c + 14 }, bend: 30, word: "complete 30", book: "Ibn Khuzayma",
+    key: { x: 355, y: Y.s, lines: ["chain goes on,", "not in the book"] },
+    figs: [{ lines: ["Muḥammad", "ibn Zayd"], x: 300, y: Y.t, kind: "tabii" }, { lines: ["ʿĀṣim ibn", "Muḥammad"], x: 300, y: Y.l, kind: "later" }],
+  },
+  {
+    id: "ubayd", x: 410, from: { x: 162, y: Y.c + 8 }, bend: 40, word: "count 30", book: "Muslim",
+    figs: [{ lines: ["Nāfiʿ"], x: 410, y: Y.t, kind: "tabii" }, { lines: ["ʿUbayd Allāh", "ibn ʿUmar"], x: 410, y: Y.l, kind: "later" }],
+  },
+  {
+    // the arcs from the moon stay above the Successor row and below the iʿtibār heading
+    id: "abbas", x: 570, from: MOON, arc: `M166 40 Q420 30 564 ${f(Y.c - HALF - 3)}`, word: "same wording", plainWord: true, book: "al-Nasāʾī", note: "in wording",
+    key: { x: 625, y: Y.s + 38, lines: ["not in the book"] },
+    figs: [{ lines: ["Ibn ʿAbbās"], x: 570, y: Y.c, kind: "sahabi" }, { lines: ["Muḥammad", "ibn Jubayr"], x: 570, y: Y.t, kind: "tabii" }],
+  },
+  {
+    id: "hurayra", x: 680, from: MOON, arc: `M168 50 Q460 52 674 ${f(Y.c - HALF - 3)}`, word: "complete Shaʿbān 30", book: "al-Bukhārī", note: "in meaning only",
+    figs: [{ lines: ["Abū Hurayra"], x: 680, y: Y.c, kind: "sahabi" }, { lines: ["Muḥammad", "ibn Ziyād"], x: 680, y: Y.t, kind: "tabii" }],
+  },
+];
+
+// chips: wording chips are italic, with a little less padding than name chips so panel 1's three fit
+const chip = (text: string, cx: number) => {
+  const w = chipWidth(text, CHIP_CHAR_W, 10);
+  return { text, w, x: f(cx - w / 2) };
+};
+
+// a bracket label as a term trigger, in the 15px display face (geom's SUBT_TRIGGER); panelTrigger checks it sits
+// wholly inside its panel, or the carousel would cut it
+function label(slug: string, cx: number, y: number) {
+  const c = cap(caps, slug);
+  return { c, cx, y, ...panelTrigger(c.translit, cx, y, PANELS, { ...SUBT_TRIGGER, name: `Support: ${slug}` }) };
+}
+// [slug, bracket x0, x1, row, label centre]; the full follow-up's bracket covers al-Qaʿnabī only, not al-Shāfiʿī
+const BRACKETS: [string, number, number, number, number][] = [
+  ["mutabaa-tamma", 110, 158, B1, 130],
+  ["mutabaa-qasira", 262, 450, B1, 356],
+  ["mutabi", 104, 450, B2, 390],
+  ["shahid", 548, 772, B2, 650],
+];
+const brackets = BRACKETS.map(([slug, x0, x1, y, cx]) => ({ x0, x1, by: y, ...label(slug, cx, y + 22) }));
+
+// the iʿtibār heading: the lens, then the title; the hit area takes in the lens
+const itibar = (() => {
+  const c = cap(caps, "itibar");
+  const cx = f(LENS.x + 18 + (c.translit.length * SUBT_TRIGGER.charW) / 2), y = LENS.y + 6;
+  return { c, cx, y, ...panelTrigger(c.translit, cx, y, PANELS, { ...SUBT_TRIGGER, top: 19, h: 26, x0: LENS.x - 12, name: "Support: itibar" }) };
+})();
+
+const qanabiAt = sweepAt(STU.qanabi, SWEEP);
+const lensStyle = `--x0:${SWEEP.x0 - LENS.x}px;--x1:${SWEEP.x1 - LENS.x}px;--dy:${BOOK_Y - LENS.y}px`;
+---
+<svg viewBox={`0 0 ${W} ${H}`} class="support" role="group" aria-label="The crescent-moon report. al-Shāfiʿī's route from Mālik, from ʿAbd Allāh ibn Dīnār, from Ibn ʿUmar, was thought to be his alone. Searching the collections finds al-Qaʿnabī with him from Mālik, a full follow-up; ʿĀṣim ibn Muḥammad and ʿUbayd Allāh ibn ʿUmar joining at Ibn ʿUmar, partial follow-ups; and Ibn ʿAbbās and Abū Hurayra, other Companions, as witnesses.">
+  <Defs />
+  <line class="divider" x1="260" x2="260" y1="12" y2={H - 12} />
+  <line class="divider" x1="520" x2="520" y1="12" y2={H - 12} />
+
+  {/* ---- panel 1: the lone route, at full strength from the start ---- */}
+  <Moon cx={MOON.x} cy={MOON.y} k={K} />
+  <Arrow x1={MOON.x} y1={MOON.y + 18} x2={IBN_UMAR.x} y2={IBN_UMAR.y - HALF - 3} />
+  <Arrow x1={IBN_UMAR.x - 6} y1={IBN_UMAR.y + HALF + 2} x2={LONE[1].x + 6} y2={LONE[1].y - HALF - 3} bend={-6} />
+  <Arrow x1={LONE[1].x} y1={LONE[1].y + HALF + 2} x2={MALIK.x} y2={MALIK.y - HALF - 3} />
+  <Arrow x1={MALIK.x - 6} y1={MALIK.y + HALF + 2} x2={STU.shafii + 4} y2={Y.s - HALF - 3} bend={-4} />
+  {LONE.map((p) => (
+    <>
+      <Narrator x={p.x} y={p.y} k={K} {...FIG[p.kind]} {...RELIABLE} label={KIND_NAME[p.kind]} />
+      {p.lines.map((n, j) => (
+        <text class="nm" x={p.left ? p.x - 20 : p.x + 20} y={p.y + 4 + (j - (p.lines.length - 1) / 2) * 14} style={p.left ? "text-anchor:end" : undefined}>{n}</text>
+      ))}
+    </>
+  ))}
+  <Narrator x={STU.shafii} y={Y.s} k={K} {...FIG.later} {...RELIABLE} />
+  <text class="sn" x={STU.shafii} y={Y.s + 28}>al-Shāfiʿī</text>
+  {/* what a group thought of his version, struck through once a follow-up turns up */}
+  <text class="lbl gap" x={STU.shafii} y={Y.s + 46}>alone?</text>
+  <path class="strike" pathLength="1" style={`--d:${qanabiAt + 0.1}s`} d={`M${STU.shafii - 22} ${Y.s + 41} L${STU.shafii + 22} ${Y.s + 41}`} />
+  {(() => { const c = chip("complete 30", STU.shafii); return <g class="wording"><Chip x={c.x} y={WORD_Y} text={c.text} w={c.w} /></g>; })()}
+  {(() => { const c = chip("al-Umm", STU.shafii); return <Chip x={c.x} y={BOOK_Y} text={c.text} w={c.w} />; })()}
+
+  {/* Mālik's other students, whose wording is why al-Shāfiʿī seemed alone; known from the start */}
+  <g class="faint">
+    <Arrow x1={MALIK.x + 8} y1={MALIK.y + HALF + 1} x2={STU.others - 8} y2={Y.s - HALF - 3} bend={14} />
+    <Narrator x={STU.others} y={Y.s} k={K} {...FIG.later} {...RELIABLE} />
+  </g>
+  <text class="sn" x={STU.others} y={Y.s + 28}>Mālik's other</text>
+  <text class="sn" x={STU.others} y={Y.s + 41}>students</text>
+  {(() => { const c = chip("count for it", STU.others); return <g class="wording"><Chip x={c.x} y={WORD_Y} text={c.text} w={c.w} /></g>; })()}
+
+  {/* al-Qaʿnabī: a full follow-up, with al-Shāfiʿī at Mālik */}
+  <g class="route" style={`--d:${delay(STU.qanabi)}`}>
+    <Arrow x1={MALIK.x + 5} y1={MALIK.y + HALF + 2} x2={STU.qanabi - 6} y2={Y.s - HALF - 3} bend={6} />
+    <Narrator x={STU.qanabi} y={Y.s} k={K} {...FIG.later} {...RELIABLE} />
+    <text class="sn" x={STU.qanabi} y={Y.s + 28}>al-Qaʿnabī</text>
+    {(() => { const c = chip("complete 30", STU.qanabi); return <g class="wording"><Chip x={c.x} y={WORD_Y} text={c.text} w={c.w} /></g>; })()}
+    {(() => { const c = chip("al-Bukhārī", STU.qanabi); return <Chip x={c.x} y={BOOK_Y} text={c.text} w={c.w} />; })()}
+  </g>
+
+  {/* ---- panels 2 and 3: the other routes; below their last named narrator the book gives no chain ---- */}
+  {ROUTES.map((r) => {
+    const [a, b] = r.figs;
+    const w = chip(r.word, r.x), k = chip(r.book, r.x);
+    return (
+      <g class="route" style={`--d:${delay(r.x)}`}>
+        {r.arc
+          ? <path class="flow" d={r.arc} marker-end="url(#ah)" />
+          : <Arrow x1={r.from.x} y1={r.from.y} x2={a.x - 6} y2={a.y - HALF - 3} bend={r.bend} />}
+        <Arrow x1={a.x} y1={a.y + HALF + 2} x2={b.x} y2={b.y - HALF - 3} />
+        <Arrow x1={b.x} y1={b.y + HALF + 4} x2={b.x} y2={WORD_Y - 14} variant="elided" />
+        {r.figs.map((p) => (
+          <>
+            <Narrator x={p.x} y={p.y} k={K} {...FIG[p.kind]} {...RELIABLE} label={KIND_NAME[p.kind]} />
+            {p.lines.map((n, j) => (
+              <text class="nm" x={p.x + 20} y={p.y + 4 + (j - (p.lines.length - 1) / 2) * 14}>{n}</text>
+            ))}
+          </>
+        ))}
+        {r.note && <text class="lbl" x={r.x} y={Y.s - 6}>{r.note}</text>}
+        {r.plainWord
+          ? <Chip x={w.x} y={WORD_Y} text={w.text} w={w.w} />
+          : <g class="wording"><Chip x={w.x} y={WORD_Y} text={w.text} w={w.w} /></g>}
+        {r.key && r.key.lines.map((t, j, all) => <text class="lbl" x={r.key!.x} y={r.key!.y - (all.length - 1 - j) * 14}>{t}</text>)}
+        <Chip x={k.x} y={BOOK_Y} text={k.text} w={k.w} />
+      </g>
+    );
+  })}
+
+  {/* ---- the brackets: where each new route joins the old one ---- */}
+  <g class="brk">
+    {brackets.map((b) => (
+      <>
+        <path class="bracket" d={`M${b.x0} ${b.by - 7} V${b.by} H${b.x1} V${b.by - 7}`} />
+        <TermTitle c={b.c} x={b.cx} y={b.y} cls="subt" hit={b.hit} info={b.info} ar={{ x: b.cx, y: b.y + 20, size: "sm" }} />
+      </>
+    ))}
+  </g>
+
+  {/* ---- the iʿtibār heading; its lens sweeps the book row once on load, then rests here ---- */}
+  <TermTitle c={itibar.c} x={itibar.cx} y={itibar.y} cls="subt" hit={itibar.hit} info={itibar.info} ar={{ x: 722, y: itibar.y, size: "sm" }} />
+  <text class="lbl" x="650" y={itibar.y + 17}>searching the collections</text>
+  <g class="lens" style={lensStyle}><Glyph kind="lens" cx={LENS.x} cy={LENS.y} r={10} /></g>
+</svg>
+<style>
+  .wording :global(.chip text){font-style:italic}
+  .bracket{fill:none;stroke:var(--fg);stroke-width:1.4;stroke-linejoin:round}
+  /* butt caps, so the strike shows nothing before it starts drawing */
+  .strike{fill:none;stroke:var(--gap);stroke-width:1.8;stroke-linecap:butt;stroke-dasharray:1;animation:support-draw .35s ease-out both;animation-delay:var(--d)}
+  .faint{opacity:.55}
+  /* the sweep, about 6s, run once; each animation runs from its start state to the resting (end) state */
+  .route{animation:support-light .6s ease-out both;animation-delay:var(--d)}
+  /* the brackets start half in, not faint, so a visitor landing on ?mutabi can still see the bracket */
+  .brk{animation:support-brk .6s ease-out 5s both}
+  .lens{transform-box:fill-box;transform-origin:center;animation:support-sweep 6s both}
+  @keyframes support-light{from{opacity:.15}}
+  @keyframes support-brk{from{opacity:.5}}
+  @keyframes support-draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+  @keyframes support-sweep{
+    0%,13.33%{transform:translate(var(--x0),var(--dy)) scale(1.8);animation-timing-function:linear}
+    80%{transform:translate(var(--x1),var(--dy)) scale(1.8);animation-timing-function:ease-in-out}
+    92%,100%{transform:none}
+  }
+</style>

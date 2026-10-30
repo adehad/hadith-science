@@ -10,6 +10,10 @@ import Breaks from "../../components/scenes/Breaks.astro";
 import Unknown from "../../components/scenes/Unknown.astro";
 import Delivery from "../../components/scenes/Delivery.astro";
 import Names from "../../components/scenes/Names.astro";
+import Grades from "../../components/scenes/Grades.astro";
+import Opposition from "../../components/scenes/Opposition.astro";
+import Support from "../../components/scenes/Support.astro";
+import ActedOn from "../../components/scenes/ActedOn.astro";
 import { loadContent } from "../../lib/content";
 import { captionsFor, type DiagramProps } from "../../lib/scene";
 import { href } from "../../lib/url";
@@ -33,7 +37,7 @@ const caps = captionsFor(scene, terms);
 
 // each scene task adds its diagram here; import only components that exist
 // typed by the props every diagram takes, so a misnamed or missing prop fails astro check
-const DIAGRAMS: Partial<Record<Diagram, (p: DiagramProps) => any>> = { Routes, Breaks, Unknown, Delivery, Names };
+const DIAGRAMS: Partial<Record<Diagram, (p: DiagramProps) => any>> = { Routes, Breaks, Unknown, Delivery, Names, Grades, Opposition, Support, ActedOn };
 const D = DIAGRAMS[scene.diagram];
 if (!D) throw new Error(`no diagram component for ${scene.diagram}`);
 
@@ -42,6 +46,13 @@ const LEGEND: Partial<Record<Diagram, LegendKind[]>> = {
   Routes: ["moon", "sahabi", "tabii", "later"],
   Breaks: ["moon", "sahabi", "tabii", "later", "ghost"],
   Unknown: ["moon", "sahabi", "tabii", "later", "majhul", "mubham"],
+  // the mastūr in cell C is the majhūl figure: scroll, empty seal slot
+  Grades: ["moon", "sahabi", "tabii", "later", "majhul"],
+  // Ḥubayyib ibn Ḥabīb is the weak figure (cracked seal); Ḥammād's dropped link is a skip arrow, not a ghost
+  Opposition: ["moon", "sahabi", "tabii", "later", "weak"],
+  // the crescent-moon chains: every named narrator is drawn reliable; the dotted elided lines are not figures
+  Support: ["moon", "sahabi", "tabii", "later"],
+  // ActedOn draws no narrator figures, so it has no legend and no Key/Labels switch (phase 3 design §1)
 };
 const kinds = LEGEND[scene.diagram];
 const hasFigures = kinds !== undefined;

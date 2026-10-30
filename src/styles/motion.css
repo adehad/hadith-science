@@ -1,6 +1,9 @@
 @keyframes flow{to{stroke-dashoffset:-12}}
 @keyframes blink{50%{opacity:.35}}
 @keyframes pulse{50%{transform:scale(1.15);opacity:.15}}
+/* a balance tipping on load (Scale.astro): from level to the element's resting transform, which is the final tilt,
+   so with animations off the beam rests tilted */
+@keyframes tip{from{transform:none}}
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }

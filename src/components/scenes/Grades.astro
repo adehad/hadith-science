@@ -1,0 +1,299 @@
+---
+// "How sound is it?" (phase 3 design §2): the four accepted grades (§5.9–5.10) as four cells, the Names pattern.
+// Each cell is its own 430x300 SVG in an HTML grid, two by two, and one column in portrait (spec §5).
+//   A  what "sound in itself" requires: a checklist against a chain
+//   B  Ibn Ḥajar's own graded chains as a ladder (§5.9), with a relative-accuracy gauge on each rung
+//   C  two lifts: fair raised to sound, and a held-back mastūr report raised to fair
+//   D  al-Tirmidhī's "ḥasan ṣaḥīḥ" against plain ṣaḥīḥ on a rank bar
+// The "Other views" switch (§5.10) swaps only rung 4 of cell B; the group outside the default view is built
+// with class="off". Gauges show order only: no numbers, and aria-hidden (the caption notes carry the meaning).
+import Defs from "../svg/Defs.astro";
+import Moon from "../svg/Moon.astro";
+import Narrator from "../svg/Narrator.astro";
+import Arrow from "../svg/Arrow.astro";
+import TermTitle from "../svg/TermTitle.astro";
+import Chip from "../svg/Chip.astro";
+import Gauge from "../svg/Gauge.astro";
+import Glyph from "../svg/Glyph.astro";
+import { FIG, KIND_NAME, RELIABLE } from "../svg/figures";
+import { SUBT_TRIGGER, f, rowTrigger, titleTrigger } from "../svg/geom";
+import { cap, type DiagramProps } from "../../lib/scene";
+import { chipRow } from "../../lib/kit";
+import { stepFill } from "../../lib/staircase";
+import { href } from "../../lib/url";
+
+type Props = DiagramProps;
+const { caps, scene } = Astro.props;
+
+const views = scene.views ?? [];
+const VIEW_IDS = ["ibn-hajar", "tirmidhi"];
+if (views.map((v) => v.id).join() !== VIEW_IDS.join()) throw new Error(`Grades: expected views ${VIEW_IDS.join(", ")}`);
+
+// estimated width per character: 13px bold row text, and the 20px display title (as Routes)
+const ROW_CHAR_W = 6.7;
+
+// a cell's display title (cells A and D) as a term trigger, with its Arabic beside it
+function title(slug: string, cx: number) {
+  const c = cap(caps, slug);
+  return { c, cx, ...titleTrigger(c.translit, cx, TITLE_Y) };
+}
+const TITLE_Y = 282;
+
+// ---- cell A: the five conditions ----
+const A_CX = 56;
+const A_YS = [104, 166, 228] as const;
+const A_KINDS = ["sahabi", "tabii", "later"] as const;
+const A_K = 0.75;
+const CHECK_X = 122;
+// [slug, baseline y, gloss, glyph]; ḍabṭ's two kinds hang under it
+const A_ROWS: [string, number, string, "check" | "memory" | "book"][] = [
+  ["adl", 66, "upright", "check"],
+  ["dabt", 100, "complete accuracy", "check"],
+  ["dabt-sadr", 126, "in memory", "memory"],
+  ["dabt-kitab", 152, "in his book", "book"],
+  ["ittisal", 186, "connected chain", "check"],
+];
+const GLOSS_X = 290;
+const aRows = A_ROWS.map(([slug, y, gloss, glyph], i) => {
+  const c = cap(caps, slug);
+  const sub = glyph !== "check";
+  const gx = sub ? CHECK_X + 24 : CHECK_X;
+  const tx = gx + 14;
+  return {
+    c, y, gloss, glyph, gx, tx, delay: `${(i * 0.25).toFixed(2)}s`,
+    // the hit area takes in the glyph and runs on under the gloss to the cell's edge
+    ...rowTrigger(c.translit, tx, y, { charW: ROW_CHAR_W, x0: gx - 10, x1: 420, top: 15, h: 24 }),
+  };
+});
+// the two conditions that belong to other scenes: plain text, not triggers; shādhdh links to its scene, named
+// in the link's accessible name since an arrow alone doesn't say where it goes
+const A_PLAIN: [number, string, { to: string; title: string }?][] = [
+  [216, "not anomalous (shādhdh)", { to: "al-maqbul/opposition/", title: "Who outweighs whom?" }],
+  [242, "no hidden defect (muʿallal)"],
+];
+const aTitle = title("sahih-li-dhatihi", 172);
+// the Successor's seal (Narrator draws it at (31, 39) in its 40x44 box), for ʿadl's leader line
+const sealAt = (x: number, y: number) => ({ x: f(x - 20 * A_K + 31 * A_K), y: f(y - 22 * A_K + 39 * A_K) });
+const seal = sealAt(A_CX, A_YS[1]);
+// the chain's arrows start a little below each figure, clear of its Labels-mode name
+const A_ARROW_Y0 = 26;
+
+// ---- cell B: ranks of sound ----
+const B_X0 = 40;
+const B_H = 44;
+const GAUGE = { x: 370, w: 44 };
+// [rung top, gold level, chips from the Companion towards the collector, gauge fill]
+const RUNGS: [number, number, string[], number][] = [
+  [36, 0, ["Ibn ʿUmar", "Sālim", "al-Zuhrī"], 5],
+  [86, 2, ["Abū Mūsā", "Abū Burda", "Burayd"], 4],
+  [136, 4, ["Abū Hurayra", "Abū Ṣāliḥ", "Suhayl"], 3],
+  [198, 6, ["Jābir", "ʿĀṣim ibn ʿUmar", "Ibn Isḥāq"], 2],
+];
+// Companions get the gold edge (phase 3 design §1: the ladder claims no generation beyond that)
+const COMPANIONS = new Set(["Ibn ʿUmar", "Abū Mūsā", "Abū Hurayra", "Jābir"]);
+const rungs = RUNGS.map(([top, lvl, names, fill], i) => {
+  const row = chipRow(names, B_X0, 18);
+  return { n: i + 1, top, fill: stepFill(lvl), gauge: fill, chips: row.chips, links: row.links, cy: top + 32 };
+});
+// a rung label as a term trigger, on the rung's first line
+function rungTerm(slug: string, top: number) {
+  const c = cap(caps, slug);
+  const y = top + 16;
+  return { c, y, ...rowTrigger(c.translit, B_X0, y, { charW: ROW_CHAR_W }) };
+}
+const asahh = rungTerm("asahh-al-asanid", RUNGS[0][0]);
+const hasanD = rungTerm("hasan-li-dhatihi", RUNGS[3][0]);
+const TIRMIDHI_TAGS = chipRow(["none accused of lying", "more than one route", "not shādhdh"], B_X0, 6).chips;
+const DIVIDE_Y = 189;
+
+// ---- cell C: raised by support ----
+const SUBT_Y = 54;
+const LIFTS = [
+  { slug: "sahih-li-ghayrihi", cx: 108, lines: ["many routes make up for", "its lighter accuracy"], from: "fair in itself → sound" },
+  { slug: "hasan-li-ghayrihi", cx: 318, lines: ["once its routes multiply,", "it tips towards acceptance"], from: "held back → fair" },
+].map((l, i) => {
+  const c = cap(caps, l.slug);
+  // the 15px display sub-title, estimated as in Support and ActedOn
+  return { ...l, c, mastur: i === 1, ...titleTrigger(c.translit, l.cx, SUBT_Y, SUBT_TRIGGER) };
+});
+
+// ---- cell D: ḥasan ṣaḥīḥ ----
+const D1 = 78, D2 = 222, D_FIG_Y = 148, D_K = 0.7;
+const dTitle = title("hasan-sahih", 172);
+const BAR_X = 392;
+const modeLabel = KIND_NAME.later;
+---
+<div class="cells grades">
+  <svg viewBox="0 0 430 300" role="group" aria-label="Sound in itself: a chain checked against five conditions, upright, completely accurate in memory or book, connected, not anomalous and with no hidden defect">
+    <Defs />
+    <text class="colhead" x={CHECK_X - 8} y="28" style="text-anchor:start">The five conditions</text>
+    <Moon cx={A_CX} cy={48} k={0.6} />
+    <Arrow x1={A_CX} y1={66} x2={A_CX} y2={A_YS[0] - 19} />
+    <Arrow x1={A_CX} y1={A_YS[0] + A_ARROW_Y0} x2={A_CX} y2={A_YS[1] - 19} />
+    <Arrow x1={A_CX} y1={A_YS[1] + A_ARROW_Y0} x2={A_CX} y2={A_YS[2] - 19} />
+    {A_YS.map((y, i) => <Narrator x={A_CX} y={y} k={A_K} {...FIG[A_KINDS[i]]} {...RELIABLE} label={KIND_NAME[A_KINDS[i]]} />)}
+    {/* leader lines: uprightness is what the seal vouches for; connection is the arrow between two men */}
+    <path class="leader" d={`M${CHECK_X - 12} 62 L${seal.x + 4} ${seal.y - 3}`} />
+    <path class="leader" d={`M${CHECK_X - 12} 182 L${A_CX + 4} ${f((A_YS[1] + A_YS[2]) / 2)}`} />
+    <path class="branch" d={`M${CHECK_X} 108 V152 M${CHECK_X} 126 H${CHECK_X + 15} M${CHECK_X} 152 H${CHECK_X + 15}`} />
+    {aRows.map((r) => (
+      <>
+        <g style={`--d:${r.delay}`}><Glyph kind={r.glyph} cx={r.gx} cy={r.y - 4} /></g>
+        <TermTitle c={r.c} x={r.tx} y={r.y} cls="rt" hit={r.hit} info={r.info} />
+        {/* outside the trigger, so its accessible name (translit: en) matches its visible text (axe
+            label-content-name-mismatch); a click on the gloss falls through to the hit area under it */}
+        <text class="rg gloss" x={GLOSS_X} y={r.y}>{r.gloss}</text>
+      </>
+    ))}
+    {A_PLAIN.map(([y, t, to], i) => (
+      <>
+        <g style={`--d:${((A_ROWS.length + i) * 0.25).toFixed(2)}s`}><Glyph kind="check" cx={CHECK_X} cy={y - 4} /></g>
+        {to
+          ? <a class="xlink" href={href(to.to)} aria-label={`${t}: see ${to.title}`}><text class="rp" x={CHECK_X + 14} y={y}><tspan class="xu">{t}</tspan><tspan dx="5">→</tspan></text></a>
+          : <text class="rp" x={CHECK_X + 14} y={y}>{t}</text>}
+      </>
+    ))}
+    <TermTitle c={aTitle.c} x={aTitle.cx} y={TITLE_Y} hit={aTitle.hit} info={aTitle.info} ar={{ x: 370, y: TITLE_Y }} />
+  </svg>
+
+  <svg viewBox="0 0 430 300" role="group" aria-label="Ranks of sound: Ibn Ḥajar's graded chains as a ladder, from the soundest chains down to a chain that is fair only, each ranked below the rung above">
+    <text class="colhead" x={B_X0 - 20} y="24" style="text-anchor:start">Ranks of sound</text>
+    <text class="rg" x={GAUGE.x + GAUGE.w / 2} y="24" style="text-anchor:middle">accuracy</text>
+    <line class="rail" x1="8" x2="8" y1="30" y2="252" />
+    <line class="rail" x1="422" x2="422" y1="30" y2="252" />
+    {rungs.map((r) => (
+      <>
+        <rect class="rung" x="8" y={r.top} width="414" height={B_H} rx="4" style={`fill:${r.fill}`} />
+        <text class="rungno" x="24" y={r.top + 28}>{r.n}</text>
+      </>
+    ))}
+    {rungs.slice(0, 3).map((r) => (
+      <>
+        {r.n > 1 && <text class="rg" x={B_X0} y={r.top + 16}>less than that</text>}
+        {r.links.map((l) => <Arrow x1={l.x1 + 2} y1={r.cy} x2={l.x2 - 3} y2={r.cy} />)}
+        {r.chips.map((c) => <Chip x={c.x} y={r.cy} text={c.text} w={c.w} companion={COMPANIONS.has(c.text)} />)}
+        <Gauge x={GAUGE.x} y={r.top + 22} w={GAUGE.w} fill={r.gauge} h={10} />
+      </>
+    ))}
+    <TermTitle c={asahh.c} x={B_X0} y={asahh.y} cls="rt" hit={asahh.hit} info={asahh.info} />
+    <line class="divider" x1="8" x2="422" y1={DIVIDE_Y} y2={DIVIDE_Y} />
+    <text class="lbl" x="215" y={DIVIDE_Y + 4}>sound above · fair below</text>
+    <g data-view-show="ibn-hajar">
+      <TermTitle c={hasanD.c} x={B_X0} y={hasanD.y} cls="rt" hit={hasanD.hit} info={hasanD.info} />
+      {rungs[3].links.map((l) => <Arrow x1={l.x1 + 2} y1={rungs[3].cy} x2={l.x2 - 3} y2={rungs[3].cy} />)}
+      {rungs[3].chips.map((c) => <Chip x={c.x} y={rungs[3].cy} text={c.text} w={c.w} companion={COMPANIONS.has(c.text)} />)}
+      <Gauge x={GAUGE.x} y={rungs[3].top + 22} w={GAUGE.w} fill={rungs[3].gauge} h={10} />
+    </g>
+    <g class="off" data-view-show="tirmidhi">
+      <text class="rt" x={B_X0} y={rungs[3].top + 16}>Ḥasan in al-Tirmidhī's book</text>
+      {TIRMIDHI_TAGS.map((c) => <Chip x={c.x} y={rungs[3].cy} text={c.text} w={c.w} dashed />)}
+    </g>
+    <text class="lbl" x="215" y="272">all upright and accurate; the higher rungs have stronger qualities</text>
+    <text class="lbl" x="215" y="290">narration runs from the Companion (gold edge) to the right</text>
+  </svg>
+
+  <svg viewBox="0 0 430 300" role="group" aria-label="Raised by support: a fair chain lifted to sound when more routes join it, and a mastūr narrator's report lifted to fair when its routes multiply">
+    <text class="colhead" x="215" y="22">Raised by support</text>
+    <line class="divider" x1="215" x2="215" y1="36" y2="282" />
+    {LIFTS.map((l) => (
+      <>
+        <TermTitle c={l.c} x={l.cx} y={SUBT_Y} cls="subt" hit={l.hit} info={l.info} />
+        <g class="liftg"><Arrow x1={l.cx - 80} y1={196} x2={l.cx - 80} y2={84} variant="lift" /></g>
+        <Moon cx={l.cx} cy={100} k={0.55} />
+        <g class="faint">
+          <Arrow x1={l.cx - 8} y1={113} x2={l.cx - 50} y2={153} bend={-8} />
+          <Arrow x1={l.cx + 8} y1={113} x2={l.cx + 50} y2={153} bend={8} />
+          <Narrator x={l.cx - 54} y={170} k={0.55} {...FIG.later} {...RELIABLE} label={KIND_NAME.later} />
+          <Narrator x={l.cx + 54} y={170} k={0.55} {...FIG.later} {...RELIABLE} label={KIND_NAME.later} />
+        </g>
+        <Arrow x1={l.cx} y1={116} x2={l.cx} y2={148} />
+        {/* the centre figure has no Labels-mode name, on purpose: the mastūr is named by the text under him, and
+            the fair narrator's gauge sits where a name would go */}
+        {l.mastur
+          ? <Narrator x={l.cx} y={166} k={0.7} {...FIG.majhul} />
+          : <Narrator x={l.cx} y={166} k={0.7} {...FIG.later} {...RELIABLE} />}
+        {l.mastur
+          ? <text class="lbl" x={l.cx} y="198">mastūr</text>
+          : <Gauge x={l.cx - 18} y={192} w={36} fill={3} h={7} />}
+        <text class="lbl" x={l.cx} y="224">{l.lines[0]}</text>
+        <text class="lbl" x={l.cx} y="240">{l.lines[1]}</text>
+        <text class="rg gain" x={l.cx} y="268" style="text-anchor:middle">{l.from}</text>
+      </>
+    ))}
+  </svg>
+
+  <svg viewBox="0 0 430 300" role="group" aria-label="Ḥasan ṣaḥīḥ: with one route it records doubt and ranks below plain ṣaḥīḥ; with two routes, one ḥasan and one ṣaḥīḥ, it ranks above a ṣaḥīḥ with one route">
+    <text class="colhead" x="190" y="22">al-Tirmidhī's double grade</text>
+    <text class="ch" x={D1} y="50">One route</text>
+    <text class="ch" x={D2} y="50">Two routes</text>
+    <Moon cx={D1} cy={84} k={0.55} />
+    <Moon cx={D2} cy={84} k={0.55} />
+    <Arrow x1={D1} y1={100} x2={D1} y2={D_FIG_Y - 18} />
+    <Arrow x1={D2 - 6} y1={99} x2={D2 - 32} y2={D_FIG_Y - 18} bend={-6} />
+    <Arrow x1={D2 + 6} y1={99} x2={D2 + 32} y2={D_FIG_Y - 18} bend={6} />
+    <Narrator x={D1} y={D_FIG_Y} k={D_K} {...FIG.later} {...RELIABLE} label={modeLabel} />
+    <Narrator x={D2 - 34} y={D_FIG_Y} k={D_K} {...FIG.later} {...RELIABLE} label={modeLabel} />
+    <Narrator x={D2 + 34} y={D_FIG_Y} k={D_K} {...FIG.later} {...RELIABLE} label={modeLabel} />
+    {/* the dropped word blinks, as missing things do (spec §3.4) */}
+    <text class="verdict" x={D1} y="200">ḥasan <tspan class="miss">or</tspan> ṣaḥīḥ</text>
+    <text class="verdict" x={D2 - 34} y="200">ḥasan</text>
+    <text class="verdict miss" x={D2} y="200">and</text>
+    <text class="verdict" x={D2 + 34} y="200">ṣaḥīḥ</text>
+    <text class="lbl" x={D1} y="220">doubt between the two</text>
+    <text class="lbl" x={D1} y="238">below plain ṣaḥīḥ</text>
+    <text class="lbl" x={D2} y="220">a route for each</text>
+    <text class="lbl" x={D2} y="238">above a one-route ṣaḥīḥ</text>
+    {/* the rank bar: plain ṣaḥīḥ with one route is the reference line */}
+    <text class="lbl" x={BAR_X} y="50">stronger</text>
+    <path class="bar" d={`M${BAR_X} 236 V60`} marker-end="url(#ah)" />
+    <circle class="mark" cx={BAR_X} cy="96" r="5" />
+    <line class="ref" x1={BAR_X - 13} x2={BAR_X + 13} y1="147" y2="147" />
+    <circle class="mark" cx={BAR_X} cy="198" r="5" />
+    <text class="rg" x={BAR_X - 16} y="100" style="text-anchor:end">two routes</text>
+    <text class="rg strong" x={BAR_X - 16} y="151" style="text-anchor:end">ṣaḥīḥ, one route</text>
+    <text class="rg" x={BAR_X - 16} y="202" style="text-anchor:end">one route</text>
+    <text class="lbl" x={BAR_X} y="254">weaker</text>
+    <TermTitle c={dTitle.c} x={dTitle.cx} y={TITLE_Y} hit={dTitle.hit} info={dTitle.info} ar={{ x: 340, y: TITLE_Y }} />
+  </svg>
+</div>
+<style>
+  /* the grid's 1px gaps show its background, drawing var(--rule) lines between the cells (as Names) */
+  .cells{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--rule)}
+  .cells svg{background:var(--surface)}
+  @media (max-width:640px) and (orientation:portrait){.cells{grid-template-columns:1fr}}
+  /* :global, since TermTitle renders the row terms' text */
+  .grades :global(.rt){fill:var(--fg);font:700 13px var(--f-body)}
+  .rg{fill:var(--muted);font:600 11.5px var(--f-body)}
+  .rg.strong{fill:var(--fg)}
+  .gloss{pointer-events:none}
+  .xlink .xu{text-decoration:underline;text-decoration-color:var(--line)}
+  .xlink:hover text,.xlink:focus-visible text{fill:var(--gold-a)}
+  .xlink:hover .xu,.xlink:focus-visible .xu{text-decoration-color:var(--gold-a)}
+  .rp{fill:var(--fg);font:600 12px var(--f-body)}
+  .ch{fill:var(--fg);font:700 12px var(--f-body);text-anchor:middle}
+  .rungno{fill:var(--fg);font:700 15px var(--f-display);text-anchor:middle}
+  .verdict{fill:var(--fg);font:italic 600 12.5px var(--f-body);text-anchor:middle}
+  .miss{fill:var(--gap);animation:blink 2.4s ease-in-out infinite}
+  .leader{fill:none;stroke:var(--muted);stroke-width:1;stroke-dasharray:1.5 3}
+  .branch{fill:none;stroke:var(--line);stroke-width:1.2}
+  .rail{stroke:var(--line);stroke-width:2}
+  .rung{stroke:var(--rule)}
+  .bar{fill:none;stroke:var(--line);stroke-width:2}
+  .ref{stroke:var(--fg);stroke-width:3;stroke-linecap:round}
+  .mark{fill:var(--fg)}
+  /* the side routes are faint, child by child, so their Labels-mode names can stay at full strength (4.5:1) */
+  .faint > :global(*){opacity:.55}
+  .faint > :global(.mode-label){opacity:1}
+  /* the resting styles are the end state; each animation runs from its start, so with motion.css stopping every
+     animation the end state shows: all ticks drawn, the side routes in, the lift and the gain at full strength */
+  .grades :global(.tick){stroke-dasharray:1;animation:grades-draw .35s ease-out both;animation-delay:var(--d,0s)}
+  .faint > :global(*){animation:grades-routes 2.4s ease-out both}
+  .faint > :global(.mode-label){animation:grades-names 2.4s ease-out both}
+  .liftg{animation:grades-lift 2.4s ease-out both}
+  .gain{animation:grades-gain 2.4s ease-out both}
+  @keyframes grades-draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+  @keyframes grades-routes{0%{opacity:0}40%,100%{opacity:.55}}
+  @keyframes grades-names{0%{opacity:0}40%,100%{opacity:1}}
+  @keyframes grades-lift{0%,45%{opacity:.15}80%,100%{opacity:1}}
+  @keyframes grades-gain{0%,70%{opacity:0}100%{opacity:1}}
+</style>

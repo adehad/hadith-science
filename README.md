@@ -20,7 +20,7 @@ Live site: <https://adehad.github.io/hadith-science/>
 - Light and dark themes, and full support for reduced motion.
 - Installable as an app, and readable offline after the first visit.
 
-- **Five scenes** (below), each one diagram whose terms open a popover and have their own share link.
+- **Nine scenes** (below), each one diagram whose terms open a popover and have their own share link.
 
 Terms without a scene yet are marked "scene coming soon" in the glossary. Later phases draw the rest, one division at a time.
 
@@ -34,6 +34,11 @@ Terms without a scene yet are marked "scene coming soon" in the glossary. Later 
 | Scene | Page | Terms |
 |---|---|---|
 | How many routes carry it? | `/adad-al-turuq/routes/` | mutawātir, mashhūr, ʿazīz, gharīb |
+| **al-Maqbūl** (accepted reports) | | |
+| How sound is it? | `/al-maqbul/grades/` | ṣaḥīḥ and ḥasan, in themselves and by others; ʿadl, ḍabṭ and ittiṣāl; the soundest chains; ḥasan ṣaḥīḥ |
+| Who outweighs whom? | `/al-maqbul/opposition/` | ziyādat al-thiqa, shādhdh and maḥfūẓ, munkar and maʿrūf |
+| Does anyone else carry it? | `/al-maqbul/support/` | iʿtibār, mutābaʿa (full and partial), mutābiʿ, shāhid |
+| Can both be acted on? | `/al-maqbul/acted-on/` | muḥkam, mukhtalif al-ḥadīth, naskh, nāsikh and mansūkh, tarjīḥ, tawaqquf |
 | Where does the chain break? | `/al-mardud/breaks/` | mursal, muʿallaq, muʿḍal, munqaṭiʿ |
 | Who is this narrator? | `/al-mardud/unknown/` | mubham, majhūl, majhūl al-ʿayn, mastūr |
 | How was it received? | `/siyagh-al-ada/delivery/` | the eight ranks of delivery words, and the weaker ways below them |
@@ -49,6 +54,7 @@ Figure scenes can show a key under the diagram (**Key**) or write each narrator'
 
 | | Light | Dark |
 |---|---|---|
+| Can both be acted on? | ![Can both be acted on? A decision path of five questions, each answer dropping to an outcome card, light](docs/screenshots/acted-on-desktop-light.png) | ![Can both be acted on? A decision path of five questions, each answer dropping to an outcome card, dark](docs/screenshots/acted-on-desktop-dark.png) |
 | How was it received? | ![The delivery staircase, light](docs/screenshots/delivery-desktop-light.png) | ![The delivery staircase, dark](docs/screenshots/delivery-desktop-dark.png) |
 | Phone | ![How many routes carry it? on a phone, first carousel panel, light](docs/screenshots/routes-mobile-light.png) | ![Who is who? on a phone, the cells in one column, dark](docs/screenshots/names-mobile-dark.png) |
 

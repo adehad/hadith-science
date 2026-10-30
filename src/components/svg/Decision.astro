@@ -1,0 +1,18 @@
+---
+// a question on a decision path (phase 3 design §7): a rounded diamond centred on (cx, cy), w wide and h tall,
+// with a one- or two-line question in it. The arrows out of it, and their yes/no labels, belong to the scene.
+import { diamondPath } from "../../lib/kit";
+
+interface Props { cx: number; cy: number; lines: string[]; w?: number; h?: number }
+const { cx, cy, lines, w = 100, h = 60 } = Astro.props;
+const LH = 13;
+const top = cy - ((lines.length - 1) * LH) / 2 + 4;
+---
+<g class="decision">
+  <path d={diamondPath(cx, cy, w, h, 7)} />
+  {lines.map((t, i) => <text x={cx} y={top + i * LH}>{t}</text>)}
+</g>
+<style>
+  .decision path{fill:var(--surface);stroke:var(--fg);stroke-width:1.5;stroke-linejoin:round}
+  .decision text{fill:var(--fg);font:700 11px var(--f-body);text-anchor:middle}
+</style>

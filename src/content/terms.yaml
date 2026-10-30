@@ -143,6 +143,7 @@
   def: "Upright, fully accurate narrators, an unbroken chain, and no anomaly or hidden defect. The highest of the four accepted grades."
   section: "§5.9"
   division: al-maqbul
+  scene: grades
 - id: adl
   translit: ʿAdl
   ar: عَدْلٌ
@@ -150,6 +151,7 @@
   def: "A narrator whose settled character holds him to piety and decent conduct, keeping clear of idolatry, open sin and innovation."
   section: "§5.9"
   division: al-maqbul
+  scene: grades
 - id: dabt
   translit: Ḍabṭ
   ar: ضَبْطٌ
@@ -157,6 +159,7 @@
   def: "A narrator's precision in keeping what he heard, either in memory or in his written copy."
   section: "§5.9"
   division: al-maqbul
+  scene: grades
 - id: dabt-sadr
   translit: Ḍabṭ al-ṣadr
   ar: ضَبْطُ الصَّدْرِ
@@ -164,6 +167,7 @@
   def: "Memory so sure that he can recite what he heard at any time he chooses."
   section: "§5.9"
   division: al-maqbul
+  scene: grades
 - id: dabt-kitab
   translit: Ḍabṭ al-kitāb
   ar: ضَبْطُ الْكِتَابِ
@@ -171,6 +175,7 @@
   def: "He keeps his written copy safe, where no one can alter it, from the day he heard and checked it until he narrates from it."
   section: "§5.9"
   division: al-maqbul
+  scene: grades
 - id: ittisal
   translit: Ittiṣāl al-sanad
   ar: اِتِّصَالُ السَّنَدِ
@@ -178,6 +183,7 @@
   def: "Every narrator in the chain heard the report from the one above him, with no one dropped."
   section: "§5.9"
   division: al-maqbul
+  scene: grades
 - id: sahih-li-ghayrihi
   translit: Ṣaḥīḥ li-ghayrihi
   ar: صَحِيحٌ لِغَيْرِهِ
@@ -185,6 +191,7 @@
   def: "Falls short of the top grade, but something makes up the gap, such as several routes, so it is graded sound."
   section: "§5.9"
   division: al-maqbul
+  scene: grades
 - id: hasan-li-ghayrihi
   translit: Ḥasan li-ghayrihi
   ar: حَسَنٌ لِغَيْرِهِ
@@ -192,6 +199,7 @@
   def: "A held-back report, such as a mastūr's, a mursal, a mudallas or one from failing memory, raised to accepted when an equal or stronger route backs it (§5.39)."
   section: "§5.9"
   division: al-maqbul
+  scene: grades
 - id: asahh-al-asanid
   translit: Aṣaḥḥ al-asānīd
   ar: أَصَحُّ الْأَسَانِيدِ
@@ -199,6 +207,7 @@
   def: "Chains some imams named the very best, such as Mālik from Nāfiʿ from Ibn ʿUmar. Ibn Ḥajar prefers not to crown any single one."
   section: "§5.9"
   division: al-maqbul
+  scene: grades
 - id: hasan-li-dhatihi
   translit: Ḥasan li-dhātihi
   ar: حَسَنٌ لِذَاتِهِ
@@ -206,6 +215,7 @@
   def: "Meets every condition of sound except that the narrator's accuracy is a little lighter. Used as proof like sound, but ranked below it."
   section: "§5.10"
   division: al-maqbul
+  scene: grades
 - id: hasan-sahih
   translit: Ḥasan ṣaḥīḥ
   ar: حَسَنٌ صَحِيحٌ
@@ -213,6 +223,7 @@
   def: "al-Tirmidhī's double grade: for a lone route, doubt between the two verdicts; where there are two routes, one sound and one fair."
   section: "§5.10"
   division: al-maqbul
+  scene: grades
 - id: ziyadat-al-thiqa
   translit: Ziyādat al-thiqa
   ar: زِيَادَةُ الثِّقَةِ
@@ -220,6 +231,7 @@
   def: "Extra wording from a sound or fair narrator. Accepted if it clashes with nothing; if it clashes with a weightier narration, the stronger wins."
   section: "§5.10"
   division: al-maqbul
+  scene: opposition
 - id: shadhdh
   translit: Shādhdh
   ar: شَاذٌّ
@@ -227,6 +239,7 @@
   def: "An acceptable narrator's report that goes against a weightier one, weightier by accuracy, by numbers or by some other ground."
   section: "§5.11"
   division: al-maqbul
+  scene: opposition
 - id: mahfuz
   translit: Maḥfūẓ
   ar: مَحْفُوظٌ
@@ -234,6 +247,7 @@
   def: "The weightier report that wins when an acceptable narrator goes against it. The losing one is shādhdh."
   section: "§5.11"
   division: al-maqbul
+  scene: opposition
 - id: munkar
   translit: Munkar
   ar: مُنْكَرٌ
@@ -241,6 +255,7 @@
   def: "A weak narrator's report that goes against a stronger one. Some also use it for any report of a narrator with gross errors, negligence or open sin (§5.26)."
   section: "§5.12"
   division: al-maqbul
+  scene: opposition
 - id: maruf
   translit: Maʿrūf
   ar: مَعْرُوفٌ
@@ -248,6 +263,7 @@
   def: "The stronger report that wins when a weak narrator goes against it. The losing one is munkar."
   section: "§5.12"
   division: al-maqbul
+  scene: opposition
 - id: mutabi
   translit: Mutābiʿ
   ar: مُتَابِعٌ
@@ -255,6 +271,7 @@
   def: "Another route, from the same Companion, that turns up for a report first thought solitary. It strengthens the report."
   section: "§5.13"
   division: al-maqbul
+  scene: support
 - id: mutabaa-tamma
   translit: Mutābaʿa tāmma
   ar: مُتَابَعَةٌ تَامَّةٌ
@@ -262,13 +279,15 @@
   def: "Another narrator shares the report with the narrator himself, taking it from the same teacher."
   section: "§5.13"
   division: al-maqbul
+  scene: support
 - id: mutabaa-qasira
   translit: Mutābaʿa qāṣira
   ar: مُتَابَعَةٌ قَاصِرَةٌ
   en: Partial follow-up
-  def: "The support joins the chain higher up, at the narrator's teacher or someone above him."
+  def: "The support joins the chain at the narrator's teacher, or further along it, rather than at the narrator himself."
   section: "§5.13"
   division: al-maqbul
+  scene: support
 - id: shahid
   translit: Shāhid
   ar: شَاهِدٌ
@@ -276,6 +295,7 @@
   def: "A text from a different Companion that matches in wording and meaning, or in meaning alone."
   section: "§5.13"
   division: al-maqbul
+  scene: support
 - id: itibar
   translit: Iʿtibār
   ar: اِعْتِبَارٌ
@@ -283,6 +303,7 @@
   def: "Combing the collections and chains to see whether a seemingly solitary report has a follow-up or witness. A method, not a category."
   section: "§5.13"
   division: al-maqbul
+  scene: support
 - id: muhkam
   translit: Muḥkam
   ar: مُحْكَمٌ
@@ -290,6 +311,7 @@
   def: "An accepted report that no other report contradicts."
   section: "§5.14"
   division: al-maqbul
+  scene: acted-on
 - id: mukhtalif-al-hadith
   translit: Mukhtalif al-ḥadīth
   ar: مُخْتَلِفُ الْحَدِيثِ
@@ -297,6 +319,7 @@
   def: "Two accepted reports that seem to clash but can be reconciled without forcing the meaning of either."
   section: "§5.15"
   division: al-maqbul
+  scene: acted-on
 - id: naskh
   translit: Naskh
   ar: نَسْخٌ
@@ -304,6 +327,7 @@
   def: "A later proof of the Law lifting the ruling of an earlier one."
   section: "§5.16"
   division: al-maqbul
+  scene: acted-on
 - id: nasikh
   translit: Nāsikh
   ar: نَاسِخٌ
@@ -311,6 +335,7 @@
   def: "The later report that shows an earlier ruling was lifted, known from the text itself, a Companion's word or the dates."
   section: "§5.16"
   division: al-maqbul
+  scene: acted-on
 - id: mansukh
   translit: Mansūkh
   ar: مَنْسُوخٌ
@@ -318,6 +343,7 @@
   def: "The earlier report whose ruling a later one has lifted."
   section: "§5.16"
   division: al-maqbul
+  scene: acted-on
 - id: tarjih
   translit: Tarjīḥ
   ar: تَرْجِيحٌ
@@ -325,6 +351,7 @@
   def: "When clashing reports cannot be reconciled and their dates are unknown, one is preferred on grounds found in its text or chain."
   section: "§5.16"
   division: al-maqbul
+  scene: acted-on
 - id: tawaqquf
   translit: Tawaqquf
   ar: تَوَقُّفٌ
@@ -332,6 +359,7 @@
   def: "When reconciling, abrogation and preference all fail, neither report is acted on for now; someone may yet see what was hidden."
   section: "§5.16"
   division: al-maqbul
+  scene: acted-on
 
 # 3. al-Mardūd (§5.17–5.39)
 - id: saqt

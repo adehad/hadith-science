@@ -37,7 +37,7 @@ async function expectLanded(page: Page, slug: string, scene: string) {
 
 test("every scene term is counted", () => {
   expect(built.length).toBeGreaterThanOrEqual(30);
-  expect(panelScenes.size).toBe(4);
+  expect(panelScenes.size).toBe(7);
 });
 
 test.describe("landing, desktop", () => {
@@ -112,6 +112,23 @@ test.describe("views", () => {
     expect(await offBy(page, "madinah")).toBeLessThan(0.5);
   });
 
+  test("?view=tirmidhi swaps rung 4 of the grades ladder for al-Tirmidhī's conditions", async ({ page }) => {
+    await page.goto("/al-maqbul/grades/?view=tirmidhi");
+    await expect(page.locator('.views button[data-v="tirmidhi"]')).toHaveAttribute("aria-pressed", "true");
+    await expect(page.locator('svg [data-view-show="tirmidhi"]')).toBeVisible();
+    await expect(page.locator('svg [data-view-show="ibn-hajar"]')).toBeHidden();
+    await expectNoAxeViolations(page);
+  });
+
+  test("a term landing from ?view=tirmidhi ends on the default view with the term open", async ({ page }) => {
+    await page.goto("/al-maqbul/grades/?view=tirmidhi");
+    await expect(trigger(page, "hasan-li-dhatihi")).toBeHidden();
+    await page.goto("/?hasan-li-dhatihi");
+    await expectLanded(page, "hasan-li-dhatihi", "al-maqbul/grades/");
+    await expect(page.locator('.views button[data-v="ibn-hajar"]')).toHaveAttribute("aria-pressed", "true");
+    await expect(trigger(page, "hasan-li-dhatihi")).toBeVisible();
+  });
+
   test.describe("with motion", () => {
     test.use({ contextOptions: { reducedMotion: "no-preference" } });
 
@@ -135,6 +152,22 @@ test.describe("views", () => {
     await expect(pill("shafii")).toHaveText("Accepted if supported");
     await expect(pill("hadith-scholars")).toBeHidden();
     await expect(pill("malikis")).toBeHidden();
+    await expectNoAxeViolations(page);
+  });
+
+  test("accept-all swaps the clash branch's Weigh them for Accepted; the scales stay", async ({ page }) => {
+    await page.goto("/al-maqbul/opposition/");
+    const branch = (id: string) => page.locator(`svg [data-view-show="${id}"]`);
+    await expect(branch("ibn-hajar")).toContainText("Weigh them");
+    await expect(branch("accept-all")).toBeHidden();
+    await page.locator('.views button[data-v="accept-all"]').click();
+    await expect(page).toHaveURL(/[?&]view=accept-all\b/);
+    await expect(branch("accept-all")).toBeVisible();
+    await expect(branch("accept-all")).toContainText("Accepted");
+    await expect(branch("ibn-hajar")).toBeHidden();
+    // panels 2 and 3 show opposition in general, which both views recognise
+    await expect(page.locator("svg .scale")).toHaveCount(2);
+    for (const slug of ["shadhdh", "mahfuz", "munkar", "maruf"]) await expect(trigger(page, slug)).toBeVisible();
     await expectNoAxeViolations(page);
   });
 });
@@ -166,22 +199,25 @@ test.describe("carousel", () => {
   });
 });
 
+// the Names pattern: the names scene and the grades scene are both grids of cells
 test.describe("names grid", () => {
   const lefts = (page: Page) => page.locator(".cells > svg").evaluateAll((els) => els.map((e) => Math.round(e.getBoundingClientRect().left)));
 
-  test("portrait: the cells stack in one column", async ({ page }) => {
-    await page.setViewportSize(PORTRAIT);
-    await page.goto("/al-asma/names/");
-    const l = await lefts(page);
-    expect(l.length).toBeGreaterThan(1);
-    expect(new Set(l).size).toBe(1);
-  });
+  for (const path of ["/al-asma/names/", "/al-maqbul/grades/"]) {
+    test(`portrait: ${path} stacks its cells in one column`, async ({ page }) => {
+      await page.setViewportSize(PORTRAIT);
+      await page.goto(path);
+      const l = await lefts(page);
+      expect(l.length).toBeGreaterThan(1);
+      expect(new Set(l).size).toBe(1);
+    });
 
-  test("desktop: two columns", async ({ page }) => {
-    await page.setViewportSize(DESKTOP);
-    await page.goto("/al-asma/names/");
-    expect(new Set(await lefts(page)).size).toBe(2);
-  });
+    test(`desktop: ${path} has two columns`, async ({ page }) => {
+      await page.setViewportSize(DESKTOP);
+      await page.goto(path);
+      expect(new Set(await lefts(page)).size).toBe(2);
+    });
+  }
 });
 
 test("Key and Labels modes swap the legend for labels, and the choice survives a reload", async ({ page }) => {
