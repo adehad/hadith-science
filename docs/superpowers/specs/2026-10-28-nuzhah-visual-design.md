@@ -1,7 +1,7 @@
 # Nuzhat al-Naẓar, visualised: design
 
 Date: 2026-10-28
-Status: divisions 1–3 built (phases 1 and 2, then phase 3's ʿAdad al-ṭuruq, al-Maqbūl and al-Mardūd)
+Status: divisions 1–4 built (phases 1 and 2, then phase 3's ʿAdad al-ṭuruq, al-Maqbūl, al-Mardūd and Muntahā al-isnād)
 Concept mockup: https://claude.ai/artifact/8V78csjQ1dFRqbjoWoZza1 (reference for look and motion; not production code)
 
 ## 1. Goal
@@ -195,6 +195,15 @@ The figure key from the mockup's "Reading a narrator" becomes `/narrators/`.
 | Who is this narrator? (`unknown`) | 5.35–5.36 | Mubham and majhūl figures (phase 2, unchanged) | none |
 | Does his belief count against him? (`innovation`) | 5.23, 5.37 | Three panels: open sin against sin in belief, then a decision path for each kind of innovation | Ibn Ḥajar; Unless he allows lying; Reject |
 
+**Phase 3: division 4** (Muntahā al-isnād), designed in `docs/superpowers/specs/2026-10-29-phase-3-muntaha-design.md`, built with the interim decisions of its §13:
+
+| Scene | § | Form | Views |
+|---|---|---|---|
+| Where does the chain end? (`ends`) | 5.40–5.43 | Three chains side by side ending at the Prophet ﷺ, a Companion and a Successor, each top figure on a gold halo holding its text card; a gap in the first says the name holds connected or not; a bracket names the last two athar | none |
+| Is it from the Prophet ﷺ? (`raised`) | 5.40 | Two cells: sayings, acts and approval, outright (a flow arrow) or implied (the dashed gold implied arrow), and a column of set phrases fed from the moon | Ibn Ḥajar and most: raised; Some: not raised |
+| Who met whom? (`companions`) | 5.41–5.42 | Four panels: the Companion's gates, how Companionship is known, the Successor's gates with "in him" struck, and the mukhaḍram between two eras | Ibn Ḥajar: senior Successors; Some: among the Companions |
+| Does it look connected? (`connected`) | 5.44 | Five chains with verdict pills: connected, a hidden gap, a Successor raising it, one below him raising it, and one stopping at a Companion | Ibn Ḥajar; al-Khaṭīb: connected; Ibn ʿAbd al-Barr: raised |
+
 - Each division gets its own short design pass, written as a design doc in `docs/superpowers/specs/`. It is then built on its own branch and reviewed through its PR preview. At the owner's request, to keep development moving, this replaces the earlier step of a mockup in the concept artifact.
 - Design rules for every scene:
   - Prefer a real worked example from the book over a generic one.
@@ -286,7 +295,8 @@ src/
                   ViewSwitch, ReadAsText, TermPopover, Legend, Carousel
     scenes/       Routes, Breaks, Unknown, Delivery, Names, Grades, Opposition, Support,
                   ActedOn, Report, Sorting, Knowledge, Lone, Causes, Hidden, Lying, Slips,
-                  Changes, Wording, Identity, Innovation (one diagram per scene)
+                  Changes, Wording, Identity, Innovation, Ends, Raised, Companions,
+                  Connected (one diagram per scene)
   content/
     divisions.yaml  the eight divisions (term, Arabic, English, §, order, moons)
     scenes.yaml     every scene (see 7.3)

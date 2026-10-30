@@ -28,7 +28,7 @@ These are the rules of the phase 2 plan, the al-Maqbūl design's §13 and the al
 
 - Every note paraphrases the *translation* paragraphs of §5.40–5.44 only: the headings `5. 40.` to `5.44.` in `source/nuzhah.txt`, each read up to its `Commentary` line.
 - No footnote and no commentary was used. In particular: footnotes 170 (the two ʿUmars), 178–186 (Abū Jahl, the named apostates, Baḥīrā, the Qurʾan verses for Abū Bakr and Zayd), 195–196 (al-Najāshī's funeral prayer) and 199; and the commentary sections §5.40.1, §5.41.1, §5.42.1–5.42.2 and §5.44.1.
-- **No Arabic report wording anywhere.** Term names keep their Arabic from `terms.yaml`. The indirect words of §5.40 (yarfaʿuhu and the rest) appear in transliteration only, as ʿan and qāla did in `hidden`.
+- **No Arabic report wording anywhere.** Term names keep their Arabic from `terms.yaml`. The indirect words of §5.40 (yarfaʿ and the rest) appear in transliteration only, as ʿan and qāla did in `hidden`.
 - English words of a report appear only as short phrase forms the translation names as forms ("from the sunna is…", "we were ordered…", "we used to…"). Every worked example is paraphrased, with no quotation marks (open question 6).
 - **No numbers on gauges.** The ranks of Companions (§5.41) are shown by bar length only, labelled as an illustration.
 - **No Other views that aren't in the translation.** The three scenes with views use rival opinions the translation reports.
@@ -157,7 +157,7 @@ Reuses `Moon`, `Narrator`, `Arrow` (`flow`, `skip`), `Chip`, `Matn`, `Bracket`, 
 
 ### 3.2 Form, and why it suits the idea
 
-§5.40 is built as a table: three things that can be raised (his sayings, acts, silent approval), each in two ways (outright, *taṣrīḥ*, or implied, *ḥukm*). So cell A is a **2 × 3 table**. Each row has the moon at its left; an outright cell joins the Companion to the moon with a solid gold arrow, an implied cell with a dashed gold one (the new `implied` arrow, §7). Each cell has one line of the book's example.
+§5.40 is built as a table: three things that can be raised (his sayings, acts, silent approval), each in two ways (outright, *taṣrīḥ*, or implied, *ḥukm*). So cell A is a **2 × 3 table**. Each row has the moon at its left; an outright cell joins the moon to the Companion with an ordinary flow arrow, an implied cell with a dashed gold one (the new `implied` arrow, §7). Each cell has one line of the book's example.
 
 Cell B is a **column of phrase cards**, the set forms of §5.40 that count as raised: "from the sunna is…", "we were ordered…", "we used to…", calling an act obedience or disobedience, the indirect words, and the speaker left out. Each card has a dashed gold arrow up to a moon at the top. The two disputed forms carry the scene's view.
 
@@ -178,8 +178,8 @@ x→ 0  40    110          250          390 430
     │     ACTS                            more than one bowing (al-Shāfiʿī)
 290 │ (ﷺ) HIS     [C] "I did it in his [C]┄ "we used to…", in his time:
     │     APPROVAL presence"               Jābir and Abū Saʿīd
-380 │ ONLY IF IMPLIED:
-400 │ [not from biblical reports] [not open to reasoning] [not a word's meaning]
+380 │ IMPLIED SAYINGS: ONLY WHEN
+400 │ [he doesn't take biblical reports] [not open to reasoning] [not a word's meaning]
 440 │ someone told him, and only the Prophet ﷺ could have
 470 │ heard from him, or through someone: raised either way
 ```
@@ -196,17 +196,17 @@ x→ 0       215                       430
  60 │           ( ﷺ )                        moon, k .5
     │   ┆   ┆   ┆   ┆   ┆   ┆                dashed gold arrows up
 120 │ ┌ "from the sunna is…" ┐  [view tag]
-170 │ ┌ "we were ordered…" / "forbidden…" ┐  [view tag]
+170 │ ┌ "we were ordered…" / "prohibited…" ┐  [view tag]
 220 │ ┌ "we used to…" ┐
 270 │ ┌ obedience or disobedience of Allah and His Messenger ┐  ʿAmmār, the day of doubt
-320 │ ┌ yarfaʿuhu · yarwīhi · yanmīhi · yablughu bihi · riwāyatan ┐
+320 │ ┌ yarfaʿ · yarwī · yanmī · yablughu bih · rawā ┐
 370 │ ┌ the speaker left out ┐ Ibn Sīrīn from Abū Hurayra: Baṣra usage
 430 │ why not say "the Prophet ﷺ said"? piety and caution:
 446 │ Abū Qilāba could have said Anas raised it
 ```
 
 - Six cards, `Matn`-style plain rects, x 24..406.
-- Under `most` the first two cards carry `ViewTag` "raised" (solid); under `not-raised` the tag reads "could be someone else's" (dashed) and their arrows turn to `Arrow elided`.
+- Under `most` the first two cards carry `ViewTag` "raised" (solid); under `not-raised` the tag reads "or another's?" (dashed), their arrows fade to a faint implied arrow, and their sub-lines give the doubters' reading instead of Ibn Ḥajar's answer.
 
 ### 3.4 Term triggers
 
@@ -217,13 +217,13 @@ x→ 0       215                       430
 **Extra** (Read as text only):
 
 1. **The book's examples** (§5.40). Outright: the Companion says he heard the Messenger of Allah ﷺ say something, saw him do it, or did it in his presence without objection. Implied, of an act: al-Shāfiʿī on ʿAlī's eclipse prayer with more than one bowing in each unit, which he could not have reached by his own thinking. Implied, of approval: the Companions say they used to do something in his time; Jābir and Abū Saʿīd argued that a practice was allowed because they did it while the Qurʾan was being revealed, and it would have forbidden it. Of a ruling: ʿAmmār called fasting the day of doubt disobedience to Abū al-Qāsim ﷺ.
-2. **Words that point to him** (§5.40). A Successor may say of a Companion that he raises the ḥadīth, narrates it, ascribes it or makes it reach the Prophet ﷺ (yarfaʿuhu, yarwīhi, yanmīhi, yablughu bihi, riwāyatan). Sometimes the speaker is left out altogether, as in Ibn Sīrīn's reports from Abū Hurayra; al-Khaṭīb suggests this was the usage of Baṣra. Why not name him? From piety and caution: Abū Qilāba said he could have said that Anas raised his report, but it is better to keep the Companion's own words.
+2. **Words that point to him** (§5.40). A Successor may say of a Companion that he raises the ḥadīth, narrates it, ascribes it or makes it reach the Prophet ﷺ (yarfaʿ, yarwī, yanmī, riwāya, yablughu bih, rawā). Sometimes the speaker is left out altogether, as in Ibn Sīrīn's reports from Abū Hurayra; al-Khaṭīb suggests this was the usage of Baṣra. Why not name him? From piety and caution: Abū Qilāba said he could have said that Anas raised his report, but it is better to keep the Companion's own words.
 
 ### 3.5 Views
 
 | id | Label | Scholars | Note |
 |---|---|---|---|
-| `most` | Ibn Ḥajar and most: raised | §5.40; Ibn ʿAbd al-Barr reports a consensus | When a Companion says "from the sunna is…", or "we were ordered" or "forbidden", it counts as raised. The sunna meant is the Prophet's ﷺ, as Sālim told Ibn Shihāb; one under a leader who says "I was ordered" means by the leader. Ibn Ḥajar calls the claim of consensus contentious, since al-Shāfiʿī has two opinions. |
+| `most` | Ibn Ḥajar and most: raised | §5.40; Ibn ʿAbd al-Barr reports a consensus | When a Companion says "from the sunna is…", or "we were ordered" or "prohibited", it counts as raised. The sunna meant is the Prophet's ﷺ, as Sālim told Ibn Shihāb; one under a leader who says "I have been ordered" means by the leader. Ibn Ḥajar calls the claim of consensus contentious, since al-Shāfiʿī has two opinions. |
 | `not-raised` | Some: not raised | Abū Bakr al-Ṣayrafī, Abū Bakr al-Rāzī, Ibn Ḥazm; a group, on "we were ordered", §5.40 | Sunna is said of others besides the Prophet ﷺ, so "from the sunna" need not mean his; an order could be the Qurʾan's, the consensus's, a caliph's or a derived ruling's. Ibn Ḥajar answers that these readings are far-fetched, or only possibilities, and the Companions were sure before they spoke. |
 
 ### 3.6 Grid cells
@@ -308,7 +308,7 @@ x→ 0      130     260│ 390            520│ 650           780│ 910       
 **Extra** (Read as text only):
 
 1. **The definition, part by part** (§5.41). Meeting is the genus. "Believing" leaves out those who met him as disbelievers; "in him" those who believed only in an earlier prophet; "died a Muslim" those who left Islam after meeting him and died so, like Ibn Khaṭal. Whether one who met him believing before his mission, knowing he would be sent, and died before it, counts is disputed. al-Ashʿath ibn Qays left Islam, was brought to Abū Bakr a prisoner, returned to Islam and married his sister; no one denied him Companionship or left his ḥadīth out of the musnads.
-2. **How Companionship is known** (§5.41). By mutawātir report, by its being widely known, by another Companion or a reliable Successor saying so, or by his own claim when it is plausible; a group of ḥadīth scholars hesitate over the last, since it is like a man saying "I am reliable".
+2. **How Companionship is known** (§5.41). By mutawātir report, by its being widely known, by another Companion or a reliable Successor saying so, or by his own claim when it is plausible; a group of ḥadīth scholars hesitate over the last, since it is like a man saying "I am credible".
 3. **Two notes** (§5.41). One who kept long company with him, fought beside him or died under his command ranks above one who met him briefly or saw him as a child, though all share the honour. A Companion who did not hear from him narrates mursal, though he is a Companion.
 4. **The Night of Ascension** (§5.42). If it were proven that all the people of the earth were shown to him on that night, the mukhaḍramūn would count among those who believed in him in his lifetime, since he saw them.
 
@@ -441,9 +441,9 @@ Measured after writing, in Unicode code points. All 9 caption notes and the 7 vi
 
 | Part | Props | Used in | Notes |
 |---|---|---|---|
-| `Arrow variant="implied"` | as the other variants | 2 | A gold dashed arrow with the gold head: counted as from the Prophet ﷺ by implication. Not narration, so it must not look like a `flow` arrow; not a gap, so not red. Its dashes reuse the `flow` keyframe. |
+| `Arrow variant="implied"` | as the other variants | 2 | A gold arrow in short dashes (2 4, not the flow arrow's 6 6) with the gold head: counted as from the Prophet ﷺ by implication. Not narration, so it must not look like a `flow` arrow; not a gap, so not red. Its dashes reuse the `flow` keyframe. |
 
-Everything else is reused: `Moon`, `Narrator`, `Arrow` (`flow`, `skip`, `elided`), `Bracket`, `Chip`, `Pill`, `Matn`, `Decision`, `Glyph cross`, `Lifespan`, `SpeechBubble`, `ViewTag`, `XLink`, `TermTitle`, the `geom.ts` triggers, `viewAttrs`, `stagger`, `.cells`, and the `m-draw`/`m-enter` classes.
+Everything else is reused: `Moon`, `Narrator`, `Arrow` (`flow`, `skip`), `Bracket`, `Chip`, `Pill`, `Matn`, `Decision`, `Glyph cross`, `Lifespan`, `SpeechBubble`, `ViewTag`, `XLink`, `TermTitle`, the `geom.ts` triggers, `viewAttrs`, `stagger`, `.cells`, and the `m-draw`/`m-enter` classes.
 
 ## 8. Owner's annotations
 
@@ -554,3 +554,13 @@ Each has options and a recommendation in the review file. In short:
 - **Gauges:** none with numbers; the company bars are labelled an illustration.
 - **Owner's annotations:** only the "used" rows of §8.
 - **Translation slips:** all seven rows go to `notes/translation-queries.md`.
+
+### Deviations in the build
+
+The built scenes follow this design except as below. None changes a ruling or adds content beyond the translation.
+
+- **`ends`:** the lede ends "The names say where the words stop, not whether the chain is whole." The text cards hang from the top figure by a thin gold tie; a red "a gap" label marks the ghost in column 1; panel 2's footer link is the target scene's title, landing on `#munqati`.
+- **`raised`:** the outright arrows are ordinary flow arrows (moon to Companion), so only the implied ones are gold. Cell B's cards take short implied arrows off one dashed gold spine from the moon, not a fan; under `not-raised` the two disputed branches fade to faint implied arrows, their sub-lines give the doubters' reading, and their tags read "or another's?". Row texts are paraphrases without quotation marks; only cell B's phrase forms are quoted. The fourth card reads "obeying or disobeying Allah and His Messenger". Cell A's conditions are headed "Implied sayings: only when", since §5.40 ties them to sayings.
+- **`companions`:** the Successor's gates are wider (132) to hold "the Prophet ﷺ?"; the struck gate is dashed with a red strike. The mursal note is an `XLink` "narrates mursal" to `breaks#mursal`. Panel 4's figures in each row are small reference figures; the moving mukhaḍram keeps his green (Successor) figure in both views, with an always-shown "mukhaḍram" label that moves with him, and the view tag naming the placement. The Successor's questions use a face a size smaller.
+- **`connected`:** the pills come in on an always-shown wrapper, so a view switch never replays them (V4). The hidden ghost is drawn faint and still beside the arrow into the mudallis, with "ʿan…" as a plain label (a speech bubble would cross the panel edge). Two links: `hidden` under panel 1, `breaks#mursal` under panel 2. The hidden-gap chain has a verdict only in Ibn Ḥajar's view; §5.44 gives no other scholar's word on it, so the other views say "the book doesn't say".
+- **All scenes:** no screenshots were taken for the README (the machine is shared); run `bun run screenshots` locally.
