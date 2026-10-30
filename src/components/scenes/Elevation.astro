@@ -1,0 +1,205 @@
+---
+// "How near is the chain?" (phase 3 lataif design §2): ʿuluww and nuzūl (§5.45, §5.47) in three panels of one 780-wide
+// row, so it carousels in portrait. ʿUluww means height, so height is nearness: each route ends in an "us" chip on
+// faint level rows, and the fewer its links, the higher "us" sits. A wedge at panel 1's left edge names the two ends,
+// ʿuluww at the top and nuzūl at the foot (order only, no numbers).
+//   1  absolute: two routes of one ḥadīth from the Prophet ﷺ, one short and one long
+//   2  relative: the same long chain above a great imam for both routes; only the stretch below him differs
+//   3  is shorter always better? a short route that is sound, one with a weak link, one with a forger; then a scale
+//      where a longer chain with weightier men outweighs the shorter: its weights are as many, but larger and gold
+// The rings are unnamed narrators and their counts are illustrations: the book names no example (design §0).
+// The "Other views" switch (§5.45) changes panel 3 only: under "reward" the longer pan holds more plain weights, for
+// more narrators, and the reasons become "more toil, more reward", with Ibn Ḥajar's reply. The pans themselves always
+// show, so the tip never replays. Groups outside the default view are built with class="off". panel 2 links on to
+// the four kinds of relative elevation.
+// Motion: the rings' lines flow; the "us" chips drop in once, the shorter route's first; the scale tips once (Scale).
+// The resting style is the end state, so with motion.css stopping every animation all is shown and the scale tipped.
+import Defs from "../svg/Defs.astro";
+import Moon from "../svg/Moon.astro";
+import Narrator from "../svg/Narrator.astro";
+import Arrow from "../svg/Arrow.astro";
+import Beads from "../svg/Beads.astro";
+import Bracket from "../svg/Bracket.astro";
+import Chip from "../svg/Chip.astro";
+import Pill from "../svg/Pill.astro";
+import Scale from "../svg/Scale.astro";
+import TermTitle from "../svg/TermTitle.astro";
+import ViewTag from "../svg/ViewTag.astro";
+import XLink from "../svg/XLink.astro";
+import { FIG, KIND_NAME, RELIABLE } from "../svg/figures";
+import { SUBT_TRIGGER, f, rowTrigger, titleTrigger } from "../svg/geom";
+import { cap, type DiagramProps } from "../../lib/scene";
+import { BEAD_R, CHIP_H, beadRun, chipWidth, discRow, scaleEnds, stagger } from "../../lib/kit";
+
+type Props = DiagramProps;
+const { caps, scene } = Astro.props;
+
+const W = 780, H = 500;
+const VIEW_IDS = ["ibn-hajar", "reward"];
+if ((scene.views ?? []).map((v) => v.id).join() !== VIEW_IDS.join()) throw new Error(`Elevation: expected views ${VIEW_IDS.join(", ")}`);
+const PANELS = scene.panels ?? [];
+if (PANELS.length !== 3) throw new Error("Elevation: expected three panels");
+const [, P2, P3] = PANELS.map((p) => (p.x0 + p.x1) / 2);
+
+const TITLE_Y = 30, SUB_Y = 50;
+const US_W = chipWidth("us");
+
+function title(slug: string, cx: number) {
+  const c = cap(caps, slug);
+  return { c, cx, ...titleTrigger(c.translit, cx, TITLE_Y, SUBT_TRIGGER) };
+}
+// the wedge's two ends, 13px bold row labels
+function end(slug: string, y: number) {
+  const c = cap(caps, slug);
+  return { c, x: 8, y, ...rowTrigger(c.translit, 8, y) };
+}
+const P1C = 140; // panel 1's centre, clear of the wedge
+const mutlaq = title("uluww-mutlaq", P1C);
+const nisbi = title("uluww-nisbi", P2);
+const top = end("uluww", 84);
+const foot = end("nuzul", 426);
+const WEDGE = { x0: 10, x1: 26, y0: 96, y1: 404 };
+
+// a route: a moon or figure at its head, n rings from y every gap, then "us"
+type Route = { x: number; y: number; n: number; gap: number; from: { x: number; y: number; r: number }; tag: string };
+const usY = (r: Route) => r.y + r.n * r.gap;
+// panel 1: two routes from the Prophet ﷺ
+const MOON1 = { x: P1C, y: 96, r: 24 * 0.6 };
+const GAP1 = 34, Y1 = 140;
+const P1_ROUTES: Route[] = [
+  { x: P1C - 45, y: Y1, n: 3, gap: GAP1, from: MOON1, tag: "elevated" },
+  { x: P1C + 45, y: Y1, n: 7, gap: GAP1, from: MOON1, tag: "descended" },
+];
+// panel 2: one long chain to the imam, then two routes from him
+const MOON2 = { x: P2, y: 90, r: 24 * 0.6 };
+const IMAM = { x: P2, y: 236, k: 0.75 };
+const IHALF = 22 * IMAM.k;
+const IMAMS = ["such as Shuʿba, Mālik,", "al-Thawrī, al-Shāfiʿī,", "al-Bukhārī, Muslim"];
+// the long chain above him, the same for both routes
+const ABOVE = beadRun(P2, 132, 3, 30);
+const GAP2 = 26, Y2 = 312;
+const P2_ROUTES: Route[] = [
+  { x: P2 - 45, y: Y2, n: 1, gap: GAP2, from: { x: IMAM.x, y: IMAM.y, r: IHALF + 16 }, tag: "elevated" },
+  { x: P2 + 45, y: Y2, n: 5, gap: GAP2, from: { x: IMAM.x, y: IMAM.y, r: IHALF + 16 }, tag: "descended" },
+];
+// the chips drop in the shorter route's first, in each panel
+const chipD = (i: number) => stagger(i, { start: 0.5, step: 0.5 });
+
+// panel 3: three short routes, and their verdicts
+const ROWS = [
+  { y: 92, mid: "bead", note: "sound", pill: "Most desired", state: "accept" },
+  { y: 144, mid: "weak", note: "with a weak link", pill: "Elevated in form", state: "pause" },
+  { y: 196, mid: "liar", note: "forged", pill: "No elevation", state: "reject" },
+] as const;
+const RX = { moon: 538, a: 562, b: 590, us: 608, pill: 712 };
+const SCALE = { x: P3, y: 254, w: 150, tilt: 8, drop: 28 };
+// the longer pan's weights, drawn here so they can change by view while the pan (and its tip) stays: in Ibn Ḥajar's
+// view, as many as the shorter pan's but larger and gold, for weightier men; under "reward", more of the plain kind,
+// for more narrators
+const PAN_R = scaleEnds(SCALE.x, SCALE.w, SCALE.tilt).right.x;
+const PAN_Y = SCALE.y + SCALE.drop;
+const WEIGHTY = discRow(2, PAN_R, 20).map((cx) => ({ cx, cy: PAN_Y - 8, r: 9 }));
+const MANY = discRow(4, PAN_R, 14).map((cx) => ({ cx, cy: PAN_Y - 5, r: 6 }));
+---
+<svg viewBox={`0 0 ${W} ${H}`} class="elevation" role="group" aria-label="How near a chain is, in three panels; the higher a route's end sits, the fewer its narrators. ʿUluww at the top, nuzūl at the foot. ʿUluww muṭlaq: two routes of one ḥadīth from the Prophet ﷺ, one with fewer narrators, elevated, one with more, descended; each narrator might slip, so fewer links mean fewer slips. ʿUluww nisbī: fewer narrators up to a great imam, such as Shuʿba, Mālik, al-Thawrī, al-Shāfiʿī, al-Bukhārī or Muslim, however many are above him. Is shorter always better? A short sound route is the most desired; with a weak link it is still elevated in form; forged, it has no elevation. A longer chain with weightier men, sharper memory, more learning in law or a plainer connection is better without hesitation.">
+  <Defs />
+  <line class="divider" x1={PANELS[1].x0} x2={PANELS[1].x0} y1="12" y2={H - 12} />
+  <line class="divider" x1={PANELS[2].x0} x2={PANELS[2].x0} y1="12" y2={H - 12} />
+
+  {/* ---- titles ---- */}
+  <TermTitle c={mutlaq.c} x={mutlaq.cx} y={TITLE_Y} cls="subt" hit={mutlaq.hit} info={mutlaq.info} />
+  <text class="lbl" x={P1C} y={SUB_Y}>fewer narrators to the Prophet ﷺ</text>
+  <TermTitle c={nisbi.c} x={nisbi.cx} y={TITLE_Y} cls="subt" hit={nisbi.hit} info={nisbi.info} />
+  <text class="lbl" x={P2} y={SUB_Y}>fewer narrators to a great imam</text>
+  <text class="subt" x={P3} y={TITLE_Y}>Is shorter always better?</text>
+  <text class="lbl" x={P3} y={SUB_Y}>a short route, and its limits</text>
+
+  {/* ---- the wedge: higher is nearer ---- */}
+  <path class="wedge" d={`M${WEDGE.x0} ${WEDGE.y0} H${WEDGE.x1} L${(WEDGE.x0 + WEDGE.x1) / 2} ${WEDGE.y1} Z`} aria-hidden="true" />
+  <TermTitle c={top.c} x={top.x} y={top.y} cls="rt" hit={top.hit} info={top.info} />
+  <TermTitle c={foot.c} x={foot.x} y={foot.y} cls="rt" hit={foot.hit} info={foot.info} />
+
+  {/* ---- level rows, faint, so the eye can compare heights ---- */}
+  <g class="level" aria-hidden="true">
+    {Array.from({ length: 8 }, (_, i) => <line x1={40} x2={250} y1={Y1 + i * GAP1} y2={Y1 + i * GAP1} />)}
+    {Array.from({ length: 6 }, (_, i) => <line x1={290} x2={500} y1={Y2 + i * GAP2} y2={Y2 + i * GAP2} />)}
+  </g>
+
+  {/* ---- panels 1 and 2: the routes ---- */}
+  <Moon cx={MOON1.x} cy={MOON1.y} k={0.6} />
+  <Moon cx={MOON2.x} cy={MOON2.y} k={0.6} />
+  {/* the long chain above the imam, the same for both routes */}
+  <Arrow x1={P2} y1={MOON2.y + MOON2.r + 2} x2={P2} y2={ABOVE.start.y - 3} />
+  <Beads x={P2} y={132} n={3} gap={30} />
+  <Arrow x1={P2} y1={ABOVE.end.y + 2} x2={P2} y2={IMAM.y - IHALF - 4} />
+  <Bracket vertical y0={126} y1={198} x={P2 + 16} ticks="left" />
+  <text class="lbl sm start" x={P2 + 24} y={158}>however many</text>
+  <text class="lbl sm start" x={P2 + 24} y={172}>above him</text>
+  <Narrator x={IMAM.x} y={IMAM.y} k={IMAM.k} {...FIG.later} {...RELIABLE} label={KIND_NAME.later} />
+  <text class="nm" x={IMAM.x + 22} y={IMAM.y + 4}>a great imam</text>
+  {IMAMS.map((t, j) => <text class="lbl sm start" x={IMAM.x + 22} y={IMAM.y + 19 + j * 13}>{t}</text>)}
+  {[P1_ROUTES, P2_ROUTES].map((routes) => routes.map((r, i) => {
+    const uy = usY(r);
+    const run = beadRun(r.x, r.y, r.n, r.gap);
+    return (
+      <>
+        <Arrow x1={f(r.from.x + (r.x - r.from.x) * (routes === P2_ROUTES ? 0.1 : 0.3))} y1={f(r.from.y + r.from.r + 2)} x2={r.x} y2={run.start.y - 3} />
+        <Beads x={r.x} y={r.y} n={r.n} gap={r.gap} />
+        <Arrow x1={r.x} y1={run.end.y + 2} x2={r.x} y2={uy - CHIP_H / 2 - 3} />
+        <g class="m-enter" style={`--d:${chipD(i)};--from-xy:0px -12px`}>
+          <Chip x={r.x - US_W / 2} y={uy} text="us" />
+        </g>
+        <text class="lbl sm" x={r.x} y={uy + 26}>{r.tag}</text>
+      </>
+    );
+  }))}
+  <text class="lbl sm" x={P1C} y={446}>each ring is a narrator, and each</text>
+  <text class="lbl sm" x={P1C} y={460}>might slip: fewer links, fewer slips</text>
+  <text class="lbl sm" x={P2} y={490}>an illustration: the book names no example</text>
+  {/* its kinds have a scene of their own */}
+  <XLink to="lataif-al-isnad/meeting" text="its four kinds" x={P2 - 45} y={404} anchor="middle" />
+
+  {/* ---- panel 3: three short routes ---- */}
+  {ROWS.map((r) => (
+    <>
+      <Moon cx={RX.moon} cy={r.y} k={0.3} />
+      <path class="flow" d={`M${RX.moon + 9} ${r.y} H${RX.a - BEAD_R - 2}`} />
+      <circle class="bead" cx={RX.a} cy={r.y} r={BEAD_R} />
+      <path class="flow" d={`M${RX.a + BEAD_R + 2} ${r.y} H${RX.b - 10}`} />
+      {r.mid === "bead"
+        ? <circle class="bead" cx={RX.b} cy={r.y} r={BEAD_R} />
+        : <Narrator x={RX.b} y={r.y} k={0.4} {...FIG[r.mid]} />}
+      <path class="flow" d={`M${RX.b + 10} ${r.y} H${RX.us - 2}`} />
+      <Chip x={RX.us} y={r.y} text="us" />
+      <text class="lbl sm" x={RX.b} y={r.y + 24}>{r.note}</text>
+      <Pill x={RX.pill} y={r.y} state={r.state} text={r.pill} />
+    </>
+  ))}
+  <Scale x={SCALE.x} y={SCALE.y} w={SCALE.w} tilt={SCALE.tilt} left={2} right={2} pw={64} drop={SCALE.drop} stand={52}>
+    <g slot="right">
+      <g data-view-show="ibn-hajar">{WEIGHTY.map((d) => <circle class="weight gold" cx={d.cx} cy={d.cy} r={d.r} />)}</g>
+      <g class="off" data-view-show="reward">{MANY.map((d) => <circle class="weight" cx={d.cx} cy={d.cy} r={d.r} />)}</g>
+    </g>
+  </Scale>
+  <text class="lbl sm" x={SCALE.x - SCALE.w / 2} y={SCALE.y + 46}>shorter</text>
+  <text class="lbl sm" x={SCALE.x + SCALE.w / 2} y={SCALE.y + 66}>longer</text>
+  <g data-view-show="ibn-hajar">
+    <text class="lbl sm" x={P3} y={350}>if the longer has weightier men,</text>
+    <text class="lbl sm" x={P3} y={364}>sharper memory, more learning in</text>
+    <text class="lbl sm" x={P3} y={378}>law, or a plainer connection:</text>
+    <text class="lbl" x={P3} y={400}>no hesitation, the longer is better</text>
+    <ViewTag cx={P3} y={418} w={200} text="Ibn Ḥajar: the weightier chain" />
+  </g>
+  <g class="off" data-view-show="reward">
+    <text class="lbl" x={P3} y={364}>more toil, more reward</text>
+    <ViewTag cx={P3} y={380} w={170} text="Some: always the longer" dashed />
+    <text class="lbl sm" x={P3} y={420}>Ibn Ḥajar: a reason outside</text>
+    <text class="lbl sm" x={P3} y={434}>soundness and weakness</text>
+  </g>
+</svg>
+<style>
+  /* the longer pan's weights (Scale's right slot): gold and larger for weightier men, plain for more of them */
+  .weight{fill:var(--ink);stroke:var(--ink-edge);stroke-width:1}
+  .weight.gold{fill:var(--gold-b);stroke:var(--gold-a);stroke-width:1.5}
+  .wedge{fill:color-mix(in srgb,var(--gold-b) 45%,var(--surface));stroke:var(--gold-a);stroke-width:1}
+</style>

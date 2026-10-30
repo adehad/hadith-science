@@ -1,0 +1,268 @@
+{
+  "division": "lataif-al-isnad",
+  "title": "Laṭāʾif al-isnād (features of the chain): six scenes for review",
+  "scenes": [
+    {
+      "id": "elevation",
+      "question": "How near is the chain?",
+      "terms": [
+        "uluww",
+        "uluww-mutlaq",
+        "uluww-nisbi",
+        "nuzul"
+      ],
+      "summary": "Height is nearness: two routes to the Prophet ﷺ, two routes to a great imam, and when a longer chain is the better one.",
+      "blocked_by": [
+        "q4"
+      ],
+      "built_with_interim": true,
+      "status": "built_with_interim"
+    },
+    {
+      "id": "meeting",
+      "question": "Where does our route meet theirs?",
+      "terms": [
+        "muwafaqa",
+        "badal",
+        "musawah",
+        "musafaha"
+      ],
+      "summary": "Two cells of bead chains with the book's own counts: routes meeting al-Bukhārī at Qutayba or Mālik, and routes level with al-Nasāʾī or his student.",
+      "blocked_by": [
+        "q2",
+        "q5"
+      ],
+      "built_with_interim": true,
+      "status": "built_with_interim"
+    },
+    {
+      "id": "peers",
+      "question": "Who narrates from whom?",
+      "terms": [
+        "aqran",
+        "mudabbaj",
+        "akabir-an-asaghir",
+        "abna-an-aba"
+      ],
+      "summary": "Height is seniority: peers side by side, peers both ways, a senior hearing from a junior (an arrow that climbs), and a family chain up to fourteen fathers.",
+      "blocked_by": [],
+      "status": "built"
+    },
+    {
+      "id": "early-late",
+      "question": "How far apart did they die?",
+      "terms": [
+        "sabiq-wa-lahiq"
+      ],
+      "summary": "Life bars for the usual cause, then al-Silafī's and al-Sarrāj's students who died far apart.",
+      "blocked_by": [
+        "q1",
+        "q3"
+      ],
+      "status": "blocked"
+    },
+    {
+      "id": "doubts",
+      "question": "Does the doubt harm it?",
+      "terms": [
+        "muhmal",
+        "man-haddatha-wa-nasiya"
+      ],
+      "summary": "One name that splits into two reliable men, a shaykh who denies outright, and a shaykh who does not recall, with the Suhayl loop.",
+      "blocked_by": [],
+      "status": "built"
+    },
+    {
+      "id": "chained",
+      "question": "What runs through every link?",
+      "terms": [
+        "musalsal"
+      ],
+      "summary": "Chains where every link carries the same tag, and the Awwaliyya chain whose tags stop at Sufyān ibn ʿUyayna.",
+      "blocked_by": [
+        "q1",
+        "q6"
+      ],
+      "status": "blocked"
+    }
+  ],
+  "questions": [
+    {
+      "id": "q1",
+      "scene": null,
+      "question": "Six scenes, or four?",
+      "context": "Sābiq wa-lāḥiq (§5.51) and musalsal (§5.54) each have a scene of their own with one term. They could instead be extra panels of the neighbouring scene on the same moon.",
+      "options": [
+        {
+          "id": "a",
+          "label": "Six scenes",
+          "description": "Keep 'How far apart did they die?' and 'What runs through every link?' as their own scenes, each with the book's worked examples across three panels.",
+          "svg": "<svg viewBox=\"0 0 160 90\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><rect x=\"6\" y=\"10\" width=\"44\" height=\"30\"/><rect x=\"58\" y=\"10\" width=\"44\" height=\"30\"/><rect x=\"110\" y=\"10\" width=\"44\" height=\"30\"/><rect x=\"6\" y=\"50\" width=\"44\" height=\"30\"/><rect x=\"58\" y=\"50\" width=\"44\" height=\"30\"/><rect x=\"110\" y=\"50\" width=\"44\" height=\"30\"/></svg>",
+          "recommended": true
+        },
+        {
+          "id": "b",
+          "label": "Four scenes",
+          "description": "Sābiq wa-lāḥiq becomes a fifth panel of 'Who narrates from whom?' (one example only), and musalsal a fourth panel of 'Does the doubt harm it?' (no Awwaliyya panel).",
+          "svg": "<svg viewBox=\"0 0 160 90\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><rect x=\"6\" y=\"10\" width=\"70\" height=\"30\"/><rect x=\"84\" y=\"10\" width=\"70\" height=\"30\"/><rect x=\"6\" y=\"50\" width=\"70\" height=\"30\"/><rect x=\"84\" y=\"50\" width=\"70\" height=\"30\"/><path d=\"M62 50v30M140 50v30\" stroke-dasharray=\"3 2\"/></svg>",
+          "recommended": false
+        }
+      ],
+      "interim": "a"
+    },
+    {
+      "id": "q2",
+      "scene": "meeting",
+      "question": "May scene 2 write the book's counts (eight, seven, eleven) in words?",
+      "context": "The book's examples give counts: eight or seven between us and Qutayba, eleven between al-Nasāʾī and the Prophet ﷺ. The rings are drawn to exactly those counts. The 'no numbers' rule was written for gauges.",
+      "options": [
+        {
+          "id": "a",
+          "label": "Rings and words",
+          "description": "Draw the exact number of rings and label them 'eight between us and Qutayba', 'eleven between him and the Prophet ﷺ'.",
+          "svg": "<svg viewBox=\"0 0 160 90\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><circle cx=\"30\" cy=\"14\" r=\"4\"/><circle cx=\"30\" cy=\"28\" r=\"4\"/><circle cx=\"30\" cy=\"42\" r=\"4\"/><circle cx=\"30\" cy=\"56\" r=\"4\"/><circle cx=\"30\" cy=\"70\" r=\"4\"/><text x=\"44\" y=\"46\" font-size=\"11\" fill=\"currentColor\" stroke=\"none\">eight between us</text></svg>",
+          "recommended": true
+        },
+        {
+          "id": "b",
+          "label": "Rings only",
+          "description": "Draw the rings to the book's counts, but leave the numbers to the notes; the labels say only 'one link fewer' and 'level with him'.",
+          "svg": "<svg viewBox=\"0 0 160 90\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><circle cx=\"30\" cy=\"14\" r=\"4\"/><circle cx=\"30\" cy=\"28\" r=\"4\"/><circle cx=\"30\" cy=\"42\" r=\"4\"/><circle cx=\"30\" cy=\"56\" r=\"4\"/><circle cx=\"30\" cy=\"70\" r=\"4\"/><text x=\"44\" y=\"46\" font-size=\"11\" fill=\"currentColor\" stroke=\"none\">one link fewer</text></svg>",
+          "recommended": false
+        }
+      ],
+      "interim": "a"
+    },
+    {
+      "id": "q3",
+      "scene": "early-late",
+      "question": "Show the death years in scene 4?",
+      "context": "The translation gives death years (500/1106 and 650/1252; 256/870 and 393/1002) but says the widest gap is 'one hundred and sixty years', which its own dates don't give (they are 150 apart). This is in the translation queries.",
+      "options": [
+        {
+          "id": "a",
+          "label": "Years, no gap",
+          "description": "Label each death with the translation's year, and say only 'the widest gap Ibn Ḥajar found', with no number, until the Arabic is checked.",
+          "svg": "<svg viewBox=\"0 0 160 90\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M14 50H146\"/><path d=\"M30 42v16M130 42v16\"/><text x=\"16\" y=\"74\" font-size=\"10\" fill=\"currentColor\" stroke=\"none\">d. 500</text><text x=\"112\" y=\"74\" font-size=\"10\" fill=\"currentColor\" stroke=\"none\">d. 650</text></svg>",
+          "recommended": true
+        },
+        {
+          "id": "b",
+          "label": "No years",
+          "description": "Mark the deaths only as 'died first' and 'died last'; the years go in the Read as text note.",
+          "svg": "<svg viewBox=\"0 0 160 90\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M14 50H146\"/><path d=\"M30 42v16M130 42v16\"/><text x=\"10\" y=\"74\" font-size=\"10\" fill=\"currentColor\" stroke=\"none\">died first</text><text x=\"108\" y=\"74\" font-size=\"10\" fill=\"currentColor\" stroke=\"none\">died last</text></svg>",
+          "recommended": false
+        }
+      ],
+      "interim": "a"
+    },
+    {
+      "id": "q4",
+      "scene": "elevation",
+      "question": "Keep the 'Some: always the longer' view?",
+      "context": "§5.45 reports that some prefer the longer chain in general, for the reward of the toil, and Ibn Ḥajar dismisses it as a reason foreign to soundness. The view changes only panel 3's scale tags.",
+      "options": [
+        {
+          "id": "a",
+          "label": "A view",
+          "description": "An Other views switch: the scale's tags become 'more toil, more reward', with Ibn Ḥajar's reply under it.",
+          "svg": "<svg viewBox=\"0 0 160 90\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M80 20V70M50 30L110 40\"/><path d=\"M44 30l-8 16h16zM116 40l-8 16h16z\"/><rect x=\"92\" y=\"64\" width=\"60\" height=\"16\" rx=\"8\" stroke-dasharray=\"3 2\"/></svg>",
+          "recommended": true
+        },
+        {
+          "id": "b",
+          "label": "Read as text only",
+          "description": "No views on the scene; the opinion and Ibn Ḥajar's answer go in an extra in Read as text.",
+          "svg": "<svg viewBox=\"0 0 160 90\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M80 20V70M50 30L110 40\"/><path d=\"M44 30l-8 16h16zM116 40l-8 16h16z\"/><path d=\"M20 78h120\" stroke-dasharray=\"2 3\"/></svg>",
+          "recommended": false
+        }
+      ],
+      "interim": "a"
+    },
+    {
+      "id": "q5",
+      "scene": "meeting",
+      "question": "Remark on musāwāh's example counting to the Prophet ﷺ?",
+      "context": "Your p.323 note: musāwāh is a kind of relative elevation, yet the book's al-Nasāʾī example counts all the way to the Prophet ﷺ, like absolute elevation.",
+      "options": [
+        {
+          "id": "a",
+          "label": "As the book has it",
+          "description": "Draw the example as the book gives it, with no remark; the relative part is that we are level with a compiler.",
+          "svg": "<svg viewBox=\"0 0 160 90\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><circle cx=\"80\" cy=\"12\" r=\"7\"/><path d=\"M74 18L50 70M86 18L110 70\"/><path d=\"M44 76h72\" stroke-dasharray=\"3 2\"/></svg>",
+          "recommended": true
+        },
+        {
+          "id": "b",
+          "label": "With a remark",
+          "description": "Add a small label under cell B: 'the book's example counts to the Prophet ﷺ', so a reader isn't puzzled.",
+          "svg": "<svg viewBox=\"0 0 160 90\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><circle cx=\"80\" cy=\"12\" r=\"7\"/><path d=\"M74 18L50 64M86 18L110 64\"/><path d=\"M44 70h72\" stroke-dasharray=\"3 2\"/><path d=\"M30 84h100\"/></svg>",
+          "recommended": false
+        }
+      ],
+      "interim": "a"
+    },
+    {
+      "id": "q6",
+      "scene": "chained",
+      "question": "Musalsal: word tags or drawn icons at every link?",
+      "context": "Each link carries the same mark. The translation's few words ('I heard', 'I bear witness', 'a date', 'I believe in fate') can be chips, or the acts can be drawn.",
+      "options": [
+        {
+          "id": "a",
+          "label": "Word chips",
+          "description": "A chip with the translation's words beside every figure; plain and readable, no new drawings.",
+          "svg": "<svg viewBox=\"0 0 160 90\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><circle cx=\"40\" cy=\"16\" r=\"6\"/><circle cx=\"40\" cy=\"44\" r=\"6\"/><circle cx=\"40\" cy=\"72\" r=\"6\"/><rect x=\"56\" y=\"8\" width=\"56\" height=\"16\" rx=\"8\"/><rect x=\"56\" y=\"36\" width=\"56\" height=\"16\" rx=\"8\"/><rect x=\"56\" y=\"64\" width=\"56\" height=\"16\" rx=\"8\"/></svg>",
+          "recommended": true
+        },
+        {
+          "id": "b",
+          "label": "Drawn icons",
+          "description": "A small drawn date, or a hand at the beard, beside every figure; more vivid, but two new glyphs to draw.",
+          "svg": "<svg viewBox=\"0 0 160 90\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><circle cx=\"40\" cy=\"16\" r=\"6\"/><circle cx=\"40\" cy=\"44\" r=\"6\"/><circle cx=\"40\" cy=\"72\" r=\"6\"/><ellipse cx=\"66\" cy=\"16\" rx=\"7\" ry=\"4\"/><ellipse cx=\"66\" cy=\"44\" rx=\"7\" ry=\"4\"/><ellipse cx=\"66\" cy=\"72\" rx=\"7\" ry=\"4\"/></svg>",
+          "recommended": false
+        }
+      ],
+      "interim": "a"
+    },
+    {
+      "id": "q7",
+      "scene": null,
+      "question": "Approve any of the proposed annotations?",
+      "context": "Proposed (design §9): swapped names → a link to maqlūb (p.325, p.327); Awwaliyya as 'the first ḥadīth heard from the shaykh' (p.341); al-Darāwardī seeking a shorter route (p.340–341); the Iraq and Ḥijāz clue (p.337); the Dajjāl example for seniors from juniors (p.327). None is in site text yet.",
+      "options": [
+        {
+          "id": "a",
+          "label": "Keep them out for now",
+          "description": "Nothing goes in until you approve rows one by one in notes/annotation-usage.md.",
+          "svg": "",
+          "recommended": true
+        },
+        {
+          "id": "b",
+          "label": "Approve all but the Dajjāl example",
+          "description": "Add the four small labels and links; the Dajjāl example waits for a checked source and wording.",
+          "svg": "",
+          "recommended": false
+        }
+      ],
+      "interim": "a"
+    },
+    {
+      "id": "q8",
+      "scene": null,
+      "question": "Rule on the translation slips",
+      "context": "Eight rows (design §12), especially §5.51 (160 or 150 years; whose shaykh al-Silafī was) and §5.52 (how a muhmal is made clear).",
+      "options": [
+        {
+          "id": "a",
+          "label": "Use the site's wording until a ruling",
+          "description": "The rows go to notes/translation-queries.md and the site keeps the neutral wording given there.",
+          "svg": "",
+          "recommended": true
+        }
+      ],
+      "interim": "a"
+    }
+  ]
+}

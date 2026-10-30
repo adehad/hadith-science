@@ -1,0 +1,189 @@
+---
+// "Who narrates from whom?" (phase 3 lataif design §4): §5.48–5.50 in four panels of one 1040-wide row, so it
+// carousels in portrait. Height is seniority, and every arrow runs the way the report travels, from the one narrated
+// from to the narrator, so the usual arrow falls and the senior-from-junior arrow climbs:
+//   1  aqrān: two peers on one level under a shared shaykh, one narrating from the other, with near-equal life bars
+//   2  mudabbaj: the same pair, each narrating from the other; nested rings (every mudabbaj is aqrān, not the
+//      reverse); and the debated case of a shaykh and his student, apparently not mudabbaj
+//   3  seniors from juniors: father and son, Companion and Successor, shaykh and student, each with a climbing arrow
+//      beside the faint falling one, the usual way
+//   4  sons from fathers: a family chain read two ways ("his" grandfather: the narrator's or the father's), and the
+//      book's fourteen fathers as a row of rings
+// Panels 1-3 are illustrations: the translation names no example (design §0). The two long titles are 13px, so the
+// panels can be equal. No views (design §4.5). No Arabic report wording.
+// Motion: the arrows flow; the climbing arrows enter one after another, and the row of fourteen rings, once.
+// Their resting style is the end state, so with motion.css stopping every animation all are shown.
+import Defs from "../svg/Defs.astro";
+import Moon from "../svg/Moon.astro";
+import Narrator from "../svg/Narrator.astro";
+import Arrow from "../svg/Arrow.astro";
+import Lifespan from "../svg/Lifespan.astro";
+import Beads from "../svg/Beads.astro";
+import TermTitle from "../svg/TermTitle.astro";
+import { FIG, KIND_NAME, RELIABLE, type Kind } from "../svg/figures";
+import { ROW_TITLE_TRIGGER, SUBT_TRIGGER, titleTrigger } from "../svg/geom";
+import { cap, type DiagramProps } from "../../lib/scene";
+import { stagger } from "../../lib/kit";
+
+type Props = DiagramProps;
+const { caps, scene } = Astro.props;
+
+const W = 1040, H = 490;
+if (scene.views?.length) throw new Error("Peers: expected no views");
+const PANELS = scene.panels ?? [];
+if (PANELS.length !== 4) throw new Error("Peers: expected four panels");
+const [P1, P2, P3, P4] = PANELS.map((p) => (p.x0 + p.x1) / 2);
+
+const TITLE_Y = 30, SUB_Y = 50;
+const K = 0.7, HALF = 22 * K;
+const SK = 0.55, SHALF = 22 * SK;
+const fig = (k: Kind) => ({ ...FIG[k], ...RELIABLE });
+
+// the panel titles; the two long ones are in the 13px bold face so they fit a 260-wide panel. Term checks each one
+function title(slug: string, cx: number, long = false) {
+  const c = cap(caps, slug);
+  return { c, cx, cls: long ? "rt mid" : "subt", ...titleTrigger(c.translit, cx, TITLE_Y, long ? ROW_TITLE_TRIGGER : SUBT_TRIGGER) };
+}
+const aqran = title("aqran", P1);
+const mudabbaj = title("mudabbaj", P2);
+const akabir = title("akabir-an-asaghir", P3 - 10, true);
+const abna = title("abna-an-aba", P4, true);
+
+// ---- panel 1: peers ----
+const A = { shaykh: { x: P1, y: 108 }, left: { x: P1 - 50, y: 214 }, right: { x: P1 + 50, y: 214 } };
+// ---- panel 2: each from the other ----
+const B = { shaykh: { x: P2, y: 100 }, left: { x: P2 - 60, y: 190 }, right: { x: P2 + 60, y: 190 } };
+const RING = { cx: P2 - 30, cy: 272, outer: 40, inner: 20 };
+const DEB = { x: P2 - 70, top: 378, bottom: 440 };
+// ---- panel 3: three pairs, senior above junior ----
+const PAIRS: { x: number; senior: [Kind, string]; junior: [Kind, string] }[] = [
+  { x: P3 - 90, senior: ["later", "father"], junior: ["later", "son"] },
+  { x: P3, senior: ["sahabi", "Companion"], junior: ["tabii", "Successor"] },
+  { x: P3 + 90, senior: ["later", "shaykh"], junior: ["later", "student"] },
+];
+const SEN_Y = 122, JUN_Y = 226;
+// ---- panel 4: two readings of one family chain ----
+const MOON_Y = 92, MOON_K = 0.5, MOON_R = 24 * MOON_K;
+const FA = { x: P4 - 40, rows: [150, 214, 278], names: ["grandfather", "father", "narrator"] };
+const FB = { x: P4 + 40, rows: [150, 250, 314], names: [["the father's", "grandfather"], ["father"], ["narrator"]] };
+const KINDS: Kind[] = ["sahabi", "tabii", "later"];
+const STACK = { x: P4 - 104, y: 440, n: 14, gap: 16 };
+---
+<svg viewBox={`0 0 ${W} ${H}`} class="peers" role="group" aria-label="Who narrates from whom, in four panels; the senior stands higher and arrows run the way the report travels. Riwāyat al-aqrān: two peers, alike in age or in the shaykhs they took from, under one shaykh, and one narrates from the other. Mudabbaj: each of the two narrates from the other; every mudabbaj is a peers' narration, but not the reverse. A shaykh and his student who narrate from each other are, apparently, not mudabbaj but seniors from juniors. Riwāyat al-akābir ʿan al-aṣāghir: a father from his son, a Companion from a Successor, a shaykh from his student, against the usual way. Riwāyat al-abnāʾ ʿan al-ābāʾ: a narrator from his father from his grandfather, where his grandfather may be the narrator's or the father's; the longest run found is fourteen fathers.">
+  <Defs />
+  {PANELS.slice(1).map((p) => <line class="divider" x1={p.x0} x2={p.x0} y1="12" y2={H - 12} />)}
+
+  {/* ---- titles ---- */}
+  <TermTitle c={aqran.c} x={aqran.cx} y={TITLE_Y} cls={aqran.cls} hit={aqran.hit} info={aqran.info} />
+  <text class="lbl" x={P1} y={SUB_Y}>alike in age, or in shaykhs</text>
+  <TermTitle c={mudabbaj.c} x={mudabbaj.cx} y={TITLE_Y} cls={mudabbaj.cls} hit={mudabbaj.hit} info={mudabbaj.info} />
+  <text class="lbl" x={P2} y={SUB_Y}>each from the other</text>
+  <TermTitle c={akabir.c} x={akabir.cx} y={TITLE_Y} cls={akabir.cls} hit={akabir.hit} info={akabir.info} />
+  <text class="lbl" x={P3} y={SUB_Y}>the senior hears from the junior</text>
+  <TermTitle c={abna.c} x={abna.cx} y={TITLE_Y} cls={abna.cls} hit={abna.hit} info={abna.info} />
+  <text class="lbl" x={P4} y={SUB_Y}>from his father, from his grandfather</text>
+
+  {/* ---- panel 1: peers under one shaykh, one narrating from the other ---- */}
+  <Arrow x1={A.shaykh.x - 8} y1={A.shaykh.y + HALF + 18} x2={A.left.x + 6} y2={A.left.y - HALF - 4} />
+  <Arrow x1={A.shaykh.x + 8} y1={A.shaykh.y + HALF + 18} x2={A.right.x - 6} y2={A.right.y - HALF - 4} />
+  <Narrator x={A.shaykh.x} y={A.shaykh.y} k={K} {...fig("later")} label={KIND_NAME.later} />
+  <text class="nm" x={A.shaykh.x + 20} y={A.shaykh.y + 4}>a shaykh</text>
+  <Narrator x={A.left.x} y={A.left.y} k={K} {...fig("later")} label="peer" />
+  <Narrator x={A.right.x} y={A.right.y} k={K} {...fig("later")} label="peer" />
+  <Arrow x1={A.right.x - HALF - 4} y1={A.right.y} x2={A.left.x + HALF + 6} y2={A.left.y} />
+  <text class="lbl sm" x={P1} y={A.left.y - 10}>from his peer</text>
+  <Lifespan x0={34} x1={180} y={282} />
+  <Lifespan x0={44} x1={196} y={296} />
+  <text class="lbl" x={P1} y={326}>alike in age,</text>
+  <text class="lbl" x={P1} y={342}>or took from the same shaykhs</text>
+  <text class="lbl sm" x={P1} y={396}>a book on it:</text>
+  <text class="lbl sm" x={P1} y={410}>Abū al-Shaykh al-Iṣbahānī</text>
+
+  {/* ---- panel 2: each from the other ---- */}
+  <Arrow x1={B.shaykh.x - 8} y1={B.shaykh.y + HALF + 18} x2={B.left.x + 8} y2={B.left.y - HALF - 4} />
+  <Arrow x1={B.shaykh.x + 8} y1={B.shaykh.y + HALF + 18} x2={B.right.x - 8} y2={B.right.y - HALF - 4} />
+  <Narrator x={B.shaykh.x} y={B.shaykh.y} k={K} {...fig("later")} label={KIND_NAME.later} />
+  <Narrator x={B.left.x} y={B.left.y} k={K} {...fig("later")} label="peer" />
+  <Narrator x={B.right.x} y={B.right.y} k={K} {...fig("later")} label="peer" />
+  <Arrow x1={B.right.x - HALF - 4} y1={B.right.y - 6} x2={B.left.x + HALF + 6} y2={B.left.y - 6} />
+  <Arrow x1={B.left.x + HALF + 4} y1={B.left.y + 6} x2={B.right.x - HALF - 6} y2={B.right.y + 6} />
+  <g aria-hidden="true">
+    <circle class="ring" cx={RING.cx} cy={RING.cy} r={RING.outer} />
+    <circle class="ring in" cx={RING.cx} cy={RING.cy + RING.outer - RING.inner - 4} r={RING.inner} />
+  </g>
+  <text class="lbl sm" x={RING.cx} y={RING.cy - 20}>aqrān</text>
+  <text class="lbl sm" x={RING.cx} y={RING.cy + RING.outer - RING.inner}>mudabbaj</text>
+  <text class="lbl sm start" x={RING.cx + RING.outer + 8} y={RING.cy - 6}>every mudabbaj</text>
+  <text class="lbl sm start" x={RING.cx + RING.outer + 8} y={RING.cy + 8}>is aqrān, not</text>
+  <text class="lbl sm start" x={RING.cx + RING.outer + 8} y={RING.cy + 22}>the reverse</text>
+  <text class="lbl sm" x={P2} y={336}>named from the two cheeks: alike</text>
+  <text class="lbl sm" x={P2} y={350}>on both sides · a book: al-Dāraquṭnī</text>
+  {/* the debated case: a shaykh and his student, each from the other */}
+  <Arrow x1={DEB.x - 5} y1={DEB.top + SHALF + 4} x2={DEB.x - 5} y2={DEB.bottom - SHALF - 4} />
+  <Arrow x1={DEB.x + 5} y1={DEB.bottom - SHALF - 4} x2={DEB.x + 5} y2={DEB.top + SHALF + 4} />
+  <Narrator x={DEB.x} y={DEB.top} k={SK} {...fig("later")} />
+  <Narrator x={DEB.x} y={DEB.bottom} k={SK} {...fig("later")} />
+  <text class="lbl sm start" x={DEB.x + 22} y={DEB.top + 2}>a shaykh and his student,</text>
+  <text class="lbl sm start" x={DEB.x + 22} y={DEB.top + 16}>each from the other:</text>
+  <text class="lbl sm start" x={DEB.x + 22} y={DEB.top + 34}>mudabbaj? debated;</text>
+  <text class="lbl sm start" x={DEB.x + 22} y={DEB.top + 48}>apparently not: it is</text>
+  <text class="lbl sm start" x={DEB.x + 22} y={DEB.top + 62}>seniors from juniors →</text>
+
+  {/* ---- panel 3: the climbing arrow beside the usual falling one ---- */}
+  {PAIRS.map((p, i) => (
+    <>
+      <g class="usual" aria-hidden="true">
+        <Arrow x1={p.x - 7} y1={SEN_Y + HALF + 4} x2={p.x - 7} y2={JUN_Y - HALF - 4} />
+      </g>
+      <g class="m-enter" style={`--d:${stagger(i, { start: 0.4, step: 0.35 })};--from-xy:0 10px`}>
+        <Arrow x1={p.x + 7} y1={JUN_Y - HALF - 4} x2={p.x + 7} y2={SEN_Y + HALF + 4} />
+      </g>
+      <Narrator x={p.x} y={SEN_Y} k={K} {...fig(p.senior[0])} />
+      <Narrator x={p.x} y={JUN_Y} k={K} {...fig(p.junior[0])} />
+      <text class="nm mid" x={p.x} y={SEN_Y - HALF - 10}>{p.senior[1]}</text>
+      <text class="nm mid" x={p.x} y={JUN_Y + HALF + 18}>{p.junior[1]}</text>
+    </>
+  ))}
+  <text class="lbl" x={P3} y={290}>below him: younger, lower in rank,</text>
+  <text class="lbl" x={P3} y={306}>or met fewer shaykhs, or later</text>
+  <text class="lbl sm" x={P3} y={332}>faint: the usual way, and the common one</text>
+  <text class="lbl" x={P3} y={366}>it tells the ranks apart</text>
+  <text class="lbl" x={P3} y={382}>and puts people in their place</text>
+  <text class="lbl sm" x={P3} y={412}>al-Khaṭīb wrote on fathers from sons,</text>
+  <text class="lbl sm" x={P3} y={426}>and on Companions from Successors</text>
+
+  <text class="lbl sm" x={(PANELS[0].x0 + PANELS[2].x1) / 2} y={H - 18}>panels 1–3 are illustrations: the book names no example</text>
+
+  {/* ---- panel 4: one family chain, read two ways ---- */}
+  {[FA, FB].map((col) => (
+    <>
+      <Moon cx={col.x} cy={MOON_Y} k={MOON_K} />
+      <Arrow x1={col.x} y1={MOON_Y + MOON_R + 2} x2={col.x} y2={col.rows[0] - HALF - 3} />
+      {col.rows.slice(1).map((y, i) => <Arrow x1={col.x} y1={col.rows[i] + HALF + 2} x2={col.x} y2={y - HALF - 3} />)}
+      {col.rows.map((y, i) => <Narrator x={col.x} y={y} k={K} {...fig(KINDS[i])} />)}
+    </>
+  ))}
+  {FA.names.map((t, i) => <text class="lbl sm end" x={FA.x - HALF - 4} y={FA.rows[i] + 4}>{t}</text>)}
+  {FB.names.map((lines, i) => lines.map((t, j) => <text class="lbl sm start" x={FB.x + HALF + 4} y={FB.rows[i] + 4 + (j - (lines.length - 1) / 2) * 13}>{t}</text>))}
+  {/* reading (b): the father heard from his own grandfather, so a generation lies between them */}
+  <text class="lbl sm start" x={FB.x + HALF + 4} y={196}>one generation</text>
+  <text class="lbl sm start" x={FB.x + HALF + 4} y={209}>skipped</text>
+  <text class="lbl sm" x={FA.x} y={334}>“his” is the</text>
+  <text class="lbl sm" x={FA.x} y={348}>narrator's</text>
+  <text class="lbl sm" x={FB.x} y={356}>“his” is the</text>
+  <text class="lbl sm" x={FB.x} y={370}>father's</text>
+  <text class="lbl sm" x={P4} y={396}>al-ʿAlāʾī sorted them so;</text>
+  <text class="lbl sm" x={P4} y={410}>Ibn Ḥajar added many more</text>
+  <g class="m-enter" style={`--d:0.6s;--dur:1s`}>
+    <Beads x={STACK.x} y={STACK.y} n={STACK.n} gap={STACK.gap} dir="right" />
+  </g>
+  <text class="lbl sm" x={P4} y={STACK.y + 22}>fourteen fathers in a row:</text>
+  <text class="lbl sm" x={P4} y={STACK.y + 36}>the most Ibn Ḥajar found</text>
+</svg>
+<style>
+  /* the long titles are drawn by TermTitle, outside this component's scope */
+  .peers :global(.rt.mid){text-anchor:middle}
+  .usual{opacity:.4}
+  .ring{fill:none;stroke:var(--line);stroke-width:1.4}
+  .ring.in{fill:var(--gold-tint);stroke:var(--gold-a)}
+</style>

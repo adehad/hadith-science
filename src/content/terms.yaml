@@ -771,6 +771,7 @@
   def: "A chain with fewer narrators than other routes of the same hadith, prized as nearer the source and less open to error."
   section: "§5.45"
   division: lataif-al-isnad
+  scene: elevation
 - id: uluww-mutlaq
   translit: ʿUluww muṭlaq
   ar: عُلُوٌّ مُطْلَقٌ
@@ -778,6 +779,7 @@
   def: "Fewer narrators all the way to the Prophet ﷺ than another route of the same hadith."
   section: "§5.45"
   division: lataif-al-isnad
+  scene: elevation
 - id: uluww-nisbi
   translit: ʿUluww nisbī
   ar: عُلُوٌّ نِسْبِيٌّ
@@ -785,6 +787,7 @@
   def: "Fewer narrators up to a leading imam such as Mālik or al-Bukhārī, even if the chain beyond him is long."
   section: "§5.45"
   division: lataif-al-isnad
+  scene: elevation
 - id: muwafaqa
   translit: Muwāfaqa
   ar: مُوَافَقَةٌ
@@ -792,6 +795,7 @@
   def: "Reaching a collector's own teacher by a route that bypasses the collector, often with fewer links."
   section: "§5.46"
   division: lataif-al-isnad
+  scene: meeting
 - id: badal
   translit: Badal
   ar: بَدَلٌ
@@ -799,13 +803,15 @@
   def: "Reaching the teacher of a collector's teacher by another route, so a different link stands in for the usual one."
   section: "§5.46"
   division: lataif-al-isnad
+  scene: meeting
 - id: musawah
-  translit: Musāwāt
+  translit: Musāwāh
   ar: مُسَاوَاةٌ
   en: Equal count
   def: "Our chain to the Prophet ﷺ has as many links as a collector's own chain for that hadith."
   section: "§5.47"
   division: lataif-al-isnad
+  scene: meeting
 - id: musafaha
   translit: Muṣāfaḥa
   ar: مُصَافَحَةٌ
@@ -813,6 +819,7 @@
   def: "Our chain matches the count of a collector's student, as if we had met the collector and shaken his hand."
   section: "§5.47"
   division: lataif-al-isnad
+  scene: meeting
 - id: nuzul
   translit: Nuzūl
   ar: نُزُولٌ
@@ -820,6 +827,7 @@
   def: "The opposite of elevation: more narrators in the chain. Each kind of elevation has a matching kind of descent."
   section: "§5.47"
   division: lataif-al-isnad
+  scene: elevation
 - id: aqran
   translit: Riwāyat al-aqrān
   ar: رِوَايَةُ الْأَقْرَانِ
@@ -827,6 +835,7 @@
   def: "A narrator reports from a peer, someone close to him in age or in the teachers they share."
   section: "§5.48"
   division: lataif-al-isnad
+  scene: peers
 - id: mudabbaj
   translit: Mudabbaj
   ar: مُدَبَّجٌ
@@ -834,6 +843,7 @@
   def: "Two peers each narrate from the other. Every mudabbaj is a peers' narration, but not the reverse."
   section: "§5.48"
   division: lataif-al-isnad
+  scene: peers
 - id: akabir-an-asaghir
   translit: Riwāyat al-akābir ʿan al-aṣāghir
   ar: رِوَايَةُ الْأَكَابِرِ عَنِ الْأَصَاغِرِ
@@ -841,6 +851,7 @@
   def: "Someone narrates from a person younger, lower in rank or later to the teachers, like a father from his son or a Companion from a Successor."
   section: "§5.49"
   division: lataif-al-isnad
+  scene: peers
 - id: abna-an-aba
   translit: Riwāyat al-abnāʾ ʿan al-ābāʾ
   ar: رِوَايَةُ الْأَبْنَاءِ عَنِ الْآبَاءِ
@@ -848,6 +859,7 @@
   def: "A narrator reports from his father, often on from his grandfather; such family chains can run to fourteen fathers."
   section: "§5.50"
   division: lataif-al-isnad
+  scene: peers
 - id: sabiq-wa-lahiq
   translit: al-Sābiq wa-l-lāḥiq
   ar: السَّابِقُ وَاللَّاحِقُ
@@ -862,6 +874,7 @@
   def: "A narrator named only as, say, ‘Aḥmad’ when two of his teachers share that name. Harmless if both are reliable."
   section: "§5.52"
   division: lataif-al-isnad
+  scene: doubts
 - id: man-haddatha-wa-nasiya
   translit: Man ḥaddatha wa-nasiya
   ar: مَنْ حَدَّثَ وَنَسِيَ
@@ -869,6 +882,7 @@
   def: "A teacher denies a report passed on from him. A flat denial sinks the report without discrediting either; ‘I don't recall’ leaves it accepted."
   section: "§5.53"
   division: lataif-al-isnad
+  scene: doubts
 - id: musalsal
   translit: Musalsal
   ar: مُسَلْسَلٌ

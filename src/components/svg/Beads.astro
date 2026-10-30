@@ -1,0 +1,21 @@
+---
+// a run of n unnamed narrators drawn as small rings on a flowing line (phase 3 lataif design §11), so a count can
+// be seen without a crowd of figures. The first ring sits at (x, y); the rest follow every gap units, down the page
+// (the way a chain is narrated) or to the right. lib/kit.ts beadRun gives the ring centres and the edge points where
+// a scene's arrows meet the run; a lone ring is a plain <circle class="bead"> (svg.css). Decoration only: the labels
+// beside it carry the meaning.
+import { BEAD_R, beadRun, f } from "../../lib/kit";
+
+interface Props { x: number; y: number; n: number; gap: number; dir?: "down" | "right" }
+const { x, y, n, gap, dir = "down" } = Astro.props;
+const { rings } = beadRun(x, y, n, gap, dir);
+---
+<g class="beads" aria-hidden="true">
+  {rings.slice(1).map((b, i) => {
+    const a = rings[i];
+    return dir === "down"
+      ? <path class="flow" d={`M${a.x} ${f(a.y + BEAD_R)} V${f(b.y - BEAD_R)}`} />
+      : <path class="flow" d={`M${f(a.x + BEAD_R)} ${a.y} H${f(b.x - BEAD_R)}`} />;
+  })}
+  {rings.map((b) => <circle class="bead" cx={b.x} cy={b.y} r={BEAD_R} />)}
+</g>

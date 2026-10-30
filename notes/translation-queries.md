@@ -50,3 +50,11 @@ Page numbers are the PDF's, as the `=====PAGE` markers in `source/nuzhah.txt` nu
 | §5.41 (p.299) | "the dispersed and famous nature of this fact" | Likely istifāḍa and shuhra. The site says "widely known" | |
 | §5.42 (p.308) | "the condition of acknowledgement" | Possibly tamyīz, discernment. The site says "a further condition" | |
 | §5.44 (p.314) | "that which is in reality continuous [though looks otherwise] will also be included" | The bracket contradicts the line before. Likely "all the more so what is truly connected". The site leaves the bracket's sense out | |
+| §5.46 (p.321) | "eight [reporters] between him and Qutayba … seven [reporters] between him and Qutayba" | The count is between us and Qutayba. The site says "between us and Qutayba" | |
+| §5.47 (p.323) | "we have equalled al-Nasāʾī in terms of number, in exclusion to that specific isnād" | The sense is "without his particular chain". The site says "by a chain that is not his" | |
+| §5.49 (p.326) | "less than him in age, or in terms of [frequency of] meeting" | The bracket is the translator's. Likely "in meeting [the shaykhs]", i.e. later in the chain of teachers. The site says "or met fewer shaykhs, or later", with no visible bracket | |
+| §5.51 (p.332) | "one hundred and sixty years" | The translation's own death dates (500 and 650) are 150 years apart. Check the Arabic. The site gives no number | |
+| §5.51 (p.332) | "al-Silafī who was one of his shaykhs" | Whose shaykh? Possibly al-Burdānī was al-Silafī's, as in the next example, where al-Bukhārī hears from his own student. The site says only that both heard from al-Silafī | |
+| §5.51 (p.332) | "al-Salafī" / "al-Silafī"; "al-Burdānī" | The spelling varies. The site writes al-Silafī and al-Burdānī | |
+| §5.52 (p.337) | "Whosoever desires a comprehensive and accurate means … then muhmal [as a means] is required" | The sense seems to be that the muhmal is identified when the narrator is known to keep company with one of the two. The site leaves this out until a ruling | |
+| §5.52 (p.337) | "‘Muḥammad’ … of the people of ʿIrāq" | Does this describe Muḥammad, or the people he narrates from? The site names only the two candidates | |

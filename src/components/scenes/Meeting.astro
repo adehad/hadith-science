@@ -1,0 +1,150 @@
+---
+// "Where does our route meet theirs?" (phase 3 lataif design §3): the four kinds of relative elevation (§5.46–5.47)
+// as two cells, each its own 430x560 SVG in the .cells grid: side by side on desktop, one column in portrait.
+//   A  the book's Qutayba example: al-Bukhārī from Qutayba from Mālik. Through al-Bukhārī there are eight between us
+//      and Qutayba; through al-Sarrāj, seven: muwāfaqa, meeting al-Bukhārī at his shaykh. Another route reaches
+//      al-Qaʿnabī from Mālik, standing in Qutayba's place: badal. The book gives that route no count, so its elided line
+//      ends in a note, not an "us" chip whose height would read as a count.
+//   B  the book's al-Nasāʾī example: eleven between him and the Prophet ﷺ. Our route with eleven is level with him
+//      (musāwāh); a route level with his student is muṣāfaḥa, as if we had shaken his hand.
+// Height is nearness, as in "How near is the chain?": rows are level, and a route with fewer links ends higher. The
+// rings are drawn to exactly the book's counts (design q2: the counts are also written in words); the muṣāfaḥa column's
+// one ring more is the student's row, shown by height, not counted. No views (design §3.5).
+// Motion: the rings' lines flow; the "us" chips drop in once, top to bottom; the level tie draws in after them. The
+// resting style is the end state, so with motion.css stopping every animation the chips show and the tie is drawn.
+import Defs from "../svg/Defs.astro";
+import Moon from "../svg/Moon.astro";
+import Narrator from "../svg/Narrator.astro";
+import Arrow from "../svg/Arrow.astro";
+import Beads from "../svg/Beads.astro";
+import Chip from "../svg/Chip.astro";
+import Glyph from "../svg/Glyph.astro";
+import TermTitle from "../svg/TermTitle.astro";
+import { FIG, KIND_NAME, RELIABLE } from "../svg/figures";
+import { rowTrigger } from "../svg/geom";
+import { cap, type DiagramProps } from "../../lib/scene";
+import { CHIP_H, beadRun, chipWidth, stagger } from "../../lib/kit";
+
+type Props = DiagramProps;
+const { caps, scene } = Astro.props;
+if (scene.views?.length) throw new Error("Meeting: expected no views");
+if (scene.panels?.length) throw new Error("Meeting: a grid of cells, not panels");
+
+const CW = 430, CH = 560;
+const US_W = chipWidth("us");
+const fig = { ...FIG.later, ...RELIABLE };
+function row(slug: string, x: number, y: number) {
+  const c = cap(caps, slug);
+  return { c, x, y, ...rowTrigger(c.translit, x, y) };
+}
+
+// ---- cell A: rows every 30, the first under Qutayba (both routes take the same first step) ----
+const KA = 0.6, AHALF = 22 * KA;
+const RA = (i: number) => 190 + i * 30;
+const MALIK = { x: 215, y: 104 }, QUT = { x: 140, y: 160 }, QAN = { x: 320, y: 160 };
+const MOON_A = { x: 215, y: 72, k: 0.35 };
+// eight between us and Qutayba through al-Bukhārī (him and seven rings), seven through al-Sarrāj (him and six)
+const ROUTES_A = [
+  { x: 85, name: "al-Bukhārī", rings: 7, lines: ["eight between us", "and Qutayba"] },
+  { x: 195, name: "al-Sarrāj", rings: 6, lines: ["seven: one", "link fewer"] },
+];
+const usA = (r: (typeof ROUTES_A)[number]) => RA(r.rings + 2);
+const muwafaqa = row("muwafaqa", 222, usA(ROUTES_A[1]) + 4);
+const badal = row("badal", 300, QAN.y + 40);
+const QAN_END_Y = 330; // where al-Qaʿnabī's elided route stops, with its note under it
+
+// ---- cell B: rows every 28 from the first ring ----
+const RB = (i: number) => 118 + i * 28;
+const KB = 0.5, BHALF = 22 * KB;
+const MOON_B = { x: 215, y: 76, k: 0.5 };
+const COLS = { nas: 95, eq: 215, hand: 335 };
+const musawah = row("musawah", 236, RB(11) + 4);
+const musafaha = row("musafaha", 240, RB(12) + 4);
+// al-Nasāʾī's chain and our musāwāh route have eleven rings; the muṣāfaḥa route one more, the student's row
+const RUNS_B = { nas: beadRun(COLS.nas, RB(0), 11, 28), eq: beadRun(COLS.eq, RB(0), 11, 28), hand: beadRun(COLS.hand, RB(0), 12, 28) };
+---
+<div class="cells meeting">
+  <svg id="cell-shaykh" viewBox={`0 0 ${CW} ${CH}`} role="group" aria-label="Meeting a compiler's shaykh. al-Bukhārī reports a ḥadīth from Qutayba from Mālik. Through al-Bukhārī there are eight between us and Qutayba; through Abū al-ʿAbbās al-Sarrāj from Qutayba, seven, one link fewer: muwāfaqa, meeting al-Bukhārī at his own shaykh. By another route the same chain reaches al-Qaʿnabī from Mālik, in Qutayba's place: badal. Both names are mostly used when the route is also shorter, but are used without that too.">
+    <Defs />
+    <text class="subt" x={CW / 2} y="30">Meeting a compiler's shaykh</text>
+    <text class="lbl" x={CW / 2} y="50">al-Bukhārī, from Qutayba, from Mālik</text>
+    <g class="level" aria-hidden="true">
+      {Array.from({ length: 8 }, (_, i) => <line x1={30} x2={250} y1={RA(i + 2)} y2={RA(i + 2)} />)}
+    </g>
+    <Moon cx={MOON_A.x} cy={MOON_A.y} k={MOON_A.k} />
+    <Arrow x1={MALIK.x} y1={MOON_A.y + 24 * MOON_A.k + 2} x2={MALIK.x} y2={MALIK.y - AHALF - 4} variant="elided" />
+    <Narrator x={MALIK.x} y={MALIK.y} k={KA} {...fig} label={KIND_NAME.later} />
+    <text class="nm" x={MALIK.x + 18} y={MALIK.y + 4}>Mālik</text>
+    {[QUT, QAN].map((n) => <Arrow x1={MALIK.x + (n.x - MALIK.x) * 0.2} y1={MALIK.y + AHALF + 16} x2={n.x} y2={n.y - AHALF - 4} />)}
+    <Narrator x={QUT.x} y={QUT.y} k={KA} {...fig} />
+    <text class="nm end" x={QUT.x - 18} y={QUT.y + 4}>Qutayba</text>
+    <Narrator x={QAN.x} y={QAN.y} k={KA} {...fig} />
+    <text class="nm" x={QAN.x + 18} y={QAN.y + 4}>al-Qaʿnabī</text>
+    <TermTitle c={badal.c} x={badal.x} y={badal.y} cls="rt" hit={badal.hit} info={badal.info} />
+    <text class="lbl sm" x={QAN.x + 10} y={badal.y + 16}>in Qutayba's place</text>
+    <Arrow x1={QAN.x} y1={badal.y + 26} x2={QAN.x} y2={QAN_END_Y} variant="elided" />
+    <text class="lbl sm" x={QAN.x} y={QAN_END_Y + 18}>to us by another route:</text>
+    <text class="lbl sm" x={QAN.x} y={QAN_END_Y + 32}>no count given</text>
+    {ROUTES_A.map((r, i) => {
+      const uy = usA(r);
+      const run = beadRun(r.x, RA(2), r.rings, 30);
+      return (
+        <>
+          <Arrow x1={QUT.x + (r.x - QUT.x) * 0.3} y1={QUT.y + AHALF + 2} x2={r.x} y2={RA(1) - AHALF - 3} />
+          <Narrator x={r.x} y={RA(1)} k={KA} {...fig} />
+          <text class={i === 0 ? "nm end" : "nm"} x={i === 0 ? r.x - 18 : r.x + 18} y={RA(1) + 4}>{r.name}</text>
+          <Arrow x1={r.x} y1={RA(1) + AHALF + 2} x2={r.x} y2={run.start.y - 3} />
+          <Beads x={r.x} y={RA(2)} n={r.rings} gap={30} />
+          <Arrow x1={r.x} y1={run.end.y + 2} x2={r.x} y2={uy - CHIP_H / 2 - 3} />
+          <g class="m-enter" style={`--d:${stagger(1 - i, { start: 0.5, step: 0.4 })};--from-xy:0px -12px`}>
+            <Chip x={r.x - US_W / 2} y={uy} text="us" />
+          </g>
+          {r.lines.map((t, j) => <text class="lbl sm" x={r.x} y={uy + 26 + j * 14}>{t}</text>)}
+        </>
+      );
+    })}
+    <TermTitle c={muwafaqa.c} x={muwafaqa.x} y={muwafaqa.y} cls="rt" hit={muwafaqa.hit} info={muwafaqa.info} />
+    <text class="lbl sm" x={CW / 2 - 30} y={CH - 26}>each ring is a narrator · both names are mostly</text>
+    <text class="lbl sm" x={CW / 2 - 30} y={CH - 12}>said when the route is shorter, but not only then</text>
+  </svg>
+
+  <svg id="cell-count" viewBox={`0 0 ${CW} ${CH}`} role="group" aria-label="Matching a compiler's count. al-Nasāʾī reports a ḥadīth with eleven people between him and the Prophet ﷺ. The same ḥadīth reaches us by another chain with eleven between us and the Prophet ﷺ, level with al-Nasāʾī: musāwāh. A route level with al-Nasāʾī's student is muṣāfaḥa: it is as if we had met al-Nasāʾī and shaken his hand.">
+    <text class="subt" x={CW / 2} y="30">Matching a compiler's count</text>
+    <text class="lbl" x={CW / 2} y="50">al-Nasāʾī: eleven between him and the Prophet ﷺ</text>
+    <g class="level" aria-hidden="true">
+      {Array.from({ length: 13 }, (_, i) => <line x1={30} x2={400} y1={RB(i)} y2={RB(i)} />)}
+    </g>
+    <Moon cx={MOON_B.x} cy={MOON_B.y} k={MOON_B.k} />
+    {Object.values(RUNS_B).map((run) => <Arrow x1={MOON_B.x + (run.start.x - MOON_B.x) * 0.15} y1={MOON_B.y + 24 * MOON_B.k + 2} x2={run.start.x} y2={run.start.y - 3} />)}
+    {/* al-Nasāʾī's own chain: eleven rings, him, his student */}
+    <Beads x={COLS.nas} y={RB(0)} n={11} gap={28} />
+    <Arrow x1={COLS.nas} y1={RUNS_B.nas.end.y + 2} x2={COLS.nas} y2={RB(11) - BHALF - 3} />
+    <Narrator x={COLS.nas} y={RB(11)} k={KB} {...fig} />
+    <text class="nm end" x={COLS.nas - 16} y={RB(11) + 4}>al-Nasāʾī</text>
+    <Narrator x={COLS.nas} y={RB(12)} k={KB} {...fig} />
+    <text class="nm end" x={COLS.nas - 16} y={RB(12) + 4}>his student</text>
+    {/* our two routes, neither through al-Nasāʾī */}
+    <Beads x={COLS.eq} y={RB(0)} n={11} gap={28} />
+    <Arrow x1={COLS.eq} y1={RUNS_B.eq.end.y + 2} x2={COLS.eq} y2={RB(11) - CHIP_H / 2 - 3} />
+    <Beads x={COLS.hand} y={RB(0)} n={12} gap={28} />
+    <Arrow x1={COLS.hand} y1={RUNS_B.hand.end.y + 2} x2={COLS.hand} y2={RB(12) - CHIP_H / 2 - 3} />
+    <g class="m-enter" style={`--d:${stagger(0, { start: 0.5, step: 0.4 })};--from-xy:0px -12px`}>
+      <Chip x={COLS.eq - US_W / 2} y={RB(11)} text="us" />
+    </g>
+    <g class="m-enter" style={`--d:${stagger(1, { start: 0.5, step: 0.4 })};--from-xy:0px -12px`}>
+      <Chip x={COLS.hand - US_W / 2} y={RB(12)} text="us" />
+    </g>
+    {/* level with al-Nasāʾī */}
+    <path class="tie m-draw" pathLength="1" style="--d:1.4s" d={`M${COLS.nas + BHALF + 4} ${RB(11)} H${COLS.eq - US_W / 2 - 4}`} />
+    <TermTitle c={musawah.c} x={musawah.x} y={musawah.y} cls="rt" hit={musawah.hit} info={musawah.info} />
+    <TermTitle c={musafaha.c} x={musafaha.x} y={musafaha.y} cls="rt" hit={musafaha.hit} info={musafaha.info} />
+    <text class="lbl sm" x={CW / 2} y={RB(12) + 34}>our second route is level with his student</text>
+    <Glyph kind="handshake" cx={96} cy={RB(12) + 66} r={12} />
+    <text class="lbl start" x={116} y={RB(12) + 62}>as if we had met al-Nasāʾī</text>
+    <text class="lbl start" x={116} y={RB(12) + 78}>and shaken his hand</text>
+  </svg>
+</div>
+<style>
+  .meeting :global(.nm.end){text-anchor:end}
+  .tie{fill:none;stroke:var(--gold-a);stroke-width:1.6;stroke-dasharray:1}
+</style>

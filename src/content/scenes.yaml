@@ -449,6 +449,113 @@
     - title: al-Jūzajānī
       section: §5.37
       note: "Most accept an innovator who does not call others to his belief, but if he narrates what strengthens it, the preferred view of the majority rejects it. al-Jūzajānī, the shaykh of Abū Dāwūd, made this clear: describing a narrator who turns away from the truth, he said that if such a man is truthful and his ḥadīth is not munkar, nothing stops us accepting it, so long as he does not openly call to his belief. Ibn Ḥajar calls this strong: an innovator's report is rejected when its text seems to support his belief, even if he does not call to it openly."
+- id: elevation
+  division: lataif-al-isnad
+  moons: [0]
+  order: 1
+  title: How near is the chain?
+  eyebrow: Features of the chain, elevation and descent · §5.45, §5.47
+  lede: A chain with fewer narrators than another route of the same ḥadīth is elevated; one with more is descended. Every narrator might slip, so fewer links mean fewer chances of error, and scholars sought elevation keenly. It is counted either to the Prophet ﷺ or to a great imam.
+  source: §5.45 ʿUluww, absolute and relative; §5.47 Nuzūl
+  diagram: Elevation
+  width: 780
+  captions:
+    - term: uluww
+      note: "A chain is elevated when its narrators are fewer than in another chain of the same ḥadīth. The early scholars sought it so hard that it kept some from weightier matters. It is sought because it is nearer to soundness and to fewer mistakes: every narrator in a chain might err, so the longer the chain the more room for error, and the shorter the less (§5.45)."
+    - term: uluww-mutlaq
+      note: "Absolute elevation: the shorter chain reaches the Prophet ﷺ himself with fewer narrators than another chain of the same ḥadīth. If that short chain is also sound, it is the most desired of all. If it is not, it still has the form of elevation, so long as it is not forged, since a forged chain is as if it did not exist (§5.45)."
+    - term: uluww-nisbi
+      note: "Relative elevation: the narrators are fewer up to one of the great imams of ḥadīth, men known for memory, accuracy and writings, such as Shuʿba, Mālik, al-Thawrī, al-Shāfiʿī, al-Bukhārī and Muslim, even if the chain from that imam to its end is long. Muwāfaqa, badal, musāwāh and muṣāfaḥa are kinds of it (§5.45–5.47)."
+    - term: nuzul
+      note: "Descent, the opposite of elevation: more narrators in the chain. Each kind of elevation has its own opposite kind of descent, against those who think it has none. A descended chain is the better one when it has what the elevated lacks: more authoritative men, sharper memory, more learning in law, or a plainer connection (§5.45, §5.47)."
+  views:
+    - id: ibn-hajar
+      label: "Ibn Ḥajar: the weightier chain"
+      scholars: §5.45
+      note: "Elevation is sought because it is nearer to soundness. But when a longer chain has something the shorter lacks, such as more authoritative narrators, sharper memory, more learning in law or a plainer connection, there is no hesitation in calling the longer better."
+    - id: reward
+      label: "Some: always the longer"
+      scholars: Those who prefer it, §5.45
+      note: "Some prefer the longer chain in general, since studying more narrators takes more toil and so earns more reward. Ibn Ḥajar answers that this prefers it for a reason foreign to the matter, with no bearing on whether the ḥadīth is sound or weak."
+  panels:
+    - { id: absolute, label: Nearer the Prophet ﷺ, x0: 0, x1: 260 }
+    - { id: relative, label: Nearer a great imam, x0: 260, x1: 520 }
+    - { id: better, label: Is shorter always better?, x0: 520, x1: 780 }
+- id: meeting
+  division: lataif-al-isnad
+  moons: [0]
+  order: 2
+  title: Where does our route meet theirs?
+  eyebrow: Features of the chain, kinds of relative elevation · §5.46–5.47
+  lede: A later narrator compares his own route with a great compiler's. He may reach the compiler's shaykh, or that shaykh's shaykh, without passing through the compiler; or his count of narrators may equal the compiler's, or the compiler's student's.
+  source: §5.46 Muwāfaqa and badal, §5.47 Musāwāh and muṣāfaḥa
+  diagram: Meeting
+  width: 860
+  captions:
+    - term: muwafaqa
+      note: "A kind of relative elevation: reaching a compiler's shaykh by a route that does not pass through the compiler. al-Bukhārī reports a ḥadīth from Qutayba from Mālik. Through al-Bukhārī there are eight between us and Qutayba; through Abū al-ʿAbbās al-Sarrāj from Qutayba, seven. So we meet al-Bukhārī at his own shaykh, by a shorter route (§5.46)."
+    - term: badal
+      note: "Also a kind of relative elevation: reaching the shaykh of the compiler's shaykh in the same way. In the book's example the same chain comes by another route to al-Qaʿnabī from Mālik, so al-Qaʿnabī stands in Qutayba's place. Both names are mostly used when the route is also shorter, but are used without that too (§5.46)."
+    - term: musawah
+      note: "A kind of relative elevation: the count of narrators from us to the end of our chain equals that in a compiler's chain. al-Nasāʾī reports a ḥadīth with eleven people between him and the Prophet ﷺ; the same ḥadīth reaches us by another chain with eleven between us and him. So we equal al-Nasāʾī in number, by a chain that is not his (§5.47)."
+    - term: musafaha
+      note: "A kind of relative elevation: our count equals that of the compiler's student. It is named after the handshake that two people usually exchange when they meet: in this form we have all but met al-Nasāʾī, so it is as if we had shaken his hand (§5.47)."
+- id: peers
+  division: lataif-al-isnad
+  moons: [1]
+  order: 3
+  title: Who narrates from whom?
+  eyebrow: Features of the chain, who narrates from whom · §5.48–5.50
+  lede: Usually a younger man narrates from an older one. But peers narrate from each other, sometimes both ways; a senior may narrate from a junior; and a son may narrate from his father and grandfather, generation after generation.
+  source: §5.48 Aqrān and mudabbaj, §5.49 Seniors from juniors, §5.50 Sons from fathers
+  diagram: Peers
+  width: 1040
+  captions:
+    - term: aqran
+      note: "A narrator reports from someone like himself in a matter of narration, such as age, or taking from the same shaykhs. It is named after the aqrān, peers, because the narrator is his like. Abū al-Shaykh al-Iṣbahānī wrote a book on it (§5.48)."
+    - term: mudabbaj
+      note: "Each of two peers reports from the other. Every mudabbaj is a peers' narration, but not the reverse. When a shaykh and his student report from each other, it is debated; apparently it is not mudabbaj but seniors from juniors, since the name comes from the two cheeks of the face, alike on both sides. al-Dāraquṭnī wrote a book on it (§5.48)."
+    - term: akabir-an-asaghir
+      note: "A narrator reports from someone below him: younger, lower in rank, or one who met fewer shaykhs, or met them later. It includes fathers from sons, Companions from Successors and a shaykh from his student. The reverse is common, being the usual way. Knowing it tells the ranks apart and puts people in their place. al-Khaṭīb wrote on fathers from sons and on Companions from Successors (§5.49)."
+    - term: abna-an-aba
+      note: "The opposite case: a narrator reports from his father, from his grandfather. al-ʿAlāʾī compiled a large volume on those who did so up to the Prophet ﷺ, sorting them by whether “his” in “from his grandfather” is the narrator or his father. Ibn Ḥajar summarised it and added many more. The longest run from father to son he found was fourteen fathers (§5.50)."
+  panels:
+    - { id: peers, label: Peers, x0: 0, x1: 260 }
+    - { id: mutual, label: Each from the other, x0: 260, x1: 520 }
+    - { id: seniors, label: Senior from junior, x0: 520, x1: 780 }
+    - { id: fathers, label: Son from father, x0: 780, x1: 1040 }
+- id: doubts
+  division: lataif-al-isnad
+  moons: [2]
+  order: 5
+  title: Does the doubt harm it?
+  eyebrow: Features of the chain, doubts about the shaykh · §5.52–5.53
+  lede: Two doubts can touch the link between a narrator and his shaykh. The shaykh's name may fit two men, or the shaykh himself may deny the report. Whether the report survives depends on the men, and on what exactly the shaykh says.
+  source: §5.52 Muhmal, §5.53 Man ḥaddatha wa-nasiya
+  diagram: Doubts
+  width: 780
+  captions:
+    - term: muhmal
+      note: "A narrator reports from two men who share a name, a father's or grandfather's name, or a nisba, and nothing tells them apart. If both are reliable, it does no harm. al-Bukhārī reports from an “Aḥmad”, with no more said, from Ibn Wahb: Aḥmad ibn Ṣāliḥ or Aḥmad ibn ʿĪsā. When the two can't be told apart, scholars turn to outside signs and the weight of evidence (§5.52)."
+    - term: man-haddatha-wa-nasiya
+      note: "A shaykh denies a report passed on from him. If he denies it outright, saying he lied or that he did not report it, one of the two has lied, though we can't say which; the report is rejected, but neither man is discredited by it. If he says only that he does not remember it, the report is accepted on the most correct opinion, since he may have forgotten (§5.53)."
+  views:
+    - id: most-correct
+      label: "Ibn Ḥajar: accepted"
+      scholars: The most correct opinion, §5.53
+      note: "When the shaykh says only that he does not remember, the report is accepted, since he may have forgotten. The student's trustworthiness means he is truthful, and the shaykh's not knowing does not cancel that: affirming comes before denying. al-Dāraquṭnī's book on those who narrated and forgot supports this."
+    - id: not-accepted
+      label: "Some: not accepted"
+      scholars: "“It is also said”, §5.53"
+      note: "Some say it is not accepted: the student is the periphery and the shaykh the core, and as the periphery follows the core in affirming a report, so it should in denying it, as with a witness to a witness. Ibn Ḥajar answers that the cases differ: a witness's witness is not heard when the first witness can testify, while narration is."
+  panels:
+    - { id: muhmal, label: One name, two men, x0: 0, x1: 260 }
+    - { id: denied, label: He denies it, x0: 260, x1: 520 }
+    - { id: forgot, label: He does not recall, x0: 520, x1: 780 }
+  extra:
+    - title: The Suhayl case
+      section: §5.53
+      note: "al-Dāraquṭnī wrote a book on those who narrated and forgot, with many cases that support accepting the report: narrators who no longer recalled a ḥadīth, and came to narrate it from those they had told it to. So Suhayl ibn Abī Ṣāliḥ had a report from his father, from Abū Hurayra, in the story of the testimony and the oath. al-Darāwardī heard it from Rabīʿa, from Suhayl; when he asked Suhayl, Suhayl did not know it, and was told that Rabīʿa had it from him. Afterwards Suhayl would say that Rabīʿa informed him that he had told it to him, from his father."
 - id: delivery
   division: siyagh-al-ada
   moons: [0, 1, 2]

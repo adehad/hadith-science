@@ -6,12 +6,13 @@
 // coin: a disc with an inner ring, for the money-changer (phase 3 al-Mardūd design §6); dashed draws a false one.
 // scissors: a pair pointing down, closed, for cutting a text short (al-Mardūd design §8). Each half (handle ring and
 // blade) is a .sblade group pivoting on the screw, so a scene can open and close them with a rotation.
+// handshake: two forearms meeting in a clasp, for muṣāfaḥa (phase 3 lataif design §11).
 // The tick is a .tick path and the cross an .xmark path, each with pathLength 1. With animate, the tick and cross
 // draw in (motion.css .m-draw) and each scissor half comes in (.m-enter, from the --from-r the scene sets on it),
 // timed by the --d and --dur the scene sets on a wrapping group.
 import { f } from "./geom";
 
-interface Props { kind: "memory" | "book" | "check" | "cross" | "lens" | "pause" | "text" | "companion" | "clock" | "coin" | "scissors"; cx: number; cy: number; r?: number; dashed?: boolean; animate?: boolean }
+interface Props { kind: "memory" | "book" | "check" | "cross" | "lens" | "pause" | "text" | "companion" | "clock" | "coin" | "scissors" | "handshake"; cx: number; cy: number; r?: number; dashed?: boolean; animate?: boolean }
 const { kind, cx, cy, r = 7, dashed = false, animate = false } = Astro.props;
 const p = (dx: number, dy: number) => `${f(cx + dx * r)} ${f(cy + dy * r)}`;
 ---
@@ -63,6 +64,15 @@ const p = (dx: number, dy: number) => `${f(cx + dx * r)} ${f(cy + dy * r)}`;
     <>
       <circle class="gring" cx={cx} cy={cy} r={f(r * 0.95)} />
       <path class="gline" d={`M${p(0, -0.6)} L${p(0, 0)} L${p(0.45, 0.25)}`} />
+    </>
+  )}
+  {kind === "handshake" && (
+    <>
+      {/* two forearms, each with a cuff, rising to the clasp */}
+      <path class="gline" d={`M${p(-1.1, 0.35)} L${p(-0.5, -0.05)} M${p(-1.1, 0.85)} L${p(-0.5, 0.45)} M${p(-0.82, 0.16)} L${p(-0.82, 0.66)} M${p(1.1, 0.35)} L${p(0.5, -0.05)} M${p(1.1, 0.85)} L${p(0.5, 0.45)} M${p(0.82, 0.16)} L${p(0.82, 0.66)}`} />
+      {/* the joined band of the two hands, with a thumb over it and the fingers' lines */}
+      <rect class="gline" x={f(cx - 0.5 * r)} y={f(cy - 0.12 * r)} width={f(r)} height={f(0.62 * r)} rx={f(0.22 * r)} />
+      <path class="gline" d={`M${p(-0.32, -0.12)} Q${p(-0.05, -0.42)} ${p(0.22, -0.12)} M${p(-0.15, -0.12)} L${p(-0.15, 0.5)} M${p(0.12, -0.12)} L${p(0.12, 0.5)}`} />
     </>
   )}
   {kind === "scissors" && (
