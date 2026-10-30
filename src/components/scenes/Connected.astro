@@ -1,0 +1,136 @@
+---
+// "Does it look connected?" (phase 3 Muntahā al-isnād design §5): the musnad report (§5.44). Five chains, each with a
+// verdict pill, in one 860-wide row that carousels in three panels, grouped as the owner's p.314 note groups them:
+//   1  looks connected: a chain that is connected, and one with a hidden gap (a mudallis's ʿan) that still looks it
+//   2  a gap shows: a Successor raising it (mursal), and a narrator below him raising it (muʿḍal or muʿallaq)
+//   3  stops at a Companion: connected, but not raised
+// The "Other views" switch (§5.44) changes only the pills: al-Khaṭīb calls a connected mawqūf musnad too (rarely),
+// and Ibn ʿAbd al-Barr calls any raised report musnad, which Ibn Ḥajar calls far-fetched.
+// No Arabic report wording: the delivery word ʿan is in transliteration.
+// Motion: the arrows flow, the visible ghosts blink (the hidden one doesn't), and the pills come in one after another,
+// once. The resting style is the end state, so with motion.css stopping every animation the pills show.
+import Defs from "../svg/Defs.astro";
+import Moon from "../svg/Moon.astro";
+import Narrator from "../svg/Narrator.astro";
+import Arrow from "../svg/Arrow.astro";
+import Chip from "../svg/Chip.astro";
+import Pill from "../svg/Pill.astro";
+import ViewTag from "../svg/ViewTag.astro";
+import TermTitle from "../svg/TermTitle.astro";
+import XLink from "../svg/XLink.astro";
+import { FIG, KIND_NAME, RELIABLE, type Kind } from "../svg/figures";
+import { SUBT_TRIGGER, f, titleTrigger } from "../svg/geom";
+import { cap, type DiagramProps } from "../../lib/scene";
+import { chipWidth, stagger } from "../../lib/kit";
+
+type Props = DiagramProps;
+const { caps, scene } = Astro.props;
+const VIEW_IDS = ["ibn-hajar", "khatib", "ibn-abd-al-barr"] as const;
+type View = (typeof VIEW_IDS)[number];
+if ((scene.views ?? []).map((v) => v.id).join() !== VIEW_IDS.join()) throw new Error(`Connected: expected views ${VIEW_IDS.join(", ")}`);
+if ((scene.panels ?? []).length !== 3) throw new Error("Connected: expected three panels");
+const DEF: View = VIEW_IDS[0];
+
+const W = 860, H = 510;
+const TITLE_Y = 30;
+const musnad = (() => {
+  const c = cap(caps, "musnad");
+  return { c, ...titleTrigger(c.translit, 172, TITLE_Y, { ...SUBT_TRIGGER, extra: 4 }) };
+})();
+
+const MOON_Y = 92, MOON_K = 0.45, MOON_R = 24 * MOON_K;
+const ROWS = [152, 212, 272];
+const COLL_Y = 330, PILL_Y = 374;
+const K = 0.7, HALF = 22 * K;
+
+// a verdict in each view: the pill's state and text, and an optional attribution tag under it
+type Verdict = { state: "accept" | "reject"; text: string; tag?: string } | { state: "none"; text: string; tag?: undefined };
+type Col = { cx: number; moon: boolean; rows: (Kind | null)[]; lines: string[]; verdict: Record<View, Verdict> };
+const MUSNAD: Verdict = { state: "accept", text: "musnad" };
+// §5.44 gives only Ibn Ḥajar's word on a hidden gap, so the other views give that chain no verdict
+const SILENT: Verdict = { state: "none", text: "the book doesn't say" };
+const COLS: Col[] = [
+  { cx: 86, moon: true, rows: ["sahabi", "tabii", "later"], lines: ["connected,", "and looks it"], verdict: { "ibn-hajar": MUSNAD, khatib: MUSNAD, "ibn-abd-al-barr": MUSNAD } },
+  { cx: 258, moon: true, rows: ["sahabi", "tabii", "mudallis"], lines: ["a hidden gap:", "it still looks connected"], verdict: { "ibn-hajar": MUSNAD, khatib: SILENT, "ibn-abd-al-barr": SILENT } },
+  { cx: 430, moon: true, rows: ["ghost", "tabii", "later"], lines: ["a Successor", "raises it"], verdict: { "ibn-hajar": { state: "reject", text: "mursal" }, khatib: { state: "reject", text: "mursal" }, "ibn-abd-al-barr": { ...MUSNAD, tag: "far-fetched" } } },
+  { cx: 602, moon: true, rows: ["ghost", "ghost", "later"], lines: ["one below him", "raises it"], verdict: { "ibn-hajar": { state: "reject", text: "muʿḍal or muʿallaq" }, khatib: { state: "reject", text: "muʿḍal or muʿallaq" }, "ibn-abd-al-barr": { ...MUSNAD, tag: "far-fetched" } } },
+  { cx: 774, moon: false, rows: ["sahabi", "tabii", "later"], lines: ["connected,", "but not raised"], verdict: { "ibn-hajar": { state: "reject", text: "mawqūf, not musnad" }, khatib: { ...MUSNAD, tag: "rarely used" }, "ibn-abd-al-barr": { state: "reject", text: "mawqūf, not musnad" } } },
+];
+
+const cols = COLS.map((col, i) => {
+  // the arrows: from the moon (or the top figure) down, each figure from the last one that isn't a ghost
+  const arrows: { x1: number; y1: number; x2: number; y2: number; variant: "flow" | "skip"; bend: number }[] = [];
+  let prevY = col.moon ? MOON_Y : -1, fromMoon = col.moon, jumped = 0;
+  col.rows.forEach((kind, r) => {
+    if (kind === "ghost") { jumped++; return; }
+    if (prevY >= 0) {
+      const from = fromMoon ? MOON_Y + MOON_R + 3 : prevY + HALF + (jumped ? 20 : 4);
+      arrows.push(jumped
+        ? { x1: col.cx - 4, y1: from, x2: col.cx - 4, y2: ROWS[r] - HALF - 4, variant: "skip", bend: -34 - jumped * 16 }
+        : { x1: col.cx, y1: from, x2: col.cx, y2: ROWS[r] - HALF - 4, variant: "flow", bend: 0 });
+    }
+    prevY = ROWS[r]; fromMoon = false; jumped = 0;
+  });
+  arrows.push({ x1: col.cx, y1: prevY + HALF + 18, x2: col.cx, y2: COLL_Y - 14, variant: "flow", bend: 0 });
+  // one pill group per distinct verdict, shown in the views that give it
+  const groups = new Map<string, { v: Verdict; views: View[] }>();
+  for (const view of VIEW_IDS) {
+    const v = col.verdict[view];
+    const key = `${v.state}|${v.text}|${v.tag ?? ""}`;
+    if (!groups.has(key)) groups.set(key, { v, views: [] });
+    groups.get(key)!.views.push(view);
+  }
+  return { ...col, arrows, groups: [...groups.values()], d: stagger(i, { start: 0.6, step: 0.2 }) };
+});
+
+const COLL = "collector";
+const collW = chipWidth(COLL);
+---
+<svg viewBox={`0 0 ${W} ${H}`} class="connected-scene" role="group" aria-label="Five chains, each with its verdict. A connected chain from a Companion to the Prophet ﷺ is musnad. For Ibn Ḥajar, so is one with a hidden gap, a concealer's ʿan, since it still looks connected; the book gives no other view on it. A chain where a Successor raises the report straight to the Prophet ﷺ is mursal; one where a narrator below him raises it is muʿḍal or muʿallaq. A connected chain that stops at a Companion is mawqūf, not musnad. For al-Khaṭīb, a connected mawqūf is musnad too, though rarely so called; for Ibn ʿAbd al-Barr, any raised report is musnad, connected or not, which Ibn Ḥajar calls far-fetched.">
+  <Defs />
+  <line class="divider" x1="344" x2="344" y1="12" y2={H - 12} />
+  <line class="divider" x1="688" x2="688" y1="12" y2={H - 12} />
+
+  <TermTitle c={musnad.c} x={172} y={TITLE_Y} cls="subt" hit={musnad.hit} info={musnad.info} />
+  <text class="lbl sm" x="172" y="50">raised by a Companion, and looks connected</text>
+  <text class="colhead" x="516" y={TITLE_Y}>A gap shows</text>
+  <text class="colhead" x="774" y={TITLE_Y}>Stops at a Companion</text>
+
+  {/* the top of the last chain: where it ends */}
+  <rect class="end" x={774 - 24} y={ROWS[0] - 25} width="48" height="42" rx="9" />
+  <text class="lbl sm" x="774" y={MOON_Y + 4}>not raised</text>
+
+  {cols.map((c) => (
+    <>
+      {c.arrows.map((a) => <Arrow x1={a.x1} y1={a.y1} x2={a.x2} y2={a.y2} bend={a.bend} variant={a.variant} />)}
+      {c.moon && <Moon cx={c.cx} cy={MOON_Y} k={MOON_K} />}
+      {c.rows.map((kind, r) => kind && (
+        <Narrator x={c.cx} y={ROWS[r]} k={K} {...FIG[kind]} {...(kind === "ghost" || kind === "mudallis" ? {} : RELIABLE)} label={KIND_NAME[kind]} />
+      ))}
+      <Chip x={f(c.cx - collW / 2)} y={COLL_Y} text={COLL} />
+      <g class="verdict m-enter" style={`--d:${c.d}`}>
+      {c.groups.map((g) => (
+        <g class:list={[{ off: !g.views.includes(DEF) }]} data-view-show={g.views.join(" ")}>
+          {g.v.state === "none" ? <text class="lbl sm" x={c.cx} y={PILL_Y + 4}>{g.v.text}</text> : <Pill x={c.cx} y={PILL_Y} state={g.v.state} text={g.v.text} />}
+          {g.v.tag && <ViewTag cx={c.cx} y={PILL_Y + 13} w={96} text={g.v.tag} dashed />}
+        </g>
+      ))}
+      </g>
+      {c.lines.map((t, j) => <text class="lbl sm" x={c.cx} y={430 + j * 14}>{t}</text>)}
+    </>
+  ))}
+
+  {/* the hidden gap: a faint ghost beside the arrow into the concealer, still; and what he says */}
+  <g class="hid" aria-hidden="true"><Narrator x={286} y={242} k={0.5} {...FIG.ghost} /></g>
+  <text class="lbl sm start" x="276" y={ROWS[2] + 4}>ʿan…</text>
+
+  <XLink to="al-mardud/hidden" text="Did he hear it from him?" x={258} y={474} anchor="middle" />
+  <XLink to="al-mardud/breaks#mursal" text="Where does the chain break?" x={516} y={474} anchor="middle" />
+  <text class="lbl sm" x="172" y="496">al-Ḥākim's definition agrees</text>
+</svg>
+<style>
+  .end{fill:var(--halo);stroke:var(--halo-edge);stroke-width:1}
+  .hid{opacity:.4}
+  .hid :global(.ghost){animation:none}
+  .verdict{--dur:.3s}
+</style>

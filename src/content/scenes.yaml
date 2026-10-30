@@ -819,3 +819,42 @@
     - title: The Night of Ascension
       section: §5.42
       note: "If it were proven that all the people of the earth were shown to him on that night, the mukhaḍramūn would count among those who believed in him in his lifetime, since he saw them."
+- id: connected
+  division: muntaha-al-isnad
+  moons: [3]
+  order: 4
+  title: Does it look connected?
+  eyebrow: The musnad report · §5.44
+  lede: When a ḥadīth master calls a report musnad, he means a Companion raised it to the Prophet ﷺ through a chain that looks connected. A hidden gap doesn't stop it being musnad; a gap that shows, or a chain that stops short of him, does. Two other scholars used the word differently.
+  source: §5.44 Musnad
+  diagram: Connected
+  width: 860
+  captions:
+    - term: musnad
+      note: "As a ḥadīth master says “a musnad ḥadīth”: a report a Companion raises to the Prophet ﷺ by a chain that looks connected. One a Successor raises is mursal; one raised from below him, muʿḍal or muʿallaq. A hidden break, like a mudallis's ʿan or a contemporary not known to have met, doesn't undo it: the imams compiled musnads of such chains. al-Ḥākim agrees (§5.44)."
+  views:
+    - id: ibn-hajar
+      label: "Ibn Ḥajar: raised, and looks connected"
+      scholars: §5.44; with al-Ḥākim
+      note: "A musnad is raised by a Companion to the Prophet ﷺ through a chain that looks connected. A report connected only as far as a Companion is not musnad, and nor is a raised report whose gap shows."
+    - id: khatib
+      label: "al-Khaṭīb: connected"
+      scholars: al-Khaṭīb al-Baghdādī, §5.44
+      note: "Musnad means connected. So a mawqūf with a connected chain is musnad too, though al-Khaṭīb says the usage is rare."
+    - id: ibn-abd-al-barr
+      label: "Ibn ʿAbd al-Barr: raised"
+      scholars: Ibn ʿAbd al-Barr, §5.44
+      note: "Musnad means marfūʿ, whether or not the chain is connected, so the mursal, the muʿḍal and the munqaṭiʿ would be musnad when their text is raised. Ibn Ḥajar calls this far-fetched, and says no one else holds it."
+  panels:
+    - id: looks-connected
+      label: Looks connected
+      x0: 0
+      x1: 344
+    - id: gap-shows
+      label: A gap shows
+      x0: 344
+      x1: 688
+    - id: stops
+      label: Stops at a Companion
+      x0: 688
+      x1: 860
