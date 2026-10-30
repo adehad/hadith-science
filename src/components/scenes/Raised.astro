@@ -1,0 +1,161 @@
+---
+// "Is it from the Prophet ﷺ?" (phase 3 Muntahā al-isnād design §3): what counts as raised to him (§5.40). Two cells,
+// each its own 430x520 SVG in an HTML grid (the Report pattern): side by side on desktop, one column in portrait.
+//   A  the book's table: his sayings, acts and silent approval, each said outright (a flow arrow from the moon to the
+//      Companion) or implied (the kit's dashed gold "implied" arrow), with one line of the book's example in each
+//      cell, and the conditions an implied report must meet
+//   B  the set phrases that count as raised, each fed by an implied arrow from the moon. The "Other views" switch
+//      (§5.40) marks the first two, "from the sunna" and "we were ordered", as raised or as possibly someone else's
+// Quotation marks only round the phrase forms the translation names as forms (design §13); every example is
+// paraphrased. No Arabic report wording; the indirect words are in transliteration.
+// Motion: the arrows flow, and cell B's cards come in one after another, once. The resting style is the end state.
+import Defs from "../svg/Defs.astro";
+import Moon from "../svg/Moon.astro";
+import Narrator from "../svg/Narrator.astro";
+import Arrow from "../svg/Arrow.astro";
+import Chip from "../svg/Chip.astro";
+import ViewTag from "../svg/ViewTag.astro";
+import TermTitle from "../svg/TermTitle.astro";
+import { FIG, KIND_NAME, RELIABLE } from "../svg/figures";
+import { f, titleTrigger } from "../svg/geom";
+import { cap, type DiagramProps } from "../../lib/scene";
+import { chipWidth, stagger } from "../../lib/kit";
+
+type Props = DiagramProps;
+const { caps, scene } = Astro.props;
+const VIEW_IDS = ["most", "not-raised"] as const;
+if ((scene.views ?? []).map((v) => v.id).join() !== VIEW_IDS.join()) throw new Error(`Raised: expected views ${VIEW_IDS.join(", ")}`);
+if (scene.panels?.length) throw new Error("Raised: a grid of cells, not panels");
+const DEF = VIEW_IDS[0];
+const off = (v: string) => v !== DEF;
+
+const W = 430, H = 520;
+
+// ---- cell A: the table ----
+const TITLE_Y = 30;
+const hukmi = (() => {
+  const c = cap(caps, "marfu-hukmi");
+  return { c, ...titleTrigger(c.translit, 215, TITLE_Y) };
+})();
+const COLS = { outright: 145, implied: 315 };
+const MOON_K = 0.38, MOON_R = 24 * MOON_K;
+const K = 0.55, HALF = 22 * K;
+// each row: its name, and two lines under each cell
+const ROWS = [
+  { name: "Sayings", y: 128, outright: ["he heard him say it,", "or says he said it"], implied: ["news of the unseen, or", "a deed's set reward"] },
+  { name: "Acts", y: 222, outright: ["he saw him do it,", "or says he used to"], implied: ["ʿAlī's eclipse prayer,", "for al-Shāfiʿī"] },
+  { name: "Approval", y: 316, outright: ["done in his presence,", "and he did not object"], implied: ["they used to do it", "in his time"] },
+];
+// in each cell the moon sits to the left of the Companion, joined by the cell's arrow
+const DX = 34;
+
+// the conditions on an implied report, two chips then one
+const CONDS = ["he doesn't take biblical reports", "not open to reasoning", "not a word's meaning"];
+const COND_Y = [402, 402, 428];
+const condRow1W = chipWidth(CONDS[0]) + 12 + chipWidth(CONDS[1]);
+const conds = CONDS.map((text, i) => {
+  const w = chipWidth(text);
+  const x = i === 0 ? 215 - condRow1W / 2 : i === 1 ? 215 - condRow1W / 2 + chipWidth(CONDS[0]) + 12 : 215 - w / 2;
+  return { text, x: f(x), y: COND_Y[i] };
+});
+
+// ---- cell B: the set phrases ----
+const MOON_B = { x: 40, y: 92, k: 0.45 };
+const CARD = { x: 74, w: 342, h: 38, y0: 104, step: 56 };
+const PHRASES = [
+  { main: "“from the sunna is…”", sub: "his sunna, as Sālim told Ibn Shihāb", subOther: "sunna is said of others too", disputed: true },
+  { main: "“we were ordered…”, “prohibited…”", sub: "by the one who orders: the Prophet ﷺ", subOther: "the Qurʾan's, a caliph's, a ruling's?", disputed: true },
+  { main: "“we used to…”", sub: "in his time, while the Qurʾan came down", disputed: false },
+  { main: "obeying or disobeying Allah and His Messenger", sub: "ʿAmmār, on fasting the day of doubt", disputed: false },
+  { main: "yarfaʿ · yarwī · yanmī · yablughu bih · rawā", sub: "a Successor's words for raising it", disputed: false },
+  { main: "the speaker left out", sub: "Ibn Sīrīn from Abū Hurayra: the usage of Baṣra", disputed: false },
+].map((p: { main: string; sub: string; subOther?: string; disputed: boolean }, i) => ({ ...p, y: CARD.y0 + i * CARD.step, d: stagger(i, { start: 0.2, step: 0.15 }) }));
+const TAG_CX = 368;
+// one dashed gold spine runs down from the moon, and each card takes a short implied arrow off it
+const SPINE = MOON_B.x;
+const spineEnd = PHRASES[PHRASES.length - 1].y + CARD.h / 2;
+---
+<div class="cells raised">
+  <svg viewBox={`0 0 ${W} ${H}`} role="group" aria-label="A table of what counts as raised to the Prophet ﷺ: his sayings, his acts and his silent approval, each said outright or implied. Outright, the Companion says he heard him say it, saw him do it, or did it in his presence without objection. Implied: news of the unseen, or of a deed's set reward or punishment; ʿAlī's eclipse prayer with more than one bowing, as al-Shāfiʿī held; and what they used to do in his time. An implied saying counts only when the Companion does not take from the biblical reports, and what he says is not open to reasoning or the meaning of a word: someone told him, and only the Prophet ﷺ could have.">
+    <Defs />
+    <TermTitle c={hukmi.c} x={215} y={TITLE_Y} hit={hukmi.hit} info={hukmi.info} />
+    <text class="lbl" x="215" y="52">said outright, or counted as his</text>
+    <text class="colhead" x={COLS.outright} y="86">Said outright</text>
+    <text class="colhead" x={COLS.implied} y="86">Implied</text>
+    <line class="divider" x1="230" x2="230" y1="96" y2="356" />
+    {ROWS.map((r) => (
+      <>
+        <text class="layer" x="12" y={r.y - 20}>{r.name}</text>
+        <line class="rule" x1="12" x2="418" y1={r.y - 34} y2={r.y - 34} />
+        {(["outright", "implied"] as const).map((col) => {
+          const cx = COLS[col];
+          return (
+            <>
+              <Arrow x1={cx - DX + MOON_R + 3} y1={r.y} x2={cx + DX - HALF - 6} y2={r.y} variant={col === "outright" ? "flow" : "implied"} />
+              <Moon cx={cx - DX} cy={r.y} k={MOON_K} />
+              <Narrator x={cx + DX} y={r.y} k={K} {...FIG.sahabi} {...RELIABLE} label={KIND_NAME.sahabi} />
+              {r[col].map((t, j) => <text class="lbl sm" x={cx} y={r.y + 38 + j * 14}>{t}</text>)}
+            </>
+          );
+        })}
+      </>
+    ))}
+    <text class="layer" x="12" y="384">Implied sayings: only when</text>
+    {conds.map((c) => <Chip x={c.x} y={c.y} text={c.text} />)}
+    <text class="lbl" x="215" y="466">someone told him, and only the Prophet ﷺ could have</text>
+    <text class="lbl sm" x="215" y="484">raised, whether he heard it from him or through someone</text>
+  </svg>
+
+  <svg viewBox={`0 0 ${W} ${H}`} role="group" aria-label="Set phrases that count as raised to the Prophet ﷺ: a Companion saying “from the sunna is…”, the sunna meant being his, as Sālim told Ibn Shihāb; “we were ordered” or “prohibited”, by the one who orders; “we used to…” in his time; calling a deed obedience or disobedience of Allah and His Messenger, as ʿAmmār did of fasting the day of doubt; a Successor's words for raising it; and leaving the speaker out, as in Ibn Sīrīn's reports from Abū Hurayra, the usage of Baṣra. They avoided naming him from piety and caution. Some scholars hold that the first two need not mean him.">
+    <text class="colhead" x="215" y="30">Set phrases</text>
+    <text class="lbl" x="215" y="50">words that count as raised</text>
+    <path class="implied" d={`M${SPINE} ${MOON_B.y + 14} V${spineEnd}`} />
+    {PHRASES.map((p) => (
+      <>
+        {p.disputed ? (
+          <>
+            <g class:list={[{ off: off("most") }]} data-view-show="most">
+              <Arrow x1={SPINE} y1={p.y + CARD.h / 2} x2={CARD.x - 4} y2={p.y + CARD.h / 2} variant="implied" />
+            </g>
+            <g class:list={[{ off: off("not-raised") }]} data-view-show="not-raised">
+              <g class="faint"><Arrow x1={SPINE} y1={p.y + CARD.h / 2} x2={CARD.x - 4} y2={p.y + CARD.h / 2} variant="implied" /></g>
+            </g>
+          </>
+        ) : (
+          <Arrow x1={SPINE} y1={p.y + CARD.h / 2} x2={CARD.x - 4} y2={p.y + CARD.h / 2} variant="implied" />
+        )}
+        <g class="pcard m-enter" style={`--d:${p.d}`}>
+          <rect class="pc" x={CARD.x} y={p.y} width={CARD.w} height={CARD.h} rx="6" />
+          <text class="pm" x={CARD.x + 10} y={p.y + 16}>{p.main}</text>
+          {p.disputed ? (
+            <>
+              <text class:list={["lbl sm start", { off: off("most") }]} data-view-show="most" x={CARD.x + 10} y={p.y + 31}>{p.sub}</text>
+              <text class:list={["lbl sm start", { off: off("not-raised") }]} data-view-show="not-raised" x={CARD.x + 10} y={p.y + 31}>{p.subOther}</text>
+            </>
+          ) : <text class="lbl sm start" x={CARD.x + 10} y={p.y + 31}>{p.sub}</text>}
+        </g>
+        {p.disputed && (
+          <>
+            <g class:list={[{ off: off("most") }]} data-view-show="most"><ViewTag cx={TAG_CX} y={p.y + 8} w={64} text="raised" /></g>
+            <g class:list={[{ off: off("not-raised") }]} data-view-show="not-raised"><ViewTag cx={TAG_CX - 12} y={p.y + 8} w={88} text="or another's?" dashed /></g>
+          </>
+        )}
+      </>
+    ))}
+    <Moon cx={MOON_B.x} cy={MOON_B.y} k={MOON_B.k} />
+    <text class="lbl" x="215" y="460">why not name him? from piety and caution:</text>
+    <text class="lbl sm" x="215" y="477">Abū Qilāba could have said Anas raised it, but kept his words</text>
+    <g class:list={[{ off: off("not-raised") }]} data-view-show="not-raised">
+      <text class="lbl gap sm" x="215" y="500">some: sunna and orders are said of others too</text>
+    </g>
+    <g class:list={[{ off: off("most") }]} data-view-show="most">
+      <text class="lbl sm" x="215" y="500">most scholars: these mean him</text>
+    </g>
+  </svg>
+</div>
+<style>
+  .pc{fill:var(--surface);stroke:var(--rule);stroke-width:1.2}
+  .pm{fill:var(--fg);font:700 12px var(--f-body)}
+  .pcard{--dur:.35s;--from-xy:-8px 0}
+  .faint{opacity:.4}
+</style>

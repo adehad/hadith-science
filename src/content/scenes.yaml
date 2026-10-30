@@ -734,3 +734,32 @@
       label: Stopped and cut off
       x0: 260
       x1: 780
+- id: raised
+  division: muntaha-al-isnad
+  moons: [0]
+  order: 2
+  title: Is it from the Prophet ﷺ?
+  eyebrow: Raised to the Prophet ﷺ, outright or by implication · §5.40
+  lede: A report is raised when its words are from the Prophet ﷺ, his sayings, acts or approval. The Companion may say so outright, or say something that can only have come from him. Ibn Ḥajar gives the forms that count, and answers those who doubt some of them.
+  source: §5.40 Marfūʿ, outright and implied
+  diagram: Raised
+  width: 860
+  captions:
+    - term: marfu-hukmi
+      note: "A Companion who does not take from the biblical reports says what reasoning can't reach and no word's meaning explains: past events like creation and the prophets, future ones like the trials and the Day of Judgement, or a deed's set reward or punishment. Someone must have told him, and only the Prophet ﷺ could have, so it counts as if he said “the Messenger of Allah ﷺ said” (§5.40)."
+  views:
+    - id: most
+      label: "Ibn Ḥajar and most: raised"
+      scholars: §5.40; Ibn ʿAbd al-Barr reports a consensus
+      note: "When a Companion says “from the sunna is…”, or “we were ordered” or “prohibited”, it counts as raised. The sunna meant is the Prophet's ﷺ, as Sālim told Ibn Shihāb; one under a leader who says “I have been ordered” means by the leader. Ibn Ḥajar calls the claim of consensus contentious, since al-Shāfiʿī has two opinions."
+    - id: not-raised
+      label: "Some: not raised"
+      scholars: "Abū Bakr al-Ṣayrafī, Abū Bakr al-Rāzī, Ibn Ḥazm; a group, on “we were ordered”, §5.40"
+      note: "Sunna is said of others besides the Prophet ﷺ, so “from the sunna” need not mean his; an order could be the Qurʾan's, the consensus's, a caliph's or a derived ruling's. Ibn Ḥajar answers that these readings are far-fetched, or only possibilities, and the Companions were sure before they spoke."
+  extra:
+    - title: The book's examples
+      section: §5.40
+      note: "Outright: the Companion says he heard the Messenger of Allah ﷺ say something, saw him do it, or did it in his presence without objection. Implied, of an act: al-Shāfiʿī on ʿAlī's eclipse prayer with more than one bowing in each unit, which he could not have reached by his own thinking. Implied, of approval: the Companions say they used to do something in his time; Jābir and Abū Saʿīd argued that a practice was allowed because they did it while the Qurʾan was being revealed, and it would have forbidden it. Of a ruling: ʿAmmār called fasting the day of doubt disobedience to Abū al-Qāsim ﷺ."
+    - title: Words that point to him
+      section: §5.40
+      note: "A Successor may say of a Companion that he raises the ḥadīth, narrates it, ascribes it or makes it reach the Prophet ﷺ (yarfaʿ, yarwī, yanmī, riwāya, yablughu bih, rawā). Sometimes the speaker is left out altogether, as in Ibn Sīrīn's reports from Abū Hurayra; al-Khaṭīb suggests this was the usage of Baṣra. Why not name him? From piety and caution: Abū Qilāba said he could have said that Anas raised his report, but it is better to keep the Companion's own words."
