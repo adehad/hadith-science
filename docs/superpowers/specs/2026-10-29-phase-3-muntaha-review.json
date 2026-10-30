@@ -1,0 +1,285 @@
+{
+  "division": "muntaha-al-isnad",
+  "title": "Muntahā al-isnād: where the chain ends",
+  "scenes": [
+    {
+      "id": "ends",
+      "question": "Where does the chain end?",
+      "terms": [
+        "marfu",
+        "mawquf",
+        "maqtu",
+        "athar"
+      ],
+      "summary": "Three chains side by side end at the Prophet ﷺ, a Companion and a Successor, each holding its text card; a bracket names the last two athar.",
+      "blocked_by": [],
+      "built_with_interim": true
+    },
+    {
+      "id": "raised",
+      "question": "Is it from the Prophet ﷺ?",
+      "terms": [
+        "marfu-hukmi"
+      ],
+      "summary": "A table of sayings, acts and approvals, said outright or implied, beside the set phrases that count as raised, with a view for those who doubt two of them.",
+      "blocked_by": [],
+      "built_with_interim": true
+    },
+    {
+      "id": "companions",
+      "question": "Who met whom?",
+      "terms": [
+        "sahabi",
+        "tabii",
+        "mukhadram"
+      ],
+      "summary": "The Companion's and the Successor's definitions as paths of gates, how Companionship is known, and the mukhaḍram standing between two eras.",
+      "blocked_by": [],
+      "built_with_interim": true
+    },
+    {
+      "id": "connected",
+      "question": "Does it look connected?",
+      "terms": [
+        "musnad"
+      ],
+      "summary": "Five chains with verdicts show what is and isn't musnad for Ibn Ḥajar, al-Khaṭīb and Ibn ʿAbd al-Barr.",
+      "blocked_by": [],
+      "built_with_interim": true
+    }
+  ],
+  "questions": [
+    {
+      "id": "q1",
+      "scene": "raised",
+      "question": "Should implied marfūʿ keep its own scene, though it has a single term?",
+      "context": "§5.40 sets out sayings, acts and approval, each outright or implied, and a list of set phrases. It is the longest paragraph of the division but defines one term, marfūʿ ḥukman.",
+      "options": [
+        {
+          "id": "a",
+          "label": "Own scene",
+          "description": "Keep 'Is it from the Prophet ﷺ?' as a two-cell scene: the 2 × 3 table and the column of set phrases.",
+          "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 160 90\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><rect x=\"10\" y=\"10\" width=\"65\" height=\"70\"/><rect x=\"85\" y=\"10\" width=\"65\" height=\"70\"/><line x1=\"10\" y1=\"33\" x2=\"75\" y2=\"33\"/><line x1=\"10\" y1=\"56\" x2=\"75\" y2=\"56\"/><line x1=\"42\" y1=\"10\" x2=\"42\" y2=\"80\"/><rect x=\"92\" y=\"17\" width=\"50\" height=\"9\"/><rect x=\"92\" y=\"31\" width=\"50\" height=\"9\"/><rect x=\"92\" y=\"45\" width=\"50\" height=\"9\"/><rect x=\"92\" y=\"59\" width=\"50\" height=\"9\"/></svg>",
+          "recommended": true
+        },
+        {
+          "id": "b",
+          "label": "Fold into 'Where does the chain end?'",
+          "description": "Show only the outright/implied split as a small table under the marfūʿ chain, and move the set phrases to Read as text.",
+          "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 160 90\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><circle cx=\"30\" cy=\"12\" r=\"6\" fill=\"currentColor\" fill-opacity=\".25\"/><circle cx=\"30\" cy=\"30\" r=\"5\"/><circle cx=\"30\" cy=\"48\" r=\"5\"/><circle cx=\"30\" cy=\"66\" r=\"5\"/><line x1=\"30\" y1=\"19\" x2=\"30\" y2=\"60\"/><rect x=\"10\" y=\"74\" width=\"45\" height=\"12\"/><circle cx=\"80\" cy=\"12\" r=\"6\" fill=\"currentColor\" fill-opacity=\".25\"/><circle cx=\"80\" cy=\"30\" r=\"5\"/><circle cx=\"80\" cy=\"48\" r=\"5\"/><circle cx=\"80\" cy=\"66\" r=\"5\"/><line x1=\"80\" y1=\"19\" x2=\"80\" y2=\"60\"/><circle cx=\"130\" cy=\"12\" r=\"6\" fill=\"currentColor\" fill-opacity=\".25\"/><circle cx=\"130\" cy=\"30\" r=\"5\"/><circle cx=\"130\" cy=\"48\" r=\"5\"/><circle cx=\"130\" cy=\"66\" r=\"5\"/><line x1=\"130\" y1=\"19\" x2=\"130\" y2=\"60\"/></svg>"
+        }
+      ],
+      "interim": "a"
+    },
+    {
+      "id": "q2",
+      "scene": "companions",
+      "question": "How should the apostate the translation calls ʿAbd Allāh ibn Jaḥsh be named?",
+      "context": "§5.41 names ʿAbd Allāh ibn Jaḥsh and Ibn Khaṭal as men who met the Prophet ﷺ believing, left Islam and died out of it. The one usually named is ʿUbayd Allāh ibn Jaḥsh. A translation query.",
+      "options": [
+        {
+          "id": "a",
+          "label": "Ibn Khaṭal only",
+          "description": "Name only Ibn Khaṭal until the owner checks the Arabic.",
+          "recommended": true
+        },
+        {
+          "id": "b",
+          "label": "ʿUbayd Allāh ibn Jaḥsh and Ibn Khaṭal",
+          "description": "Correct the name to ʿUbayd Allāh, if the owner confirms the Arabic reads so."
+        }
+      ],
+      "interim": "a"
+    },
+    {
+      "id": "q3",
+      "scene": "companions",
+      "question": "Is 'Some: among the Companions' a fair Other view for the mukhaḍram?",
+      "context": "§5.42 says the matter is disputed. Ibn ʿAbd al-Barr seemed to count them as Companions, and ʿIyāḍ and others said he did so outright; Ibn Ḥajar doubts that he meant it.",
+      "options": [
+        {
+          "id": "a",
+          "label": "Keep the view",
+          "description": "The switch slides the mukhaḍram figure from the Successors' row up to the Companions', with a dashed tag naming ʿIyāḍ's reading of Ibn ʿAbd al-Barr.",
+          "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 160 90\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><line x1=\"10\" y1=\"30\" x2=\"150\" y2=\"30\" stroke-dasharray=\"3 3\"/><line x1=\"10\" y1=\"65\" x2=\"150\" y2=\"65\" stroke-dasharray=\"3 3\"/><text x=\"34\" y=\"24\" font-size=\"8\" fill=\"currentColor\" stroke=\"none\" text-anchor=\"middle\">Companions</text><text x=\"34\" y=\"59\" font-size=\"8\" fill=\"currentColor\" stroke=\"none\" text-anchor=\"middle\">Successors</text><circle cx=\"100\" cy=\"65\" r=\"5\"/><path d=\"M100 58 V38\"/><path d=\"M96 42 L100 36 L104 42\"/><circle cx=\"100\" cy=\"30\" r=\"5\" stroke-dasharray=\"2 2\"/></svg>",
+          "recommended": true
+        },
+        {
+          "id": "b",
+          "label": "No view",
+          "description": "Show Ibn Ḥajar's placement only, and tell the dispute in the mukhaḍram note.",
+          "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 160 90\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><line x1=\"10\" y1=\"30\" x2=\"150\" y2=\"30\" stroke-dasharray=\"3 3\"/><line x1=\"10\" y1=\"65\" x2=\"150\" y2=\"65\" stroke-dasharray=\"3 3\"/><text x=\"34\" y=\"24\" font-size=\"8\" fill=\"currentColor\" stroke=\"none\" text-anchor=\"middle\">Companions</text><text x=\"34\" y=\"59\" font-size=\"8\" fill=\"currentColor\" stroke=\"none\" text-anchor=\"middle\">Successors</text><circle cx=\"100\" cy=\"65\" r=\"5\"/></svg>"
+        }
+      ],
+      "interim": "a"
+    },
+    {
+      "id": "q4",
+      "scene": "companions",
+      "question": "How should the Successor's third rejected condition be named?",
+      "context": "§5.42 rejects adding long company, a sound hearing, and 'the condition of acknowledgement' to the Successor's definition. The last is possibly tamyīz, discernment.",
+      "options": [
+        {
+          "id": "a",
+          "label": "'or a further condition'",
+          "description": "Two crossed chips (long company, a sound hearing) and the words 'or a further condition'.",
+          "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 160 90\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><rect x=\"10\" y=\"20\" width=\"80\" height=\"16\" stroke-dasharray=\"3 2\"/><rect x=\"10\" y=\"50\" width=\"80\" height=\"16\" stroke-dasharray=\"3 2\"/><path d=\"M100 22 l10 12 M110 22 l-10 12 M100 52 l10 12 M110 52 l-10 12\"/></svg>",
+          "recommended": true
+        },
+        {
+          "id": "b",
+          "label": "'discernment'",
+          "description": "A third crossed chip, 'discernment', if the owner confirms tamyīz.",
+          "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 160 90\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><rect x=\"10\" y=\"12\" width=\"80\" height=\"16\" stroke-dasharray=\"3 2\"/><path d=\"M100 14 l10 12 M110 14 l-10 12\"/><rect x=\"10\" y=\"38\" width=\"80\" height=\"16\" stroke-dasharray=\"3 2\"/><path d=\"M100 40 l10 12 M110 40 l-10 12\"/><rect x=\"10\" y=\"64\" width=\"80\" height=\"16\" stroke-dasharray=\"3 2\"/><path d=\"M100 66 l10 12 M110 66 l-10 12\"/></svg>"
+        }
+      ],
+      "interim": "a"
+    },
+    {
+      "id": "q5",
+      "scene": "raised",
+      "question": "Should the 'not raised' view cover both disputed phrases?",
+      "context": "§5.40 reports dissent on 'from the sunna is…' (al-Ṣayrafī, Abū Bakr al-Rāzī, Ibn Ḥazm) and says the dispute is the same for 'we were ordered…', which a group disputes.",
+      "options": [
+        {
+          "id": "a",
+          "label": "One view, both phrases",
+          "description": "'Some: not raised' marks both cards with a dashed 'could be someone else's' tag.",
+          "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 160 90\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><rect x=\"10\" y=\"15\" width=\"90\" height=\"18\"/><rect x=\"10\" y=\"45\" width=\"90\" height=\"18\"/><rect x=\"108\" y=\"18\" width=\"44\" height=\"12\" rx=\"6\" stroke-dasharray=\"3 2\"/><rect x=\"108\" y=\"48\" width=\"44\" height=\"12\" rx=\"6\" stroke-dasharray=\"3 2\"/></svg>",
+          "recommended": true
+        },
+        {
+          "id": "b",
+          "label": "First phrase only",
+          "description": "The view marks only 'from the sunna is…'; the order phrase's dissent goes into the note.",
+          "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 160 90\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><rect x=\"10\" y=\"15\" width=\"90\" height=\"18\"/><rect x=\"10\" y=\"45\" width=\"90\" height=\"18\"/><rect x=\"108\" y=\"18\" width=\"44\" height=\"12\" rx=\"6\" stroke-dasharray=\"3 2\"/></svg>"
+        }
+      ],
+      "interim": "a"
+    },
+    {
+      "id": "q6",
+      "scene": "raised",
+      "question": "May the phrase forms of §5.40 be quoted?",
+      "context": "The cards show forms the translation names as forms, in its English: 'from the sunna is…', 'we were ordered…', 'we used to…', 'I heard him say…'. The worked examples (ʿAmmār, Jābir, Abū Qilāba) are paraphrased without quotation marks.",
+      "options": [
+        {
+          "id": "a",
+          "label": "Quote the forms, paraphrase the examples",
+          "description": "A few words each, within the 'short fragments' rule.",
+          "recommended": true
+        },
+        {
+          "id": "b",
+          "label": "Paraphrase everything",
+          "description": "No quotation marks on any card, for example 'he says it is from the sunna'."
+        }
+      ],
+      "interim": "a"
+    },
+    {
+      "id": "q7",
+      "scene": "ends",
+      "question": "Should the marfūʿ chain show a gap?",
+      "context": "§5.43: marfūʿ holds whether the chain is connected or not. A ghost in column 1 says so in the picture, but puts a break in the first chain a reader sees.",
+      "options": [
+        {
+          "id": "a",
+          "label": "Show a ghost",
+          "description": "Column 1 has a blinking ghost and a skip arrow, labelled 'raised, whether its chain is connected or not'.",
+          "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 160 90\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><circle cx=\"40\" cy=\"12\" r=\"6\" fill=\"currentColor\" fill-opacity=\".25\"/><circle cx=\"40\" cy=\"34\" r=\"5\"/><circle cx=\"40\" cy=\"56\" r=\"5\" stroke-dasharray=\"2 2\"/><circle cx=\"40\" cy=\"78\" r=\"5\"/><line x1=\"40\" y1=\"19\" x2=\"40\" y2=\"28\"/><path d=\"M36 40 Q22 56 36 72\" stroke-dasharray=\"3 2\"/><text x=\"105\" y=\"50\" font-size=\"8\" fill=\"currentColor\" stroke=\"none\" text-anchor=\"middle\">connected or not</text></svg>",
+          "recommended": true
+        },
+        {
+          "id": "b",
+          "label": "All connected",
+          "description": "Every chain is whole; the point is made by a label only.",
+          "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 160 90\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><circle cx=\"40\" cy=\"12\" r=\"6\" fill=\"currentColor\" fill-opacity=\".25\"/><circle cx=\"40\" cy=\"34\" r=\"5\"/><circle cx=\"40\" cy=\"56\" r=\"5\"/><circle cx=\"40\" cy=\"78\" r=\"5\"/><line x1=\"40\" y1=\"19\" x2=\"40\" y2=\"72\"/><text x=\"105\" y=\"50\" font-size=\"8\" fill=\"currentColor\" stroke=\"none\" text-anchor=\"middle\">connected or not</text></svg>"
+        }
+      ],
+      "interim": "a"
+    },
+    {
+      "id": "q8",
+      "scene": null,
+      "question": "Add a link from 'Did he hear it from him?' to the mukhaḍram?",
+      "context": "The hidden scene's panel 3 draws two mukhaḍramūn. An XLink there to companions#mukhadram would join the two scenes, but changes a built al-Mardūd scene.",
+      "options": [
+        {
+          "id": "a",
+          "label": "Add later",
+          "description": "Leave al-Mardūd untouched on this branch; add the link in a follow-up once this division merges.",
+          "recommended": true
+        },
+        {
+          "id": "b",
+          "label": "Add now",
+          "description": "One XLink line under panel 3's names: 'mukhaḍram → Who met whom?'."
+        }
+      ],
+      "interim": "a"
+    },
+    {
+      "id": "q9",
+      "scene": "raised",
+      "question": "Approve the dashed gold 'implied' arrow?",
+      "context": "Implied marfūʿ needs a link to the Prophet ﷺ that is neither narration (a solid flowing arrow) nor a gap (red dashed).",
+      "options": [
+        {
+          "id": "a",
+          "label": "Dashed gold arrow",
+          "description": "Gold, like the Companion's link to him, but dashed: counted as his, not said outright.",
+          "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 160 90\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><circle cx=\"30\" cy=\"20\" r=\"6\" fill=\"currentColor\" fill-opacity=\".25\"/><circle cx=\"30\" cy=\"70\" r=\"5\"/><line x1=\"30\" y1=\"27\" x2=\"30\" y2=\"62\"/><circle cx=\"110\" cy=\"20\" r=\"6\" fill=\"currentColor\" fill-opacity=\".25\"/><circle cx=\"110\" cy=\"70\" r=\"5\"/><line x1=\"110\" y1=\"62\" x2=\"110\" y2=\"27\" stroke-dasharray=\"4 3\"/><text x=\"30\" y=\"88\" font-size=\"7\" fill=\"currentColor\" stroke=\"none\" text-anchor=\"middle\">outright</text><text x=\"110\" y=\"88\" font-size=\"7\" fill=\"currentColor\" stroke=\"none\" text-anchor=\"middle\">implied</text></svg>",
+          "recommended": true
+        },
+        {
+          "id": "b",
+          "label": "Solid arrow with a tag",
+          "description": "The same arrow for both, with an 'implied' tag on the implied column.",
+          "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 160 90\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><circle cx=\"110\" cy=\"20\" r=\"6\" fill=\"currentColor\" fill-opacity=\".25\"/><circle cx=\"110\" cy=\"70\" r=\"5\"/><line x1=\"110\" y1=\"62\" x2=\"110\" y2=\"27\"/><rect x=\"118\" y=\"38\" width=\"36\" height=\"12\" rx=\"6\"/></svg>"
+        }
+      ],
+      "interim": "a"
+    },
+    {
+      "id": "q10",
+      "scene": null,
+      "question": "Use any of the proposed annotations?",
+      "context": "p.312 (the Companions' fatwās and a saying of Mālik as examples), p.313 (athar is the same as ḥadīth for the majority), p.314 (musnad also names a collection ordered by Companion). None is in the translation's §5.40–5.44.",
+      "options": [
+        {
+          "id": "a",
+          "label": "None for now",
+          "description": "Keep them as proposals in notes/annotation-usage.md.",
+          "recommended": true
+        },
+        {
+          "id": "b",
+          "label": "Use p.314",
+          "description": "Add a Read as text extra on 'Does it look connected?' about musnad as a kind of book."
+        }
+      ],
+      "interim": "a"
+    },
+    {
+      "id": "q11",
+      "scene": null,
+      "question": "Rule on the seven translation slips (design §9).",
+      "context": "Notably §5.41 ʿAbd Allāh ibn Jaḥsh (q2), §5.42 'acknowledgement' (q4) and §5.44's bracket, which contradicts the line before.",
+      "options": [
+        {
+          "id": "a",
+          "label": "Neutral wording until a ruling",
+          "description": "The site avoids each disputed word, as the design lists.",
+          "recommended": true
+        },
+        {
+          "id": "b",
+          "label": "Follow the translation",
+          "description": "Use the translation's words where the owner confirms them."
+        }
+      ],
+      "interim": "a"
+    }
+  ]
+}
