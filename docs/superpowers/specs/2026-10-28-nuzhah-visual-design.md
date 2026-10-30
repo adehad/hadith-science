@@ -316,20 +316,22 @@ src/
     svg/          Moon, Narrator, Chain, Arrow, SpeechBubble, Pill, Term, TermTitle, LayerGuides,
                   InfoIcon, Defs, NameTag, Chip, Gauge, Glyph, Scale, Matn, Decision, Bracket,
                   Lifespan (division 3: a rounded life bar, no axis or dates),
-                  Beads (division 5: unnamed narrators as rings on a line);
+                  Beads (division 5: unnamed narrators as rings on a line),
+                  LicenceCard (division 6: a sealed card of up to three fields);
                   Glyph kinds: memory, book, check, cross (division 1: rejected or not reached), lens,
-                  pause, text, companion, clock, coin (dashed for a false one), scissors, handshake, pin (a place);
+                  pause, text, companion, clock, coin (dashed for a false one), scissors, handshake,
+                  letter (an envelope), pin (a place);
                   Narrator faces: blank, faded, mask, mask-dashed (suspected, not proven), hand;
+                  Narrator variants: ghost, unborn (division 6: a dashed outline);
                   figures.ts (FIG / KIND_NAME, with the division 3 kinds mudallis, liar, accused and
-                  mukhtalit), geom.ts (f, titleTrigger, rowTrigger, panelTrigger, SUBT_TRIGGER,
-                  ROW_TITLE_TRIGGER)
+                  mukhtalit), geom.ts (f, titleTrigger, rowTrigger, SUBT_TRIGGER, ROW_TITLE_TRIGGER)
     layout/       Header, Footer, Breadcrumb, Starfield, ThemeToggle, KeyToggle, MotionToggle,
                   ViewSwitch, ReadAsText, TermPopover, Legend, Carousel
     scenes/       Routes, Breaks, Unknown, Delivery, Names, Grades, Opposition, Support,
                   ActedOn, Report, Sorting, Knowledge, Lone, Causes, Hidden, Lying, Slips,
                   Changes, Wording, Identity, Innovation, Ends, Raised, Companions,
-                  Connected, Elevation, Meeting, Peers, Doubts, Generations, Ranks, Verdicts,
-                  Aliases, Study, Books (one diagram per scene)
+                  Connected, Elevation, Meeting, Peers, Doubts, Heard, Permission, Licence,
+                  Generations, Ranks, Verdicts, Aliases, Study, Books (one diagram per scene)
   content/
     divisions.yaml  the eight divisions (term, Arabic, English, §, order, moons)
     scenes.yaml     every scene (see 7.3)
