@@ -1,7 +1,7 @@
 # Translation queries
 
 Places where the translation looks off. The site follows the Arabic term until the owner rules.
-No matching PDF annotation was found for these (checked 2026-10-28).
+Unless a row cites one, no matching PDF annotation was found for these (checked 2026-10-28).
 
 | § / page | Translation says | Query | Ruling |
 |---|---|---|---|
@@ -21,3 +21,8 @@ No matching PDF annotation was found for these (checked 2026-10-28).
 | §5.12 | "Ḥubbayb ibn Ḥabīb" | The usual vocalisation is Ḥubayyib. The site writes Ḥubayyib; confirm | |
 | §5.13 | ʿĀṣim ibn Muḥammad, "from his father Muḥammad ibn Zayd, from his grandfather ʿAbd Allāh ibn ʿUmar" | Ibn ʿUmar is Muḥammad ibn Zayd's grandfather, ʿĀṣim's great-grandfather, so "his" refers to the father. The site leaves "grandfather" out | |
 | §5.51 | Sarrāj | Check name spelling | |
+| §5.3 (p.58–59) | "controvertible knowledge (ʿilm al-naẓar)" | Naẓarī means knowledge reached by reasoning, not knowledge open to refutation. The site says "reasoned knowledge" | |
+| §5.7 (p.82) | "The dispute in reality is literal" | Likely lafẓī: a dispute over words, not substance. The site says "a dispute over words"; the owner's p.82 annotation reads it the same way | |
+| §5.7 (p.83) | "al-Isfarāʾinī" | Usually spelt al-Isfarāyīnī or al-Isfarāʾīnī. Spelling only; the site writes al-Isfarāʾīnī | |
+| §5.5 (p.74) | "they offer a contentious answer" | Possibly "an answer open to question" (fīhi naẓar). The site's extra avoids characterising the answer | |
+| §5.5 (p.75) | "the silence [of the Companions] does not necessitate that they could not have heard it from someone else" | As worded, this seems to argue the opponents' side. Ibn Ḥajar's point is likely that their silence does not show they had heard it from anyone but ʿUmar. The site says only that "their silence proves nothing" | |

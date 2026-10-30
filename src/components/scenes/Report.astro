@@ -1,0 +1,200 @@
+---
+// "What is a report?" (phase 3 turuq design §2): the parts and names of a report (§5.2), as two cells, the Names
+// pattern. Each cell is its own 430x384 SVG in an HTML grid, side by side, and one column in portrait (spec §5).
+//   A  anatomy: the Intentions chain (§5.5), ʿUmar, ʿAlqama, Muḥammad ibn Ibrāhīm, Yaḥyā ibn Saʿīd, flowing down
+//      from the Prophet ﷺ to al-Bukhārī; its text card hangs at the top, where the words were spoken, and a
+//      bracket marks the isnād with an arrowhead up to the matn, the path that leads to the text
+//   B  khabar and ḥadīth: two rings that are one ring, two rings apart, or one inside the other (§5.2's three views)
+// The "Other views" switch changes only cell B. Each ring is a unit circle in a <g> whose transform (translate and
+// scale) is set per view through data-v-<id> (viewswitch.ts), so the rings slide and resize; the contents and
+// captions of each view are [data-view-show] groups. Only the "apart" view says where reports come from, so only it
+// holds a moon and figures; the other two show the names alone (design §2.3).
+// No Arabic report wording: the text card gives the translation's English words only (design §0, §14).
+import Defs from "../svg/Defs.astro";
+import Moon from "../svg/Moon.astro";
+import Narrator from "../svg/Narrator.astro";
+import Arrow from "../svg/Arrow.astro";
+import Matn from "../svg/Matn.astro";
+import Chip from "../svg/Chip.astro";
+import Bracket from "../svg/Bracket.astro";
+import TermTitle from "../svg/TermTitle.astro";
+import { FIG, KIND_NAME, RELIABLE, type Kind } from "../svg/figures";
+import { SUBT_TRIGGER, f, rowTrigger, titleTrigger } from "../svg/geom";
+import { cap, type DiagramProps } from "../../lib/scene";
+import { chipWidth, stackY } from "../../lib/kit";
+import { href } from "../../lib/url";
+
+type Props = DiagramProps;
+const { caps, scene } = Astro.props;
+
+const views = scene.views ?? [];
+const VIEW_IDS = ["same", "apart", "nested"] as const;
+type ViewId = (typeof VIEW_IDS)[number];
+if (views.map((v) => v.id).join() !== VIEW_IDS.join()) throw new Error(`Report: expected views ${VIEW_IDS.join(", ")}`);
+const DEF: ViewId = VIEW_IDS[0];
+
+// ---- cell A: anatomy ----
+const K = 0.75;
+const HALF = 22 * K; // half a figure's height
+const CX = 80;
+const MOON = { x: CX, y: 52, k: 0.7 };
+const CARD = { x: 175, y: 30, w: 230, h: 50 };
+// [name lines, row, kind]; names sit to the right of each figure, on two lines so they stay clear of the bracket.
+// In Labels mode the kind name is one more line under them, not under the figure, where it would cover the arrows
+// and the elided dots; the lines are centred on the figure with that line counted, so the names never move
+const CHAIN: { lines: string[]; y: number; kind: Kind }[] = [
+  { lines: ["ʿUmar"], y: 114, kind: "sahabi" },
+  { lines: ["ʿAlqama"], y: 172, kind: "tabii" },
+  { lines: ["Muḥammad ibn", "Ibrāhīm"], y: 230, kind: "tabii" },
+  { lines: ["Yaḥyā ibn", "Saʿīd"], y: 288, kind: "tabii" },
+];
+const LAST = CHAIN[CHAIN.length - 1];
+const NAME_X = CX + 20;
+const BUKHARI = { text: "al-Bukhārī", y: 340 };
+const bukhariW = chipWidth(BUKHARI.text);
+const BRK = { x: 212, y0: 102, y1: 348 };
+// the elided link's label, beside its dots
+const ELIDED = { x: CX + 14, y: 320 };
+const LINK_Y = 372;
+
+// the matn label under the card, centred, and the isnād label beside the bracket, left-aligned; both in the 15px
+// display face, estimated as SUBT_TRIGGER
+const matn = (() => {
+  const c = cap(caps, "matn");
+  const x = 290, y = 104;
+  return { c, x, y, ...titleTrigger(c.translit, x, y, SUBT_TRIGGER) };
+})();
+const isnad = (() => {
+  const c = cap(caps, "isnad");
+  const x = BRK.x + 12, y = 220;
+  return { c, x, y, ...rowTrigger(c.translit, x, y, { charW: SUBT_TRIGGER.charW, top: SUBT_TRIGGER.top, h: SUBT_TRIGGER.h }) };
+})();
+
+// ---- cell B: khabar and ḥadīth ----
+// the legend rows at the top are the term triggers, so they stay put in every view; each has a swatch of its ring's
+// stroke (solid for khabar, dashed for ḥadīth), so colour is never the only cue (WCAG 1.4.1)
+const ROW_CHAR_W = 6.7;
+const SW = { x0: 24, x1: 50 };
+const LEG = [
+  { slug: "khabar", y: 50, ring: "rk" },
+  { slug: "hadith", y: 74, ring: "rh" },
+].map((r) => {
+  const c = cap(caps, r.slug);
+  const x = SW.x1 + 8;
+  return { ...r, c, x, ...rowTrigger(c.translit, x, r.y, { charW: ROW_CHAR_W, x0: SW.x0 - 6 }) };
+});
+
+// each ring is a circle of radius R at the origin, moved and scaled per view: [cx, cy, radius]
+const R = 100;
+const RINGS: Record<"khabar" | "hadith", Record<ViewId, [number, number, number]>> = {
+  khabar: { same: [215, 200, 90], apart: [318, 190, 70], nested: [215, 200, 100] },
+  hadith: { same: [215, 200, 90], apart: [112, 190, 70], nested: [170, 215, 48] },
+};
+const ringAttrs = (ring: keyof typeof RINGS) => {
+  const t = ([x, y, r]: [number, number, number]) => `translate(${x}px,${y}px) scale(${f(r / R)})`;
+  const attrs: Record<string, string> = { style: `transform:${t(RINGS[ring][DEF])}` };
+  for (const v of VIEW_IDS) attrs[`data-v-${v}`] = t(RINGS[ring][v]);
+  return attrs;
+};
+const off = (v: ViewId) => v !== DEF;
+---
+<div class="cells report">
+  <svg viewBox="0 0 430 384" role="group" aria-label="Anatomy of a report: the Intentions report, its words spoken by the Prophet ﷺ, narrated by ʿUmar, then ʿAlqama, Muḥammad ibn Ibrāhīm and Yaḥyā ibn Saʿīd. The book doesn't give the narrators between Yaḥyā ibn Saʿīd and al-Bukhārī, whose Ṣaḥīḥ opens with this report. The chain of narrators is the isnād, the path that leads to the text; the text is the matn.">
+    <Defs />
+    <text class="colhead" x="215" y="18">Anatomy of a report</text>
+
+    {/* the words, where they were spoken: the moon, a tail to the text card */}
+    <path class="tail" d={`M${MOON.x + 24 * MOON.k + 3} ${MOON.y + 3} H${CARD.x - 4}`} />
+    <Moon cx={MOON.x} cy={MOON.y} k={MOON.k} />
+    <Matn x={CARD.x} y={CARD.y} w={CARD.w} h={CARD.h} lines={["“actions are judged", "by intentions”"]} />
+    <TermTitle c={matn.c} x={matn.x} y={matn.y} cls="subt" hit={matn.hit} info={matn.info} ar={{ x: 368, y: matn.y, size: "sm" }} />
+
+    {/* the chain, narrated down from the Prophet ﷺ */}
+    <Arrow x1={CX} y1={MOON.y + 24 * MOON.k + 2} x2={CX} y2={CHAIN[0].y - HALF - 3} />
+    {CHAIN.slice(1).map((p, i) => <Arrow x1={CX} y1={CHAIN[i].y + HALF + 2} x2={CX} y2={p.y - HALF - 3} />)}
+    {/* the book gives no links between Yaḥyā and al-Bukhārī */}
+    <Arrow x1={CX} y1={LAST.y + HALF + 4} x2={CX} y2={BUKHARI.y - 13} variant="elided" />
+    <text class="lbl start sm" x={ELIDED.x} y={ELIDED.y}>links not in the book</text>
+    {CHAIN.map((p) => {
+      // the Labels-mode kind name is the last of the stack
+      const lineY = (j: number) => stackY(p.y + 4, j, p.lines.length + 1);
+      return (
+        <>
+          <Narrator x={CX} y={p.y} k={K} {...FIG[p.kind]} {...RELIABLE} />
+          {p.lines.map((n, j) => <text class="nm" x={NAME_X} y={lineY(j)}>{n}</text>)}
+          <text class="lbl start sm mode-label" x={NAME_X} y={lineY(p.lines.length)}>{KIND_NAME[p.kind]}</text>
+        </>
+      );
+    })}
+    <Chip x={f(CX - bukhariW / 2)} y={BUKHARI.y} text={BUKHARI.text} w={bukhariW} />
+    <text class="lbl start" x={f(CX + bukhariW / 2 + 8)} y={BUKHARI.y - 3}>first report</text>
+    <text class="lbl start" x={f(CX + bukhariW / 2 + 8)} y={BUKHARI.y + 11}>in his Ṣaḥīḥ</text>
+
+    {/* the isnād: the whole chain, with an arrowhead up to the text it leads to */}
+    <Bracket vertical x={BRK.x} y0={BRK.y0} y1={BRK.y1} ticks="left" arrow="start" />
+    <TermTitle c={isnad.c} x={isnad.x} y={isnad.y} cls="subt start" hit={isnad.hit} info={isnad.info} ar={{ x: 335, y: isnad.y, size: "sm" }} />
+    <text class="lbl start" x={isnad.x} y={isnad.y + 20}>the path that leads</text>
+    <text class="lbl start" x={isnad.x} y={isnad.y + 36}>to the text</text>
+
+    {/* ṭuruq is routes' subject: a link, not a trigger */}
+    <a class="xlink" href={href("adad-al-turuq/routes/")} aria-label="many isnāds are its ṭuruq, its routes: see How many routes carry it?">
+      <text class="rp" x="20" y={LINK_Y}><tspan class="xu">many isnāds are its ṭuruq, its routes</tspan><tspan dx="5">→</tspan></text>
+    </a>
+  </svg>
+
+  <svg viewBox="0 0 430 384" role="group" aria-label="Khabar and ḥadīth, two names, as two rings. One meaning: the rings are one. Two kinds: ḥadīth from the Prophet ﷺ, khabar from others. General and particular: the ḥadīth ring sits inside the khabar ring.">
+    <text class="colhead" x="215" y="22">Khabar and ḥadīth: two names</text>
+    {LEG.map((r) => (
+      <>
+        <line class={r.ring} x1={SW.x0} x2={SW.x1} y1={r.y - 4} y2={r.y - 4} />
+        <TermTitle c={r.c} x={r.x} y={r.y} cls="rt" hit={r.hit} info={r.info} ar={{ x: f(r.info.cx + 40), y: r.y, size: "sm" }} />
+      </>
+    ))}
+
+    {/* the rings: khabar under ḥadīth, so where they coincide both strokes show */}
+    <g class="vring" {...ringAttrs("khabar")}><circle class="rk" r={R} /></g>
+    <g class="vring" {...ringAttrs("hadith")}><circle class="rh" r={R} /></g>
+
+    <g class:list={[{ off: off("same") }]} data-view-show="same">
+      <text class="rname" x="215" y="196">khabar</text>
+      <text class="rname" x="215" y="214">ḥadīth</text>
+      <text class="lbl" x="215" y="332">two names, one meaning</text>
+    </g>
+    <g class:list={[{ off: off("apart") }]} data-view-show="apart">
+      <Moon cx={112} cy={178} k={0.55} />
+      <text class="rname" x="112" y="224">ḥadīth</text>
+      {/* no Labels-mode kind names here: at k=0.5 the two figures stand 40 apart, and "Companion" and "Narrator",
+          centred under them, would overlap by about 15 */}
+      <Narrator x={298} y={178} k={0.5} {...FIG.sahabi} />
+      <Narrator x={338} y={178} k={0.5} {...FIG.later} />
+      <text class="rname" x="318" y="224">khabar</text>
+      <text class="lbl" x="112" y="296">from the Prophet ﷺ</text>
+      <text class="lbl" x="112" y="312">one who studies it</text>
+      <text class="lbl" x="112" y="328">is a muḥaddith</text>
+      <text class="lbl" x="318" y="296">from others</text>
+      <text class="lbl" x="318" y="312">one who studies history</text>
+      <text class="lbl" x="318" y="328">is an akhbārī</text>
+    </g>
+    <g class:list={[{ off: off("nested") }]} data-view-show="nested">
+      <text class="rname" x="170" y="219">ḥadīth</text>
+      <text class="rname" x="268" y="160">khabar</text>
+      <text class="lbl" x="215" y="332">every ḥadīth is a khabar,</text>
+      <text class="lbl" x="215" y="348">not every khabar a ḥadīth</text>
+    </g>
+  </svg>
+</div>
+<style>
+  /* the grid's 1px gaps show its background, drawing var(--rule) lines between the cells (as Names) */
+  .cells{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--rule)}
+  .cells svg{background:var(--surface)}
+  @media (max-width:640px) and (orientation:portrait){.cells{grid-template-columns:1fr}}
+  /* :global, since TermTitle renders the trigger text */
+  .report :global(.subt.start){text-anchor:start}
+  .tail{fill:none;stroke:var(--line);stroke-width:1.4}
+  /* the rings keep their stroke width at every scale; ḥadīth in the darker gold, for 3:1 against the surface */
+  .rk,.rh{fill:none;vector-effect:non-scaling-stroke}
+  .rk{stroke:var(--fg);stroke-width:2}
+  .rh{stroke:var(--gold-a);stroke-width:3;stroke-dasharray:8 6}
+  .vring{transition:transform .5s ease-in-out}
+  .rname{fill:var(--fg);font:italic 600 13px var(--f-body);text-anchor:middle}
+</style>

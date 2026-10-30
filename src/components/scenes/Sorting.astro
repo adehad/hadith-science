@@ -1,0 +1,228 @@
+---
+// "Which reports are acted on?" (phase 3 turuq design §3): Ibn Ḥajar's procedure in §5.7 as a sorting gate, read left
+// to right. Three panels of one 780-wide row, so it carousels in portrait:
+//   1  two kinds: mutawātir, and the āḥād gathered from mashhūr, ʿazīz and gharīb (§5.6); mustafīḍ, the jurists' name
+//      for mashhūr, as an alias row, with an inset of dots for the stricter use some make of it (§5.4)
+//   2  the check: mutawātir passes over on a bypass, its narrators not investigated (§5.3); the āḥād goes through one
+//      question, whether the narrator's truthfulness is proven (§5.7)
+//   3  three outcomes: accepted (maqbūl), held back, rejected (mardūd); held back is treated like the rejected
+// The outcome colour is as in "Can both be acted on?": --ok accepted, --pause held back, --gap rejected, each with a
+// glyph, so colour is not the only cue. "Held back" is the book's "paused upon", a plain card and not a term, kept
+// apart from tawaqquf (design §3.4).
+// No narrator figures, so no legend; no views (design §3.5).
+// Motion: the streams flow; the lens makes one pass over the question, then the three exits draw in one after
+// another, then the outcome cards come up. Each resting style is the end state, so with motion.css stopping every
+// animation the lens rests above the question, the exits are drawn and the cards shown.
+import Defs from "../svg/Defs.astro";
+import Arrow from "../svg/Arrow.astro";
+import Bracket from "../svg/Bracket.astro";
+import Chip from "../svg/Chip.astro";
+import Decision from "../svg/Decision.astro";
+import Glyph from "../svg/Glyph.astro";
+import Pill from "../svg/Pill.astro";
+import TermTitle from "../svg/TermTitle.astro";
+import { ROW_TITLE_TRIGGER, SUBT_TRIGGER, f, panelTrigger } from "../svg/geom";
+import { cap, type DiagramProps } from "../../lib/scene";
+import { dotCluster } from "../../lib/kit";
+import { href } from "../../lib/url";
+
+type Props = DiagramProps;
+const { caps, scene } = Astro.props;
+
+const W = 780, H = 480;
+if (scene.views?.length) throw new Error("Sorting: expected no views");
+const PANELS = scene.panels ?? [];
+
+// ---- panel 1: the two kinds ----
+const CHIP_X = 30;
+const MUTAWATIR_Y = 80;
+// the bypass: five thin lines, many routes, from the mutawātir chip over the check to its outcome pill
+const BUNDLE = { x0: 100, x1: 572, ys: [72, 76, 80, 84, 88] };
+const AHAD_KINDS = [
+  { text: "Mashhūr", y: 200 },
+  { text: "ʿAzīz", y: 250 },
+  { text: "Gharīb", y: 300 },
+];
+const BRK = { x: 112, y0: 200, y1: 300 };
+const FLOW_Y = 250;
+
+// a term title in the 15px display face (SUBT_TRIGGER), or a 13px bold alias row (ROW_TITLE_TRIGGER); panelTrigger
+// checks each hit area sits wholly inside its panel, or the carousel would cut it
+function trigger(slug: string, cx: number, y: number, opts: object = SUBT_TRIGGER) {
+  const c = cap(caps, slug);
+  return { c, cx, y, ...panelTrigger(c.translit, cx, y, PANELS, { ...opts, name: `Sorting: ${slug}` }) };
+}
+const ahad = trigger("ahad", 145, FLOW_Y + 5);
+// its two-line gloss starts clear of the bracket
+const AHAD_LBL_X = BRK.x + 10;
+const MUSTAFID_Y = 166;
+const mustafid = trigger("mustafid", 86, MUSTAFID_Y, ROW_TITLE_TRIGGER);
+
+// the inset: dots per stage of a chain; mustafīḍ's first and last stages equal, mashhūr's free (never fewer than
+// three). Dots, not digits, so it makes no numeric claim (design §0, §14).
+const INSET = { x: 14, y: 334, w: 232, h: 136 };
+const STAGE_X = [40, 66, 92, 118];
+const DOT_GAP = 6;
+const ROWS = [
+  { name: "mustafīḍ", sub: "first = last", y: 384, counts: [4, 6, 5, 4], ends: true },
+  { name: "mashhūr", sub: "more general", y: 428, counts: [3, 5, 4, 6], ends: false },
+];
+
+// ---- panel 2: the check ----
+const Q = { cx: 390, cy: FLOW_Y, w: 150, h: 90 };
+const LENS = { x: 390, y: 172 };
+
+// ---- panel 3: three outcomes ----
+const CARD = { x0: 540, x1: 760 };
+const TITLE_CX = 630, GLYPH_X = 562;
+const OUT = {
+  maqbul: { y0: 112, y1: 208, title: 141, kind: "ok" },
+  held: { y0: 221, y1: 279, title: 248, kind: "pause" },
+  mardud: { y0: 294, y1: 392, title: 323, kind: "reject" },
+} as const;
+const mid = (o: { y0: number; y1: number }) => (o.y0 + o.y1) / 2;
+const maqbul = trigger("maqbul", TITLE_CX, OUT.maqbul.title);
+const mardud = trigger("mardud", TITLE_CX, OUT.mardud.title);
+
+// the three exits from the question's right half, drawn in one after another (--d)
+const EXITS = [
+  { x1: 436, y1: Q.cy - 18, y2: mid(OUT.maqbul), d: 2.2 },
+  { x1: Q.cx + Q.w / 2 + 3, y1: Q.cy, y2: mid(OUT.held), d: 2.5 },
+  { x1: 436, y1: Q.cy + 18, y2: mid(OUT.mardud), d: 2.8 },
+];
+const EXIT_X2 = CARD.x0 - 3;
+---
+<svg viewBox={`0 0 ${W} ${H}`} class="sorting" role="group" aria-label="How reports are sorted, left to right. Mutawātir passes over the check on a bypass: its narrators are not investigated, and it is accepted, its truth certain. The āḥād, gathered from mashhūr, ʿazīz and gharīb, go through one check: is the narrator's truthfulness proven? Proven truthful: maqbūl, accepted. Neither proven: held back, which is treated like the rejected. Proven untruthful: mardūd, rejected and repelled.">
+  <Defs />
+  <line class="divider" x1="260" x2="260" y1="12" y2={H - 12} />
+  <line class="divider" x1="520" x2="520" y1="12" y2={H - 12} />
+  <text class="colhead" x="130" y="26">Two kinds</text>
+  <text class="colhead" x="390" y="26">The check</text>
+  <text class="colhead" x="650" y="26">Three outcomes</text>
+
+  {/* ---- the streams; hidden from screen readers, since the aria-label narrates them ---- */}
+  <g aria-hidden="true">
+    {BUNDLE.ys.map((y, i) => (
+      <path class="flow bundle" style={`--o:${f(i * 2.4)}px`} d={`M${BUNDLE.x0} ${y} H${BUNDLE.x1}`} marker-end={i === 2 ? "url(#ah)" : undefined} />
+    ))}
+    <Arrow x1={192} y1={FLOW_Y} x2={Q.cx - Q.w / 2 - 3} y2={FLOW_Y} />
+  </g>
+
+  {/* ---- panel 1: two kinds ---- */}
+  <Chip x={CHIP_X} y={MUTAWATIR_Y} text="Mutawātir" />
+  <text class="lbl start" x={CHIP_X} y="108">many routes</text>
+  {/* the kinds by their routes are routes' subject: a link, not a trigger */}
+  <a class="xlink" href={href("adad-al-turuq/routes/")} aria-label="The kinds by their routes: see How many routes carry it?">
+    <text class="rp" x="24" y="134"><tspan class="xu">How many routes carry it?</tspan><tspan dx="5">→</tspan></text>
+  </a>
+
+  <text class="lbl start" x="24" y={MUSTAFID_Y}>also</text>
+  <TermTitle c={mustafid.c} x={mustafid.cx} y={mustafid.y} cls="rt" hit={mustafid.hit} info={mustafid.info} ar={{ x: 176, y: MUSTAFID_Y, size: "sm" }} />
+  <path class="leader" d={`M58 ${MUSTAFID_Y + 6} V${AHAD_KINDS[0].y - 11}`} />
+  {AHAD_KINDS.map((k) => <Chip x={CHIP_X} y={k.y} text={k.text} />)}
+  <Bracket vertical x={BRK.x} y0={BRK.y0} y1={BRK.y1} ticks="left" />
+  <TermTitle c={ahad.c} x={ahad.cx} y={ahad.y} cls="subt" hit={ahad.hit} info={ahad.info} ar={{ x: ahad.cx, y: ahad.y - 26, size: "sm" }} />
+  <text class="lbl start" x={AHAD_LBL_X} y={ahad.y + 21}>each one is a</text>
+  <text class="lbl start" x={AHAD_LBL_X} y={ahad.y + 36}>khabar al-wāḥid</text>
+
+  {/* the inset: some keep mustafīḍ for a chain whose first and last stages are equal */}
+  <rect class="inset" x={INSET.x} y={INSET.y} width={INSET.w} height={INSET.h} rx="8" />
+  <text class="layer" x="26" y="354">Some tell them apart</text>
+  {ROWS.map((r) => (
+    <>
+      <g aria-hidden="true">
+        <line class="stage-line" x1={STAGE_X[0]} x2={STAGE_X[STAGE_X.length - 1]} y1={r.y} y2={r.y} />
+        {r.ends && [0, STAGE_X.length - 1].map((i) => (
+          <rect class="end" x={STAGE_X[i] - 9} y={r.y - 13} width="18" height="26" rx="5" />
+        ))}
+        {r.counts.map((n, i) => dotCluster(n, STAGE_X[i], r.y, DOT_GAP).map((d) => <circle class="dot" cx={d.x} cy={d.y} r="2.3" />))}
+      </g>
+      <text class="iname" x="142" y={r.y - 1}>{r.name}</text>
+      <text class="lbl start" x="142" y={r.y + 14}>{r.sub}</text>
+    </>
+  ))}
+  <text class="lbl" x="130" y="460">an illustration: dots per stage</text>
+
+  {/* ---- panel 2: the check ---- */}
+  <text class="lbl" x="390" y="58">mutawātir: narrators not investigated</text>
+  <text class="lbl" x="290" y={FLOW_Y - 8}>āḥād</text>
+  <g aria-hidden="true">
+    {EXITS.map((e) => (
+      <path class="exit" pathLength="1" style={`--d:${e.d}s`} d={`M${e.x1} ${e.y1} L${EXIT_X2} ${e.y2}`} marker-end="url(#ah)" />
+    ))}
+    <Decision cx={Q.cx} cy={Q.cy} w={Q.w} h={Q.h} lines={["narrator's", "truthfulness", "proven?"]} />
+    {/* the lens makes one pass over the question, then rests above it */}
+    <g class="lens-pass"><Glyph kind="lens" cx={LENS.x} cy={LENS.y} r={12} /></g>
+    {/* the exits' labels; the aria-label narrates them */}
+    <text class="lbl yn" x="468" y="192">proven truthful</text>
+    <text class="lbl yn" x="490" y={FLOW_Y - 7}>neither</text>
+    <text class="lbl yn" x="462" y="320">proven untruthful</text>
+  </g>
+  <text class="lbl" x="390" y="368">narrators are checked before</text>
+  <text class="lbl" x="390" y="384">the report is used as proof</text>
+
+  {/* ---- panel 3: three outcomes ---- */}
+  {/* how sure mutawātir makes us is the knowledge scene's subject: the pill links there */}
+  <a class="xlink pill-link" href={href("adad-al-turuq/knowledge/")} aria-label="Accepted · certain: see How sure can we be?">
+    <Pill x={650} y={MUTAWATIR_Y} state="accept" text="Accepted · certain" />
+    <text class="rp" x="728" y={MUTAWATIR_Y + 4}>→</text>
+  </a>
+
+  <g class="out">
+    <rect class={`card ${OUT.maqbul.kind}`} x={CARD.x0} y={OUT.maqbul.y0} width={CARD.x1 - CARD.x0} height={OUT.maqbul.y1 - OUT.maqbul.y0} rx="8" />
+    <Glyph kind="check" cx={GLYPH_X} cy={OUT.maqbul.title - 5} r={9} />
+    <TermTitle c={maqbul.c} x={maqbul.cx} y={maqbul.y} cls="subt" hit={maqbul.hit} info={maqbul.info} ar={{ x: 724, y: maqbul.y, size: "sm" }} />
+    <text class="lbl" x="650" y="166">narrator proven truthful</text>
+    <text class="lbl" x="650" y="182">truth overwhelmingly likely</text>
+    <text class="lbl" x="650" y="198">the majority: it must be acted on</text>
+  </g>
+
+  <g class="out">
+    <rect class={`card ${OUT.held.kind}`} x={CARD.x0} y={OUT.held.y0} width={CARD.x1 - CARD.x0} height={OUT.held.y1 - OUT.held.y0} rx="8" />
+    <Glyph kind="pause" cx={GLYPH_X} cy={OUT.held.title - 5} r={9} />
+    <text class="subt plain" x={TITLE_CX} y={OUT.held.title}>Held back</text>
+    <text class="lbl" x="650" y="269">neither is proven</text>
+  </g>
+
+  <g class="out">
+    <rect class={`card ${OUT.mardud.kind}`} x={CARD.x0} y={OUT.mardud.y0} width={CARD.x1 - CARD.x0} height={OUT.mardud.y1 - OUT.mardud.y0} rx="8" />
+    <Glyph kind="cross" cx={GLYPH_X} cy={OUT.mardud.title - 5} r={9} />
+    <TermTitle c={mardud.c} x={mardud.cx} y={mardud.y} cls="subt" hit={mardud.hit} info={mardud.info} ar={{ x: 724, y: mardud.y, size: "sm" }} />
+    <text class="lbl" x="650" y="348">proven untruthful: repelled,</text>
+    <text class="lbl" x="650" y="364">falsehood overwhelmingly likely</text>
+    <text class="lbl" x="650" y="380">narrator not proven truthful</text>
+  </g>
+
+  {/* held back is treated like the rejected, without being proven false */}
+  <path class="treated" d={`M${CARD.x1 + 2} ${mid(OUT.held)} Q${CARD.x1 + 20} ${f((mid(OUT.held) + mid(OUT.mardud)) / 2)} ${CARD.x1 + 2} ${mid(OUT.mardud)}`} marker-end="url(#ahp)" aria-hidden="true" />
+  <text class="lbl" x="650" y="414">held back is treated like the</text>
+  <text class="lbl" x="650" y="430">rejected, not proven false</text>
+</svg>
+<style>
+  /* :global, since TermTitle renders the trigger text */
+  .sorting :global(.rt){text-anchor:middle}
+  .yn{font-size:11px}
+  .subt.plain{fill:var(--muted)}
+  .pill-link:hover :global(rect),.pill-link:focus-visible :global(rect){stroke-width:2.5}
+  /* the five lines' dashes are staggered, so they read as many routes rather than a ladder */
+  .bundle{stroke-width:1.2;stroke-dashoffset:var(--o);animation-name:sorting-flow}
+  @keyframes sorting-flow{from{stroke-dashoffset:var(--o)}to{stroke-dashoffset:calc(var(--o) - 12px)}}
+  .leader{fill:none;stroke:var(--line);stroke-width:1.3;stroke-dasharray:.1 4;stroke-linecap:round}
+  .inset{fill:none;stroke:var(--rule);stroke-width:1.2}
+  .stage-line{stroke:var(--rule);stroke-width:1.2}
+  .end{fill:none;stroke:var(--gold-a);stroke-width:1.3}
+  .dot{fill:var(--fg)}
+  .iname{fill:var(--fg);font:italic 600 12px var(--f-body)}
+  .card{fill:var(--surface);stroke:var(--rule);stroke-width:1.2}
+  .card.ok{fill:color-mix(in srgb,var(--ok) 6%,var(--surface));stroke:color-mix(in srgb,var(--ok) 55%,var(--surface))}
+  .card.pause{fill:color-mix(in srgb,var(--pause) 7%,var(--surface));stroke:color-mix(in srgb,var(--pause) 55%,var(--surface))}
+  .card.reject{fill:color-mix(in srgb,var(--gap) 6%,var(--surface));stroke:color-mix(in srgb,var(--gap) 55%,var(--surface))}
+  .treated{fill:none;stroke:var(--pause);stroke-width:1.6;stroke-dasharray:4 3}
+  /* each resting style is the end state; the animations run from the start state, once */
+  .exit{fill:none;stroke:var(--line);stroke-width:2;stroke-dasharray:1;stroke-dashoffset:0;animation:sorting-draw .4s ease-out both;animation-delay:var(--d)}
+  .lens-pass{animation:sorting-pass 1.6s ease-in-out .6s both}
+  .out{animation:sorting-up .5s ease-out 3.2s both}
+  @keyframes sorting-draw{0%{stroke-dashoffset:1;opacity:0}10%{opacity:1}100%{stroke-dashoffset:0;opacity:1}}
+  @keyframes sorting-pass{25%{transform:translateX(-20px)}75%{transform:translateX(20px)}}
+  @keyframes sorting-up{from{opacity:.5}}
+</style>

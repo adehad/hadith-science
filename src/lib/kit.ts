@@ -73,3 +73,51 @@ export function diamondPath(cx: number, cy: number, w: number, h: number, r: num
   }
   return `${d} Z`;
 }
+
+export interface BracketOpts {
+  /** a vertical bracket runs down from a0 to a1 at x = at; a horizontal one (the default) across at y = at */
+  vertical?: boolean;
+  /** which way the end ticks point: up (the default) or down when horizontal, left (the default) or right when
+   *  vertical */
+  ticks?: "up" | "down" | "left" | "right";
+  /** an open arrowhead beyond one end (a0 is the start), pointing away from the bracket */
+  arrow?: "start" | "end";
+  /** the ticks' length */
+  tick?: number;
+}
+
+// a bracket (Bracket.astro) as one SVG path: a spine from a0 to a1 with a tick at each end, and optionally the spine
+// running on past one end to an open chevron (the isnād bracket's "towards the matn")
+export function bracketPath(a0: number, a1: number, at: number, { vertical = false, ticks, arrow, tick = 7 }: BracketOpts = {}): string {
+  const dir = ticks ?? (vertical ? "left" : "up");
+  if (vertical !== (dir === "left" || dir === "right")) throw new Error(`bracketPath: ticks ${dir} don't fit a ${vertical ? "vertical" : "horizontal"} bracket`);
+  const t = f(at + (dir === "up" || dir === "left" ? -tick : tick));
+  const AR = 10, HW = 4, HD = 5;
+  // p(along, across) writes a point in the bracket's own frame
+  const p = (a: number, c: number) => (vertical ? `${f(c)} ${f(a)}` : `${f(a)} ${f(c)}`);
+  let d = vertical ? `M${t} ${f(a0)} H${f(at)} V${f(a1)} H${t}` : `M${f(a0)} ${t} V${f(at)} H${f(a1)} V${t}`;
+  if (arrow) {
+    const end = arrow === "start" ? a0 : a1;
+    const s = (arrow === "start") === a0 < a1 ? -1 : 1; // away from the bracket
+    const tip = end + s * AR, back = tip - s * HD;
+    d += ` M${p(end, at)} ${vertical ? "V" : "H"}${f(tip)} M${p(back, at - HW)} L${p(tip, at)} L${p(back, at + HW)}`;
+  }
+  return d;
+}
+
+// n dots in pairs, centred on (cx, cy) and gap apart, an odd last dot centred under its pair: the mustafīḍ inset's
+// narrators at one stage of a chain (Sorting.astro). Dots, not digits, so it shows a pattern without a count.
+export function dotCluster(n: number, cx: number, cy: number, gap: number): { x: number; y: number }[] {
+  const rows = Math.ceil(n / 2);
+  return Array.from({ length: n }, (_, i) => {
+    const row = Math.floor(i / 2);
+    const alone = i === n - 1 && n % 2 === 1;
+    return { x: f(alone ? cx : cx + (i % 2 ? gap : -gap) / 2) || 0, y: f(cy + (row - (rows - 1) / 2) * gap) || 0 };
+  });
+}
+
+// the baseline of line j of n stacked text lines, lh apart and centred on y: a narrator's name lines beside his
+// figure (Report.astro, Lone.astro)
+export function stackY(y: number, j: number, n: number, lh = 14): number {
+  return f(y + (j - (n - 1) / 2) * lh);
+}

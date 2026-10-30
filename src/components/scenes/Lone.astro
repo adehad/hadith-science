@@ -1,0 +1,211 @@
+---
+// "Where is the narrator alone?" (phase 3 turuq design §5): absolute and relative gharīb (§5.8) as four chains side
+// by side, one per panel of one 1040-wide row, so it carousels in portrait. Every lone link sits on a soft halo:
+//   1  the walāʾ report: ʿAbd Allāh ibn Dīnār alone from Ibn ʿUmar, at the root (§5.8)
+//   2  the Branches of Faith report: Abū Ṣāliḥ alone from Abū Hurayra, ʿAbd Allāh ibn Dīnār alone after him (§5.8)
+//   3  the Intentions report: ʿAlqama alone from ʿUmar, Muḥammad ibn Ibrāhīm alone from ʿAlqama, Yaḥyā ibn Saʿīd
+//      alone from Muḥammad (§5.5)
+//   4  gharīb nisbī: several narrate from the Companion, then one narrator is alone from one of them, while the
+//      ḥadīth may reach us by other routes. The book names no example, so this column is an unnamed illustration
+//      (design §14); its layout follows the owner's p.90 sketch, without its names.
+// Rows line up across the panels, so the eye can compare where the halos sit. Below the last named narrator the book
+// gives no chain, so an elided arrow runs on. The halos are decoration: the "alone" tags carry the meaning.
+// Motion: the arrows flow; the halos fade in one after another, panel by panel and top to bottom, once. Their
+// resting style is the end state, so with motion.css stopping every animation all the halos show.
+import Defs from "../svg/Defs.astro";
+import Moon from "../svg/Moon.astro";
+import Narrator from "../svg/Narrator.astro";
+import Arrow from "../svg/Arrow.astro";
+import TermTitle from "../svg/TermTitle.astro";
+import { FIG, KIND_NAME, RELIABLE, type Kind } from "../svg/figures";
+import { SUBT_TRIGGER, f, panelTrigger, rowTrigger } from "../svg/geom";
+import { cap, type DiagramProps } from "../../lib/scene";
+import { stackY } from "../../lib/kit";
+
+type Props = DiagramProps;
+const { caps, scene } = Astro.props;
+
+const W = 1040, H = 500;
+if (scene.views?.length) throw new Error("Lone: expected no views");
+const PANELS = scene.panels ?? [];
+if (PANELS.length !== 4) throw new Error("Lone: expected four panels");
+
+const K = 0.75;
+const HALF = 22 * K; // half a figure's height
+const SK = 0.7; // the relative column's unnamed students
+const SHALF = 22 * SK;
+const MOON_Y = 82, MOON_K = 0.7;
+const MOON_R = 24 * MOON_K;
+const ROWS = [135, 205, 275, 345];
+const END_Y = 400; // where the elided arrows stop
+const TITLE_Y = 30, SUB_Y = 54;
+// each halo runs from 27 above its figure's centre to 19 below, so the Labels-mode name under the figure clears it
+const HALO = { w: 44, top: 27, bottom: 19 };
+
+// ---- panels 1-3: named chains ----
+// each figure's name sits to its right, clear of its halo, with its "alone" tag as the last line
+type Link = { lines: string[]; kind: Kind; tag?: string; alone?: boolean };
+type Chain = { x: number; links: Link[] };
+const CHAINS: Chain[] = [
+  {
+    x: 78,
+    links: [
+      { lines: ["Ibn ʿUmar"], kind: "sahabi" },
+      { lines: ["ʿAbd Allāh", "ibn Dīnār"], kind: "tabii", tag: "alone from Ibn ʿUmar", alone: true },
+    ],
+  },
+  {
+    x: 338,
+    links: [
+      { lines: ["Abū Hurayra"], kind: "sahabi" },
+      { lines: ["Abū Ṣāliḥ"], kind: "tabii", tag: "alone from Abū Hurayra", alone: true },
+      // a Successor from general knowledge, not from the translation (design §1, §14)
+      { lines: ["ʿAbd Allāh", "ibn Dīnār"], kind: "tabii", tag: "alone after him", alone: true },
+    ],
+  },
+  {
+    x: 598,
+    links: [
+      { lines: ["ʿUmar"], kind: "sahabi", tag: "told from the pulpit" },
+      { lines: ["ʿAlqama"], kind: "tabii", tag: "alone from ʿUmar", alone: true },
+      // Successors from general knowledge (design §1, §14)
+      { lines: ["Muḥammad ibn", "Ibrāhīm"], kind: "tabii", tag: "alone from ʿAlqama", alone: true },
+      { lines: ["Yaḥyā ibn", "Saʿīd"], kind: "tabii", tag: "alone from Muḥammad", alone: true },
+    ],
+  },
+];
+const NAME_DX = HALO.w / 2 + 4;
+const lineY = (y: number, j: number, n: number) => stackY(y + 4, j, n);
+
+// ---- panel 4: the relative column, unnamed ----
+const P4 = { moon: 870, comp: 870, studs: [830, 870, 910], lone: 870, other: 990 };
+
+// the halos, in the order they fade in: panel by panel, top to bottom
+const HALO_T0 = 0.6, HALO_STEP = 0.2;
+const halos = [
+  ...CHAINS.flatMap((c) => c.links.flatMap((l, i) => (l.alone ? [{ x: c.x, y: ROWS[i] }] : []))),
+  { x: P4.lone, y: ROWS[2] },
+].map((h, i) => ({ ...h, d: f(HALO_T0 + i * HALO_STEP) }));
+
+// ---- triggers ----
+// the panel titles in the 15px display face (geom's SUBT_TRIGGER); panelTrigger checks each sits inside its panel
+function title(slug: string, cx: number) {
+  const c = cap(caps, slug);
+  return { c, cx, y: TITLE_Y, ...panelTrigger(c.translit, cx, TITLE_Y, PANELS, { ...SUBT_TRIGGER, name: `Lone: ${slug}` }) };
+}
+const mutlaq = title("gharib-mutlaq", 130);
+const nisbi = title("gharib-nisbi", 910);
+// fard: a 13px bold row under the muṭlaq title, its note running on after the (i)
+const FARD_NOTE = "mostly used for this kind";
+const fard = (() => {
+  const c = cap(caps, "fard");
+  const x = 26;
+  const t = rowTrigger(c.translit, x, SUB_Y);
+  const p = PANELS[0];
+  if (t.hit.x < p.x0 || t.hit.x + t.hit.w > p.x1) throw new Error("Lone: fard trigger leaves its panel");
+  return { c, x, ...t, noteX: f(t.info.cx + 14) };
+})();
+
+// ---- bottom rows: which report, then where its narrator is alone ----
+const NAME_Y = 424, NOTE_Y = 441, WHERE_Y = [464, 480];
+const BOTTOM = [
+  { cx: 130, name: "The walāʾ report", where: ["alone at the root"] },
+  { cx: 390, name: "The Branches of Faith report", where: ["alone at the root,", "then again after him"] },
+  { cx: 650, name: "The Intentions report", note: "first in al-Bukhārī's Ṣaḥīḥ", where: ["alone at the root,", "then twice more"] },
+  { cx: 910, name: "An illustration", note: "the book names no example", where: ["alone further down;", "the ḥadīth may be mashhūr"] },
+];
+---
+<svg viewBox={`0 0 ${W} ${H}`} class="lone" role="group" aria-label="Where the narrator is alone, in four chains from the Prophet ﷺ. Gharīb muṭlaq, mostly called fard: in the walāʾ report, ʿAbd Allāh ibn Dīnār alone narrates it from Ibn ʿUmar. In the Branches of Faith report, Abū Ṣāliḥ alone has it from Abū Hurayra, and ʿAbd Allāh ibn Dīnār alone after him. In the Intentions report, which ʿUmar told from the pulpit, ʿAlqama alone has it from ʿUmar, then Muḥammad ibn Ibrāhīm alone from ʿAlqama, then Yaḥyā ibn Saʿīd alone from Muḥammad. Gharīb nisbī, rarely called fard, shown as an illustration because the book names no example: several narrate from the Companion, then one narrator is alone from one of them, while the ḥadīth may reach us by other routes and be mashhūr.">
+  <Defs />
+  <line class="divider" x1="260" x2="260" y1="12" y2={H - 12} />
+  <line class="divider" x1="520" x2="520" y1="12" y2={H - 12} />
+  <line class="divider" x1="780" x2="780" y1="12" y2={H - 12} />
+
+  {/* ---- titles ---- */}
+  <TermTitle c={mutlaq.c} x={mutlaq.cx} y={mutlaq.y} cls="subt" hit={mutlaq.hit} info={mutlaq.info} />
+  <TermTitle c={fard.c} x={fard.x} y={SUB_Y} cls="rt" hit={fard.hit} info={fard.info} />
+  <text class="lbl start" x={fard.noteX} y={SUB_Y}>{FARD_NOTE}</text>
+  {/* panels 2 and 3 are absolute too, which a portrait visitor seeing one panel at a time needs told */}
+  <text class="subt" x="390" y={TITLE_Y}>Branches of Faith</text>
+  <text class="lbl" x="390" y={SUB_Y}>also absolute</text>
+  <text class="subt" x="650" y={TITLE_Y}>Intentions</text>
+  <text class="lbl" x="650" y={SUB_Y}>also absolute · from §5.5</text>
+  <TermTitle c={nisbi.c} x={nisbi.cx} y={nisbi.y} cls="subt" hit={nisbi.hit} info={nisbi.info} />
+  <text class="lbl" x="910" y={SUB_Y}>rarely called fard</text>
+
+  {/* ---- the halos, under the figures ---- */}
+  <g aria-hidden="true">
+    {halos.map((h) => <rect class="alone" x={h.x - HALO.w / 2} y={h.y - HALO.top} width={HALO.w} height={HALO.top + HALO.bottom} rx="9" style={`--d:${h.d}s`} />)}
+  </g>
+
+  {/* ---- panels 1-3: the named chains, narrated down from the Prophet ﷺ ---- */}
+  {CHAINS.map((c) => {
+    const last = ROWS[c.links.length - 1];
+    return (
+      <>
+        <Moon cx={c.x} cy={MOON_Y} k={MOON_K} />
+        <Arrow x1={c.x} y1={MOON_Y + MOON_R + 2} x2={c.x} y2={ROWS[0] - HALF - 3} />
+        {c.links.slice(1).map((_, i) => <Arrow x1={c.x} y1={ROWS[i] + HALF + 2} x2={c.x} y2={ROWS[i + 1] - HALF - 3} />)}
+        {/* the book gives no more of the chain */}
+        <Arrow x1={c.x} y1={last + HALF + 4} x2={c.x} y2={END_Y} variant="elided" />
+        {c.links.map((l, i) => {
+          const lines = l.tag ? [...l.lines, l.tag] : l.lines;
+          return (
+            <>
+              <Narrator x={c.x} y={ROWS[i]} k={K} {...FIG[l.kind]} {...RELIABLE} label={KIND_NAME[l.kind]} />
+              {lines.map((t, j) => (
+                <text class={j < l.lines.length ? "nm" : "lbl start sm"} x={c.x + NAME_DX} y={lineY(ROWS[i], j, lines.length)}>{t}</text>
+              ))}
+            </>
+          );
+        })}
+      </>
+    );
+  })}
+
+  {/* ---- panel 4: the relative column, an unnamed illustration ---- */}
+  <Moon cx={P4.moon} cy={MOON_Y} k={MOON_K} />
+  <Arrow x1={P4.moon} y1={MOON_Y + MOON_R + 2} x2={P4.comp} y2={ROWS[0] - HALF - 3} />
+  <Narrator x={P4.comp} y={ROWS[0]} k={K} {...FIG.sahabi} />
+  {/* its Labels-mode name to its left, since the students' arrows fan out below it */}
+  <text class="lbl end mode-label" x={P4.comp - 20} y={ROWS[0] + 4}>{KIND_NAME.sahabi}</text>
+  {/* more than one narrates from the Companion */}
+  {P4.studs.map((x) => <Arrow x1={P4.comp + (x - P4.comp) * 0.12} y1={ROWS[0] + HALF + 2} x2={x} y2={ROWS[1] - SHALF - 3} />)}
+  {P4.studs.map((x, i) => <Narrator x={x} y={ROWS[1]} k={SK} {...FIG.tabii} label={i === 0 ? KIND_NAME.tabii : undefined} />)}
+  {/* the side students' routes go on; the book gives no more */}
+  {P4.studs.filter((x) => x !== P4.lone).map((x) => <Arrow x1={x} y1={ROWS[1] + SHALF + 3} x2={x} y2={END_Y} variant="elided" />)}
+  {/* then one narrator is alone from one of them */}
+  <Arrow x1={P4.lone} y1={ROWS[1] + SHALF + 2} x2={P4.lone} y2={ROWS[2] - HALF - 3} />
+  <Narrator x={P4.lone} y={ROWS[2]} k={K} {...FIG.later} label={KIND_NAME.later} />
+  {/* below the Labels-mode name, so the two never overlap */}
+  <text class="lbl sm" x={P4.lone} y={ROWS[2] + 49}>alone from</text>
+  <text class="lbl sm" x={P4.lone} y={ROWS[2] + 63}>one of them</text>
+  <Arrow x1={P4.lone} y1={ROWS[2] + 71} x2={P4.lone} y2={END_Y} variant="elided" />
+  {/* the ḥadīth may reach us by other routes too (owner's p.90 sketch: other Companions' routes) */}
+  <g class="faint">
+    <Arrow x1={P4.moon + MOON_R + 3} y1={MOON_Y + 4} x2={P4.other - 4} y2={ROWS[0] - HALF - 3} bend={30} />
+    <Narrator x={P4.other} y={ROWS[0]} k={K} {...FIG.sahabi} />
+    <Arrow x1={P4.other} y1={ROWS[0] + HALF + 2} x2={P4.other} y2={ROWS[1] - SHALF - 3} />
+    <Narrator x={P4.other} y={ROWS[1]} k={SK} {...FIG.tabii} />
+    <Arrow x1={P4.other} y1={ROWS[1] + SHALF + 3} x2={P4.other} y2={372} variant="elided" />
+  </g>
+  <text class="lbl sm" x={P4.other} y={390}>other routes</text>
+
+  {/* ---- bottom rows ---- */}
+  {BOTTOM.map((b) => (
+    <>
+      <text class="rn" x={b.cx} y={NAME_Y}>{b.name}</text>
+      {b.note && <text class="lbl sm" x={b.cx} y={NOTE_Y}>{b.note}</text>}
+      {b.where.map((t, j) => <text class="lbl" x={b.cx} y={WHERE_Y[j]}>{t}</text>)}
+    </>
+  ))}
+</svg>
+<style>
+  .lbl.end{text-anchor:end}
+  .rn{fill:var(--fg);font:700 13px var(--f-body);text-anchor:middle}
+  .faint{opacity:.5}
+  /* the halo behind each lone narrator: decoration only, the tags carry the meaning */
+  .alone{fill:color-mix(in srgb,var(--gold-b) 26%,var(--surface));stroke:color-mix(in srgb,var(--gold-a) 45%,var(--surface));stroke-width:1;animation:lone-halo .3s ease-out both;animation-delay:var(--d)}
+  /* the resting style is the end state; the fade runs from the start state, once */
+  @keyframes lone-halo{from{opacity:0}}
+</style>

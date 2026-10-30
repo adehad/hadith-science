@@ -39,6 +39,10 @@ export function titleTrigger(
 const SUBT_W = 9.2;
 export const SUBT_TRIGGER = { charW: SUBT_W, half: SUBT_W / 2, gap: 12, top: 17, h: 24, r: 7 } as const satisfies TitleTriggerOpts;
 
+// a centred 13px bold row label as a term trigger (Sorting's alias row): about 6.7 units per character, as rowTrigger
+const ROW_W = 6.7;
+export const ROW_TITLE_TRIGGER = { charW: ROW_W, half: ROW_W / 2, gap: 12, top: 13, h: 18, r: 7 } as const satisfies TitleTriggerOpts;
+
 export interface RowTriggerOpts {
   /** estimated width per character of the row text (6.7 for 13px bold) */
   charW?: number;

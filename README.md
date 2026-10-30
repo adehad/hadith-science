@@ -20,7 +20,7 @@ Live site: <https://adehad.github.io/hadith-science/>
 - Light and dark themes, and full support for reduced motion.
 - Installable as an app, and readable offline after the first visit.
 
-- **Nine scenes** (below), each one diagram whose terms open a popover and have their own share link.
+- **Thirteen scenes** (below), each one diagram whose terms open a popover and have their own share link.
 
 Terms without a scene yet are marked "scene coming soon" in the glossary. Later phases draw the rest, one division at a time.
 
@@ -33,7 +33,12 @@ Terms without a scene yet are marked "scene coming soon" in the glossary. Later 
 
 | Scene | Page | Terms |
 |---|---|---|
+| **ʿAdad al-ṭuruq** (how a report reached us) | | |
+| What is a report? | `/adad-al-turuq/report/` | khabar, ḥadīth, isnād, matn |
 | How many routes carry it? | `/adad-al-turuq/routes/` | mutawātir, mashhūr, ʿazīz, gharīb |
+| Which reports are acted on? | `/adad-al-turuq/sorting/` | āḥād, mustafīḍ, maqbūl, mardūd |
+| How sure can we be? | `/adad-al-turuq/knowledge/` | al-ʿilm al-yaqīnī, al-ʿilm al-naẓarī, al-khabar al-muḥtaff bi-l-qarāʾin |
+| Where is the narrator alone? | `/adad-al-turuq/lone/` | gharīb muṭlaq, fard, gharīb nisbī |
 | **al-Maqbūl** (accepted reports) | | |
 | How sound is it? | `/al-maqbul/grades/` | ṣaḥīḥ and ḥasan, in themselves and by others; ʿadl, ḍabṭ and ittiṣāl; the soundest chains; ḥasan ṣaḥīḥ |
 | Who outweighs whom? | `/al-maqbul/opposition/` | ziyādat al-thiqa, shādhdh and maḥfūẓ, munkar and maʿrūf |
@@ -55,6 +60,7 @@ Figure scenes can show a key under the diagram (**Key**) or write each narrator'
 | | Light | Dark |
 |---|---|---|
 | Can both be acted on? | ![Can both be acted on? A decision path of five questions, each answer dropping to an outcome card, light](docs/screenshots/acted-on-desktop-light.png) | ![Can both be acted on? A decision path of five questions, each answer dropping to an outcome card, dark](docs/screenshots/acted-on-desktop-dark.png) |
+| Where is the narrator alone? | ![Where is the narrator alone? Four chains from the Prophet ﷺ, each lone narrator on a soft halo, light](docs/screenshots/lone-desktop-light.png) | ![Where is the narrator alone? Four chains from the Prophet ﷺ, each lone narrator on a soft halo, dark](docs/screenshots/lone-desktop-dark.png) |
 | How was it received? | ![The delivery staircase, light](docs/screenshots/delivery-desktop-light.png) | ![The delivery staircase, dark](docs/screenshots/delivery-desktop-dark.png) |
 | Phone | ![How many routes carry it? on a phone, first carousel panel, light](docs/screenshots/routes-mobile-light.png) | ![Who is who? on a phone, the cells in one column, dark](docs/screenshots/names-mobile-dark.png) |
 

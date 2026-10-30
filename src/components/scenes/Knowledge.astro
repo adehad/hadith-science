@@ -1,0 +1,252 @@
+---
+// "How sure can we be?" (phase 3 turuq design §4): degrees of sureness as a knowledge meter, in three panels of one
+// 780-wide row, so it carousels in portrait:
+//   1  certain: a mutawātir fan from the moon, whose narrators are not investigated (§5.3), and "Who gains it?",
+//      Ibn Ḥajar's own test: a layperson gains certain knowledge but not reasoned knowledge; a ḥadīth scholar both
+//   2  how sure: one column in three bands, certain (ʿilm yaqīnī), reasoned (ʿilm naẓarī) and the plain accepted
+//      report, whose truth is overwhelmingly likely (§5.7), with markers placing the kinds of report on it
+//   3  the signs: the three signs Ibn Ḥajar names (§5.7), each sending a gold lift into the reasoned band; all three
+//      together come close to certainty
+// The meter shows order only: no scale, ticks or numbers (design §0, §14). The "Other views" switch (§5.3) moves the
+// mutawātir marker down into the reasoned band (a transform set per view through data-v-<id>, viewswitch.ts), and
+// empties the layperson's certain cell with a "?", since he gains that knowledge all the same: Ibn Ḥajar's objection.
+// Motion: the fan's arrows flow; the three lifts draw in one after another, then the "all three" marker brightens.
+// Each resting style is the end state, so with motion.css stopping every animation the lifts are drawn, the marker is
+// bright and the "?" still.
+import Defs from "../svg/Defs.astro";
+import Moon from "../svg/Moon.astro";
+import Narrator from "../svg/Narrator.astro";
+import Arrow from "../svg/Arrow.astro";
+import Chip from "../svg/Chip.astro";
+import Glyph from "../svg/Glyph.astro";
+import TermTitle from "../svg/TermTitle.astro";
+import { FIG, KIND_NAME, RELIABLE } from "../svg/figures";
+import { ROW_TITLE_TRIGGER, f, panelTrigger } from "../svg/geom";
+import { cap, type DiagramProps } from "../../lib/scene";
+import { chipRow } from "../../lib/kit";
+import { stepFill } from "../../lib/staircase";
+import { href } from "../../lib/url";
+
+type Props = DiagramProps;
+const { caps, scene } = Astro.props;
+
+const W = 780, H = 490;
+const VIEW_IDS = ["ibn-hajar", "nazari-only"] as const;
+if ((scene.views ?? []).map((v) => v.id).join() !== VIEW_IDS.join()) throw new Error(`Knowledge: expected views ${VIEW_IDS.join(", ")}`);
+const PANELS = scene.panels ?? [];
+
+// a 13px bold term label, centred so panelTrigger can check its hit area sits wholly inside its panel (or the
+// carousel would cut it); left sets where the text starts, for the meter's left-aligned rows
+const ROW = { ...ROW_TITLE_TRIGGER, gap: 10 } as const;
+function trigger(slug: string, left: number, y: number) {
+  const c = cap(caps, slug);
+  const cx = f(left + (c.translit.length * ROW.charW) / 2);
+  return { c, cx, y, ...panelTrigger(c.translit, cx, y, PANELS, { ...ROW, name: `Knowledge: ${slug}` }) };
+}
+
+// ---- panel 1: certain ----
+const MOON = { x: 130, y: 62 };
+const FAN_XS = [74, 102, 130, 158, 186];
+const FAN_ROWS = [{ y: 118, kind: "sahabi" }, { y: 166, kind: "tabii" }, { y: 214, kind: "later" }] as const;
+const FAN_K = 0.5;
+const fanArrows = FAN_ROWS.flatMap((r, i) => FAN_XS.map((x) => ({
+  x1: i === 0 ? MOON.x : x, y1: i === 0 ? MOON.y + 18 : FAN_ROWS[i - 1].y + 13, x2: x, y2: r.y - 14,
+})));
+// "Who gains it?": a cell per kind of knowledge, filled where that person gains it
+const WHO = { head: 314, cols: 336, lay: 362, sch: 410 };
+const CELL = { certain: 162, reasoned: 216, w: 32, h: 18 };
+
+// ---- panel 2: the meter ----
+const COL = { x0: 448, x1: 498 };
+const COL_CX = (COL.x0 + COL.x1) / 2;
+const BANDS = [
+  { y0: 46, y1: 166, lvl: 0 },
+  { y0: 166, y1: 340, lvl: 3 },
+  { y0: 340, y1: 440, lvl: 6 },
+];
+const LEFT = 268;
+const yaqini = trigger("ilm-yaqini", LEFT, 74);
+const nazari = trigger("ilm-nazari", LEFT, 226);
+// markers: a dot on the column's centre line, its label at LEFT and a dotted leader from the label's end to the dot
+const LBL_W = 6.1;
+const marker = (text: string, y: number) => ({ text, y, x1: f(LEFT + text.length * LBL_W + 6) });
+const MUT = { ibn: 140, nazari: 294 };
+const mut = marker("Mutawātir", MUT.ibn);
+const MUT_SHIFT = { "ibn-hajar": "translate(0px,0px)", "nazari-only": `translate(0px,${MUT.nazari - MUT.ibn}px)` };
+// on two lines, or it would run into the column; the leader starts from the first
+const allThree = { ...marker("all three signs:", 184), more: "close to certain" };
+const withSign = marker("āḥād with a sign", 318);
+const accepted = marker("āḥād, accepted", 412);
+
+// ---- panel 3: the signs ----
+const CARD = { x0: 540, x1: 770 };
+const CARD_CX = (CARD.x0 + CARD.x1) / 2;
+const CARDS = {
+  sahihayn: { y0: 44, y1: 146 },
+  mashhur: { y0: 160, y1: 264 },
+  imams: { y0: 278, y1: 392 },
+};
+const ROUTE_XS = [615, 655, 695];
+const ROUTE_YS = [201, 225];
+const imams = chipRow(["Mālik", "al-Shāfiʿī", "Aḥmad"], 552, 20);
+const IMAM_Y = 328, PARTNER_Y = 358;
+const PARTNER = "+ partner";
+const partnerW = imams.chips[1].w;
+// the three lifts, from each card's left edge into the reasoned band at the "with a sign" marker, drawn in turn (--d)
+const LIFT_X2 = COL.x1 + 6;
+const LIFTS = [
+  { x1: CARD.x0 + 4, y1: 136, y2: withSign.y - 9, bend: -6, d: 0.8 },
+  { x1: CARD.x0 + 4, y1: 246, y2: withSign.y, bend: -4, d: 1.2 },
+  { x1: CARD.x0 + 4, y1: 340, y2: withSign.y + 9, bend: 4, d: 1.6 },
+].map((l) => ({ ...l, path: `M${l.x1} ${l.y1} Q${f((l.x1 + LIFT_X2) / 2 + l.bend)} ${f((l.y1 + l.y2) / 2)} ${LIFT_X2} ${l.y2}` }));
+const muhtaff = trigger("muhtaff-bil-qarain", 530, 426);
+---
+<svg viewBox={`0 0 ${W} ${H}`} class="knowledge" role="group" aria-label="How sure a report makes us, as a meter in three bands. Mutawātir, whose narrators are not investigated, sits in the top band: certain knowledge, which even a layperson gains. The middle band is reasoned knowledge, which only someone able to reason gains: an āḥād report reaches it, for a ḥadīth scholar, when signs back it, and with all three signs together it comes close to certainty. The three signs are being in both Ṣaḥīḥs, a mashhūr with clean routes, and a chain of great imams such as Mālik, al-Shāfiʿī and Aḥmad. The bottom band is the plain accepted āḥād report, its truth overwhelmingly likely. The other view places mutawātir in the reasoned band; Ibn Ḥajar answers that a layperson, who cannot reason, still gains knowledge from it.">
+  <Defs />
+  <line class="divider" x1="260" x2="260" y1="12" y2={H - 12} />
+  <line class="divider" x1="520" x2="520" y1="12" y2={H - 12} />
+  <text class="colhead" x="130" y="26">Certain</text>
+  <text class="colhead" x="390" y="26">How sure</text>
+  <text class="colhead" x="655" y="26">The signs</text>
+
+  {/* ---- panel 1: the mutawātir fan ---- */}
+  <Moon cx={MOON.x} cy={MOON.y} k={0.7} />
+  {fanArrows.map((a) => <Arrow {...a} />)}
+  {/* illustrative and unnamed, as in routes' mutawātir column; Labels-mode names under each row's first figure */}
+  {FAN_ROWS.map((r) => FAN_XS.map((x, i) => <Narrator x={x} y={r.y} k={FAN_K} {...FIG[r.kind]} label={i === 0 ? KIND_NAME[r.kind] : undefined} />))}
+  {/* into the meter: it ends at the panel's edge, so the portrait carousel doesn't cut it; the marker's label
+      picks it up across the divider */}
+  <g data-view-show="ibn-hajar" aria-hidden="true"><Arrow x1={202} y1={190} x2={256} y2={MUT.ibn - 4} bend={-10} /></g>
+  <g class="off" data-view-show="nazari-only" aria-hidden="true"><Arrow x1={202} y1={204} x2={256} y2={MUT.nazari - 4} bend={14} /></g>
+  {/* mutawātir is routes' term: a link, not a trigger */}
+  <a class="xlink" href={href("adad-al-turuq/routes/")} aria-label="Mutawātir: see How many routes carry it?">
+    <text class="rp" x="130" y="258"><tspan class="xu">Mutawātir</tspan><tspan dx="5">→</tspan></text>
+  </a>
+  <text class="lbl" x="130" y="276">narrators not investigated</text>
+
+  <text class="layer" x="16" y={WHO.head}>Who gains it?</text>
+  <text class="lbl sm" x={CELL.certain} y={WHO.cols}>certain</text>
+  <text class="lbl sm" x={CELL.reasoned} y={WHO.cols}>reasoned</text>
+  <Chip x={14} y={WHO.lay} text="a layperson" />
+  <Chip x={14} y={WHO.sch} text="a ḥadīth scholar" />
+  <g aria-hidden="true">
+    <g data-view-show="ibn-hajar">
+      <rect class="cell" x={CELL.certain - CELL.w / 2} y={WHO.lay - CELL.h / 2} width={CELL.w} height={CELL.h} rx="3" style={`fill:${stepFill(BANDS[0].lvl)}`} />
+      <Glyph kind="check" cx={CELL.certain} cy={WHO.lay} r={6} />
+    </g>
+    <rect class="cell empty" x={CELL.reasoned - CELL.w / 2} y={WHO.lay - CELL.h / 2} width={CELL.w} height={CELL.h} rx="3" />
+    <Glyph kind="cross" cx={CELL.reasoned} cy={WHO.lay} r={6} />
+    <rect class="cell" x={CELL.certain - CELL.w / 2} y={WHO.sch - CELL.h / 2} width={CELL.w} height={CELL.h} rx="3" style={`fill:${stepFill(BANDS[0].lvl)}`} />
+    <Glyph kind="check" cx={CELL.certain} cy={WHO.sch} r={6} />
+    <rect class="cell" x={CELL.reasoned - CELL.w / 2} y={WHO.sch - CELL.h / 2} width={CELL.w} height={CELL.h} rx="3" style={`fill:${stepFill(BANDS[1].lvl)}`} />
+    <Glyph kind="check" cx={CELL.reasoned} cy={WHO.sch} r={6} />
+  </g>
+  {/* the other view: were mutawātir's knowledge reasoned, the layperson could not gain it; yet he does */}
+  <g class="off" data-view-show="nazari-only">
+    <rect class="cell empty" x={CELL.certain - CELL.w / 2} y={WHO.lay - CELL.h / 2} width={CELL.w} height={CELL.h} rx="3" aria-hidden="true" />
+    <text class="q" x={CELL.certain} y={WHO.lay + 5} aria-hidden="true">?</text>
+    <text class="lbl sm" x={CELL.certain + 8} y={WHO.lay + 28}>yet he still gains it from mutawātir</text>
+  </g>
+  <text class="lbl" x="130" y="446">certain needs no reasoning;</text>
+  <text class="lbl" x="130" y="462">reasoned needs evidence</text>
+
+  {/* ---- panel 2: the meter; order only, no scale ---- */}
+  <g aria-hidden="true">
+    {BANDS.map((b) => <rect class="band" x={COL.x0} y={b.y0} width={COL.x1 - COL.x0} height={b.y1 - b.y0} style={`fill:${stepFill(b.lvl)}`} />)}
+    <rect class="col" x={COL.x0} y={BANDS[0].y0} width={COL.x1 - COL.x0} height={BANDS[2].y1 - BANDS[0].y0} rx="4" />
+  </g>
+  <TermTitle c={yaqini.c} x={yaqini.cx} y={yaqini.y} cls="rt" hit={yaqini.hit} info={yaqini.info} />
+  <text class="title-ar sm rtl-start" lang="ar" direction="rtl" x={LEFT} y={yaqini.y + 22}>{yaqini.c.ar}</text>
+  <TermTitle c={nazari.c} x={nazari.cx} y={nazari.y} cls="rt" hit={nazari.hit} info={nazari.info} />
+  <text class="title-ar sm rtl-start" lang="ar" direction="rtl" x={LEFT} y={nazari.y + 22}>{nazari.c.ar}</text>
+  <text class="lbl start" x={LEFT} y={nazari.y + 42}>only for one able to reason</text>
+  <text class="lbl start" x={LEFT} y="364">accepted: truth</text>
+  <text class="lbl start" x={LEFT} y="379">overwhelmingly likely</text>
+
+  {/* the mutawātir marker moves down into the reasoned band in the other view */}
+  <g class="mut" style={`transform:${MUT_SHIFT["ibn-hajar"]}`} data-v-ibn-hajar={MUT_SHIFT["ibn-hajar"]} data-v-nazari-only={MUT_SHIFT["nazari-only"]}>
+    <text class="mk" x={LEFT} y={mut.y + 4}>{mut.text}</text>
+    <path class="leader" d={`M${mut.x1} ${mut.y} H${COL_CX - 6}`} aria-hidden="true" />
+    <circle class="dot" cx={COL_CX} cy={mut.y} r="5" aria-hidden="true" />
+  </g>
+  {/* the other markers, in reading order down the meter */}
+  <g class="all-three">
+    <text class="mk" x={LEFT} y={allThree.y + 4}>{allThree.text}</text>
+    <text class="mk" x={LEFT} y={allThree.y + 18}>{allThree.more}</text>
+    <path class="leader" d={`M${allThree.x1} ${allThree.y} H${COL_CX - 6}`} aria-hidden="true" />
+    <circle class="dot gold" cx={COL_CX} cy={allThree.y} r="5" aria-hidden="true" />
+  </g>
+  {[withSign, accepted].map((m) => (
+    <>
+      <text class="mk" x={LEFT} y={m.y + 4}>{m.text}</text>
+      <path class="leader" d={`M${m.x1} ${m.y} H${COL_CX - 6}`} aria-hidden="true" />
+      <circle class="dot" cx={COL_CX} cy={m.y} r="5" aria-hidden="true" />
+      {m === withSign && <text class="lbl start sm" x={LEFT} y={m.y + 18}>for a ḥadīth scholar</text>}
+    </>
+  ))}
+
+  {/* ---- the lifts: each sign lifts an āḥād report into the reasoned band; all three together lift it close to
+      the certain line ---- */}
+  <g aria-hidden="true">
+    {LIFTS.map((l) => <path class="lift draw" pathLength="1" style={`--d:${l.d}s`} d={l.path} marker-end="url(#ahl)" />)}
+    <path class="together" d={`M${COL.x1 + 12} ${withSign.y - 16} V${allThree.y + 10}`} marker-end="url(#ahl)" />
+  </g>
+
+  {/* ---- panel 3: the three signs ---- */}
+  <rect class="card" x={CARD.x0} y={CARDS.sahihayn.y0} width={CARD.x1 - CARD.x0} height={CARDS.sahihayn.y1 - CARDS.sahihayn.y0} rx="8" />
+  <text class="ct" x={CARD_CX} y={CARDS.sahihayn.y0 + 22}>In both Ṣaḥīḥs</text>
+  <Glyph kind="book" cx={566} cy={96} r={9} />
+  <Chip x={582} y={96} text="al-Bukhārī" />
+  <Glyph kind="book" cx={676} cy={96} r={9} />
+  <Chip x={692} y={96} text="Muslim" />
+  <text class="lbl" x={CARD_CX} y={CARDS.sahihayn.y1 - 14}>not criticised; no unresolved clash</text>
+
+  <rect class="card" x={CARD.x0} y={CARDS.mashhur.y0} width={CARD.x1 - CARD.x0} height={CARDS.mashhur.y1 - CARDS.mashhur.y0} rx="8" />
+  <text class="ct" x={CARD_CX} y={CARDS.mashhur.y0 + 22}>Mashhūr, clean routes</text>
+  <g aria-hidden="true">
+    {ROUTE_XS.map((x) => <line class="route" x1={x} x2={x} y1={ROUTE_YS[0] - 12} y2={ROUTE_YS[1] + 12} />)}
+  </g>
+  {ROUTE_XS.map((x) => ROUTE_YS.map((y) => <Narrator x={x} y={y} k={0.45} {...FIG.later} {...RELIABLE} />))}
+  <text class="lbl" x={CARD_CX} y={CARDS.mashhur.y1 - 8}>no weak narrators, no hidden defects</text>
+
+  <rect class="card" x={CARD.x0} y={CARDS.imams.y0} width={CARD.x1 - CARD.x0} height={CARDS.imams.y1 - CARDS.imams.y0} rx="8" />
+  <text class="ct" x={CARD_CX} y={CARDS.imams.y0 + 22}>A chain of great imams</text>
+  {imams.links.map((l) => <Arrow x1={l.x1 + 2} y1={IMAM_Y} x2={l.x2 - 3} y2={IMAM_Y} />)}
+  {imams.chips.map((c) => <Chip x={c.x} y={IMAM_Y} text={c.text} w={c.w} />)}
+  {imams.chips.slice(1).map((c) => (
+    <>
+      <line class="partner-tie" x1={c.cx} x2={c.cx} y1={IMAM_Y + 10} y2={PARTNER_Y - 10} aria-hidden="true" />
+      <Chip x={f(c.cx - partnerW / 2)} y={PARTNER_Y} text={PARTNER} w={partnerW} dashed />
+    </>
+  ))}
+  <text class="lbl" x={CARD_CX} y={CARDS.imams.y1 - 8}>not gharīb</text>
+
+  <TermTitle c={muhtaff.c} x={muhtaff.cx} y={muhtaff.y} cls="rt" hit={muhtaff.hit} info={muhtaff.info} ar={{ x: muhtaff.cx, y: muhtaff.y + 24, size: "sm" }} />
+</svg>
+<style>
+  /* :global, since TermTitle renders the trigger text */
+  .knowledge :global(.rt){text-anchor:middle}
+  /* right to left, so its end is its left edge: the Arabic starts at LEFT with the rows above it */
+  .title-ar.rtl-start{text-anchor:end}
+  .ct{fill:var(--fg);font:700 12.5px var(--f-body);text-anchor:middle}
+  .mk{fill:var(--fg);font:600 12px var(--f-body)}
+  .band{stroke:none}
+  .col{fill:none;stroke:var(--line);stroke-width:1.5}
+  .dot{fill:var(--fg);stroke:var(--surface);stroke-width:1.5}
+  .dot.gold{fill:var(--gold-a)}
+  .leader{fill:none;stroke:var(--muted);stroke-width:1;stroke-dasharray:1.5 3}
+  .cell{stroke:var(--line);stroke-width:1.2}
+  .cell.empty{fill:var(--surface);stroke-dasharray:3 2.5}
+  .q{fill:var(--gap);font:700 15px var(--f-body);text-anchor:middle;animation:blink 2.4s ease-in-out infinite}
+  .card{fill:var(--surface);stroke:var(--rule);stroke-width:1.2}
+  .route{stroke:var(--rule);stroke-width:1.2}
+  .partner-tie{stroke:var(--line);stroke-width:1.2;stroke-dasharray:2 2}
+  .together{fill:none;stroke:var(--gold-a);stroke-width:2;stroke-dasharray:4 3}
+  /* the mutawātir marker slides between the views (spec §3.4); motion.css turns the transition off */
+  .mut{transition:transform .5s ease-in-out}
+  /* each resting style is the end state; the animations run from the start state, once */
+  .lift.draw{stroke-dasharray:1;stroke-dashoffset:0;animation:knowledge-draw .5s ease-out both;animation-delay:var(--d)}
+  .all-three{animation:knowledge-bright .6s ease-out 2.1s both}
+  @keyframes knowledge-draw{0%{stroke-dashoffset:1;opacity:0}10%{opacity:1}100%{stroke-dashoffset:0;opacity:1}}
+  @keyframes knowledge-bright{from{opacity:.4}}
+</style>

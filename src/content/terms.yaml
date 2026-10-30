@@ -8,16 +8,18 @@
   translit: Khabar
   ar: خَبَرٌ
   en: Report
-  def: "Any report. For most scholars it means the same as hadith; others keep hadith for the Prophet ﷺ and khabar for everyone else."
+  def: "Any report. For the scholars of this field it means the same as hadith; others keep hadith for the Prophet ﷺ and khabar for everyone else."
   section: "§5.2"
   division: adad-al-turuq
+  scene: report
 - id: hadith
   translit: Ḥadīth
   ar: حَدِيثٌ
   en: Hadith
-  def: "What comes from the Prophet ﷺ. Some set it against khabar; others say every hadith is a khabar, but not every khabar a hadith."
+  def: "A report. For the scholars of this field the same as khabar; some keep it for what comes from the Prophet ﷺ, and others say every hadith is a khabar, but not every khabar a hadith."
   section: "§5.2"
   division: adad-al-turuq
+  scene: report
 - id: isnad
   translit: Isnād
   ar: إِسْنَادٌ
@@ -25,6 +27,7 @@
   def: "The line of narrators that carries a report down to its wording."
   section: "§5.2"
   division: adad-al-turuq
+  scene: report
 - id: matn
   translit: Matn
   ar: مَتْنٌ
@@ -32,6 +35,7 @@
   def: "The wording of the report itself, where the chain of narrators ends."
   section: "§5.2"
   division: adad-al-turuq
+  scene: report
 - id: mutawatir
   translit: Mutawātir
   ar: مُتَوَاتِرٌ
@@ -47,6 +51,7 @@
   def: "Knowledge that compels belief with no reasoning needed, so even a layperson gains it. Mass transmission gives it."
   section: "§5.3"
   division: adad-al-turuq
+  scene: knowledge
 - id: ilm-nazari
   translit: al-ʿIlm al-naẓarī
   ar: الْعِلْمُ النَّظَرِيُّ
@@ -54,6 +59,7 @@
   def: "Knowledge reached only by weighing evidence, so only someone able to reason gains it. Some single-route reports with supporting signs give it."
   section: "§5.3"
   division: adad-al-turuq
+  scene: knowledge
 - id: mashhur
   translit: Mashhūr
   ar: مَشْهُورٌ
@@ -69,6 +75,7 @@
   def: "A jurists' name for mashhūr. Some keep it for a report whose numbers are the same from the start of the chain to its end."
   section: "§5.4"
   division: adad-al-turuq
+  scene: sorting
 - id: aziz
   translit: ʿAzīz
   ar: عَزِيزٌ
@@ -92,6 +99,7 @@
   def: "Every report short of mass transmission: the mashhūr, ʿazīz and gharīb. Each is also called khabar al-wāḥid."
   section: "§5.6"
   division: adad-al-turuq
+  scene: sorting
 - id: maqbul
   translit: Maqbūl
   ar: مَقْبُولٌ
@@ -99,6 +107,7 @@
   def: "A single-route report whose narrator is shown to be truthful. The majority hold that it must be acted on."
   section: "§5.7"
   division: adad-al-turuq
+  scene: sorting
 - id: mardud
   translit: Mardūd
   ar: مَرْدُودٌ
@@ -106,6 +115,7 @@
   def: "A report whose narrator is not shown to be truthful. One held back only for want of proof is treated like it, without being proven false."
   section: "§5.7"
   division: adad-al-turuq
+  scene: sorting
 - id: muhtaff-bil-qarain
   translit: al-Khabar al-muḥtaff bi-l-qarāʾin
   ar: الْخَبَرُ الْمُحْتَفُّ بِالْقَرَائِنِ
@@ -113,6 +123,7 @@
   def: "A single-route report backed by signs, such as being in both Ṣaḥīḥs, having several clean routes, or a chain of great imams, so it gives reasoned knowledge."
   section: "§5.7"
   division: adad-al-turuq
+  scene: knowledge
 - id: fard
   translit: Fard
   ar: فَرْدٌ
@@ -120,6 +131,7 @@
   def: "Means the same as gharīb, but in practice is used mostly for the absolute kind."
   section: "§5.8"
   division: adad-al-turuq
+  scene: lone
 - id: gharib-mutlaq
   translit: Gharīb muṭlaq
   ar: غَرِيبٌ مُطْلَقٌ
@@ -127,13 +139,15 @@
   def: "The report is solitary at its root, the Companion's end of the chain. Usually called fard muṭlaq."
   section: "§5.8"
   division: adad-al-turuq
+  scene: lone
 - id: gharib-nisbi
   translit: Gharīb nisbī
   ar: غَرِيبٌ نِسْبِيٌّ
   en: Relatively rare
-  def: "Several carry it from the Companion, but later one narrator is alone, or alone from a given person. The hadith itself may be well known."
+  def: "Several carry it from the Companion, then one narrator is alone with it further down: alone relative to one person. The hadith itself may be well known."
   section: "§5.8"
   division: adad-al-turuq
+  scene: lone
 
 # 2. al-Maqbūl (§5.9–5.16)
 - id: sahih-li-dhatihi

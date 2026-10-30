@@ -1,8 +1,40 @@
 # Scenes (phase 2 plan). Each caption note is our own paraphrase of the cited §.
-- id: routes
+- id: report
   division: adad-al-turuq
   moons: [0, 1]
   order: 1
+  title: What is a report?
+  eyebrow: How a report reached us, its parts and names · §5.2
+  lede: A report reaches us as a chain of narrators leading to its words, the isnād and the matn. Before he counts chains, Ibn Ḥajar defines both, and sets out three ways scholars relate the names khabar and ḥadīth.
+  source: §5.2 Khabar, ḥadīth, isnād and matn; §5.5 the Intentions report
+  diagram: Report
+  width: 860
+  captions:
+    - term: isnad
+      note: "The isnād is an account of the path that leads to the matn. A report's ṭuruq, its routes, are its chains, and many chains is one of the conditions of mutawātir. The chain drawn here is the Intentions report: ʿAlqama alone from ʿUmar, Muḥammad ibn Ibrāhīm alone from ʿAlqama, and Yaḥyā ibn Saʿīd alone from him. Ibn Rushayd points out that it is the first report in al-Bukhārī's Ṣaḥīḥ (§5.2, §5.5)."
+    - term: matn
+      note: "The matn is the text in which the chain ends: the words themselves, which the chain leads to. Here it is the saying “actions are judged by intentions”, which ʿUmar narrated, and which ʿAlqama, Muḥammad ibn Ibrāhīm and Yaḥyā ibn Saʿīd passed on, one after another (§5.2, §5.5)."
+    - term: khabar
+      note: "For the scholars of this field, khabar means the same as ḥadīth. Some say ḥadīth is what comes from the Prophet ﷺ and khabar what comes from others; one who studies history and the like is called an akhbārī, and one who studies ḥadīth a muḥaddith. Others say every ḥadīth is a khabar, but not every khabar a ḥadīth. Ibn Ḥajar's text speaks of khabar because it covers more (§5.2)."
+    - term: hadith
+      note: "The other of the two names. Taken as a synonym, it means just what khabar means. On the view that sets them apart, ḥadīth is what comes from the Prophet ﷺ, and khabar what comes from anyone else. On the view that nests them, ḥadīth is the narrower name: every ḥadīth is a khabar, but not every khabar is a ḥadīth (§5.2)."
+  views:
+    - id: same
+      label: One meaning
+      scholars: The scholars of this field, §5.2
+      note: "Khabar and ḥadīth are two names for one thing."
+    - id: apart
+      label: Two kinds
+      scholars: "“It is said”, §5.2"
+      note: "Ḥadīth is what comes from the Prophet ﷺ and khabar what comes from others. One who studies history and the like is called an akhbārī, and one who studies ḥadīth a muḥaddith."
+    - id: nested
+      label: General and particular
+      scholars: "“It is said”, §5.2"
+      note: "The two relate as general and particular: every ḥadīth is a khabar, but not every khabar is a ḥadīth. Ibn Ḥajar's text speaks of khabar because it covers more."
+- id: routes
+  division: adad-al-turuq
+  moons: [0, 1]
+  order: 2
   title: How many routes carry it?
   eyebrow: How a report reached us · §5.2–5.6
   lede: Reports are sorted by the fewest narrators found at any one generation of the chain.
@@ -23,6 +55,92 @@
     - { id: aziz, label: ʿAzīz, x0: 255, x1: 425 }
     - { id: mashhur, label: Mashhūr, x0: 425, x1: 605 }
     - { id: mutawatir, label: Mutawātir, x0: 605, x1: 820 }
+- id: sorting
+  division: adad-al-turuq
+  moons: [1]
+  order: 3
+  title: Which reports are acted on?
+  eyebrow: How a report reached us, accepted or rejected · §5.3–5.7
+  lede: Mutawātir is acted on without investigating its narrators, because its truth is certain. Every other report, the āḥād, is checked first. If its narrator is proven truthful it is accepted, and if proven untruthful it is rejected. If neither is proven it is held back, and treated like the rejected.
+  source: §5.3 Mutawātir, §5.4 Mustafīḍ, §5.6–5.7 Āḥād, maqbūl and mardūd
+  diagram: Sorting
+  width: 780
+  captions:
+    - term: ahad
+      note: "Every report except mutawātir: the mashhūr, ʿazīz and gharīb. Each one is also called khabar al-wāḥid, literally a report narrated by one person; as a term, it is any report that does not meet the conditions of mutawātir. Unlike mutawātir, its narrators' states must be investigated before it is used as proof, so it divides into the accepted and the rejected (§5.6–5.7)."
+    - term: mustafid
+      note: "A group of the jurists call the mashhūr mustafīḍ, named for its spreading out. Some tell the two apart: mustafīḍ is where the chain's beginning and end are equal, and mashhūr is more general than that. Others separate them on another basis, which Ibn Ḥajar says is not a question for this field. The dots in the inset are only an illustration; the book gives no example (§5.4)."
+    - term: maqbul
+      note: "An āḥād report that must be acted on, in the view of the majority. It has what makes for acceptance, its narrator's truthfulness being proven, so the report's truth is overwhelmingly likely. Mutawātir needs no such test: all of it is accepted, because the truth of the report is certain (§5.7)."
+    - term: mardud
+      note: "A report whose narrator's truthfulness is not established. When his untruthfulness is proven, the report's falsehood is overwhelmingly likely, and it is repelled. A report held back, with no proof either way, is treated like the rejected: not because a cause for rejection was found, but because a cause for acceptance was not (§5.7)."
+  panels:
+    - { id: kinds, label: Two kinds, x0: 0, x1: 260 }
+    - { id: check, label: The check, x0: 260, x1: 520 }
+    - { id: outcomes, label: Three outcomes, x0: 520, x1: 780 }
+- id: knowledge
+  division: adad-al-turuq
+  moons: [0, 1]
+  order: 4
+  title: How sure can we be?
+  eyebrow: How a report reached us, the knowledge it gives · §5.3, §5.7
+  lede: Mutawātir gives certain knowledge, which even a layperson gains without reasoning. An āḥād report backed by signs can give reasoned knowledge, but only to a ḥadīth scholar versed in its narrators. With all three signs together it comes close to certainty.
+  source: §5.3 Certain and reasoned knowledge, §5.7 Reports with supporting signs
+  diagram: Knowledge
+  width: 780
+  captions:
+    - term: ilm-yaqini
+      note: "Mutawātir gives certain knowledge: a firm belief that matches the truth and compels a person to accept it, with no way to refute it. It comes without building evidence, so even a layperson, who cannot reason it out, gains it. Its narrators are not investigated: it must be acted on without that search (§5.3)."
+    - term: ilm-nazari
+      note: "Reasoned knowledge comes only by building evidence, ordering known or presumed facts to reach further ones, so only someone able to reason gains it. By the chosen opinion, an āḥād report backed by signs gives it, but only to a ḥadīth scholar versed in the narrators and hidden defects. Those who deny it keep the word knowledge for mutawātir: a dispute over words, Ibn Ḥajar says (§5.3, §5.7)."
+    - term: muhtaff-bil-qarain
+      note: "An āḥād report whose signs give reasoned knowledge. Ibn Ḥajar names three: being in both Ṣaḥīḥs, unless an expert criticised it or it is in an unresolved clash; a mashhūr with routes free of weak narrators and hidden defects; and a chain of great imams, not gharīb, as Aḥmad from al-Shāfiʿī from Mālik, the first two each with a partner. All three together come close to certainty (§5.7)."
+  views:
+    - id: ibn-hajar
+      label: "Ibn Ḥajar: certain"
+      scholars: §5.3
+      note: "Mutawātir gives certain knowledge, which needs no building of evidence, so a layperson gains it too. Ibn Ḥajar calls this the trusted opinion."
+    - id: nazari-only
+      label: "Some: reasoned only"
+      scholars: "“It has also been said”, §5.3"
+      note: "An opinion the book reports without naming who holds it: mutawātir gives only reasoned knowledge. Ibn Ḥajar rejects it (“This is not so”): a layperson, who cannot order facts into an argument, still gains knowledge from mutawātir, which could not happen if that knowledge were reasoned."
+  panels:
+    - { id: certain, label: Certain, x0: 0, x1: 260 }
+    - { id: meter, label: How sure, x0: 260, x1: 520 }
+    - { id: signs, label: The signs, x0: 520, x1: 780 }
+  extra:
+    - title: Why the two Ṣaḥīḥs count as a sign
+      section: §5.7
+      note: "The standing of al-Bukhārī and Muslim in this field, their lead in telling the sound from the rest, and the scholars' acceptance of their books. That acceptance alone gives knowledge more strongly than many routes that fall short of mutawātir. It excludes reports an expert criticised, and two of their reports that clash with no way to prefer one; for the rest, the scholars agree on accepting them as sound. If it is said they agreed only to act on these reports, Ibn Ḥajar answers that acting on every sound report is agreed anyway, so the two books would then have nothing special. Abū Isḥāq al-Isfarāʾīnī, and among the ḥadīth imams al-Ḥumaydī and Abū al-Faḍl ibn Ṭāhir, said these reports give reasoned knowledge. Abū Manṣūr al-Baghdādī and Abū Bakr ibn Fūrak said the same of the clean mashhūr."
+    - title: Why Mālik's presence counts
+      section: §5.7
+      note: "Anyone with the least knowledge of this field knows that when a narrator like Mālik takes part in a report, he is truthful in it; when another of his rank joins him, it grows stronger and the fear of a mistake recedes. The standing and qualities of such narrators make their chain equal to one carried by a large number of others."
+- id: lone
+  division: adad-al-turuq
+  moons: [1]
+  order: 5
+  title: Where is the narrator alone?
+  eyebrow: How a report reached us, absolute and relative gharīb · §5.8
+  lede: A gharīb report has one narrator alone at some point in its chain. Where that happens decides its kind. If he is alone at the root, the Companion's end, it is absolute; if several narrate from the Companion and someone is alone further down, it is relative.
+  source: §5.8 Gharīb and fard, absolute and relative; §5.5 the Intentions report
+  diagram: Lone
+  width: 1040
+  captions:
+    - term: gharib-mutlaq
+      note: "The narrator is alone at the root of the chain, the Companion's end, where its routes meet. The book calls it fard muṭlaq. In the report forbidding the sale or gift of walāʾ, ʿAbd Allāh ibn Dīnār alone has it from Ibn ʿUmar. In the Branches of Faith report, Abū Ṣāliḥ alone has it from Abū Hurayra, and ʿAbd Allāh ibn Dīnār alone after him. At times it stays solitary all or most of the way (§5.8)."
+    - term: fard
+      note: "Fard and gharīb mean the same, in the language and as terms. In practice, as nouns, fard is used mostly for the absolute kind and gharīb mostly for the relative. As verbs they make no difference: of either kind it is said that so-and-so was alone with it (tafarrada bihi, aghraba bihi). Ibn Ḥajar compares this with how mursal and munqaṭiʿ are used (§5.8)."
+    - term: gharib-nisbi
+      note: "More than one narrator has it from the Companion, then one narrator is alone with it further down. It is called relative because the singularity is relative to one particular person, even if the ḥadīth itself is mashhūr. The book names it fard nisbī, but notes that the word fard is rarely used for this kind. It gives no example, so this column is only an illustration (§5.8)."
+  panels:
+    - { id: wala, label: Alone at the root, x0: 0, x1: 260 }
+    - { id: branches, label: Alone, then alone again, x0: 260, x1: 520 }
+    - { id: intentions, label: Alone link after link, x0: 520, x1: 780 }
+    - { id: nisbi, label: Alone further down, x0: 780, x1: 1040 }
+  extra:
+    - title: The Intentions report
+      section: §5.5
+      note: "Some who hold that a sound report must be at least ʿazīz answer the case of the Intentions report this way: ʿUmar told it from the pulpit before the Companions, who would have questioned it had they not known it. Ibn Ḥajar replies that their silence proves nothing, and that even granting this for ʿUmar, it does not hold for what follows: ʿAlqama alone narrates it from ʿUmar, then Muḥammad ibn Ibrāhīm alone from ʿAlqama, then Yaḥyā ibn Saʿīd alone from Muḥammad, by the sound route the ḥadīth masters know. Supporting chains have appeared, but they cannot be counted. Ibn Rushayd adds that its place as the first report in al-Bukhārī's Ṣaḥīḥ is enough to refute the claim that being ʿazīz was al-Bukhārī's condition."
 - id: breaks
   division: al-mardud
   moons: [0]

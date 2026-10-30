@@ -4,7 +4,9 @@ Owner's PDF annotations used in site text. The owner approves each row.
 
 | Page | Annotation (short) | Used in | Approved |
 |---|---|---|---|
-| p.81 | Treated like a rejected report, but not itself rejected | `mardud` def: a held-back report is treated like it without being proven false | |
+| p.52 | Three positions: the same; different; khabar is a superset of ḥadīth | *What is a report?*: the three views of khabar and ḥadīth (`same`, `apart`, `nested`); structure only, no wording taken | |
+| p.81 | Treated like a rejected report, but not itself rejected | `mardud` def: a held-back report is treated like it without being proven false; *Which reports are acted on?* caption `mardud` ("treated like the rejected") and the dashed link from the Held back card to the Mardūd card ("held back is treated like the rejected, not proven false") | |
+| p.90 | Sketch of fard muṭlaq (all through one narrator) against nisbī (gharīb through one route only, other Companions' routes not gharīb) | *Where is the narrator alone?* panel 4: layout only (several students under the Companion, a faint second Companion for other routes); its names (Nāfiʿ, Hishām, Mālik) are not used | |
 | p.99 | "Sound in itself" | `sahih-li-dhatihi` en: "Sound in itself"; *How sound is it?* caption `sahih-li-dhatihi` | |
 | p.100 | Accuracy of the book: keep it safe, don't let others change it | `dabt-kitab` def: "where no one can alter it"; *How sound is it?* caption `dabt-kitab` ("keeping it safe where no one can alter it") | |
 | p.101 | Connected chain: everyone named, by a valid way of receiving | *How sound is it?* caption `ittisal`: "every man in it heard the report from the shaykh he names" | |
@@ -23,7 +25,7 @@ Owner's PDF annotations used in site text. The owner approves each row.
 
 ## Proposals
 
-Annotations the al-Maqbūl design suggests using but the site does not use yet (phase 3 design §8). Nothing here is in site text until the owner approves it.
+Annotations the al-Maqbūl design (§8) and the ʿAdad al-ṭuruq design (§9) suggest using but the site does not use yet. Nothing here is in site text until the owner approves it.
 
 | Page | Annotation (short) | Proposed use | Approved |
 |---|---|---|---|
@@ -32,5 +34,9 @@ Annotations the al-Maqbūl design suggests using but the site does not use yet (
 | p.132 | Additions that don't change the meaning vs ones that do (zakāt al-fiṭr "of the Muslims") | *Who outweighs whom?* panel 1: replace the abstract text cards with this example | |
 | p.141 | Comparing Mālik's students: al-Shāfiʿī differing from the others suggests his slip, unless others agree with him | *Does anyone else carry it?* caption `mutabaa-tamma`: add a line | |
 | p.142 | The jurists of uṣūl put abrogation last | *Can both be acted on?*: an Other view with the jurists' order | |
+| p.53 | Ṭuruq for ten or more, aṭruq for three to nine | `isnad` caption on *What is a report?*: a line on the plural | |
+| p.80 | Raw materials checked for defects before they go into the factory | *Which reports are acted on?*: an image for the lede ("checked before use") | |
+| p.82 | The nobleman analogy: one witness plus known context gives near-certainty | *How sure can we be?*: an illustration of the signs (the owner's teacher's example) | |
+| p.82 | Certainty is about whether he said it, not about how to act on it | *How sure can we be?*: a sub-label on the meter ("sure he said it") | |
 
 Not proposed, since they go beyond the translation: p.126–127 (al-Tirmidhī's "ḥasan ṣaḥīḥ" is effectively ṣaḥīḥ in his time) and p.138 (munkar as weak against less weak, which conflicts with the translation's example).

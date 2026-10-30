@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { CHIP_CHAR_W, CHIP_PAD, chipRow, chipWidth, diamondPath, discRow, gaugeCells, scaleEnds, sweepAt } from "../../src/lib/kit";
+import { CHIP_CHAR_W, CHIP_PAD, bracketPath, chipRow, chipWidth, diamondPath, discRow, dotCluster, gaugeCells, scaleEnds, stackY, sweepAt } from "../../src/lib/kit";
 
 describe("chipWidth", () => {
   it("grows with the text, plus padding", () => {
@@ -109,4 +109,54 @@ describe("diamondPath", () => {
   it("clamps r to half an edge, so the corners never cross", () => {
     expect(diamondPath(40, 30, 80, 60, 99)).toBe(diamondPath(40, 30, 80, 60, 25));
   });
+});
+
+describe("bracketPath", () => {
+  it("draws Support's horizontal bracket: ticks up from each end of a line", () => {
+    expect(bracketPath(110, 158, 474)).toBe("M110 467 V474 H158 V467");
+  });
+  it("turns its ticks down", () => {
+    expect(bracketPath(10, 50, 100, { ticks: "down" })).toBe("M10 107 V100 H50 V107");
+  });
+  it("draws a vertical bracket, ticks left by default, and right on request", () => {
+    expect(bracketPath(106, 334, 200, { vertical: true })).toBe("M193 106 H200 V334 H193");
+    expect(bracketPath(106, 334, 200, { vertical: true, ticks: "right" })).toBe("M207 106 H200 V334 H207");
+  });
+  it("adds an open arrowhead beyond the chosen end, pointing away from the bracket", () => {
+    // the spine runs on 10 past the end, and a chevron 4 each side, 5 deep, opens back towards the bracket
+    expect(bracketPath(106, 334, 200, { vertical: true, arrow: "start" })).toBe("M193 106 H200 V334 H193 M200 106 V96 M196 101 L200 96 L204 101");
+    expect(bracketPath(10, 50, 100, { arrow: "end" })).toBe("M10 93 V100 H50 V93 M50 100 H60 M55 96 L60 100 L55 104");
+  });
+  it("rejects ticks that don't fit its orientation", () => {
+    expect(() => bracketPath(0, 10, 0, { ticks: "left" })).toThrow();
+    expect(() => bracketPath(0, 10, 0, { vertical: true, ticks: "up" })).toThrow();
+  });
+});
+
+describe("dotCluster", () => {
+  it("stacks dots in pairs, centred on (cx, cy), gap apart", () => {
+    expect(dotCluster(4, 50, 100, 6)).toEqual([
+      { x: 47, y: 97 }, { x: 53, y: 97 },
+      { x: 47, y: 103 }, { x: 53, y: 103 },
+    ]);
+  });
+  it("centres an odd last dot under its pair", () => {
+    expect(dotCluster(3, 50, 100, 6)).toEqual([{ x: 47, y: 97 }, { x: 53, y: 97 }, { x: 50, y: 103 }]);
+    expect(dotCluster(1, 10, 20, 6)).toEqual([{ x: 10, y: 20 }]);
+  });
+  it("keeps the whole cluster centred as it grows", () => {
+    const ys = dotCluster(6, 0, 0, 5).map((d) => d.y);
+    expect(Math.min(...ys)).toBe(-5);
+    expect(Math.max(...ys)).toBe(5);
+  });
+  it("draws nothing for zero", () => expect(dotCluster(0, 0, 0, 5)).toEqual([]));
+});
+
+describe("stackY", () => {
+  it("centres n lines on y, lh apart", () => {
+    expect([0, 1, 2].map((j) => stackY(100, j, 3))).toEqual([86, 100, 114]);
+    expect([0, 1].map((j) => stackY(100, j, 2, 10))).toEqual([95, 105]);
+  });
+  it("puts a single line on y", () => expect(stackY(42, 0, 1)).toBe(42));
+  it("rounds to 2 decimals", () => expect(stackY(10, 0, 2, 1 / 3)).toBe(9.83));
 });

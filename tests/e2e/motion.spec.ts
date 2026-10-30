@@ -123,3 +123,64 @@ test("with motion, the acted-on scene's strike draws across the abrogated ruling
   const offset = () => strike.evaluate((e) => Number(getComputedStyle(e).strokeDashoffset.replace("px", "")));
   await expect.poll(offset, { timeout: 5000 }).toBe(0);
 });
+
+test("reduced motion: the sorting scene shows the lens at rest, the three exits drawn and the outcome cards", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/adad-al-turuq/sorting/");
+  expect(await page.locator("svg .lens-pass").evaluate((e) => getComputedStyle(e).transform)).toBe("none");
+  const exits = await page.locator("svg .exit").evaluateAll((els) => els.map((e) => [Number(getComputedStyle(e).strokeDashoffset.replace("px", "")), getComputedStyle(e).opacity]));
+  expect(exits).toEqual([[0, "1"], [0, "1"], [0, "1"]]);
+  const cards = await page.locator("svg .out").evaluateAll((els) => els.map((e) => getComputedStyle(e).opacity));
+  expect(cards).toEqual(["1", "1", "1"]);
+});
+
+test("with motion, the sorting scene's exits draw in one after another, after the lens", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.goto("/adad-al-turuq/sorting/");
+  expect(await page.locator("svg .lens-pass").evaluate((e) => e.getAnimations().map((a) => [(a as CSSAnimation).animationName, a.effect?.getTiming().delay]))).toEqual([["sorting-pass", 600]]);
+  const delays = await page.locator("svg .exit").evaluateAll((els) => els.map((e) => e.getAnimations().map((a) => [(a as CSSAnimation).animationName, a.effect?.getTiming().delay])));
+  expect(delays).toEqual([[["sorting-draw", 2200]], [["sorting-draw", 2500]], [["sorting-draw", 2800]]]);
+  const last = () => page.locator("svg .exit").last().evaluate((e) => Number(getComputedStyle(e).strokeDashoffset.replace("px", "")));
+  await expect.poll(last, { timeout: 6000 }).toBe(0);
+  await expect.poll(() => page.locator("svg .out").last().evaluate((e) => getComputedStyle(e).opacity), { timeout: 6000 }).toBe("1");
+});
+
+test("reduced motion: the knowledge scene shows the lifts drawn and the all-three marker bright", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/adad-al-turuq/knowledge/");
+  const lifts = await page.locator("svg .lift.draw").evaluateAll((els) => els.map((e) => [Number(getComputedStyle(e).strokeDashoffset.replace("px", "")), getComputedStyle(e).opacity]));
+  expect(lifts).toEqual([[0, "1"], [0, "1"], [0, "1"]]);
+  expect(await page.locator("svg .all-three").evaluate((e) => getComputedStyle(e).opacity)).toBe("1");
+  // the other view's marker swap is instant: no transition runs
+  await page.locator('.views button[data-v="nazari-only"]').click();
+  expect(await page.evaluate(() => document.getAnimations().length)).toBe(0);
+});
+
+test("with motion, the knowledge scene's lifts draw in one after another, then the all-three marker brightens", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.goto("/adad-al-turuq/knowledge/");
+  const delays = await page.locator("svg .lift.draw").evaluateAll((els) => els.map((e) => e.getAnimations().map((a) => [(a as CSSAnimation).animationName, a.effect?.getTiming().delay])));
+  expect(delays).toEqual([[["knowledge-draw", 800]], [["knowledge-draw", 1200]], [["knowledge-draw", 1600]]]);
+  expect(await page.locator("svg .all-three").evaluate((e) => e.getAnimations().map((a) => [(a as CSSAnimation).animationName, a.effect?.getTiming().delay]))).toEqual([["knowledge-bright", 2100]]);
+  const last = () => page.locator("svg .lift.draw").last().evaluate((e) => Number(getComputedStyle(e).strokeDashoffset.replace("px", "")));
+  await expect.poll(last, { timeout: 6000 }).toBe(0);
+  await expect.poll(() => page.locator("svg .all-three").evaluate((e) => getComputedStyle(e).opacity), { timeout: 6000 }).toBe("1");
+  // the mutawātir marker slides down to the other view's place
+  await page.locator('.views button[data-v="nazari-only"]').click();
+  const y = () => page.locator("svg .mut").evaluate((e) => new DOMMatrix(getComputedStyle(e).transform).f);
+  await expect.poll(y, { timeout: 5000 }).toBe(154);
+});
+
+test("reduced motion: the lone scene shows every halo", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/adad-al-turuq/lone/");
+  expect(await page.locator("svg .alone").evaluateAll((els) => els.map((e) => getComputedStyle(e).opacity))).toEqual(Array(7).fill("1"));
+});
+
+test("with motion, the lone scene's halos fade in one after another, panel by panel", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.goto("/adad-al-turuq/lone/");
+  const delays = await page.locator("svg .alone").evaluateAll((els) => els.map((e) => e.getAnimations().map((a) => [(a as CSSAnimation).animationName, a.effect?.getTiming().delay])));
+  expect(delays).toEqual([600, 800, 1000, 1200, 1400, 1600, 1800].map((d) => [["lone-halo", d]]));
+  await expect.poll(() => page.locator("svg .alone").last().evaluate((e) => getComputedStyle(e).opacity), { timeout: 6000 }).toBe("1");
+});
