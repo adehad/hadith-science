@@ -5,6 +5,24 @@
   --green:#21825a; --ink:#1b1d29; --ink-edge:transparent;
   --moon:#fff4cf; --glow:#ffd77a; --gap:#c2412d; --hole:#fbfcfe; --moon-ink:#7a5c12;
   --p1:#6c8cd5; --p2:#3fa37a; --p3:#d08b4a; --p4:#c25b5b; --p5:#9a7bd1; --p6:#4fa3b8; --p7:#b59a4a; --p8:#8a94a8; --pause:#b7790a; --ok:#21825a; --seal:#c0353d;
+  /* state colours where text meets a fill (audit D2): each state's ink reaches 4.5:1 on its tint, wash or the view
+     tag in both themes where src/lib/palette.ts pairs them, as tests/unit/contrast.test.ts checks. They mix the tokens
+     above, so the dark blocks below need not repeat them. */
+  --ok-ink:color-mix(in srgb,var(--ok) 65%,var(--fg)); --pause-ink:color-mix(in srgb,var(--pause) 65%,var(--fg));
+  --gap-ink:color-mix(in srgb,var(--gap) 65%,var(--fg)); --gold-ink:color-mix(in srgb,var(--gold-a) 55%,var(--fg));
+  /* a verdict pill's fill (support is the faint, dashed ok) */
+  --ok-tint:color-mix(in srgb,var(--ok) 16%,var(--surface)); --pause-tint:color-mix(in srgb,var(--pause) 16%,var(--surface));
+  --gap-tint:color-mix(in srgb,var(--gap) 12%,var(--surface)); --gold-tint:color-mix(in srgb,var(--gold-b) 22%,var(--surface));
+  --support-tint:color-mix(in srgb,var(--ok) 10%,var(--surface));
+  /* a view tag's fill (ViewTag.astro) */
+  --view-tint:color-mix(in srgb,var(--pause) 12%,var(--surface));
+  /* an outcome card's fill (svg.css .card.<state>) */
+  --ok-wash:color-mix(in srgb,var(--ok) 6%,var(--surface)); --pause-wash:color-mix(in srgb,var(--pause) 7%,var(--surface));
+  --gap-wash:color-mix(in srgb,var(--gap) 6%,var(--surface)); --gold-wash:color-mix(in srgb,var(--gold-b) 9%,var(--surface));
+  /* added words on a text card (Matn.astro .added): the card is --moon in both themes, where --ok falls under 4.5:1 */
+  --ok-on-moon:color-mix(in srgb,var(--ok) 90%,var(--ink));
+  /* text on a gold step or rung, where --muted falls under 4.5:1 in dark mode */
+  --on-gold:color-mix(in srgb,var(--fg) 85%,var(--surface));
   --f-display:"Fraunces Variable",Georgia,"Amiri",serif; --f-body:"Source Sans 3 Variable","Amiri",system-ui,sans-serif; --f-ar:"Amiri","Times New Roman",serif;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){

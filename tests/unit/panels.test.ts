@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { stops, trackWidthPct } from "../../src/lib/panels";
+import { assertInPanel, stops, trackWidthPct } from "../../src/lib/panels";
 
 const equal = [{ x0: 0, x1: 100 }, { x0: 100, x1: 200 }, { x0: 200, x1: 300 }, { x0: 300, x1: 400 }];
 // the routes scene's x-ranges
@@ -24,4 +24,14 @@ describe("stops", () => {
       expect(stops(w, p).reduce((a, s) => a + s.w, 0)).toBeCloseTo(100);
   });
   it("places each stop at its x0", () => expect(stops(820, uneven)[2].left).toBeCloseTo((425 / 820) * 100));
+});
+
+describe("assertInPanel", () => {
+  const panels = [{ x0: 0, x1: 260 }, { x0: 260, x1: 520 }];
+  it("passes a hit area wholly inside one panel, edges included", () =>
+    expect(() => assertInPanel({ x: 260, w: 260 }, panels, "a")).not.toThrow());
+  it("throws, naming the trigger, when the hit area crosses a panel edge", () =>
+    expect(() => assertInPanel({ x: 200, w: 100 }, panels, "ziyadat-al-thiqa")).toThrow("ziyadat-al-thiqa trigger leaves its panel"));
+  it("throws when the hit area is outside every panel", () =>
+    expect(() => assertInPanel({ x: 530, w: 20 }, panels, "munkar")).toThrow(/leaves its panel/));
 });

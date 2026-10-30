@@ -2,8 +2,8 @@
 // a balance scale (phase 3 design §7): a stand, a beam pivoting at (x, y) and two pans with `left` / `right`
 // weight discs, one per narrator. tilt is in degrees, CSS rotate (positive lowers the right pan).
 // The beam's resting transform is the final tilt and the pans rest translated to the beam's ends, so they hang
-// level; motion.css's `tip` keyframes animate both from level, once. With animations off (reduced motion) the
-// scale simply rests tipped. crackLeft / crackRight crack that pan's discs, for a weak narrator.
+// level; motion.css's `tip` keyframes animate both from level, once, unless the scale rests level. With animations
+// off (reduced motion) the scale simply rests tipped. crackLeft / crackRight crack that pan's discs, for a weak narrator.
 // Decorative: the term triggers under the pans carry the meaning.
 import { discRow, scaleEnds } from "../../lib/kit";
 import { f } from "./geom";
@@ -25,6 +25,10 @@ interface Props {
   pw?: number;
 }
 const { x, y, w, tilt, left, right, crackLeft = false, crackRight = false, drop = 30, stand = 58, pw: PW = 58 } = Astro.props;
+// tilt and weights are given apart, so the build checks they agree: the heavier pan sinks
+if (left !== right && Math.sign(tilt) !== Math.sign(right - left)) {
+  throw new Error(`Scale: tilt ${tilt} doesn't lower the heavier pan (left ${left}, right ${right})`);
+}
 const R = 6, GAP = 14;
 const ends = scaleEnds(x, w, tilt);
 const pans = [
@@ -42,7 +46,7 @@ const pans = [
 });
 const origin = `transform-box:view-box;transform-origin:${x}px ${y}px`;
 ---
-<g class="scale" aria-hidden="true">
+<g class:list={["scale", { level: tilt === 0 }]} aria-hidden="true">
   <path class="stand" d={`M${x} ${y} V${y + stand} M${x - 24} ${y + stand} H${x + 24}`} />
   {pans.map((p) => (
     <g class="pan" style={`transform:translateY(${p.dy}px)`}>
@@ -69,5 +73,6 @@ const origin = `transform-box:view-box;transform-origin:${x}px ${y}px`;
   .dish{fill:var(--surface);stroke:var(--fg);stroke-width:1.6;stroke-linejoin:round}
   .disc{fill:var(--ink);stroke:var(--ink-edge);stroke-width:1}
   .dcrack{fill:none;stroke:var(--moon);stroke-width:1.3;stroke-linejoin:round}
-  .beam,.pan{animation:tip 1.2s ease-out .4s both}
+  /* a level scale has no tip to show */
+  .scale:not(.level) :is(.beam,.pan){animation:tip 1.2s ease-out .4s both}
 </style>

@@ -4,6 +4,23 @@
 /* a balance tipping on load (Scale.astro): from level to the element's resting transform, which is the final tilt,
    so with animations off the beam rests tilted */
 @keyframes tip{from{transform:none}}
+/* load-in motion shared by the scenes (audit D1). Each keyframe gives only its start frame, so an element ends on
+   its own style: with animations off (reduced motion, or the motion switch) it rests in its end state, with no CSS
+   per scene. Set --dur (default .4s), --d (the delay; lib/kit.ts stagger() spaces a row of them) and --ease. enter
+   starts from --from-o (opacity, default 0) and the individual transforms --from-xy, --from-r and --from-s, which add
+   to any transform the element already has. --d, --dur and --ease inherit, so a --d on a group reaches a drawn child;
+   the --from-* start values are registered not to, so an element nested in an entering group starts from its own
+   (or the default) start, never its parent's. */
+@property --from-o{syntax:"<number>";inherits:false;initial-value:0}
+@property --from-xy{syntax:"<length-percentage>+";inherits:false;initial-value:0px 0px}
+@property --from-r{syntax:"<angle>";inherits:false;initial-value:0deg}
+@property --from-s{syntax:"<number>";inherits:false;initial-value:1}
+@keyframes draw{from{stroke-dashoffset:1}}
+@keyframes enter{from{opacity:var(--from-o,0);translate:var(--from-xy,0 0);rotate:var(--from-r,0deg);scale:var(--from-s,1)}}
+.m-draw{stroke-dasharray:1;animation:draw var(--dur,.4s) var(--ease,ease-out) var(--d,0s) both}
+.m-enter{animation:enter var(--dur,.4s) var(--ease,ease-out) var(--d,0s) both}
+/* a drawn path with a marker stays hidden until its draw starts, as the marker would show at once */
+.m-draw.m-marked{animation:draw var(--dur,.4s) var(--ease,ease-out) var(--d,0s) both,enter calc(var(--dur,.4s) / 10) ease-out var(--d,0s) both}
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }

@@ -28,11 +28,18 @@ jobs:
       - run: bun install --frozen-lockfile
       - uses: j178/prek-action@v3.1.0 # no floating major tag upstream
       - run: bun run check
-      - run: bun run test
       - run: bunx playwright install --with-deps chromium
       - run: bun run build
+      - run: bun run test:dist
       - run: bun run test:e2e
-      - run: bun run screenshots
+      # README screenshots are not a test: regenerate them on a manual run and keep the PNGs as an artifact
+      - if: ${{ github.event_name == 'workflow_dispatch' }}
+        run: bun run screenshots
+      - if: ${{ github.event_name == 'workflow_dispatch' }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: screenshots
+          path: docs/screenshots/
       - run: bun run test:base
       - id: pages
         uses: actions/configure-pages@v6

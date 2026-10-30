@@ -127,7 +127,7 @@ const rows = ROWS.map(([name, tag, e], k) => ({ name, tag, e, y: 112 + k * 19 })
     {rows.map((r) => (
       <>
         {r.e === 0 && <rect class="win" x="20" y={r.y - 13} width="390" height="18" rx="4" />}
-        <g class={r.e ? `e${r.e}` : undefined}>
+        <g class={r.e ? `e${r.e}` : undefined} data-incidental={r.e ? "" : undefined}>
           <text class="row" x="28" y={r.y}>{r.name}</text>
           <text class="rowtag" x="404" y={r.y}>{r.tag}</text>
         </g>
@@ -137,10 +137,6 @@ const rows = ROWS.map(([name, tag, e], k) => ({ name, tag, e, y: 112 + k * 19 })
   </svg>
 </div>
 <style>
-  /* the grid's 1px gaps show its background, drawing var(--rule) lines between the cells */
-  .cells{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--rule)}
-  .cells svg{background:var(--surface)}
-  @media (max-width:640px) and (orientation:portrait){.cells{grid-template-columns:1fr}}
   .glyph{fill:none;stroke:var(--fg);stroke-width:5;stroke-linecap:round}
   /* not .dot: InfoIcon draws its "i" with a .dot */
   .ndot{fill:var(--gap);animation:blink 2.4s ease-in-out infinite}
@@ -155,6 +151,9 @@ const rows = ROWS.map(([name, tag, e], k) => ({ name, tag, e, y: 112 + k * 19 })
   /* a 10s loop: chips appear one by one, each fading the rows it rules out, then the answer lights up */
   .c1{animation:names-c1 10s infinite} .c2{animation:names-c2 10s infinite}
   .c3{animation:names-c3 10s infinite} .c4{animation:names-c4 10s infinite}
+  /* the ruled-out rows rest faded, the loop's end state, so with motion stopped the answer stands out; faded so
+     they aren't read, they are marked data-incidental, which the route smoke's contrast check skips */
+  .e1,.e2,.e3,.e4{opacity:.12}
   .e1{animation:names-e1 10s infinite} .e2{animation:names-e2 10s infinite}
   .e3{animation:names-e3 10s infinite} .e4{animation:names-e4 10s infinite}
   @keyframes names-c1{0%,8%{opacity:0}10%,92%{opacity:1}100%{opacity:0}}
@@ -166,8 +165,4 @@ const rows = ROWS.map(([name, tag, e], k) => ({ name, tag, e, y: 112 + k * 19 })
   @keyframes names-e3{0%,53%{opacity:1}57%,92%{opacity:.12}100%{opacity:1}}
   @keyframes names-e4{0%,73%{opacity:1}77%,92%{opacity:.12}100%{opacity:1}}
   @keyframes names-win{0%,77%{opacity:0}81%,92%{opacity:1}100%{opacity:0}}
-  /* motion.css stops every animation (reduced motion, or the motion switch off); show the loop's end state: all
-     chips, the narrowed rows, the answer lit */
-  @media (prefers-reduced-motion: reduce){.e1,.e2,.e3,.e4{opacity:.12}}
-  :global(:root[data-motion="off"]) :is(.e1,.e2,.e3,.e4){opacity:.12}
 </style>

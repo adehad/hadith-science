@@ -24,12 +24,12 @@ import Chip from "../svg/Chip.astro";
 import Glyph from "../svg/Glyph.astro";
 import Matn from "../svg/Matn.astro";
 import TermTitle from "../svg/TermTitle.astro";
+import XLink from "../svg/XLink.astro";
 import { FIG, KIND_NAME, RELIABLE } from "../svg/figures";
-import { ROW_TITLE_TRIGGER, SUBT_TRIGGER, f, panelTrigger, rowTrigger } from "../svg/geom";
+import { ROW_TITLE_TRIGGER, SUBT_TRIGGER, f, titleTrigger, rowTrigger } from "../svg/geom";
 import { cap, type DiagramProps } from "../../lib/scene";
-import { chipRow, discRow, sweepAt } from "../../lib/kit";
+import { chipRow, discRow, stagger, sweepAt } from "../../lib/kit";
 import { loadContent } from "../../lib/content";
-import { href } from "../../lib/url";
 
 type Props = DiagramProps;
 const { caps, scene } = Astro.props;
@@ -41,19 +41,16 @@ if (PANELS.length !== 3) throw new Error("Slips: expected three panels");
 
 const TITLE_Y = 30, SUB_Y = 50;
 
-// a left-aligned 13px row title as a term trigger (charW for a title of wide letters); rowTrigger doesn't know about panels, so check here that the
-// hit area sits wholly inside panel i, or the portrait carousel would cut it
-function row(slug: string, x: number, y: number, i: number, charW?: number) {
+// a left-aligned 13px row title as a term trigger (charW for a title of wide letters); Term checks it stays in its panel
+function row(slug: string, x: number, y: number, charW?: number) {
   const c = cap(caps, slug);
   const t = rowTrigger(c.translit, x, y, charW ? { charW } : {});
-  const p = PANELS[i];
-  if (t.hit.x < p.x0 || t.hit.x + t.hit.w > p.x1) throw new Error(`Slips: ${slug} trigger leaves its panel`);
   return { c, x, y, ...t };
 }
-// a centred 15px sub-title as a term trigger; panelTrigger checks it stays in its panel
+// a centred 15px sub-title as a term trigger; Term checks it stays in its panel
 function subt(slug: string, cx: number, y: number) {
   const c = cap(caps, slug);
-  return { c, cx, y, ...panelTrigger(c.translit, cx, y, PANELS, { ...SUBT_TRIGGER, name: `Slips: ${slug}` }) };
+  return { c, cx, y, ...titleTrigger(c.translit, cx, y, SUBT_TRIGGER) };
 }
 
 // links to other scenes: munkar and shādhdh belong to "Who outweighs whom?", open sin to the innovation scene,
@@ -65,14 +62,14 @@ const innovation = scenes.find((s) => s.division === "al-mardud" && s.id === "in
 
 // ---- panel 1: errors and carelessness ----
 const FK = 0.8;
-const fuhsh = row("fuhsh-al-ghalat", 20, 84, 0);
+const fuhsh = row("fuhsh-al-ghalat", 20, 84);
 const WEAK_Y = 136;
 // the record: ten marks, six of them crosses, mixed so the crosses stand out; marks, not a count (design §18).
 // Each cross draws in 0.15s after the one before.
 const CROSSES = new Set([1, 3, 4, 6, 8, 9]);
 let nth = 0;
-const MARKS = discRow(10, 170, 15).map((x, i) => ({ x, cross: CROSSES.has(i), d: CROSSES.has(i) ? f(0.4 + 0.15 * nth++) : 0 }));
-const ghafla = row("ghafla", 20, 222, 0);
+const MARKS = discRow(10, 170, 15).map((x, i) => ({ x, cross: CROSSES.has(i), d: CROSSES.has(i) ? stagger(nth++, { start: 0.4, step: 0.15 }) : "0s" }));
+const ghafla = row("ghafla", 20, 222);
 const CARELESS_Y = 276;
 const STUB = { x: 88, y: CARELESS_Y - 14, w: 64, h: 28 };
 
@@ -86,7 +83,7 @@ const A_X = 300;
 const SWEEP = { x0: 330, x1: 506, t0: 0.6, t1: 3 };
 const OTHERS = [370, 430, 490].map((x) => ({ x, d: sweepAt(x, SWEEP) }));
 const RING_D = f(SWEEP.t1 + 0.1);
-const wahm = row("wahm", 284, 316, 1, 9);
+const wahm = row("wahm", 284, 316, 9);
 const COINS = [284, 304, 324];
 const MASTERS = [["ʿAlī ibn al-Madīnī", "Aḥmad ibn Ḥanbal"], ["al-Bukhārī", "Abū Zurʿa", "al-Dāraquṭnī"]].flatMap((texts, i) =>
   chipRow(texts, 272, 6).chips.map((c) => ({ ...c, y: 476 + i * 26 })),
@@ -100,7 +97,7 @@ const ALL_Y = 107;
 const mukhtalit = (() => {
   const c = cap(caps, "mukhtalit");
   const cx = 715, y = 200;
-  return { c, cx, y, ...panelTrigger(c.translit, cx, y, PANELS, { ...ROW_TITLE_TRIGGER, name: "Slips: mukhtalit" }) };
+  return { c, cx, y, ...titleTrigger(c.translit, cx, y, ROW_TITLE_TRIGGER) };
 })();
 const FIG_Y = 240;
 const LATE_Y = 282, EVENT_X = 650;
@@ -130,7 +127,7 @@ const CARDS = [
   <TermTitle c={fuhsh.c} x={fuhsh.x} y={fuhsh.y} cls="rt" hit={fuhsh.hit} info={fuhsh.info} ar={{ x: f(fuhsh.info.cx + 50), y: fuhsh.y, size: "sm" }} />
   <Narrator x={52} y={WEAK_Y} k={FK} {...FIG.weak} label={KIND_NAME.weak} />
   {MARKS.map((m) => m.cross
-    ? <g class="xdraw" style={`--d:${m.d}s`}><Glyph kind="cross" cx={m.x} cy={WEAK_Y} r={6} /></g>
+    ? <g class="xdraw" style={`--d:${m.d}`}><Glyph kind="cross" cx={m.x} cy={WEAK_Y} r={6} animate /></g>
     : <Glyph kind="check" cx={m.x} cy={WEAK_Y} r={6} />)}
   <text class="lbl" x="170" y="166">many and glaring</text>
   <text class="lbl sm" x="170" y="180">an illustration, not a count</text>
@@ -145,16 +142,12 @@ const CARDS = [
 
   <g aria-hidden="true"><line class="side" x1="14" x2="14" y1="368" y2="456" /></g>
   <text class="lbl start sm" x="24" y="380">if gross or excessive, his report is</text>
-  <a class="xlink" href={href(`${opposition.division}/${opposition.id}/`)} aria-label={`munkar, for those who don't require going against others (scene: ${opposition.title})`}>
-    <text class="rp" x="24" y="398"><tspan class="xu">munkar</tspan><tspan dx="5">→</tspan></text>
-  </a>
+  <XLink to={`${opposition.division}/${opposition.id}`} text="munkar" rest=", for those who don't require going against others" x={24} y={398} />
   <text class="lbl start sm" x="24" y="416">for those who don't make going</text>
   <text class="lbl start sm" x="24" y="430">against others its condition</text>
   {innovation
     ? (
-      <a class="xlink" href={href(`${innovation.division}/${innovation.id}/`)} aria-label={`and so is the open sinner's (scene: ${innovation.title})`}>
-        <text class="rp" x="24" y="452"><tspan class="xu">and so is the open sinner's</tspan><tspan dx="5">→</tspan></text>
-      </a>
+      <XLink to={`${innovation.division}/${innovation.id}`} text="and so is the open sinner's" x={24} y={452} />
     )
     : <text class="lbl start sm" x="24" y="452">and so is the open sinner's</text>}
 
@@ -177,15 +170,15 @@ const CARDS = [
       half opacity the ﷺ falls under 4.5:1 on the moon in both themes */}
   {OTHERS.map((r) => <Moon cx={r.x} cy={MOON_Y} k={MK} />)}
   {OTHERS.map((r) => (
-    <g class="route" style={`--d:${r.d}s`}>
+    <g class="route m-enter" style={`--d:${r.d}s`}>
       <Arrow x1={r.x} y1={MOON_Y + 24 * MK + 3} x2={r.x} y2={S_Y - HALF - 3} variant="skip" />
       <Arrow x1={r.x} y1={S_Y + HALF + 2} x2={r.x} y2={N_Y - HALF - 3} />
       <Narrator x={r.x} y={S_Y} k={K} {...FIG.tabii} {...RELIABLE} />
       <Narrator x={r.x} y={N_Y} k={K} {...FIG.later} {...RELIABLE} />
     </g>
   ))}
-  <circle class="lost" cx={A_X} cy={C_Y} r="20" style={`--d:${RING_D}s`} aria-hidden="true" />
-  <g class="lens" style={`--dx:${SWEEP.x0 - SWEEP.x1}px`}><Glyph kind="lens" cx={SWEEP.x1} cy={C_Y} r={10} /></g>
+  <circle class="lost m-enter" cx={A_X} cy={C_Y} r="20" style={`--d:${RING_D}s`} aria-hidden="true" />
+  <g class="lens m-enter" style={`--dx:${SWEEP.x0 - SWEEP.x1}px`}><Glyph kind="lens" cx={SWEEP.x1} cy={C_Y} r={10} /></g>
 
   <TermTitle c={wahm.c} x={wahm.x} y={wahm.y} cls="rt" hit={wahm.hit} info={wahm.info} />
   <text class="lbl start sm" x={f(wahm.info.cx + 14)} y={wahm.y}>a mistaken impression</text>
@@ -212,9 +205,7 @@ const CARDS = [
   <rect class="bar-all" x={LIFE.x0} y={ALL_Y - 5} width={LIFE.x1 - LIFE.x0} height="10" rx="5" aria-hidden="true" />
   <Narrator x={560} y={146} k={K} {...FIG.weak} label={KIND_NAME.weak} />
   <text class="lbl start sm" x="584" y="142">for some ḥadīth scholars,</text>
-  <a class="xlink" href={href(`${opposition.division}/${opposition.id}/`)} aria-label={`his report is shādhdh, for some ḥadīth scholars (scene: ${opposition.title})`}>
-    <text class="rp" x="584" y="158"><tspan>his report is </tspan><tspan class="xu">shādhdh</tspan><tspan dx="5">→</tspan></text>
-  </a>
+  <XLink to={`${opposition.division}/${opposition.id}`} lead="his report is " text="shādhdh" rest=", for some ḥadīth scholars" x={584} y={158} />
 
   <text class="layer" x="540" y={mukhtalit.y}>Later in life</text>
   <TermTitle c={mukhtalit.c} x={mukhtalit.cx} y={mukhtalit.y} cls="rt mid" hit={mukhtalit.hit} info={mukhtalit.info} />
@@ -267,20 +258,17 @@ const CARDS = [
   .card.failed{fill:color-mix(in srgb,var(--muted) 12%,var(--surface));stroke:var(--muted);stroke-dasharray:4 3}
   .faded-head{fill:none;stroke:var(--muted);stroke-width:1.3;stroke-dasharray:2 1.5}
   .q{fill:var(--gap);font:700 15px var(--f-body);text-anchor:middle;stroke:var(--surface);stroke-width:3px;paint-order:stroke}
-  /* each resting style is the end state; the animations run from the start state, once, except the blinks. The
-     lens and ring fill backwards only, so once done they fall back to the resting transform (none), not an
-     interpolated identity matrix. They and the star (no fill) then drop out of getAnimations(), so the motion test
-     checks their computed animation properties; the routes and crosses fill both ways and stay listed */
-  .xdraw :global(.xmark){stroke-dasharray:1;stroke-dashoffset:0;animation:slips-draw .3s ease-out both;animation-delay:var(--d)}
-  .route{animation:slips-light .6s ease-out both;animation-delay:var(--d)}
-  .lens{animation:slips-sweep 2.4s linear .6s backwards}
-  .lost{animation:slips-ring .4s ease-out backwards;animation-delay:var(--d)}
+  /* each resting style is the end state; the animations run from the start state, once, except the blinks: the
+     crosses draw in, the lens sweeps the Companions' row, each route brightening as it passes, then the ring closes
+     on the lost link and the late event pulses once */
+  .xdraw{--dur:.3s}
+  .route{--from-o:.15;--dur:.6s}
+  .lens{--from-o:1;--from-xy:var(--dx) 0;--dur:2.4s;--ease:linear;--d:.6s}
+  .lost{--from-s:1.6;--dur:.4s}
+  /* filling backwards only, so once done they drop their (identity) translate and scale and render as at rest */
+  .lens,.lost{animation-fill-mode:backwards}
   .fake{animation:blink 2.4s ease-in-out infinite}
   .event{animation:slips-pulse .8s ease-in-out .6s 1}
   .q{animation:blink 2.4s ease-in-out infinite}
-  @keyframes slips-draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
-  @keyframes slips-light{from{opacity:.15}}
-  @keyframes slips-sweep{from{transform:translateX(var(--dx))}}
-  @keyframes slips-ring{from{opacity:0;transform:scale(1.6)}}
   @keyframes slips-pulse{50%{transform:scale(1.5)}}
 </style>

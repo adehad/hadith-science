@@ -29,12 +29,12 @@ import Pill from "../svg/Pill.astro";
 import Matn from "../svg/Matn.astro";
 import Scale from "../svg/Scale.astro";
 import TermTitle from "../svg/TermTitle.astro";
+import XLink from "../svg/XLink.astro";
 import { FIG, KIND_NAME, RELIABLE } from "../svg/figures";
 import { ROW_TITLE_TRIGGER, SUBT_TRIGGER, f, rowTrigger, titleTrigger } from "../svg/geom";
 import { cap, type DiagramProps } from "../../lib/scene";
-import { LETTER_DOTS, chipWidth, letterDots, letterShape, vowelMark } from "../../lib/kit";
+import { LETTER_DOTS, chipWidth, letterDots, letterShape, stagger, vowelMark } from "../../lib/kit";
 import { loadContent } from "../../lib/content";
-import { href } from "../../lib/url";
 
 type Props = DiagramProps;
 const { caps, scene } = Astro.props;
@@ -101,7 +101,7 @@ const M_CARDS = [20, 155, 290].map((x, i) => ({ x, w: 120, ins: [x + 6, x + 45, 
 const M_LABELS = ["at the start", "in the middle", "at the end: most often"];
 const M_Y = 206, M_H = 22;
 // the inserts fade in one after another: the pictograms' first, then the three text cards
-const INS_D = (i: number) => `${f(0.3 + i * 0.3)}s`;
+const INS_D = (i: number) => stagger(i, { start: 0.3, step: 0.3 });
 
 // ---- cell C: maqlūb ----
 const maqlub = title("maqlub", 190);
@@ -203,7 +203,7 @@ const VOWELLED = ([["fatha", "fatḥa"], ["damma", "ḍamma"], ["kasra", "kasra"
     <circle class="pd sm" cx={PX[1] - 12} cy={P_MID} r="4.5" />
     <circle class="pd sm faint" cx={PX[1] + 20} cy={P_TOP} r="4.5" />
     <Matn x={PX[1] - 24} y={CARD_Y} w={48} h={CARD_H} />
-    <rect class="ins" style={`--d:${INS_D(0)}`} x={PX[1] + 2} y={CARD_Y + 3} width="20" height={CARD_H - 6} rx="2" />
+    <rect class="ins m-enter" style={`--d:${INS_D(0)}`} x={PX[1] + 2} y={CARD_Y + 3} width="20" height={CARD_H - 6} rx="2" />
     {/* 3: two texts, each with its own chain, told with one */}
     <path class="pl" d={`M${PX[2]} ${P_TOP} V${P_MID} M${PX[2]} ${P_MID} L${PX[2] - 24} ${CARD_Y} M${PX[2]} ${P_MID} L${PX[2] + 24} ${CARD_Y}`} />
     <circle class="pd sm" cx={PX[2]} cy={P_TOP} r="4.5" />
@@ -221,7 +221,7 @@ const VOWELLED = ([["fatha", "fatḥa"], ["damma", "ḍamma"], ["kasra", "kasra"
     </g>
     <path class="pl" d={`M${PX[3] + 19} ${P_TOP + 12} V${CARD_Y}`} marker-end="url(#ah)" />
     <Matn x={PX[3] - 4} y={CARD_Y} w={46} h={CARD_H} />
-    <rect class="ins" style={`--d:${INS_D(1)}`} x={PX[3] + 2} y={CARD_Y + 3} width="34" height={CARD_H - 6} rx="2" />
+    <rect class="ins m-enter" style={`--d:${INS_D(1)}`} x={PX[3] + 2} y={CARD_Y + 3} width="34" height={CARD_H - 6} rx="2" />
     {PX.map((x, i) => PICTO_CAPS[i].map((t, j) => <text class="lbl sm" x={x} y={160 + j * 13}>{t}</text>))}
 
     <TermTitle c={matn.c} x={matn.x} y={matn.y} cls="rt" hit={matn.hit} info={matn.info} />
@@ -229,7 +229,7 @@ const VOWELLED = ([["fatha", "fatḥa"], ["damma", "ḍamma"], ["kasra", "kasra"
       <>
         <Matn x={c.x} y={M_Y} w={c.w} h={M_H} />
         <path class="rl" d={`M${c.x + 8} ${M_Y + 8} H${c.x + c.w - 8} M${c.x + 8} ${M_Y + 15} H${c.x + c.w - 8}`} />
-        <rect class:list={["ins", { strong: c.end }]} style={`--d:${INS_D(2 + i)}`} x={c.ins} y={M_Y + 4} width="30" height={M_H - 8} rx="2" />
+        <rect class:list={["ins m-enter", { strong: c.end }]} style={`--d:${INS_D(2 + i)}`} x={c.ins} y={M_Y + 4} width="30" height={M_H - 8} rx="2" />
         <text class:list={["lbl sm", { strongl: c.end }]} x={c.x + c.w / 2} y={M_Y + M_H + 16}>{M_LABELS[i]}</text>
       </>
     ))}
@@ -294,9 +294,7 @@ const VOWELLED = ([["fatha", "fatḥa"], ["damma", "ḍamma"], ["kasra", "kasra"
     <text class="lbl start sm" x="24" y="267">only ʿan at that link, for example:</text>
     <Pill x={346} y={263} state="accept" text="addition preferred" />
     <text class="lbl start sm" x="24" y="287">no proof of a hidden drop:</text>
-    <a class="xlink" href={href(`${hidden.division}/${hidden.id}/`)}>
-      <text class="rp" x="176" y="287"><tspan class="xu">{hidden.title}</tspan><tspan dx="5" aria-hidden="true">→</tspan></text>
-    </a>
+    <XLink to={`${hidden.division}/${hidden.id}`} text={hidden.title} x={176} y={287} />
   </svg>
 
   <svg id={CELL.mudtarib} viewBox="0 0 430 300" class="mudtarib" role="group" aria-label="Muḍṭarib, an illustration. A chain from the Prophet ﷺ through a Companion, where the next link is given as one narrator or another, over a level scale: neither version can be preferred. Usually in the chain, sometimes in the text. Changed on purpose to test someone, as with al-Bukhārī and al-ʿUqaylī, it is allowed if not left standing; for rarity, it is forgery; by mistake, it is maqlūb or muʿallal.">
@@ -327,16 +325,12 @@ const VOWELLED = ([["fatha", "fatḥa"], ["damma", "ḍamma"], ["kasra", "kasra"
     {WHY.map((w) => <Chip x={WHY_X} y={w.y} text={w.chip} w={w.w} />)}
     <text class="lbl start sm" x={WHY_X + 6} y={WHY[0].y + 22}>allowed if not left standing,</text>
     <text class="lbl start sm" x={WHY_X + 6} y={WHY[0].y + 36}>as with al-Bukhārī, al-ʿUqaylī</text>
-    <a class="xlink" href={href(`${lying.division}/${lying.id}/`)}>
-      <text class="rp" x={WHY[1].after} y={WHY[1].y + 4}>forgery: <tspan class="xu">{lying.title}</tspan><tspan dx="5" aria-hidden="true">→</tspan></text>
-    </a>
+    <XLink to={`${lying.division}/${lying.id}`} lead="forgery: " text={lying.title} x={WHY[1].after} y={WHY[1].y + 4} />
     <a class="xlink jump" href={`#${CELL.maqlub}`}>
       <text class="rp" x={WHY[2].after} y={WHY[2].y + 4}><tspan class="xu">maqlūb</tspan><tspan dx="4" aria-hidden="true">↑</tspan></text>
     </a>
     <text class="lbl start sm" x={f(WHY[2].after + 58)} y={WHY[2].y + 4}>or</text>
-    <a class="xlink" href={href(`${slips.division}/${slips.id}/`)} aria-label={`muʿallal: see ${slips.title}`}>
-      <text class="rp" x={f(WHY[2].after + 76)} y={WHY[2].y + 4}><tspan class="xu">muʿallal</tspan><tspan dx="4" aria-hidden="true">→</tspan></text>
-    </a>
+    <XLink to={`${slips.division}/${slips.id}`} text="muʿallal" x={f(WHY[2].after + 76)} y={WHY[2].y + 4} gap={4} />
   </svg>
 
   <svg id={CELL.letters} viewBox="0 0 430 300" role="group" aria-label="Muṣaḥḥaf and muḥarraf, an illustration with single letters. One undotted letter outline: with no dots, one dot below or two above, it reads as different letters: muṣaḥḥaf, a change in the dots. The same outline with a fatḥa, ḍamma or kasra is voiced differently: muḥarraf, a change in the vowels. The outline stays the same. Most often in the text, sometimes in names in the chains. al-ʿAskarī, al-Dāraquṭnī and others wrote books on it.">
@@ -366,10 +360,6 @@ const VOWELLED = ([["fatha", "fatḥa"], ["damma", "ḍamma"], ["kasra", "kasra"
   </svg>
 </div>
 <style>
-  /* the grid's 1px gaps show its background, drawing var(--rule) lines between the cells (as Names) */
-  .cells{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--rule)}
-  .cells svg{background:var(--surface)}
-  @media (max-width:640px) and (orientation:portrait){.cells{grid-template-columns:1fr}}
   /* an in-page jump lands the cell with a little room above it (the header scrolls away, it isn't sticky) */
   .cells svg{scroll-margin-top:72px}
   /* TermTitle draws the text, so the centring has to reach into it */
@@ -401,7 +391,7 @@ const VOWELLED = ([["fatha", "fatḥa"], ["damma", "ḍamma"], ["kasra", "kasra"
   .mw.diff{font-weight:800;text-decoration:underline}
   /* cell D: the added narrator */
   .addring{fill:none;stroke:var(--gold-a);stroke-width:1.8;stroke-dasharray:4 3}
-  .addtag{fill:color-mix(in srgb,var(--gold-a) 55%,var(--fg))}
+  .addtag{fill:var(--gold-ink)}
   /* cell E: the two versions of the link, faint child by child so their Labels-mode names stay full strength */
   .faint > :global(*){opacity:.55}
   .faint > :global(.mode-label){opacity:1}
@@ -410,9 +400,8 @@ const VOWELLED = ([["fatha", "fatḥa"], ["damma", "ḍamma"], ["kasra", "kasra"
   .ldot{fill:var(--gap);animation:blink 2.4s ease-in-out infinite}
   .vmark{fill:none;stroke:var(--gap);stroke-width:3;stroke-linecap:round;animation:blink 2.4s ease-in-out infinite}
   /* motion: each resting style is the end state, and each animation runs from its start state */
-  .ins{animation:changes-in .5s ease-out both;animation-delay:var(--d)}
-  @keyframes changes-in{from{opacity:0}}
-  /* the names and words trade places once, ending as the book gives them */
+  .ins{--dur:.5s}
+  /* the names and words trade places once, on an arc (the 50% frame), ending as the book gives them */
   .swap-a{animation:changes-swap-a .8s ease-in-out .6s both}
   .swap-b{animation:changes-swap-b .8s ease-in-out .6s both}
   @keyframes changes-swap-a{from{transform:translate(var(--dx),0)}50%{transform:translate(calc(var(--dx) / 2),-11px)}}

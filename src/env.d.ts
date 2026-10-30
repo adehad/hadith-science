@@ -9,3 +9,10 @@ interface NuzhahApi {
   reveal?(el: Element): void;
 }
 interface Window { nuzhah?: NuzhahApi }
+
+declare namespace App {
+  interface Locals {
+    /** [scene].astro: the carousel panels of the scene being built, for Term's panel check */
+    panels?: import("./lib/panels").Panel[];
+  }
+}

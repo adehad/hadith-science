@@ -3,6 +3,11 @@
 // then overflow the screen, so we size by the widest panel instead.
 export interface Panel { x0: number; x1: number }
 
+/** throws unless the hit area sits wholly inside one panel: the portrait carousel would cut a trigger that doesn't */
+export function assertInPanel(hit: { x: number; w: number }, panels: Panel[], name: string): void {
+  if (!panels.some((p) => hit.x >= p.x0 && hit.x + hit.w <= p.x1)) throw new Error(`${name} trigger leaves its panel`);
+}
+
 /** the track (and so the SVG) width as a percentage of the scroller's width */
 export function trackWidthPct(width: number, panels: Panel[]): number {
   return (width / Math.max(...panels.map((p) => p.x1 - p.x0))) * 100;

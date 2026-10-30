@@ -5,8 +5,8 @@ nuzhah*.txt
 annotations*.txt
 
 node_modules/
-dist/
-dist-*/
+/dist/
+/dist-*/
 .astro/
 test-results/
 playwright-report/

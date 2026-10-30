@@ -701,7 +701,7 @@ This follows the conventions and content rules of the phase 2 plan: `rtk`, bun o
 - Verify: `?tawaqquf` lands in panel 4 in portrait.
 - Commit `scenes: add acted-on decision path`.
 
-**Task 7: tests and screenshots.**
+**Task 7: tests and screenshots.** (Superseded: the test audit, `docs/superpowers/plans/2026-10-29-test-audit.md`, replaced these per-term and per-scene tests with generic checks; later phases follow the tests paragraph of the al-mardud design §16.)
 - `routes.spec.ts` picks up four more routes from the sitemap.
 - `scenes.spec.ts` gains:
   - landing for all 28 terms, desktop and portrait;

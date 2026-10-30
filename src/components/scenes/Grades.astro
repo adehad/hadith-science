@@ -12,15 +12,15 @@ import Moon from "../svg/Moon.astro";
 import Narrator from "../svg/Narrator.astro";
 import Arrow from "../svg/Arrow.astro";
 import TermTitle from "../svg/TermTitle.astro";
+import XLink from "../svg/XLink.astro";
 import Chip from "../svg/Chip.astro";
 import Gauge from "../svg/Gauge.astro";
 import Glyph from "../svg/Glyph.astro";
 import { FIG, KIND_NAME, RELIABLE } from "../svg/figures";
 import { SUBT_TRIGGER, f, rowTrigger, titleTrigger } from "../svg/geom";
 import { cap, type DiagramProps } from "../../lib/scene";
-import { chipRow } from "../../lib/kit";
+import { chipRow, stagger } from "../../lib/kit";
 import { stepFill } from "../../lib/staircase";
-import { href } from "../../lib/url";
 
 type Props = DiagramProps;
 const { caps, scene } = Astro.props;
@@ -60,15 +60,15 @@ const aRows = A_ROWS.map(([slug, y, gloss, glyph], i) => {
   const gx = sub ? CHECK_X + 24 : CHECK_X;
   const tx = gx + 14;
   return {
-    c, y, gloss, glyph, gx, tx, delay: `${(i * 0.25).toFixed(2)}s`,
+    c, y, gloss, glyph, gx, tx, delay: stagger(i, { step: 0.25 }),
     // the hit area takes in the glyph and runs on under the gloss to the cell's edge
     ...rowTrigger(c.translit, tx, y, { charW: ROW_CHAR_W, x0: gx - 10, x1: 420, top: 15, h: 24 }),
   };
 });
 // the two conditions that belong to other scenes: plain text, not triggers; shādhdh links to its scene, named
 // in the link's accessible name since an arrow alone doesn't say where it goes
-const A_PLAIN: [number, string, { to: string; title: string }?][] = [
-  [216, "not anomalous (shādhdh)", { to: "al-maqbul/opposition/", title: "Who outweighs whom?" }],
+const A_PLAIN: [number, string, string?][] = [
+  [216, "not anomalous (shādhdh)", "al-maqbul/opposition"],
   [242, "no hidden defect (muʿallal)"],
 ];
 const aTitle = title("sahih-li-dhatihi", 172);
@@ -138,7 +138,7 @@ const modeLabel = KIND_NAME.later;
     <path class="branch" d={`M${CHECK_X} 108 V152 M${CHECK_X} 126 H${CHECK_X + 15} M${CHECK_X} 152 H${CHECK_X + 15}`} />
     {aRows.map((r) => (
       <>
-        <g style={`--d:${r.delay}`}><Glyph kind={r.glyph} cx={r.gx} cy={r.y - 4} /></g>
+        <g class="tickg" style={`--d:${r.delay}`}><Glyph kind={r.glyph} cx={r.gx} cy={r.y - 4} animate /></g>
         <TermTitle c={r.c} x={r.tx} y={r.y} cls="rt" hit={r.hit} info={r.info} />
         {/* outside the trigger, so its accessible name (translit: en) matches its visible text (axe
             label-content-name-mismatch); a click on the gloss falls through to the hit area under it */}
@@ -147,9 +147,9 @@ const modeLabel = KIND_NAME.later;
     ))}
     {A_PLAIN.map(([y, t, to], i) => (
       <>
-        <g style={`--d:${((A_ROWS.length + i) * 0.25).toFixed(2)}s`}><Glyph kind="check" cx={CHECK_X} cy={y - 4} /></g>
+        <g class="tickg" style={`--d:${stagger(A_ROWS.length + i, { step: 0.25 })}`}><Glyph kind="check" cx={CHECK_X} cy={y - 4} animate /></g>
         {to
-          ? <a class="xlink" href={href(to.to)} aria-label={`${t}: see ${to.title}`}><text class="rp" x={CHECK_X + 14} y={y}><tspan class="xu">{t}</tspan><tspan dx="5">→</tspan></text></a>
+          ? <XLink to={to} text={t} x={CHECK_X + 14} y={y} />
           : <text class="rp" x={CHECK_X + 14} y={y}>{t}</text>}
       </>
     ))}
@@ -198,7 +198,7 @@ const modeLabel = KIND_NAME.later;
     {LIFTS.map((l) => (
       <>
         <TermTitle c={l.c} x={l.cx} y={SUBT_Y} cls="subt" hit={l.hit} info={l.info} />
-        <g class="liftg"><Arrow x1={l.cx - 80} y1={196} x2={l.cx - 80} y2={84} variant="lift" /></g>
+        <g class="liftg m-enter"><Arrow x1={l.cx - 80} y1={196} x2={l.cx - 80} y2={84} variant="lift" /></g>
         <Moon cx={l.cx} cy={100} k={0.55} />
         <g class="faint">
           <Arrow x1={l.cx - 8} y1={113} x2={l.cx - 50} y2={153} bend={-8} />
@@ -217,7 +217,7 @@ const modeLabel = KIND_NAME.later;
           : <Gauge x={l.cx - 18} y={192} w={36} fill={3} h={7} />}
         <text class="lbl" x={l.cx} y="224">{l.lines[0]}</text>
         <text class="lbl" x={l.cx} y="240">{l.lines[1]}</text>
-        <text class="rg gain" x={l.cx} y="268" style="text-anchor:middle">{l.from}</text>
+        <text class="rg gain m-enter" x={l.cx} y="268" style="text-anchor:middle">{l.from}</text>
       </>
     ))}
   </svg>
@@ -257,14 +257,10 @@ const modeLabel = KIND_NAME.later;
   </svg>
 </div>
 <style>
-  /* the grid's 1px gaps show its background, drawing var(--rule) lines between the cells (as Names) */
-  .cells{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--rule)}
-  .cells svg{background:var(--surface)}
-  @media (max-width:640px) and (orientation:portrait){.cells{grid-template-columns:1fr}}
   .rg{fill:var(--muted);font:600 11.5px var(--f-body)}
   .rg.strong{fill:var(--fg)}
   /* --muted falls under 4.5:1 on the darker gold rungs in dark mode; this mix passes on every rung in both themes */
-  .rg.on-gold{fill:color-mix(in srgb,var(--fg) 85%,var(--surface))}
+  .rg.on-gold{fill:var(--on-gold)}
   .gloss{pointer-events:none}
   .ch{fill:var(--fg);font:700 12px var(--f-body);text-anchor:middle}
   .rungno{fill:var(--fg);font:700 15px var(--f-display);text-anchor:middle}
@@ -280,16 +276,11 @@ const modeLabel = KIND_NAME.later;
   /* the side routes are faint, child by child, so their Labels-mode names can stay at full strength (4.5:1) */
   .faint > :global(*){opacity:.55}
   .faint > :global(.mode-label){opacity:1}
-  /* the resting styles are the end state; each animation runs from its start, so with motion.css stopping every
-     animation the end state shows: all ticks drawn, the side routes in, the lift and the gain at full strength */
-  .grades :global(.tick){stroke-dasharray:1;animation:grades-draw .35s ease-out both;animation-delay:var(--d,0s)}
-  .faint > :global(*){animation:grades-routes 2.4s ease-out both}
-  .faint > :global(.mode-label){animation:grades-names 2.4s ease-out both}
-  .liftg{animation:grades-lift 2.4s ease-out both}
-  .gain{animation:grades-gain 2.4s ease-out both}
-  @keyframes grades-draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
-  @keyframes grades-routes{0%{opacity:0}40%,100%{opacity:.55}}
-  @keyframes grades-names{0%{opacity:0}40%,100%{opacity:1}}
-  @keyframes grades-lift{0%,45%{opacity:.15}80%,100%{opacity:1}}
-  @keyframes grades-gain{0%,70%{opacity:0}100%{opacity:1}}
+  /* the ticks draw in one by one; in the lifts the side routes come in, then the lift brightens, then the gain
+     shows (motion.css enter, from each one's start to its resting style) */
+  .tickg{--dur:.35s}
+  /* not the Labels-mode names, which show when toggled, not with the load-in */
+  .faint > :global(:not(.mode-label)){animation:enter .96s ease-out both}
+  .liftg{--from-o:.15;--d:1.08s;--dur:.84s}
+  .gain{--d:1.68s;--dur:.72s}
 </style>

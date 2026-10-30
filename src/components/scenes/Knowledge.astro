@@ -20,12 +20,13 @@ import Arrow from "../svg/Arrow.astro";
 import Chip from "../svg/Chip.astro";
 import Glyph from "../svg/Glyph.astro";
 import TermTitle from "../svg/TermTitle.astro";
+import XLink from "../svg/XLink.astro";
 import { FIG, KIND_NAME, RELIABLE } from "../svg/figures";
-import { ROW_TITLE_TRIGGER, f, panelTrigger } from "../svg/geom";
+import { ROW_TITLE_TRIGGER, f, titleTrigger } from "../svg/geom";
 import { cap, type DiagramProps } from "../../lib/scene";
 import { chipRow } from "../../lib/kit";
 import { stepFill } from "../../lib/staircase";
-import { href } from "../../lib/url";
+import { viewAttrs } from "../../lib/views";
 
 type Props = DiagramProps;
 const { caps, scene } = Astro.props;
@@ -33,15 +34,13 @@ const { caps, scene } = Astro.props;
 const W = 780, H = 490;
 const VIEW_IDS = ["ibn-hajar", "nazari-only"] as const;
 if ((scene.views ?? []).map((v) => v.id).join() !== VIEW_IDS.join()) throw new Error(`Knowledge: expected views ${VIEW_IDS.join(", ")}`);
-const PANELS = scene.panels ?? [];
-
-// a 13px bold term label, centred so panelTrigger can check its hit area sits wholly inside its panel (or the
+// a 13px bold term label, centred; Term checks its hit area sits wholly inside its panel (or the
 // carousel would cut it); left sets where the text starts, for the meter's left-aligned rows
 const ROW = { ...ROW_TITLE_TRIGGER, gap: 10 } as const;
 function trigger(slug: string, left: number, y: number) {
   const c = cap(caps, slug);
   const cx = f(left + (c.translit.length * ROW.charW) / 2);
-  return { c, cx, y, ...panelTrigger(c.translit, cx, y, PANELS, { ...ROW, name: `Knowledge: ${slug}` }) };
+  return { c, cx, y, ...titleTrigger(c.translit, cx, y, ROW) };
 }
 
 // ---- panel 1: certain ----
@@ -119,9 +118,7 @@ const muhtaff = trigger("muhtaff-bil-qarain", 530, 426);
   <g data-view-show="ibn-hajar" aria-hidden="true"><Arrow x1={202} y1={190} x2={256} y2={MUT.ibn - 4} bend={-10} /></g>
   <g class="off" data-view-show="nazari-only" aria-hidden="true"><Arrow x1={202} y1={204} x2={256} y2={MUT.nazari - 4} bend={14} /></g>
   {/* mutawātir is routes' term: a link, not a trigger */}
-  <a class="xlink" href={href("adad-al-turuq/routes/")} aria-label="Mutawātir: see How many routes carry it?">
-    <text class="rp" x="130" y="258"><tspan class="xu">Mutawātir</tspan><tspan dx="5">→</tspan></text>
-  </a>
+  <XLink to="adad-al-turuq/routes" text="Mutawātir" x={130} y={258} />
   <text class="lbl" x="130" y="276">narrators not investigated</text>
 
   <text class="layer" x="16" y={WHO.head}>Who gains it?</text>
@@ -164,13 +161,13 @@ const muhtaff = trigger("muhtaff-bil-qarain", 530, 426);
   <text class="lbl start" x={LEFT} y="379">overwhelmingly likely</text>
 
   {/* the mutawātir marker moves down into the reasoned band in the other view */}
-  <g class="mut" style={`transform:${MUT_SHIFT["ibn-hajar"]}`} data-v-ibn-hajar={MUT_SHIFT["ibn-hajar"]} data-v-nazari-only={MUT_SHIFT["nazari-only"]}>
+  <g class="mut" {...viewAttrs({ v: MUT_SHIFT }, VIEW_IDS)}>
     <text class="mk" x={LEFT} y={mut.y + 4}>{mut.text}</text>
     <path class="leader" d={`M${mut.x1} ${mut.y} H${COL_CX - 6}`} aria-hidden="true" />
     <circle class="dot" cx={COL_CX} cy={mut.y} r="5" aria-hidden="true" />
   </g>
   {/* the other markers, in reading order down the meter */}
-  <g class="all-three">
+  <g class="all-three m-enter">
     <text class="mk" x={LEFT} y={allThree.y + 4}>{allThree.text}</text>
     <text class="mk" x={LEFT} y={allThree.y + 18}>{allThree.more}</text>
     <path class="leader" d={`M${allThree.x1} ${allThree.y} H${COL_CX - 6}`} aria-hidden="true" />
@@ -188,7 +185,7 @@ const muhtaff = trigger("muhtaff-bil-qarain", 530, 426);
   {/* ---- the lifts: each sign lifts an āḥād report into the reasoned band; all three together lift it close to
       the certain line ---- */}
   <g aria-hidden="true">
-    {LIFTS.map((l) => <path class="lift draw" pathLength="1" style={`--d:${l.d}s`} d={l.path} marker-end="url(#ahl)" />)}
+    {LIFTS.map((l) => <path class="lift draw m-draw m-marked" pathLength="1" style={`--d:${l.d}s`} d={l.path} marker-end="url(#ahl)" />)}
     <path class="together" d={`M${COL.x1 + 12} ${withSign.y - 16} V${allThree.y + 10}`} marker-end="url(#ahl)" />
   </g>
 
@@ -245,8 +242,6 @@ const muhtaff = trigger("muhtaff-bil-qarain", 530, 426);
   /* the mutawātir marker slides between the views (spec §3.4); motion.css turns the transition off */
   .mut{transition:transform .5s ease-in-out}
   /* each resting style is the end state; the animations run from the start state, once */
-  .lift.draw{stroke-dasharray:1;stroke-dashoffset:0;animation:knowledge-draw .5s ease-out both;animation-delay:var(--d)}
-  .all-three{animation:knowledge-bright .6s ease-out 2.1s both}
-  @keyframes knowledge-draw{0%{stroke-dashoffset:1;opacity:0}10%{opacity:1}100%{stroke-dashoffset:0;opacity:1}}
-  @keyframes knowledge-bright{from{opacity:.4}}
+  .lift.draw{--dur:.5s}
+  .all-three{--from-o:.4;--dur:.6s;--d:2.1s}
 </style>

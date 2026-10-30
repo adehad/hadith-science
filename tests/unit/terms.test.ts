@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { RESERVED, targetPath, parseSlugQuery, resolveQuery } from "../../src/lib/terms";
+import { targetPath, parseSlugQuery, resolveQuery } from "../../src/lib/terms";
 
 const built = { slug: "mursal", division: "al-mardud", scene: "breaks" };
 const viewOnly = { slug: "mursal-wide", division: "al-mardud", scene: "breaks", view: "wider" };
@@ -27,5 +27,3 @@ describe("resolveQuery", () => {
   it("unknown t → glossary search", () => expect(resolveQuery("?t=xyz", index)).toBe("terms/?q=xyz"));
   it("unknown bare → stay", () => expect(resolveQuery("?utm_x", index)).toBeNull());
 });
-
-it("reserved words", () => expect([...RESERVED]).toEqual(["t", "view", "q"]));

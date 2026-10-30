@@ -17,12 +17,12 @@ import Arrow from "../svg/Arrow.astro";
 import Chip from "../svg/Chip.astro";
 import Glyph from "../svg/Glyph.astro";
 import TermTitle from "../svg/TermTitle.astro";
+import XLink from "../svg/XLink.astro";
 import { FIG, KIND_NAME, RELIABLE } from "../svg/figures";
 import { f, titleTrigger } from "../svg/geom";
 import { cap, type DiagramProps } from "../../lib/scene";
 import { chipWidth } from "../../lib/kit";
 import { loadContent } from "../../lib/content";
-import { href } from "../../lib/url";
 
 type Props = DiagramProps;
 const { caps, scene } = Astro.props;
@@ -41,7 +41,7 @@ function title(slug: string, cx: number, arOff: number) {
 const { scenes } = await loadContent();
 const unknown = scenes.find((s) => s.division === "al-mardud" && s.id === "unknown");
 if (!unknown) throw new Error("Identity: no unknown scene to link to");
-const unknownHref = href(`${unknown.division}/${unknown.id}/`);
+const unknownTo = `${unknown.division}/${unknown.id}`;
 // where it sits, from the scenes' order, for Link A's accessible name (its visible text already names it)
 const unknownPlace = unknown.order === scene.order + 1 ? "the next scene" : unknown.order > scene.order ? "a later scene" : "an earlier scene";
 const LINK_Y = 366;
@@ -124,21 +124,19 @@ const OTHERS_X = f(books[books.length - 1].after + 8);
     </g>
 
     {/* the ties, behind the names and the figure */}
-    {TIES.map((d) => <path class="tie" d={d} />)}
+    {TIES.map((d) => <path class="tie m-enter" d={d} />)}
     {NAMES.map((n) => <Chip x={n.x} y={n.y} text={n.text} w={n.w} />)}
     <text class="lbl sm" x={NAMES[1].cx} y={SIDE_Y + 26}>after his grandfather</text>
     <text class="lbl sm" x={NAMES[2].cx} y={SIDE_Y + 26}>another name</text>
     <text class="lbl sm" x="215" y={K_Y + 26}>after his son</text>
 
-    <g class="one">
+    <g class="one m-enter">
       <Narrator x={ONE.x} y={ONE.y} k={ONE.k} {...FIG.majhul} label={KIND_NAME.majhul} />
     </g>
 
     <text class="lbl sm" x="215" y="306">name, lineage, title, occupation, description or ancestry:</text>
     <text class="lbl sm" x="215" y="322">known by one, cited by another, he is taken for someone else</text>
-    <a class="xlink" href={unknownHref} aria-label={`what follows: ${unknown.title} (${unknownPlace})`}>
-      <text class="rp" x="215" text-anchor="middle" y={LINK_Y}><tspan>what follows: </tspan><tspan class="xu">{unknown.title}</tspan><tspan dx="5" aria-hidden="true">→</tspan></text>
-    </a>
+    <XLink to={unknownTo} lead="what follows: " text={unknown.title} note={unknownPlace} x={215} y={LINK_Y} anchor="middle" />
   </svg>
 
   <svg id="cell-one-student" viewBox="0 0 430 380" role="group" aria-label="al-Wuḥdān, an illustration: he narrates rarely, so few take from him. On one side only one narrates from him; on the other, for contrast, many narrate from another narrator. Books of al-wuḥdān list men from whom only one narrates, even when he is named; Muslim, al-Ḥasan ibn Sufyān and others compiled them. If only one narrates from him he is majhūl al-ʿayn; if two or more do, but no one vouches for him, mastūr.">
@@ -169,16 +167,10 @@ const OTHERS_X = f(books[books.length - 1].after + 8);
     ))}
     <text class="lbl start sm" x={OTHERS_X} y={BOOKS_Y + 4}>and others</text>
     <text class="lbl sm" x="215" y="344">only one: majhūl al-ʿayn · two or more, no one vouches: mastūr</text>
-    <a class="xlink" href={unknownHref} aria-label={`who narrates from him decides his kind (scene: ${unknown.title})`}>
-      <text class="rp" x="215" text-anchor="middle" y={LINK_Y}><tspan class="xu">who narrates from him decides his kind</tspan><tspan dx="5" aria-hidden="true">→</tspan></text>
-    </a>
+    <XLink to={unknownTo} text="who narrates from him decides his kind" x={215} y={LINK_Y} anchor="middle" />
   </svg>
 </div>
 <style>
-  /* the grid's 1px gaps show its background, drawing var(--rule) lines between the cells (as Names) */
-  .cells{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--rule)}
-  .cells svg{background:var(--surface)}
-  @media (max-width:640px) and (orientation:portrait){.cells{grid-template-columns:1fr}}
   .identity .layer{text-anchor:start}
   /* cell A: the ties from the one man to his names */
   .tie{fill:none;stroke:var(--line);stroke-width:1.2;stroke-dasharray:3 3}
@@ -188,8 +180,7 @@ const OTHERS_X = f(books[books.length - 1].after + 8);
   /* motion: each resting style is the end state, and each animation runs from its start state. The six faint
      figures rest hidden; they start over their names and slide to the one man, fading as he fades in. */
   .merge{opacity:0;animation:identity-merge 1.6s ease-in-out .8s both}
-  @keyframes identity-merge{from{opacity:.6;transform:translate(var(--dx),var(--dy))}75%{opacity:.6}to{opacity:0;transform:none}}
-  .one{animation:identity-one .5s ease-out 2s both}
-  @keyframes identity-one{from{opacity:0}}
-  .tie{animation:identity-one .5s ease-out 2.3s both}
+  @keyframes identity-merge{from{opacity:.6;transform:translate(var(--dx),var(--dy))}75%{opacity:.6}}
+  .one{--dur:.5s;--d:2s}
+  .tie{--dur:.5s;--d:2.3s}
 </style>

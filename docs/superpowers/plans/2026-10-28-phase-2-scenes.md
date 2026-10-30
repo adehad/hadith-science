@@ -650,6 +650,8 @@ The spec (§4.3) asks for all four omission types, so this extends the mockup's 
 
 ### Task 11: End-to-end tests and screenshots
 
+(Superseded: the test audit, `docs/superpowers/plans/2026-10-29-test-audit.md`, replaced these per-term and per-scene tests with generic checks; later phases follow the tests paragraph of the al-mardud design §16.)
+
 **Files:**
 - Create: `tests/e2e/scenes.spec.ts`
 - Modify: `tests/e2e/links.spec.ts` (if it lists pending terms only), `tests/e2e/motion.spec.ts`, `tests/screenshots/readme.spec.ts`, `README.md`, `docs/screenshots/*`

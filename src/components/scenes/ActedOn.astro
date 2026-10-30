@@ -21,7 +21,7 @@ import Matn from "../svg/Matn.astro";
 import Pill from "../svg/Pill.astro";
 import Scale from "../svg/Scale.astro";
 import TermTitle from "../svg/TermTitle.astro";
-import { SUBT_TRIGGER, f, panelTrigger } from "../svg/geom";
+import { SUBT_TRIGGER, f, titleTrigger } from "../svg/geom";
 import { cap, type DiagramProps } from "../../lib/scene";
 import { chipWidth } from "../../lib/kit";
 
@@ -30,8 +30,6 @@ const { caps, scene } = Astro.props;
 
 const W = 1040, H = 530;
 if (scene.views?.length) throw new Error("ActedOn: expected no views");
-const PANELS = scene.panels ?? [];
-
 // the spine of questions, and the row the outcome cards hang from
 const CY = 100, DH = 60;
 const CARD_Y = 160, TITLE_Y = 190;
@@ -64,11 +62,11 @@ const CARDS: [number, number, number, Outcome][] = [
 ];
 
 // a card title as a term trigger, in the 15px display face (geom's SUBT_TRIGGER); extra widens (or, negative,
-// narrows) the estimate each side, for titles with wide (m, w) or narrow (i, l, t) letters; panelTrigger checks it
+// narrows) the estimate each side, for titles with wide (m, w) or narrow (i, l, t) letters; Term checks it
 // sits wholly inside its panel, or the carousel would cut it
 function title(slug: string, cx: number, y = TITLE_Y, extra = 0) {
   const c = cap(caps, slug);
-  return { c, cx, y, ...panelTrigger(c.translit, cx, y, PANELS, { ...SUBT_TRIGGER, extra, name: `ActedOn: ${slug}` }) };
+  return { c, cx, y, ...titleTrigger(c.translit, cx, y, { ...SUBT_TRIGGER, extra }) };
 }
 
 // naskh: a time arrow with the earlier and later rulings pinned to it
@@ -162,7 +160,7 @@ const startW = chipWidth(START);
   ))}
   <Matn x={540} y={258} w={104} h={58} lines={["visiting graves", "forbidden"]} inactive />
   {/* the earlier ruling is lifted: a strike draws across it once */}
-  <path class="strike" pathLength="1" d="M550 306 L634 270" />
+  <path class="strike m-draw" pathLength="1" d="M550 306 L634 270" />
   <Matn x={656} y={258} w={108} h={58} lines={["“Visit them; for", "indeed it reminds", "of the hereafter.”"]} />
   <text class="lbl" x="650" y="392">Burayda's report, in Muslim</text>
   <text class="lbl" x="650" y="413">known from</text>
@@ -203,15 +201,11 @@ const startW = chipWidth(START);
   .kn{fill:var(--fg);font:600 10.5px var(--f-body);text-anchor:middle}
   .tlbl{fill:var(--muted);font:600 10.5px var(--f-body);text-anchor:middle;letter-spacing:.04em}
   .card{fill:var(--surface);stroke:var(--rule);stroke-width:1.2}
-  .card.ok{fill:color-mix(in srgb,var(--ok) 6%,var(--surface));stroke:color-mix(in srgb,var(--ok) 55%,var(--surface))}
-  .card.gold{fill:color-mix(in srgb,var(--gold-b) 9%,var(--surface));stroke:color-mix(in srgb,var(--gold-a) 55%,var(--surface))}
-  .card.pause{fill:color-mix(in srgb,var(--pause) 7%,var(--surface));stroke:color-mix(in srgb,var(--pause) 55%,var(--surface))}
   .bridge{fill:none;stroke:var(--ok);stroke-width:1.8}
   .time{fill:none;stroke:var(--muted);stroke-width:1.6}
   .stem{stroke:var(--muted);stroke-width:1.2}
   .pin{fill:var(--surface);stroke:var(--fg);stroke-width:1.8}
-  .unk{fill:color-mix(in srgb,var(--pause) 65%,var(--fg));font:700 22px var(--f-display);text-anchor:middle;animation:blink 2.4s ease-in-out infinite}
-  /* the strike's resting state is drawn; the animation runs from undrawn, once */
-  .strike{fill:none;stroke:var(--gap);stroke-width:2.2;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:0;animation:acted-draw .8s ease-out 1s both}
-  @keyframes acted-draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+  .unk{fill:var(--pause-ink);font:700 22px var(--f-display);text-anchor:middle;animation:blink 2.4s ease-in-out infinite}
+  /* drawn in once, after the scale has started to tip */
+  .strike{fill:none;stroke:var(--gap);stroke-width:2.2;stroke-linecap:round;--dur:.8s;--d:1s}
 </style>

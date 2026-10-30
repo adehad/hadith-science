@@ -18,9 +18,9 @@ import Narrator from "../svg/Narrator.astro";
 import Arrow from "../svg/Arrow.astro";
 import TermTitle from "../svg/TermTitle.astro";
 import { FIG, KIND_NAME, RELIABLE, type Kind } from "../svg/figures";
-import { SUBT_TRIGGER, f, panelTrigger, rowTrigger } from "../svg/geom";
+import { SUBT_TRIGGER, f, titleTrigger, rowTrigger } from "../svg/geom";
 import { cap, type DiagramProps } from "../../lib/scene";
-import { stackY } from "../../lib/kit";
+import { stackY, stagger } from "../../lib/kit";
 
 type Props = DiagramProps;
 const { caps, scene } = Astro.props;
@@ -85,13 +85,13 @@ const HALO_T0 = 0.6, HALO_STEP = 0.2;
 const halos = [
   ...CHAINS.flatMap((c) => c.links.flatMap((l, i) => (l.alone ? [{ x: c.x, y: ROWS[i] }] : []))),
   { x: P4.lone, y: ROWS[2] },
-].map((h, i) => ({ ...h, d: f(HALO_T0 + i * HALO_STEP) }));
+].map((h, i) => ({ ...h, d: stagger(i, { start: HALO_T0, step: HALO_STEP }) }));
 
 // ---- triggers ----
-// the panel titles in the 15px display face (geom's SUBT_TRIGGER); panelTrigger checks each sits inside its panel
+// the panel titles in the 15px display face (geom's SUBT_TRIGGER); Term checks each sits inside its panel
 function title(slug: string, cx: number) {
   const c = cap(caps, slug);
-  return { c, cx, y: TITLE_Y, ...panelTrigger(c.translit, cx, TITLE_Y, PANELS, { ...SUBT_TRIGGER, name: `Lone: ${slug}` }) };
+  return { c, cx, y: TITLE_Y, ...titleTrigger(c.translit, cx, TITLE_Y, SUBT_TRIGGER) };
 }
 const mutlaq = title("gharib-mutlaq", 130);
 const nisbi = title("gharib-nisbi", 910);
@@ -101,8 +101,6 @@ const fard = (() => {
   const c = cap(caps, "fard");
   const x = 26;
   const t = rowTrigger(c.translit, x, SUB_Y);
-  const p = PANELS[0];
-  if (t.hit.x < p.x0 || t.hit.x + t.hit.w > p.x1) throw new Error("Lone: fard trigger leaves its panel");
   return { c, x, ...t, noteX: f(t.info.cx + 14) };
 })();
 
@@ -135,7 +133,7 @@ const BOTTOM = [
 
   {/* ---- the halos, under the figures ---- */}
   <g aria-hidden="true">
-    {halos.map((h) => <rect class="alone" x={h.x - HALO.w / 2} y={h.y - HALO.top} width={HALO.w} height={HALO.top + HALO.bottom} rx="9" style={`--d:${h.d}s`} />)}
+    {halos.map((h) => <rect class="alone m-enter" x={h.x - HALO.w / 2} y={h.y - HALO.top} width={HALO.w} height={HALO.top + HALO.bottom} rx="9" style={`--d:${h.d}`} />)}
   </g>
 
   {/* ---- panels 1-3: the named chains, narrated down from the Prophet ﷺ ---- */}
@@ -205,7 +203,5 @@ const BOTTOM = [
   .rn{fill:var(--fg);font:700 13px var(--f-body);text-anchor:middle}
   .faint{opacity:.5}
   /* the halo behind each lone narrator: decoration only, the tags carry the meaning */
-  .alone{fill:color-mix(in srgb,var(--gold-b) 26%,var(--surface));stroke:color-mix(in srgb,var(--gold-a) 45%,var(--surface));stroke-width:1;animation:lone-halo .3s ease-out both;animation-delay:var(--d)}
-  /* the resting style is the end state; the fade runs from the start state, once */
-  @keyframes lone-halo{from{opacity:0}}
+  .alone{fill:color-mix(in srgb,var(--gold-b) 26%,var(--surface));stroke:color-mix(in srgb,var(--gold-a) 45%,var(--surface));stroke-width:1;--dur:.3s}
 </style>

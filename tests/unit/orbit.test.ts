@@ -1,11 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { orbitRadii, planetAt, planetRadius, startAngle } from "../../src/lib/orbit";
+import { planetAt, planetRadius, startAngle } from "../../src/lib/orbit";
 
 describe("orbit geometry", () => {
-  it("radii grow per ring with 0.4 aspect", () => {
-    expect(orbitRadii(0)).toEqual([96, 38.4]);
-    expect(orbitRadii(7)).toEqual([369, 147.6]);
-  });
   it("planet position on ellipse", () => {
     const [x, y] = planetAt(0, 0, [410, 270]);
     expect(x).toBeCloseTo(506); expect(y).toBeCloseTo(270);

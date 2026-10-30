@@ -1,0 +1,53 @@
+---
+// a link from a scene's diagram to another scene (audit D4). It looks the target up, so a missing scene, or a missing
+// #term on it, fails the build; and it builds the aria-label from the visible text, so the label starts with what a
+// speech user sees (WCAG 2.5.3) and says where the link goes.
+// The name is lead + text + rest, then a bracketed note. Without a slot the link is one 12px <text>: the plain lead,
+// the underlined text, then an aria-hidden arrow (rest is spoken only), and x and y are required. With a slot the
+// component draws nothing: the slot draws the link, any arrow aria-hidden, and `text` is all the text it shows, so
+// lead and rest are not allowed (the name would say them without the slot showing them): put everything in text.
+import { loadContent } from "../../lib/content";
+import { href } from "../../lib/url";
+
+interface Props {
+  /** the target scene as "division/scene", or "division/scene#term" for one of its terms */
+  to: string;
+  /** the underlined text; with a slot, all the text the slot shows */
+  text: string;
+  /** plain text drawn before the underlined text, and said first; not part of text. Not with a slot */
+  lead?: string;
+  /** words only the name says, straight after text, before the brackets (", for some scholars"). Not with a slot */
+  rest?: string;
+  /** what the name adds after the visible text, in brackets; by default the scene's title, unless the text is it */
+  note?: string;
+  x?: number;
+  y?: number;
+  anchor?: "middle" | "end";
+  /** the space before the arrow */
+  gap?: number;
+  arrow?: string;
+  cls?: string;
+}
+const { to, text, lead = "", rest = "", note, x, y, anchor, gap = 5, arrow = "→", cls } = Astro.props;
+
+const [path, hash] = to.split("#");
+const [division, id] = path.split("/");
+const { scenes } = await loadContent();
+const target = scenes.find((s) => s.division === division && s.id === id);
+if (!target) throw new Error(`XLink: no scene ${path} to link to`);
+if (hash && !target.captions.some((c) => c.term === hash)) throw new Error(`XLink: ${path} has no term ${hash}`);
+
+const slotted = Astro.slots.has("default");
+if (slotted && (lead || rest)) throw new Error(`XLink: the link to ${to} has a slot, so its lead and rest go in text`);
+if (!slotted && (x === undefined || y === undefined)) throw new Error(`XLink: the link to ${to} needs x and y, or a slot`);
+
+const said = lead + text + rest;
+// visible text that already ends in brackets runs on with a comma, so the name never has two bracketed parts
+const add = (n: string) => (said.endsWith(")") ? `${said}, ${n}` : `${said} (${n})`);
+const label = note ? add(note) : text === target.title ? said : add(`scene: ${target.title}`);
+---
+<a class:list={["xlink", cls]} href={href(`${division}/${id}/${hash ? `#${hash}` : ""}`)} aria-label={label === lead + text ? undefined : label}>
+  {slotted ? <slot /> : (
+    <text class="rp" x={x} y={y} text-anchor={anchor}>{lead && <tspan>{lead}</tspan>}<tspan class="xu">{text}</tspan><tspan dx={gap} aria-hidden="true">{arrow}</tspan></text>
+  )}
+</a>

@@ -1,0 +1,14 @@
+---
+// a view tag: a scholar or opinion named on a view's part of a diagram (Hidden, Innovation, Wording), as a pill-shaped
+// tag in the pause colour, centred on cx with its top at y; dashed for a weaker attribution ("it is said").
+// Its text is the pause ink on the view tint, a pair that reaches 4.5:1 in both themes (tests/unit/contrast.test.ts).
+interface Props { cx: number; y: number; w: number; text: string; dashed?: boolean }
+const { cx, y, w, text, dashed = false } = Astro.props;
+---
+<rect class:list={["vtag", { dashed }]} x={cx - w / 2} y={y} width={w} height="22" rx="11" />
+<text class="vtag-t" x={cx} y={y + 15}>{text}</text>
+<style>
+  .vtag{fill:var(--view-tint);stroke:var(--pause);stroke-width:1.4}
+  .vtag.dashed{stroke-dasharray:4 3}
+  .vtag-t{fill:var(--pause-ink);font:700 11.5px var(--f-body);text-anchor:middle}
+</style>

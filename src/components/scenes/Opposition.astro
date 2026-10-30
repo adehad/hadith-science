@@ -18,7 +18,7 @@ import TermTitle from "../svg/TermTitle.astro";
 import Matn from "../svg/Matn.astro";
 import Scale from "../svg/Scale.astro";
 import { FIG, KIND_NAME, RELIABLE } from "../svg/figures";
-import { f, panelTrigger } from "../svg/geom";
+import { f, titleTrigger } from "../svg/geom";
 import { cap, type DiagramProps } from "../../lib/scene";
 
 type Props = DiagramProps;
@@ -27,15 +27,13 @@ const { caps, scene } = Astro.props;
 const W = 780, H = 600;
 const VIEW_IDS = ["ibn-hajar", "accept-all"];
 if ((scene.views ?? []).map((v) => v.id).join() !== VIEW_IDS.join()) throw new Error(`Opposition: expected views ${VIEW_IDS.join(", ")}`);
-const PANELS = scene.panels ?? [];
-
 const K = 0.8, KS = 0.7;
 const TITLE_Y = 506;
 
 // a term trigger under a pan or a panel; it must sit wholly inside its panel, or the carousel would cut it
 function title(slug: string, cx: number) {
   const c = cap(caps, slug);
-  return { c, cx, ...panelTrigger(c.translit, cx, TITLE_Y, PANELS, { name: `Opposition: ${slug}` }) };
+  return { c, cx, ...titleTrigger(c.translit, cx, TITLE_Y) };
 }
 
 // ---- panel 1: added words ----

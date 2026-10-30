@@ -21,9 +21,9 @@ import Glyph from "../svg/Glyph.astro";
 import Matn from "../svg/Matn.astro";
 import TermTitle from "../svg/TermTitle.astro";
 import { FIG, KIND_NAME, RELIABLE } from "../svg/figures";
-import { SUBT_TRIGGER, f, panelTrigger, rowTrigger } from "../svg/geom";
+import { SUBT_TRIGGER, f, titleTrigger, rowTrigger } from "../svg/geom";
 import { cap, type DiagramProps } from "../../lib/scene";
-import { chipRow } from "../../lib/kit";
+import { chipRow, stagger } from "../../lib/kit";
 
 type Props = DiagramProps;
 const { caps, scene } = Astro.props;
@@ -35,19 +35,16 @@ if (PANELS.length !== 3) throw new Error("Lying: expected three panels");
 
 const TITLE_Y = 30, SUB_Y = 50;
 
-// a left-aligned 13px row title as a term trigger; rowTrigger doesn't know about panels, so check here that the
-// hit area sits wholly inside the first one, or the portrait carousel would cut it
+// a left-aligned 13px row title as a term trigger; Term checks it stays in its panel
 function row(slug: string, x: number, y: number) {
   const c = cap(caps, slug);
   const t = rowTrigger(c.translit, x, y);
-  const p = PANELS[0];
-  if (t.hit.x < p.x0 || t.hit.x + t.hit.w > p.x1) throw new Error(`Lying: ${slug} trigger leaves its panel`);
   return { c, x, y, ...t };
 }
-// a centred 15px sub-title as a term trigger; panelTrigger checks it stays in its panel
+// a centred 15px sub-title as a term trigger; Term checks it stays in its panel
 function subt(slug: string, cx: number, y: number) {
   const c = cap(caps, slug);
-  return { c, cx, y, ...panelTrigger(c.translit, cx, y, PANELS, { ...SUBT_TRIGGER, name: `Lying: ${slug}` }) };
+  return { c, cx, y, ...titleTrigger(c.translit, cx, y, SUBT_TRIGGER) };
 }
 
 // ---- panel 1: two charges ----
@@ -76,7 +73,7 @@ const CLUES = [
 ];
 const MATN = { x: 296, y: 196, w: 188, h: 46 };
 // what the text may not clash with past reconciling; the crosses draw in after the third card
-const CLASHES = ["the Qurʾan", "mutawātir sunna", "firm consensus", "common sense"].map((text, i) => ({ text, y: 370 + i * 24, d: f(1.3 + i * 0.2) }));
+const CLASHES = ["the Qurʾan", "mutawātir sunna", "firm consensus", "common sense"].map((text, i) => ({ text, y: 370 + i * 24, d: stagger(i, { start: 1.3, step: 0.2 }) }));
 
 // ---- panel 3: where it comes from, and why ----
 const SRC_X = 562;
@@ -137,7 +134,7 @@ if (Math.max(...MOTIVES.map((c) => c.x + c.w)) > 772) throw new Error("Lying: a 
   <text class="lbl sm" x="390" y={SUB_Y}>judged on overwhelming evidence,</text>
   <text class="lbl sm" x="390" y={SUB_Y + 14}>not certainty</text>
 
-  <g class="clue" style={`--d:${CLUES[0].d}s`}>
+  <g class="clue m-enter" style={`--d:${CLUES[0].d}s`}>
     <rect class="card" x={CARD.x0} y={CLUES[0].y0} width={CARD.x1 - CARD.x0} height={CLUES[0].y1 - CLUES[0].y0} rx="8" />
     <text class="layer" x={CARD.x0 + 12} y={CLUES[0].y0 + 18}>{CLUES[0].head}</text>
     <Narrator x={304} y={126} k={0.5} {...FIG.liar} label={KIND_NAME.liar} />
@@ -146,7 +143,7 @@ if (Math.max(...MOTIVES.map((c) => c.x + c.w)) > 772) throw new Error("Lying: a 
     <text class="lbl start sm" x="326" y="140">yet a ruling may rest on it</text>
   </g>
 
-  <g class="clue" style={`--d:${CLUES[1].d}s`}>
+  <g class="clue m-enter" style={`--d:${CLUES[1].d}s`}>
     <rect class="card" x={CARD.x0} y={CLUES[1].y0} width={CARD.x1 - CARD.x0} height={CLUES[1].y1 - CLUES[1].y0} rx="8" />
     <text class="layer" x={CARD.x0 + 12} y={CLUES[1].y0 + 18}>{CLUES[1].head}</text>
     {/* the translation's English, two fragments only (design §18); the added words pulse (Matn's .added). The empty
@@ -157,13 +154,13 @@ if (Math.max(...MOTIVES.map((c) => c.x + c.w)) > 772) throw new Error("Lying: a 
     <text class="lbl sm" x="390" y="277">he added the last words himself</text>
   </g>
 
-  <g class="clue" style={`--d:${CLUES[2].d}s`}>
+  <g class="clue m-enter" style={`--d:${CLUES[2].d}s`}>
     <rect class="card" x={CARD.x0} y={CLUES[2].y0} width={CARD.x1 - CARD.x0} height={CLUES[2].y1 - CLUES[2].y0} rx="8" />
     <text class="layer" x={CARD.x0 + 12} y={CLUES[2].y0 + 18}>{CLUES[2].head}</text>
     <text class="lbl sm" x="390" y="348">clashes, past reconciling, with</text>
     {CLASHES.map((c) => (
       <>
-        <g class="xdraw" style={`--d:${c.d}s`}><Glyph kind="cross" cx={330} cy={c.y} r={7} /></g>
+        <g class="xdraw" style={`--d:${c.d}`}><Glyph kind="cross" cx={330} cy={c.y} r={7} animate /></g>
         <Chip x={344} y={c.y} text={c.text} />
       </>
     ))}
@@ -191,7 +188,7 @@ if (Math.max(...MOTIVES.map((c) => c.x + c.w)) > 772) throw new Error("Lying: a 
   {SOUND.map((x) => <Narrator x={x} y={CHAIN_Y} k={CK} {...FIG.later} {...RELIABLE} label={KIND_NAME.later} />)}
 
   <g aria-hidden="true">
-    {FEEDS.map((d) => <path class="feed" pathLength="1" d={d} />)}
+    {FEEDS.map((d) => <path class="feed m-draw" pathLength="1" d={d} />)}
   </g>
   <Matn x={STUB.x} y={STUB.y} w={STUB.w} h={STUB.h} />
   <g class="stub-chain" aria-hidden="true">
@@ -212,12 +209,9 @@ if (Math.max(...MOTIVES.map((c) => c.x + c.w)) > 772) throw new Error("Lying: a 
   .yield{fill:var(--fg)}
   .wedge{fill:color-mix(in srgb,var(--gap) 22%,var(--surface));stroke:var(--gap);stroke-width:1}
   .strike{fill:none;stroke:var(--gap);stroke-width:2.2;stroke-linecap:round}
-  .feed{fill:none;stroke:var(--line);stroke-width:1.6;stroke-dasharray:1;stroke-dashoffset:0;animation:lying-draw .6s ease-out .4s both}
+  .feed{fill:none;stroke:var(--line);stroke-width:1.6;--dur:.6s;--d:.4s}
   .stub-chain path{fill:none;stroke:var(--moon-ink);stroke-width:1.2}
   .stub-chain circle{fill:var(--moon);stroke:var(--moon-ink);stroke-width:1.2}
-  /* each resting style is the end state; the animations run from the start state, once */
-  .clue{animation:lying-in .3s ease-out both;animation-delay:var(--d)}
-  .xdraw :global(.xmark){stroke-dasharray:1;stroke-dashoffset:0;animation:lying-draw .3s ease-out both;animation-delay:var(--d)}
-  @keyframes lying-in{from{opacity:0}}
-  @keyframes lying-draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+  /* the clue cards come in, then the clashes are crossed out */
+  .clue,.xdraw{--dur:.3s}
 </style>
