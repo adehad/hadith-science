@@ -1059,13 +1059,15 @@
   def: "Permission naming an unidentified person or book. Not valid; even al-Khaṭīb, lenient on the other forms, rejected it."
   section: "§5.58"
   division: siyagh-al-ada
+  scene: licence
 - id: ijaza-madum
   translit: Ijāza li-l-maʿdūm
   ar: إِجَازَةٌ لِلْمَعْدُومِ
   en: Permission to the unborn
-  def: "Permission to someone not yet born, such as ‘whoever will be born to you’. Ibn Ḥajar holds it invalid."
+  def: "Permission to someone not yet born, such as ‘whom shall soon be born’. Ibn Ḥajar holds it invalid, even when joined to someone living."
   section: "§5.58"
   division: siyagh-al-ada
+  scene: licence
 - id: ijaza-muallaqa
   translit: Ijāza muʿallaqa
   ar: إِجَازَةٌ مُعَلَّقَةٌ
@@ -1073,6 +1075,7 @@
   def: "Permission that hangs on someone else's wish, as in ‘if so-and-so wishes’. Invalid, unlike ‘if you wish’."
   section: "§5.58"
   division: siyagh-al-ada
+  scene: licence
 
 # 7. al-Asmāʾ (§5.59–5.61)
 - id: muttafiq-wa-muftariq

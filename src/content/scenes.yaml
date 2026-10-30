@@ -683,6 +683,39 @@
     - title: The illustration
       section: §5.55
       note: "The book names no teacher or student for these forms; the figures are an illustration."
+- id: licence
+  division: siyagh-al-ada
+  moons: [2]
+  order: 4
+  title: Whom may a permission name?
+  eyebrow: The loose forms of permission · §5.58
+  lede: A permission names a student and a book. Some teachers gave it far more loosely, to everyone, to someone unidentified, to someone not yet born, or on someone else's wish. Ibn Ḥajar counts none of these; al-Khaṭīb allowed all but the unidentified. Even at best they are far weaker than hearing, though better than a muʿḍal report.
+  source: §5.58 Ijāza ʿāmma, li-l-majhūl, li-l-maʿdūm and muʿallaqa
+  diagram: Licence
+  width: 860
+  captions:
+    - term: ijaza-majhul
+      note: "Permission that names someone who is not identified, or a book that is not identified. It does not count. al-Khaṭīb, who allowed the other loose forms and cited a group of his shaykhs for them, made an exception of this one (§5.58)."
+    - term: ijaza-madum
+      note: "Permission to someone not yet born, as in “whom shall soon be born”. Some say it is valid when joined to someone living, as in permission to you and whoever is born to you. Ibn Ḥajar: nearer the truth, it is not valid either. Abū Bakr ibn Abī Dāwūd and Abū ʿAbd Allāh ibn Manda used it (§5.58)."
+    - term: ijaza-muallaqa
+      note: "Permission that hangs on someone else's wish: to you if so-and-so wishes, or to whomever so-and-so wishes. It does not count, unlike permission to you if you wish. Abū Bakr ibn Abī Khaythama used it, and al-Khaṭīb allowed it, as he did the unborn and the general forms (§5.58)."
+  views:
+    - id: ibn-hajar
+      label: "Ibn Ḥajar: none of them counts"
+      scholars: §5.58
+      note: "The correct opinion is that none of these forms counts: not the general ones, the unidentified, the unborn or the conditional. Of the general forms, permission to the people of one land comes nearest, being the most restricted."
+    - id: khatib
+      label: "al-Khaṭīb: all but the unidentified"
+      scholars: §5.58; with a group of his shaykhs
+      note: "al-Khaṭīb allowed every one of these forms except permission to someone or something unidentified, citing a group of his shaykhs for it. Many others allowed the general permission."
+  extra:
+    - title: The ranking
+      section: §5.58
+      note: "As Ibn al-Ṣalāḥ says, all these forms are a disliked leniency. Even specified permission is strongly disputed, though the later scholars accept it, and all agree it is below hearing, so these forms are much weaker still. Yet they are better than narrating the report muʿḍal. Many scholars allowed the general permission, so many that some ḥāfiẓs gathered them in a book in alphabetical order."
+    - title: The illustrations
+      section: §5.58
+      note: "The book names no one who received these permissions; the cards and figures are illustrations of its formulas."
 - id: names
   division: al-asma
   moons: [0, 1, 2]

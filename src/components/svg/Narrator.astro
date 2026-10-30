@@ -12,20 +12,22 @@ interface Props {
   face?: "blank" | "faded" | "mask" | "mask-dashed" | "hand";
   scroll?: "yes" | "slot";
   seal?: "yes" | "slot" | "crack" | "void";
-  ghost?: boolean;
+  /** an outline instead of a figure: ghost, the dashed red narrator dropped from a chain (spec §3.2); unborn, a
+   *  dashed grey outline for someone not yet born (Ṣiyagh al-adāʾ design §7). No scroll, seal or face either way. */
+  variant?: "ghost" | "unborn";
   /** figure scale; 1.5 in the figure key, 0.9 in chains */
   k?: number;
   /** kind name drawn under the figure, shown only in Labels mode (spec §3.5) */
   label?: string;
 }
-const { x, y, kind = "later", face, scroll, seal, ghost = false, k = 1.5, label } = Astro.props;
+const { x, y, kind = "later", face, scroll, seal, variant, k = 1.5, label } = Astro.props;
 const BODY = "M3 43 Q3 23 20 23 Q37 23 37 43 Z";
 const transform = `translate(${f(x - 20 * k)} ${f(y - 22 * k)}) scale(${k})`;
 ---
-{ghost ? (
+{variant ? (
   <g transform={transform}>
-    <circle class="n ghost" cx="20" cy="11" r="8.5" />
-    <path class="n ghost" d={BODY} />
+    <circle class={`n ${variant}`} cx="20" cy="11" r="8.5" />
+    <path class={`n ${variant}`} d={BODY} />
   </g>
 ) : (
   <g transform={transform}>
@@ -85,7 +87,7 @@ const transform = `translate(${f(x - 20 * k)} ${f(y - 22 * k)}) scale(${k})`;
     {kind === "sahabi" && <path class="n sahabi star" d="M33 0 L34.6 3.4 L38 5 L34.6 6.6 L33 10 L31.4 6.6 L28 5 L31.4 3.4Z" />}
   </g>
 )}
-{label && <text class={`lbl mode-label${ghost ? " gap" : ""}`} x={x} y={f(y + 22 * k + 14)}>{label}</text>}
+{label && <text class={`lbl mode-label${variant === "ghost" ? " gap" : ""}`} x={x} y={f(y + 22 * k + 14)}>{label}</text>}
 <style>
   .n{stroke-width:1.5}
   .sahabi{fill:url(#gold);stroke:var(--gold-a)}
@@ -93,6 +95,7 @@ const transform = `translate(${f(x - 20 * k)} ${f(y - 22 * k)}) scale(${k})`;
   .later{fill:var(--ink);stroke:var(--ink-edge)}
   .band{stroke:var(--hole);stroke-width:3;fill:none}
   .star{stroke-width:.8;stroke-linejoin:round}
+  .unborn{fill:none;stroke:var(--muted);stroke-dasharray:3 2.4}
   .ghost{fill:none;stroke:var(--gap);stroke-dasharray:4 3;animation:blink 2.4s ease-in-out infinite}
   .scroll rect{fill:var(--moon);stroke:var(--moon-ink);stroke-width:.8}
   .ink{stroke:var(--moon-ink);stroke-width:.9;fill:none;stroke-linecap:round}

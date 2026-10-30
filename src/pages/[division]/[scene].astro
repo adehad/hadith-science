@@ -12,6 +12,7 @@ import Unknown from "../../components/scenes/Unknown.astro";
 import Delivery from "../../components/scenes/Delivery.astro";
 import Heard from "../../components/scenes/Heard.astro";
 import Permission from "../../components/scenes/Permission.astro";
+import Licence from "../../components/scenes/Licence.astro";
 import Names from "../../components/scenes/Names.astro";
 import Grades from "../../components/scenes/Grades.astro";
 import Opposition from "../../components/scenes/Opposition.astro";
@@ -58,7 +59,7 @@ Astro.locals.panels = scene.panels;
 
 // each scene task adds its diagram here; import only components that exist
 // typed by the props every diagram takes, so a misnamed or missing prop fails astro check
-const DIAGRAMS: Partial<Record<Diagram, (p: DiagramProps) => any>> = { Routes, Breaks, Causes, Unknown, Delivery, Names, Grades, Opposition, Support, ActedOn, Report, Sorting, Knowledge, Lone, Hidden, Lying, Slips, Changes, Wording, Identity, Innovation, Ends, Raised, Companions, Connected, Peers, Doubts, Elevation, Meeting, Heard, Permission };
+const DIAGRAMS: Partial<Record<Diagram, (p: DiagramProps) => any>> = { Routes, Breaks, Causes, Unknown, Delivery, Names, Grades, Opposition, Support, ActedOn, Report, Sorting, Knowledge, Lone, Hidden, Lying, Slips, Changes, Wording, Identity, Innovation, Ends, Raised, Companions, Connected, Peers, Doubts, Elevation, Meeting, Heard, Permission, Licence };
 const D = DIAGRAMS[scene.diagram];
 if (!D) throw new Error(`no diagram component for ${scene.diagram}`);
 
@@ -110,6 +111,8 @@ const LEGEND: Partial<Record<Diagram, LegendKind[]>> = {
   Heard: ["moon", "sahabi", "tabii", "later", "mudallis"],
   // the teachers and students are unnamed later narrators
   Permission: ["later"],
+  // the living man in cell C is a later narrator; the one not yet born is a dashed outline
+  Licence: ["later", "unborn"],
   // ActedOn, Sorting and Wording draw no narrator figures, so they have no legend and no Key/Labels switch (phase 3
   // designs §1)
 };
