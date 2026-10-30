@@ -11,6 +11,12 @@ export function chipWidth(text: string, charW = CHIP_CHAR_W, pad = CHIP_PAD): nu
   return f(text.length * charW + pad);
 }
 
+// a verdict pill (Pill.astro) is 11.5px bold: about 6.6 units per character, with 12 units of padding each side.
+// Scenes use it to keep a pill inside its panel.
+export function pillWidth(text: string): number {
+  return f(text.length * 6.6 + 24);
+}
+
 export interface RowChip { x: number; w: number; cx: number; text: string }
 
 // chips in a row from x0, gap units apart; links are the gaps between neighbours (where an arrow goes),
@@ -120,4 +126,51 @@ export function dotCluster(n: number, cx: number, cy: number, gap: number): { x:
 // figure (Report.astro, Lone.astro)
 export function stackY(y: number, j: number, n: number, lh = 14): number {
   return f(y + (j - (n - 1) / 2) * lh);
+}
+
+// a lifespan bar (Lifespan.astro): a rounded bar h tall centred on y, from x0 to x1, with its name's start point
+// gap units past the right end, on the bar's middle. The bars show overlap only: no axis, no dates.
+export function lifespanBar(x0: number, x1: number, y: number, { h = 8, gap = 6 } = {}) {
+  const [a, b] = x0 <= x1 ? [x0, x1] : [x1, x0];
+  if (b - a <= 0) throw new Error("lifespanBar: a bar with no length");
+  return { x: f(a), y: f(y - h / 2), w: f(b - a), h, rx: f(h / 2), name: { x: f(b + gap), y: f(y + 4) } };
+}
+
+// the stretch two spans [x0, x1] share, and its middle, or null if they only touch or don't meet: where two
+// lifespans overlap (the hidden scene's "met" knot and "?")
+export function spanOverlap(a: [number, number], b: [number, number]): { x0: number; x1: number; mid: number } | null {
+  const x0 = Math.max(Math.min(...a), Math.min(...b));
+  const x1 = Math.min(Math.max(...a), Math.max(...b));
+  if (x1 <= x0) return null;
+  return { x0: f(x0), x1: f(x1), mid: f((x0 + x1) / 2) };
+}
+
+// one undotted letter outline, a dotless bāʾ bowl centred on (gx, gy), as an SVG path: the written shape that its
+// dots or vowels decide how to read (Names.astro's muʾtalif cell, Changes.astro's muṣaḥḥaf and muḥarraf cell).
+// Single letter shapes only, never words.
+export function letterShape(gx: number, gy: number): string {
+  return `M${f(gx - 26)} ${f(gy - 14)} Q${f(gx - 28)} ${f(gy + 8)} ${f(gx)} ${f(gy + 8)} Q${f(gx + 28)} ${f(gy + 8)} ${f(gx + 26)} ${f(gy - 14)}`;
+}
+
+// the dot patterns that read the outline as bāʾ (one below), tāʾ (two above) or thāʾ (three above), as offsets
+// from the letter's centre
+export const LETTER_DOTS = {
+  none: [],
+  below: [[0, 20]],
+  two: [[-6, -22], [6, -22]],
+  three: [[-6, -22], [6, -22], [0, -31]],
+} as const satisfies Record<string, readonly (readonly [number, number])[]>;
+
+// the dots of a letter centred on (cx, cy), each r in radius
+export function letterDots(cx: number, cy: number, dots: readonly (readonly [number, number])[], r = 3.6) {
+  return dots.map(([dx, dy]) => ({ cx: f(cx + dx), cy: f(cy + dy), r }));
+}
+
+// a short vowel over or under a letter centred on (cx, cy), as an SVG path to stroke: the fatḥa a slanted stroke
+// above, the kasra the same stroke below, the ḍamma a small curl above (Changes.astro's muḥarraf)
+export function vowelMark(cx: number, cy: number, kind: "fatha" | "damma" | "kasra"): string {
+  const p = (dx: number, dy: number) => `${f(cx + dx)} ${f(cy + dy)}`;
+  if (kind === "fatha") return `M${p(-7, -21)} L${p(7, -27)}`;
+  if (kind === "kasra") return `M${p(-7, 21)} L${p(7, 15)}`;
+  return `M${p(1, -22)} Q${p(-4, -22)} ${p(-3, -27)} Q${p(2, -31)} ${p(3, -25)} Q${p(3, -18)} ${p(-4, -16)}`;
 }

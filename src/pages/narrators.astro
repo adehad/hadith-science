@@ -8,18 +8,18 @@ import Term from "../components/svg/Term.astro";
 import Defs from "../components/svg/Defs.astro";
 import ReadAsText from "../components/layout/ReadAsText.astro";
 import { loadContent } from "../lib/content";
+import { FIG, RELIABLE, type Fig } from "../components/svg/figures";
 
-type Fig = Omit<import("astro/types").ComponentProps<typeof Narrator>, "x" | "y">;
-// [English, term slug, figure, what it shows, what it shows in words] (mockup CASES)
+// [English, term slug, figure, what it shows, what it shows in words] (mockup CASES); the figures are the scenes' own
 const CASES: [string, string, Fig, string, string][] = [
-  ["Reliable", "thiqa", { scroll: "yes", seal: "yes" }, "name + seal", "A name scroll and a seal: his identity is known and someone vouches for him."],
-  ["Unknown", "majhul", { scroll: "yes", seal: "slot" }, "no one vouches", "A name scroll, but the seal slot is empty: he is named, yet no one vouches for him."],
-  ["Unnamed", "mubham", { face: "blank", scroll: "slot", seal: "slot" }, "no name to check", "A blank face and both slots empty: with no name, there is no one to check."],
-  ["Weak", "daif", { scroll: "yes", seal: "crack" }, "cracked seal", "A name scroll and a cracked seal: he is known, but criticised as weak."],
-  ["Liar", "kadhdhab", { face: "mask", scroll: "yes", seal: "void" }, "mask, voided seal", "A mask and a crossed-out seal: he is known as a liar."],
-  ["Memory failed", "mukhtalit", { face: "faded", scroll: "yes", seal: "yes" }, "fading head", "Scroll and seal, but a fading head: he was reliable until his memory failed."],
-  ["Conceals", "mudallis", { face: "hand", scroll: "yes", seal: "yes" }, "hand over mouth", "Scroll and seal, with a hand over his mouth: he hides a gap in what he passes on."],
-  ["Missing link", "saqt", { ghost: true }, "dropped from chain", "A dashed red outline: a narrator dropped from the chain."],
+  ["Reliable", "thiqa", RELIABLE, "name + seal", "A name scroll and a seal: his identity is known and someone vouches for him."],
+  ["Unknown", "majhul", FIG.majhul, "no one vouches", "A name scroll, but the seal slot is empty: he is named, yet no one vouches for him."],
+  ["Unnamed", "mubham", FIG.mubham, "no name to check", "A blank face and both slots empty: with no name, there is no one to check."],
+  ["Weak", "daif", FIG.weak, "cracked seal", "A name scroll and a cracked seal: he is known, but criticised as weak."],
+  ["Liar", "kadhdhab", FIG.liar, "mask, voided seal", "A mask and a crossed-out seal: he is known as a liar."],
+  ["Memory failed", "mukhtalit", FIG.mukhtalit, "fading head", "Scroll and seal, but a fading head: he was reliable until his memory failed."],
+  ["Conceals", "mudallis", FIG.mudallis, "hand over mouth", "Scroll and seal, with a hand over his mouth: he hides a gap in what he passes on."],
+  ["Missing link", "saqt", FIG.ghost, "dropped from chain", "A dashed red outline: a narrator dropped from the chain."],
 ];
 const GENERATIONS: [Fig["kind"], string, string][] = [
   ["sahabi", "Companion", "A Companion (ṣaḥābī) is gold, with a shimmer."],
@@ -67,7 +67,7 @@ const cases = CASES.map(([en, slug, fig, lbl, text], i) => {
       <text class="lbl" x="230" y="412">The Prophet ﷺ</text>
       {GENERATIONS.map(([kind, name], k) => (
         <>
-          <Narrator x={380 + k * 150} y={350} kind={kind} scroll="yes" seal="yes" />
+          <Narrator x={380 + k * 150} y={350} kind={kind} {...RELIABLE} />
           <text class="lbl" x={380 + k * 150} y="412">{name}</text>
         </>
       ))}

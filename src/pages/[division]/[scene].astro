@@ -7,6 +7,7 @@ import ReadAsText from "../../components/layout/ReadAsText.astro";
 import ViewSwitch from "../../components/layout/ViewSwitch.astro";
 import Routes from "../../components/scenes/Routes.astro";
 import Breaks from "../../components/scenes/Breaks.astro";
+import Causes from "../../components/scenes/Causes.astro";
 import Unknown from "../../components/scenes/Unknown.astro";
 import Delivery from "../../components/scenes/Delivery.astro";
 import Names from "../../components/scenes/Names.astro";
@@ -18,6 +19,13 @@ import Report from "../../components/scenes/Report.astro";
 import Sorting from "../../components/scenes/Sorting.astro";
 import Knowledge from "../../components/scenes/Knowledge.astro";
 import Lone from "../../components/scenes/Lone.astro";
+import Hidden from "../../components/scenes/Hidden.astro";
+import Lying from "../../components/scenes/Lying.astro";
+import Slips from "../../components/scenes/Slips.astro";
+import Changes from "../../components/scenes/Changes.astro";
+import Wording from "../../components/scenes/Wording.astro";
+import Identity from "../../components/scenes/Identity.astro";
+import Innovation from "../../components/scenes/Innovation.astro";
 import { loadContent } from "../../lib/content";
 import { captionsFor, type DiagramProps } from "../../lib/scene";
 import { href } from "../../lib/url";
@@ -41,7 +49,7 @@ const caps = captionsFor(scene, terms);
 
 // each scene task adds its diagram here; import only components that exist
 // typed by the props every diagram takes, so a misnamed or missing prop fails astro check
-const DIAGRAMS: Partial<Record<Diagram, (p: DiagramProps) => any>> = { Routes, Breaks, Unknown, Delivery, Names, Grades, Opposition, Support, ActedOn, Report, Sorting, Knowledge, Lone };
+const DIAGRAMS: Partial<Record<Diagram, (p: DiagramProps) => any>> = { Routes, Breaks, Causes, Unknown, Delivery, Names, Grades, Opposition, Support, ActedOn, Report, Sorting, Knowledge, Lone, Hidden, Lying, Slips, Changes, Wording, Identity, Innovation };
 const D = DIAGRAMS[scene.diagram];
 if (!D) throw new Error(`no diagram component for ${scene.diagram}`);
 
@@ -49,6 +57,8 @@ if (!D) throw new Error(`no diagram component for ${scene.diagram}`);
 const LEGEND: Partial<Record<Diagram, LegendKind[]>> = {
   Routes: ["moon", "sahabi", "tabii", "later"],
   Breaks: ["moon", "sahabi", "tabii", "later", "ghost"],
+  // cell A's three mini chains, each missing one narrator; cell B's ladder draws no figures
+  Causes: ["moon", "sahabi", "tabii", "later", "ghost"],
   Unknown: ["moon", "sahabi", "tabii", "later", "majhul", "mubham"],
   // the mastūr in cell C is the majhūl figure: scroll, empty seal slot
   Grades: ["moon", "sahabi", "tabii", "later", "majhul"],
@@ -62,7 +72,21 @@ const LEGEND: Partial<Record<Diagram, LegendKind[]>> = {
   Knowledge: ["moon", "sahabi", "tabii", "later"],
   // the four lone-narrator chains; the relative column's narrator below the Companion's students is a later one
   Lone: ["moon", "sahabi", "tabii", "later"],
-  // ActedOn and Sorting draw no narrator figures, so they have no legend and no Key/Labels switch (phase 3 designs §1)
+  // the mudallis in panel 1 hides his source; panel 2's narrator is a plain one; the mukhaḍramūn are Successors
+  Hidden: ["moon", "tabii", "later", "mudallis", "ghost"],
+  // the liar and the suspect side by side; panel 3's forged chain swaps a weak narrator for reliable ones
+  Lying: ["later", "liar", "accused", "weak"],
+  // the three records: a weak narrator, the gathered routes with a Companion that isn't there, and memory failing
+  Slips: ["moon", "sahabi", "tabii", "later", "weak", "mukhtalit", "ghost"],
+  // the added narrator and the wavering link are reliable later narrators; the wavering link hangs from a Companion
+  Changes: ["moon", "sahabi", "later"],
+  // al-Kalbī and the narrator with one student are unknown (scroll, empty seal slot); the students are plain ones and
+  // the contrast narrator is drawn reliable
+  Identity: ["later", "majhul"],
+  // the open sinner is the weak figure (cracked seal); the innovator beside his belief tag is a plain narrator
+  Innovation: ["later", "weak"],
+  // ActedOn, Sorting and Wording draw no narrator figures, so they have no legend and no Key/Labels switch (phase 3
+  // designs §1)
 };
 const kinds = LEGEND[scene.diagram];
 const hasFigures = kinds !== undefined;

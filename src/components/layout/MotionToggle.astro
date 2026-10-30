@@ -1,0 +1,25 @@
+---
+// the motion switch (WCAG 2.2.2, spec §3.4): pressed while motion is on. Its accessible name stays "Motion" and
+// aria-pressed carries the state, so the visible "on"/"off" is aria-hidden. Which of them shows, and the pressed
+// look, come from CSS on the head script's data-motion and the system setting, so the first frame is right before
+// prefs.ts runs (st-on/st-off, as svg.css has a global .off). prefs.ts sets aria-pressed; with the system asking for
+// reduced motion it reads off and is aria-disabled, not disabled, so keyboard users still reach it and hear why
+---
+<button type="button" class="pill" id="motion-toggle" aria-pressed="true">
+  Motion<span class="st-on" aria-hidden="true">: on</span><span class="st-off" aria-hidden="true">: off</span><span class="why"> (system setting)</span>
+</button>
+<style>
+  .pill{font:600 .85rem var(--f-body);background:var(--sky-fg);color:var(--sky);border:1px solid var(--sky-fg);border-radius:999px;padding:6px 14px;cursor:pointer}
+  .st-off,.why{display:none}
+  /* off, by the switch or the system: the unpressed look and "off" */
+  :global(:root[data-motion="off"]) .pill{color:var(--sky-fg);background:transparent;border-color:rgba(238,240,251,.3)}
+  :global(:root[data-motion="off"]) .st-on{display:none}
+  :global(:root[data-motion="off"]) .st-off{display:inline}
+  @media (prefers-reduced-motion: reduce) {
+    .pill{color:var(--sky-fg);background:transparent;border-color:rgba(238,240,251,.3);cursor:default;opacity:.75}
+    .st-on{display:none}
+    .st-off{display:inline}
+    /* the reason is for screen readers; sighted readers see the switch dimmed and fixed at off */
+    .why{display:inline;position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:pre}
+  }
+</style>

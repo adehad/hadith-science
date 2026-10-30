@@ -1,8 +1,9 @@
 // starfield in header: stars drift slowly down; each fades out and a new one glows into place elsewhere
+import { motionAllowed, onMotionChange } from "../lib/motion";
+
 const cv = document.querySelector<HTMLCanvasElement>(".stars");
 const cx = cv?.getContext("2d");
 if (cv && cx) {
-  const still = matchMedia("(prefers-reduced-motion: reduce)");
   let W = 0, H = 0;
   type Star = { x: number; y: number; r: number; a: number; vy: number; life: number; age: number };
   let field: Star[] = [];
@@ -22,11 +23,12 @@ if (cv && cx) {
     });
   }
   function draw() {
+    const moving = motionAllowed();
     cx!.clearRect(0, 0, W, H);
     for (const s of field) {
       const t = s.age, fadeIn = Math.min(1, t / 1.6), fadeOut = Math.min(1, (s.life - t) / 2.2);
-      const k = still.matches ? 1 : Math.max(0, Math.min(fadeIn, fadeOut));
-      if (!still.matches && t < 1.6) {
+      const k = !moving ? 1 : Math.max(0, Math.min(fadeIn, fadeOut));
+      if (moving && t < 1.6) {
         const g = cx!.createRadialGradient(s.x, s.y, 0, s.x, s.y, s.r * 7);
         g.addColorStop(0, `rgba(255,226,150,${0.45 * (1 - t / 1.6)})`);
         g.addColorStop(1, "rgba(255,226,150,0)");
@@ -48,13 +50,13 @@ if (cv && cx) {
     draw();
     raf = requestAnimationFrame(tick);
   }
-  function start() { if (!raf && !still.matches && !document.hidden) { last = 0; raf = requestAnimationFrame(tick); } }
+  function start() { if (!raf && motionAllowed() && !document.hidden) { last = 0; raf = requestAnimationFrame(tick); } }
   function stop() { cancelAnimationFrame(raf); raf = 0; }
   sizeField();
   draw();
   start();
   document.addEventListener("visibilitychange", () => (document.hidden ? stop() : start()));
-  // reduced motion switched on: freeze on a static frame; switched off: drift again
-  still.addEventListener("change", () => { if (still.matches) { stop(); draw(); } else start(); });
+  // motion stopped (the switch, or reduced motion): freeze on a static frame; allowed again: drift again
+  onMotionChange(() => { if (motionAllowed()) start(); else { stop(); draw(); } });
   addEventListener("resize", () => { sizeField(); draw(); });
 }

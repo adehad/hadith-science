@@ -1,0 +1,223 @@
+---
+// "Did he lie?" (phase 3 al-Mardūd design §5): the two gravest causes of criticism (§5.23) and the reports they
+// yield (§5.24–5.25), in three panels of one 780-wide row, so it carousels in portrait:
+//   1  two charges: the liar (mask, voided seal) above kadhib, his report mawḍūʿ; the suspect (dashed mask, cracked
+//      seal) above tuhma bi-l-kadhib and its two grounds, his report matrūk. A wedge shows the first is graver.
+//   2  how a forgery is known (§5.24): three clue cards in the book's order, the forger's admission, the narrator's
+//      state at the time (Ghiyāth before al-Mahdī, whose added words pulse on a text card), and the state of the
+//      text, against the four things it may not clash with past reconciling
+//   3  where forged words come from, and why (§5.24): three sources feed one text card; five motives under it
+// No Arabic report wording (design §18): the only report words are two short fragments in the translation's
+// English, "…no competition except…" and the added "and pigeon racing". Term names keep their Arabic.
+// No views (design §5.5).
+// Motion: the clue cards fade in one after another, then their four crosses draw in; the added words pulse; the
+// three source lines draw in. Each resting style is the end state, so with motion.css stopping every animation
+// the cards show, the crosses and lines are drawn and nothing pulses.
+import Defs from "../svg/Defs.astro";
+import Narrator from "../svg/Narrator.astro";
+import Arrow from "../svg/Arrow.astro";
+import Chip from "../svg/Chip.astro";
+import Glyph from "../svg/Glyph.astro";
+import Matn from "../svg/Matn.astro";
+import TermTitle from "../svg/TermTitle.astro";
+import { FIG, KIND_NAME, RELIABLE } from "../svg/figures";
+import { SUBT_TRIGGER, f, panelTrigger, rowTrigger } from "../svg/geom";
+import { cap, type DiagramProps } from "../../lib/scene";
+import { chipRow } from "../../lib/kit";
+
+type Props = DiagramProps;
+const { caps, scene } = Astro.props;
+
+const W = 780, H = 500;
+if (scene.views?.length) throw new Error("Lying: expected no views");
+const PANELS = scene.panels ?? [];
+if (PANELS.length !== 3) throw new Error("Lying: expected three panels");
+
+const TITLE_Y = 30, SUB_Y = 50;
+
+// a left-aligned 13px row title as a term trigger; rowTrigger doesn't know about panels, so check here that the
+// hit area sits wholly inside the first one, or the portrait carousel would cut it
+function row(slug: string, x: number, y: number) {
+  const c = cap(caps, slug);
+  const t = rowTrigger(c.translit, x, y);
+  const p = PANELS[0];
+  if (t.hit.x < p.x0 || t.hit.x + t.hit.w > p.x1) throw new Error(`Lying: ${slug} trigger leaves its panel`);
+  return { c, x, y, ...t };
+}
+// a centred 15px sub-title as a term trigger; panelTrigger checks it stays in its panel
+function subt(slug: string, cx: number, y: number) {
+  const c = cap(caps, slug);
+  return { c, cx, y, ...panelTrigger(c.translit, cx, y, PANELS, { ...SUBT_TRIGGER, name: `Lying: ${slug}` }) };
+}
+
+// ---- panel 1: two charges ----
+const FK = 0.8;
+const FIG_X = 52, TEXT_X = 88;
+const kadhib = row("kadhib", 20, 84);
+const LIAR_Y = 134;
+const tuhma = row("tuhma-bil-kadhib", 20, 232);
+const SUSPECT_Y = 296;
+const GROUNDS = [
+  { y: 352, lines: ["only he reports it, and it goes", "against known principles"] },
+  { y: 388, lines: ["he lies in everyday speech, though", "no lie of his in ḥadīth is proven"] },
+];
+const matruk = subt("matruk", 130, 446);
+// the wedge: wide at the top, the graver charge, narrowing down to the lesser; order only, no scale
+const WEDGE = { x: 240, y0: 100, y1: 404, half: 6 };
+
+// ---- panel 2: how a forgery is known ----
+const mawdu = subt("mawdu", 390, TITLE_Y);
+const CARD = { x0: 278, x1: 502 };
+// the clue cards in the book's order; --d staggers their fade-in
+const CLUES = [
+  { y0: 78, y1: 156, head: "His own admission", d: 0.3 },
+  { y0: 168, y1: 300, head: "His state at the time", d: 0.6 },
+  { y0: 312, y1: 456, head: "The text itself", d: 0.9 },
+];
+const MATN = { x: 296, y: 196, w: 188, h: 46 };
+// what the text may not clash with past reconciling; the crosses draw in after the third card
+const CLASHES = ["the Qurʾan", "mutawātir sunna", "firm consensus", "common sense"].map((text, i) => ({ text, y: 370 + i * 24, d: f(1.3 + i * 0.2) }));
+
+// ---- panel 3: where it comes from, and why ----
+const SRC_X = 562;
+const OTHERS = ["pious predecessors", "ancient sages", "biblical sources"].map((text, i) => ({ text, y: 130 + i * 24 }));
+const CHAIN_Y = 256, CK = 0.45;
+const SOUND = [618, 668];
+const STUB = { x: 712, y: 140, w: 54, h: 52 };
+const STUB_CX = STUB.x + STUB.w / 2;
+// the three sources' lines into the text card, drawn in once
+const FEEDS = [
+  { x: 676, y: 72, ty: STUB.y + 14 },
+  { x: 686, y: 154, ty: STUB.y + STUB.h / 2 },
+  { x: 686, y: CHAIN_Y, ty: STUB.y + STUB.h - 14 },
+].map((p) => `M${p.x} ${p.y} C${STUB.x - 14} ${p.y} ${STUB.x - 22} ${p.ty} ${STUB.x - 5} ${p.ty}`);
+// the motives in the book's order, two to a row; a 4px gap keeps the second row inside the panel
+const MOTIVES = [["no religion", "ignorance"], ["loyalty to a school", "pleasing leaders"], ["fame through rarity"]].flatMap((texts, i) =>
+  chipRow(texts, 540, 4).chips.map((c) => ({ ...c, y: 334 + i * 26 })),
+);
+if (Math.max(...MOTIVES.map((c) => c.x + c.w)) > 772) throw new Error("Lying: a motive chip leaves its panel");
+---
+<svg viewBox={`0 0 ${W} ${H}`} class="lying" role="group" aria-label="Three panels. Two charges: kadhib, a narrator who deliberately lies in a report from the Prophet ﷺ, drawn with a mask and a voided seal; his report is mawḍūʿ. Tuhma bi-l-kadhib, a narrator suspected of lying, drawn with a dashed mask and a cracked seal: only he reports it and it goes against known principles, or he lies in everyday speech though no lie in ḥadīth is proven; his report is matrūk. The first charge is the graver. How a forgery is known, on overwhelming evidence, not certainty: the forger's own admission, not taken as certain, yet a ruling may rest on it; the narrator's state at the time, as when Ghiyāth, before al-Mahdī, added “and pigeon racing” to a report of no competition except in archery and racing; and the text itself, clashing past reconciling with the Qurʾan, mutawātir sunna, firm consensus or common sense. Where forged words come from: the forger's own invention; others' words, from the pious predecessors, the ancient sages or biblical sources; or a weak report given a sound chain, all ascribed to the Prophet ﷺ. Why: no religion, ignorance, loyalty to a school, pleasing leaders, or fame through rarity. All of it is forbidden by consensus, and a forged report is told only to show it is forged.">
+  <Defs />
+  <line class="divider" x1="260" x2="260" y1="12" y2={H - 12} />
+  <line class="divider" x1="520" x2="520" y1="12" y2={H - 12} />
+
+  {/* ---- panel 1: two charges ---- */}
+  <text class="subt" x="130" y={TITLE_Y}>Two charges</text>
+  <text class="lbl sm" x="130" y={SUB_Y}>the graver first</text>
+
+  <TermTitle c={kadhib.c} x={kadhib.x} y={kadhib.y} cls="rt" hit={kadhib.hit} info={kadhib.info} ar={{ x: f(kadhib.info.cx + 32), y: kadhib.y, size: "sm" }} />
+  <Narrator x={FIG_X} y={LIAR_Y} k={FK} {...FIG.liar} label={KIND_NAME.liar} />
+  <text class="lbl start" x={TEXT_X} y={LIAR_Y - 10}>lies on purpose</text>
+  <text class="lbl start" x={TEXT_X} y={LIAR_Y + 5}>in a report from</text>
+  <text class="lbl start" x={TEXT_X} y={LIAR_Y + 20}>the Prophet ﷺ</text>
+  <text class="lbl start sm" x={TEXT_X} y="188">his report: <tspan class="yield">mawḍūʿ →</tspan></text>
+
+  <TermTitle c={tuhma.c} x={tuhma.x} y={tuhma.y} cls="rt" hit={tuhma.hit} info={tuhma.info} ar={{ x: 84, y: tuhma.y + 24, size: "sm" }} />
+  <Narrator x={FIG_X} y={SUSPECT_Y} k={FK} {...FIG.accused} label={KIND_NAME.accused} />
+  <text class="lbl start" x={TEXT_X} y={SUSPECT_Y - 4}>suspected,</text>
+  <text class="lbl start" x={TEXT_X} y={SUSPECT_Y + 11}>not proven</text>
+  {GROUNDS.map((g) => (
+    <>
+      <rect class="bullet" x="21" y={g.y - 8} width="5" height="5" aria-hidden="true" />
+      {g.lines.map((t, j) => <text class="lbl start sm" x="32" y={g.y + j * 14}>{t}</text>)}
+    </>
+  ))}
+
+  <text class="lbl sm" x="130" y="424">his report:</text>
+  <TermTitle c={matruk.c} x={matruk.cx} y={matruk.y} cls="subt" hit={matruk.hit} info={matruk.info} ar={{ x: matruk.cx, y: matruk.y + 24, size: "sm" }} />
+
+  <g aria-hidden="true">
+    <path class="wedge" d={`M${WEDGE.x - WEDGE.half} ${WEDGE.y0} H${WEDGE.x + WEDGE.half} L${WEDGE.x} ${WEDGE.y1} Z`} />
+    <text class="lbl sm" x={WEDGE.x} y={WEDGE.y0 - 8}>graver</text>
+  </g>
+
+  {/* ---- panel 2: how a forgery is known ---- */}
+  <TermTitle c={mawdu.c} x={mawdu.cx} y={mawdu.y} cls="subt" hit={mawdu.hit} info={mawdu.info} />
+  <text class="lbl sm" x="390" y={SUB_Y}>judged on overwhelming evidence,</text>
+  <text class="lbl sm" x="390" y={SUB_Y + 14}>not certainty</text>
+
+  <g class="clue" style={`--d:${CLUES[0].d}s`}>
+    <rect class="card" x={CARD.x0} y={CLUES[0].y0} width={CARD.x1 - CARD.x0} height={CLUES[0].y1 - CLUES[0].y0} rx="8" />
+    <text class="layer" x={CARD.x0 + 12} y={CLUES[0].y0 + 18}>{CLUES[0].head}</text>
+    <Narrator x={304} y={126} k={0.5} {...FIG.liar} label={KIND_NAME.liar} />
+    <text class="lbl start sm" x="326" y="112">not taken as certain,</text>
+    <text class="lbl start sm" x="326" y="126">since he may lie in it;</text>
+    <text class="lbl start sm" x="326" y="140">yet a ruling may rest on it</text>
+  </g>
+
+  <g class="clue" style={`--d:${CLUES[1].d}s`}>
+    <rect class="card" x={CARD.x0} y={CLUES[1].y0} width={CARD.x1 - CARD.x0} height={CLUES[1].y1 - CLUES[1].y0} rx="8" />
+    <text class="layer" x={CARD.x0 + 12} y={CLUES[1].y0 + 18}>{CLUES[1].head}</text>
+    {/* the translation's English, two fragments only (design §18); the added words pulse (Matn's .added). The empty
+        last line puts the added words on a line of their own, under the quoted fragment, since Matn appends them to
+        the last line */}
+    <Matn x={MATN.x} y={MATN.y} w={MATN.w} h={MATN.h} lines={["“…no competition except…”", ""]} added="“and pigeon racing”" />
+    <text class="lbl sm" x="390" y="262">Ghiyāth, before al-Mahdī:</text>
+    <text class="lbl sm" x="390" y="277">he added the last words himself</text>
+  </g>
+
+  <g class="clue" style={`--d:${CLUES[2].d}s`}>
+    <rect class="card" x={CARD.x0} y={CLUES[2].y0} width={CARD.x1 - CARD.x0} height={CLUES[2].y1 - CLUES[2].y0} rx="8" />
+    <text class="layer" x={CARD.x0 + 12} y={CLUES[2].y0 + 18}>{CLUES[2].head}</text>
+    <text class="lbl sm" x="390" y="348">clashes, past reconciling, with</text>
+    {CLASHES.map((c) => (
+      <>
+        <g class="xdraw" style={`--d:${c.d}s`}><Glyph kind="cross" cx={330} cy={c.y} r={7} /></g>
+        <Chip x={344} y={c.y} text={c.text} />
+      </>
+    ))}
+  </g>
+  <text class="lbl sm" x="390" y="474">a task only for scholars of</text>
+  <text class="lbl sm" x="390" y="488">wide knowledge and insight</text>
+
+  {/* ---- panel 3: where it comes from, and why ---- */}
+  <text class="subt" x="650" y={TITLE_Y}>Where it comes from</text>
+
+  <Glyph kind="text" cx={548} cy={72} r={8} />
+  <text class="lbl start" x={SRC_X} y="76">his own invention</text>
+
+  <Glyph kind="book" cx={548} cy={104} r={8} />
+  <text class="lbl start" x={SRC_X} y="108">others' words:</text>
+  {OTHERS.map((o) => <Chip x={SRC_X} y={o.y} text={o.text} />)}
+
+  <text class="lbl start" x={SRC_X} y="210">a weak report given</text>
+  <text class="lbl start" x={SRC_X} y="225">a sound chain</text>
+  <Narrator x={566} y={CHAIN_Y} k={CK} {...FIG.weak} label={KIND_NAME.weak} />
+  <path class="strike" d={`M554 ${CHAIN_Y - 12} L578 ${CHAIN_Y + 12}`} aria-hidden="true" />
+  <Arrow x1={582} y1={CHAIN_Y} x2={600} y2={CHAIN_Y} />
+  {/* the invented sound chain: two narrators, linked so they read as a chain */}
+  <Arrow x1={SOUND[0] + 11} y1={CHAIN_Y} x2={SOUND[1] - 12} y2={CHAIN_Y} />
+  {SOUND.map((x) => <Narrator x={x} y={CHAIN_Y} k={CK} {...FIG.later} {...RELIABLE} label={KIND_NAME.later} />)}
+
+  <g aria-hidden="true">
+    {FEEDS.map((d) => <path class="feed" pathLength="1" d={d} />)}
+  </g>
+  <Matn x={STUB.x} y={STUB.y} w={STUB.w} h={STUB.h} />
+  <g class="stub-chain" aria-hidden="true">
+    <path d={`M${STUB_CX} ${STUB.y + 12} V${STUB.y + STUB.h - 12}`} />
+    {[12, STUB.h / 2, STUB.h - 12].map((dy) => <circle cx={STUB_CX} cy={STUB.y + dy} r="3.2" />)}
+  </g>
+  <text class="lbl sm" x={STUB_CX} y="210">ascribed to</text>
+  <text class="lbl sm" x={STUB_CX} y="224">the Prophet ﷺ</text>
+
+  <text class="layer" x="540" y="312">Why</text>
+  {MOTIVES.map((c) => <Chip x={c.x} y={c.y} text={c.text} />)}
+  <text class="lbl" x="650" y="420">all of it forbidden by consensus;</text>
+  <text class="lbl" x="650" y="435">told only to show it is forged</text>
+</svg>
+<style>
+  .card{fill:var(--surface);stroke:var(--rule);stroke-width:1.2}
+  .bullet{fill:var(--muted)}
+  .yield{fill:var(--fg)}
+  .wedge{fill:color-mix(in srgb,var(--gap) 22%,var(--surface));stroke:var(--gap);stroke-width:1}
+  .strike{fill:none;stroke:var(--gap);stroke-width:2.2;stroke-linecap:round}
+  .feed{fill:none;stroke:var(--line);stroke-width:1.6;stroke-dasharray:1;stroke-dashoffset:0;animation:lying-draw .6s ease-out .4s both}
+  .stub-chain path{fill:none;stroke:var(--moon-ink);stroke-width:1.2}
+  .stub-chain circle{fill:var(--moon);stroke:var(--moon-ink);stroke-width:1.2}
+  /* each resting style is the end state; the animations run from the start state, once */
+  .clue{animation:lying-in .3s ease-out both;animation-delay:var(--d)}
+  .xdraw :global(.xmark){stroke-dasharray:1;stroke-dashoffset:0;animation:lying-draw .3s ease-out both;animation-delay:var(--d)}
+  @keyframes lying-in{from{opacity:0}}
+  @keyframes lying-draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+</style>

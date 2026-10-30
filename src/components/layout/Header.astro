@@ -4,6 +4,7 @@ import Starfield from "./Starfield.astro";
 import Breadcrumb from "./Breadcrumb.astro";
 import KeyToggle from "./KeyToggle.astro";
 import ThemeToggle from "./ThemeToggle.astro";
+import MotionToggle from "./MotionToggle.astro";
 interface Props { crumbs: { label: string; path: string }[]; modes?: boolean }
 const { crumbs, modes = false } = Astro.props;
 ---
@@ -16,7 +17,7 @@ const { crumbs, modes = false } = Astro.props;
       <small>Ibn Ḥajar al-ʿAsqalānī’s map of the hadith sciences, drawn out</small>
     </div>
     <Breadcrumb crumbs={crumbs} />
-    <div class="controls">{modes && <KeyToggle />}<ThemeToggle /></div>
+    <div class="controls">{modes && <KeyToggle />}<ThemeToggle /><MotionToggle /></div>
   </div>
 </header>
 <style>

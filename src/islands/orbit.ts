@@ -1,6 +1,7 @@
 // map: planets move along their orbits (ported from the mockup's placePlanets/mapTick), and a clicked
 // planet hands an HTML stand-in to the view transition so it appears to grow into the division page
 import { MAP_CENTRE, angularSpeed, moonAt, planetAt } from "../lib/orbit";
+import { motionAllowed, onMotionChange } from "../lib/motion";
 
 const svg = document.querySelector<SVGSVGElement>("svg.map");
 if (svg) {
@@ -19,7 +20,6 @@ if (svg) {
   const narrow = matchMedia("(max-width: 640px)");
   // portrait phones show the nested list instead of the map (index.astro), so don't animate a hidden map
   const tree = matchMedia("(max-width: 640px) and (orientation: portrait)");
-  const still = matchMedia("(prefers-reduced-motion: reduce)");
 
   function place() {
     for (const p of planets) {
@@ -39,10 +39,11 @@ if (svg) {
     place();
     raf = requestAnimationFrame(tick);
   }
-  function start() { if (!raf && !held && !gone && !document.hidden && !tree.matches && !still.matches) { last = 0; raf = requestAnimationFrame(tick); } }
+  function start() { if (!raf && !held && !gone && !document.hidden && !tree.matches && motionAllowed()) { last = 0; raf = requestAnimationFrame(tick); } }
   function stop() { cancelAnimationFrame(raf); raf = 0; }
 
-  // start() declines while reduced motion is on, so every listener can stay registered and the setting can change live
+  // start() declines while motion is stopped (the switch, or reduced motion), so every listener can stay registered and
+  // the setting can change live
   // pause while the reader is pointing at or focused inside the map, so a planet holds still to be chosen
   const hold = (on: boolean) => { held = on; on ? stop() : start(); };
   svg.addEventListener("pointerenter", () => hold(true));
@@ -51,7 +52,7 @@ if (svg) {
   svg.addEventListener("focusout", (e) => { if (!svg.contains(e.relatedTarget as Node)) hold(svg.matches(":hover")); });
   document.addEventListener("visibilitychange", () => (document.hidden ? stop() : start()));
   tree.addEventListener("change", () => (tree.matches ? stop() : start()));
-  still.addEventListener("change", () => (still.matches ? stop() : start()));
+  onMotionChange(() => (motionAllowed() ? start() : stop()));
   start();
 
   // the stand-in: view-transition-name is only captured on boxed elements, never on SVG <a>/<g>
@@ -90,7 +91,7 @@ if (svg) {
     location.assign(new URL(a.href.baseVal, location.href));
   });
   addEventListener("pageswap", (e) => {
-    if ((e as Event & { viewTransition?: unknown }).viewTransition) standIn();
+    if ((e as Event & { viewTransition?: unknown }).viewTransition && motionAllowed()) standIn();
   });
   // coming back via the back/forward cache: drop the stand-in and let the planets move again
   addEventListener("pageshow", (e) => {

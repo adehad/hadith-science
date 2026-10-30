@@ -17,10 +17,10 @@ Live site: <https://adehad.github.io/hadith-science/>
 - **The figure key** (`/narrators/`), showing how a narrator figure is read.
 - **The glossary** (`/terms/`): all 169 terms, each with a paraphrased definition and its § reference. It can be filtered, and you can search without diacritics.
 - **Share links:** `/t/<term>/`, `?<term>` and `?t=<term>` all go to the term. Unknown terms open a glossary search.
-- Light and dark themes, and full support for reduced motion.
+- Light and dark themes, and full support for reduced motion, plus a **Motion** switch in the header that stops every animation.
 - Installable as an app, and readable offline after the first visit.
 
-- **Thirteen scenes** (below), each one diagram whose terms open a popover and have their own share link.
+- **Twenty-one scenes** (below), each one diagram whose terms open a popover and have their own share link.
 
 Terms without a scene yet are marked "scene coming soon" in the glossary. Later phases draw the rest, one division at a time.
 
@@ -44,8 +44,18 @@ Terms without a scene yet are marked "scene coming soon" in the glossary. Later 
 | Who outweighs whom? | `/al-maqbul/opposition/` | ziyādat al-thiqa, shādhdh and maḥfūẓ, munkar and maʿrūf |
 | Does anyone else carry it? | `/al-maqbul/support/` | iʿtibār, mutābaʿa (full and partial), mutābiʿ, shāhid |
 | Can both be acted on? | `/al-maqbul/acted-on/` | muḥkam, mukhtalif al-ḥadīth, naskh, nāsikh and mansūkh, tarjīḥ, tawaqquf |
+| **al-Mardūd** (rejected reports) | | |
+| Why is a report rejected? | `/al-mardud/causes/` | saqṭ, ṭaʿn |
 | Where does the chain break? | `/al-mardud/breaks/` | mursal, muʿallaq, muʿḍal, munqaṭiʿ |
+| Did he hear it from him? | `/al-mardud/hidden/` | mudallas, mudallis, mursal khafī |
+| Did he lie? | `/al-mardud/lying/` | kadhib, tuhma bi-l-kadhib, mawḍūʿ, matrūk |
+| Did he keep it right? | `/al-mardud/slips/` | fuḥsh al-ghalaṭ, ghafla, wahm, muʿallal, sūʾ al-ḥifẓ, mukhtaliṭ |
+| What changed in the telling? | `/al-mardud/changes/` | mukhālafa, mudraj (in the chain and the text), maqlūb, al-mazīd fī muttaṣil al-asānīd, muḍṭarib, muṣaḥḥaf, muḥarraf |
+| May the words be changed? | `/al-mardud/wording/` | ikhtiṣār al-ḥadīth, al-riwāya bi-l-maʿnā, gharīb al-ḥadīth |
+| Why is he unknown? | `/al-mardud/identity/` | jahāla, al-wuḥdān |
 | Who is this narrator? | `/al-mardud/unknown/` | mubham, majhūl, majhūl al-ʿayn, mastūr |
+| Does his belief count against him? | `/al-mardud/innovation/` | fisq, bidʿa |
+| **Other divisions** | | |
 | How was it received? | `/siyagh-al-ada/delivery/` | the eight ranks of delivery words, and the weaker ways below them |
 | Who is who? | `/al-asma/names/` | muttafiq wa-muftariq, muʾtalif wa-mukhtalif, mutashābih |
 
@@ -62,6 +72,7 @@ Figure scenes can show a key under the diagram (**Key**) or write each narrator'
 | Can both be acted on? | ![Can both be acted on? A decision path of five questions, each answer dropping to an outcome card, light](docs/screenshots/acted-on-desktop-light.png) | ![Can both be acted on? A decision path of five questions, each answer dropping to an outcome card, dark](docs/screenshots/acted-on-desktop-dark.png) |
 | Where is the narrator alone? | ![Where is the narrator alone? Four chains from the Prophet ﷺ, each lone narrator on a soft halo, light](docs/screenshots/lone-desktop-light.png) | ![Where is the narrator alone? Four chains from the Prophet ﷺ, each lone narrator on a soft halo, dark](docs/screenshots/lone-desktop-dark.png) |
 | How was it received? | ![The delivery staircase, light](docs/screenshots/delivery-desktop-light.png) | ![The delivery staircase, dark](docs/screenshots/delivery-desktop-dark.png) |
+| Why is a report rejected? | ![Why is a report rejected? Three chains each missing a narrator beside a ladder of the ten causes of criticism, light](docs/screenshots/causes-desktop-light.png) | ![Why is a report rejected? Three chains each missing a narrator beside a ladder of the ten causes of criticism, dark](docs/screenshots/causes-desktop-dark.png) |
 | Phone | ![How many routes carry it? on a phone, first carousel panel, light](docs/screenshots/routes-mobile-light.png) | ![Who is who? on a phone, the cells in one column, dark](docs/screenshots/names-mobile-dark.png) |
 
 ## Source and copyright

@@ -9,7 +9,7 @@ interface Props {
   x: number;
   y: number;
   kind?: "sahabi" | "tabii" | "later";
-  face?: "blank" | "faded" | "mask" | "hand";
+  face?: "blank" | "faded" | "mask" | "mask-dashed" | "hand";
   scroll?: "yes" | "slot";
   seal?: "yes" | "slot" | "crack" | "void";
   ghost?: boolean;
@@ -31,7 +31,7 @@ const transform = `translate(${f(x - 20 * k)} ${f(y - 22 * k)}) scale(${k})`;
   <g transform={transform}>
     <path class={`n ${kind}`} d={BODY} />
     {face === "faded"
-      ? <circle class={`n ${kind}`} cx="20" cy="11" r="8.5" style="opacity:.3;stroke:var(--muted);stroke-dasharray:2 1.5" />
+      ? <circle class={`n ${kind}`} cx="20" cy="11" r="8.5" style="fill-opacity:.3;stroke:var(--muted);stroke-dasharray:2 1.5" />
       : <circle class={`n ${kind}`} cx="20" cy="11" r="8.5" />}
     {/* generation marks (spec §3.1), from the mockup's companion/successor symbols: a star, and a chest band
         raised from y=34 to sit above the name scroll, which would otherwise cover it */}
@@ -44,6 +44,9 @@ const transform = `translate(${f(x - 20 * k)} ${f(y - 22 * k)}) scale(${k})`;
         <circle class="maskeye" cx="23.5" cy="10.4" r="1.5" />
       </>
     )}
+    {/* the suspect's mask (phase 3 al-Mardūd design §1): the same outline, dashed, with no fill and no eyes, so it
+        reads as suspected, not proven */}
+    {face === "mask-dashed" && <path class="mask-dashed" d="M11.2 8 Q20 4.5 28.8 8 L27.8 13.6 Q20 16.2 12.2 13.6Z" />}
     {scroll === "yes" && (
       <g class="scroll">
         <rect x="11" y="29" width="18" height="7" rx="1.5" />
@@ -99,6 +102,7 @@ const transform = `translate(${f(x - 20 * k)} ${f(y - 22 * k)}) scale(${k})`;
   .crack{fill:none;stroke:var(--surface);stroke-width:1.2;stroke-linejoin:round}
   .cross{stroke:var(--gap);stroke-width:1.8;stroke-linecap:round}
   .mask{fill:var(--moon);stroke:var(--moon-ink);stroke-width:.6} .maskeye{fill:var(--ink)}
+  .mask-dashed{fill:none;stroke:var(--moon);stroke-width:1.2;stroke-dasharray:2 1.4;stroke-linejoin:round}
   .hand{fill:var(--moon);stroke:var(--moon-ink);stroke-width:.6}
   .arm-o{fill:none;stroke:var(--surface);stroke-width:5.5;stroke-linecap:round} .arm{fill:none;stroke:var(--ink);stroke-width:3.5;stroke-linecap:round}
 </style>

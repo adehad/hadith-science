@@ -12,6 +12,7 @@ import InfoIcon from "../svg/InfoIcon.astro";
 import NameTag from "../svg/NameTag.astro";
 import { f, titleTrigger } from "../svg/geom";
 import { cap, type DiagramProps } from "../../lib/scene";
+import { LETTER_DOTS, letterDots, letterShape } from "../../lib/kit";
 
 type Props = DiagramProps;
 const { caps } = Astro.props;
@@ -34,14 +35,18 @@ const TAGS3 = [
   { y: 166, ar: "مُحَمَّدُ بْنُ عُقَيْلٍ", tr: ["Muḥammad ibn ", "ʿUqayl", " · al-Firyābī"], w: 300 },
 ] as const;
 
-// one written shape read four ways by its dots (§5.60): [dot offsets, name, letter]
-const GLYPHS: [[number, number][], string, string][] = [
-  [[], "as written", ""],
-  [[[0, 20]], "bāʾ", "ب"],
-  [[[-6, -22], [6, -22]], "tāʾ", "ت"],
-  [[[-6, -22], [6, -22], [0, -31]], "thāʾ", "ث"],
+// one written shape read four ways by its dots (§5.60): [dot pattern, name, letter]. The shape and its dots are
+// lib/kit.ts letterShape and letterDots, shared with the muṣaḥḥaf cell of Changes.astro.
+const GLYPHS: [keyof typeof LETTER_DOTS, string, string][] = [
+  ["none", "as written", ""],
+  ["below", "bāʾ", "ب"],
+  ["two", "tāʾ", "ت"],
+  ["three", "thāʾ", "ث"],
 ];
-const glyphs = GLYPHS.map(([dots, name, ar], k) => ({ gx: 80 + k * 90, gy: 128, dots, name, ar }));
+const glyphs = GLYPHS.map(([dots, name, ar], k) => {
+  const gx = 80 + k * 90, gy = 128;
+  return { gx, gy, d: letterShape(gx, gy), dots: letterDots(gx, gy, LETTER_DOTS[dots]), name, ar };
+});
 
 // the worked example as a filter box (§5.61): each chip added drops rows. e is the chip a row drops at; 0 is the
 // narrator meant. Chip 3 (al-Anṣārī) drops no one: both Companions left are of the Anṣār.
@@ -90,8 +95,8 @@ const rows = ROWS.map(([name, tag, e], k) => ({ name, tag, e, y: 112 + k * 19 })
     </Term>
     {glyphs.map((g) => (
       <>
-        <path class="glyph" d={`M${g.gx - 26} ${g.gy - 14} Q${g.gx - 28} ${g.gy + 8} ${g.gx} ${g.gy + 8} Q${g.gx + 28} ${g.gy + 8} ${g.gx + 26} ${g.gy - 14}`} />
-        {g.dots.map(([dx, dy]) => <circle class="ndot" cx={g.gx + dx} cy={g.gy + dy} r="3.6" />)}
+        <path class="glyph" d={g.d} />
+        {g.dots.map((d) => <circle class="ndot" cx={d.cx} cy={d.cy} r={d.r} />)}
         <text class="lbl" x={g.gx} y={g.gy + 52}>{g.name}</text>
         {g.ar && <text class="lbl ar" lang="ar" x={g.gx} y={g.gy + 72}>{g.ar}</text>}
       </>
@@ -144,6 +149,8 @@ const rows = ROWS.map(([name, tag, e], k) => ({ name, tag, e, y: 112 + k * 19 })
   .chip text{fill:var(--fg);font:700 11.5px var(--f-body);text-anchor:middle}
   .row{fill:var(--fg);font:600 11.5px var(--f-body)}
   .rowtag{fill:var(--muted);font:600 10px var(--f-body);text-anchor:end}
+  /* the answer's tag sits on the gold window, where --muted falls under 4.5:1 in dark mode */
+  .win + g .rowtag{fill:var(--fg)}
   .win{fill:color-mix(in srgb,var(--gold-b) 35%,transparent);animation:names-win 10s infinite}
   /* a 10s loop: chips appear one by one, each fading the rows it rules out, then the answer lights up */
   .c1{animation:names-c1 10s infinite} .c2{animation:names-c2 10s infinite}
@@ -159,6 +166,8 @@ const rows = ROWS.map(([name, tag, e], k) => ({ name, tag, e, y: 112 + k * 19 })
   @keyframes names-e3{0%,53%{opacity:1}57%,92%{opacity:.12}100%{opacity:1}}
   @keyframes names-e4{0%,73%{opacity:1}77%,92%{opacity:.12}100%{opacity:1}}
   @keyframes names-win{0%,77%{opacity:0}81%,92%{opacity:1}100%{opacity:0}}
-  /* motion.css stops every animation; show the loop's end state: all chips, the narrowed rows, the answer lit */
+  /* motion.css stops every animation (reduced motion, or the motion switch off); show the loop's end state: all
+     chips, the narrowed rows, the answer lit */
   @media (prefers-reduced-motion: reduce){.e1,.e2,.e3,.e4{opacity:.12}}
+  :global(:root[data-motion="off"]) :is(.e1,.e2,.e3,.e4){opacity:.12}
 </style>

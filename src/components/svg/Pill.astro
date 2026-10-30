@@ -1,11 +1,13 @@
 ---
 // a verdict pill centred on (x, y) (ported from the mockup's pill()); its width follows the text length.
-// gold marks one of two reports acted on (phase 3 design §5.2); its text takes 45% --fg, for 4.5:1 in dark mode
+// gold marks one of two reports acted on (phase 3 design §5.2). Each state's text mixes its colour with --fg (45% for
+// gold, 35% for the rest), so it reaches 4.5:1 on its own tinted fill in both themes (tests/e2e/contrast.spec.ts)
 import { f } from "./geom";
+import { pillWidth } from "../../lib/kit";
 
 interface Props { x: number; y: number; text: string; state: "pause" | "accept" | "support" | "reject" | "gold" }
 const { x, y, text, state } = Astro.props;
-const w = f(text.length * 6.6 + 24);
+const w = pillWidth(text);
 ---
 <g class={`pill ${state}`}>
   <rect x={f(x - w / 2)} y={y - 12} width={w} height="24" rx="12" />
@@ -14,9 +16,10 @@ const w = f(text.length * 6.6 + 24);
 <style>
   .pill rect{stroke-width:1.5}
   .pill text{font:700 11.5px var(--f-body);text-anchor:middle;letter-spacing:.02em}
-  .pill.pause rect{fill:color-mix(in srgb,var(--pause) 16%,var(--surface));stroke:var(--pause)} .pill.pause text{fill:var(--pause)}
-  .pill.accept rect{fill:color-mix(in srgb,var(--ok) 16%,var(--surface));stroke:var(--ok)} .pill.accept text{fill:var(--ok)}
-  .pill.support rect{fill:color-mix(in srgb,var(--ok) 10%,var(--surface));stroke:var(--ok);stroke-dasharray:4 3} .pill.support text{fill:var(--ok)}
-  .pill.reject rect{fill:color-mix(in srgb,var(--gap) 12%,var(--surface));stroke:var(--gap)} .pill.reject text{fill:var(--gap)}
+  .pill.pause rect{fill:color-mix(in srgb,var(--pause) 16%,var(--surface));stroke:var(--pause)} .pill.pause text{fill:color-mix(in srgb,var(--pause) 65%,var(--fg))}
+  .pill.accept rect{fill:color-mix(in srgb,var(--ok) 16%,var(--surface));stroke:var(--ok)}
+  .pill.support rect{fill:color-mix(in srgb,var(--ok) 10%,var(--surface));stroke:var(--ok);stroke-dasharray:4 3}
+  .pill.accept text, .pill.support text{fill:color-mix(in srgb,var(--ok) 65%,var(--fg))}
+  .pill.reject rect{fill:color-mix(in srgb,var(--gap) 12%,var(--surface));stroke:var(--gap)} .pill.reject text{fill:color-mix(in srgb,var(--gap) 65%,var(--fg))}
   .pill.gold rect{fill:color-mix(in srgb,var(--gold-b) 22%,var(--surface));stroke:var(--gold-a)} .pill.gold text{fill:color-mix(in srgb,var(--gold-a) 55%,var(--fg))}
 </style>

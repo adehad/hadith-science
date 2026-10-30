@@ -1,0 +1,195 @@
+---
+// "Why is he unknown?" (phase 3 al-Mardūd design §9): the eighth cause, jahāla, a narrator being unknown, and its
+// two causes (§5.35). Two cells, each its own 430x380 SVG in an HTML grid (the Names pattern): side by side on
+// desktop, one column in portrait (spec §5).
+//   A  Many names: Muḥammad ibn al-Sāʾib ibn Bishr al-Kalbī and the other names §5.35 gives him. Six faint figures,
+//      each over one of the names, slide together into one man, and the names are left round him, all his own.
+//   B  Few take from him: a narrator with one student against one with many, and the compilers of the books of
+//      al-wuḥdān. The book names no such narrator, so the figures are a labelled illustration (design §18)
+// Each cell ends in a link to "Who is this narrator?", where the kinds of unknown narrator are drawn (§5.36).
+// No views (design §9.5). No Arabic report wording; names only as the translation gives them.
+// Motion: A's faint figures slide in and fade as the one man fades in, once; the ties to his names follow. B's arrows
+// flow. The resting style is the end state, so with motion.css stopping every animation the six figures are not
+// shown and one man stands with his names (design §9.7); the subtitle says he was taken for a group.
+import Defs from "../svg/Defs.astro";
+import Narrator from "../svg/Narrator.astro";
+import Arrow from "../svg/Arrow.astro";
+import Chip from "../svg/Chip.astro";
+import Glyph from "../svg/Glyph.astro";
+import TermTitle from "../svg/TermTitle.astro";
+import { FIG, KIND_NAME, RELIABLE } from "../svg/figures";
+import { f, titleTrigger } from "../svg/geom";
+import { cap, type DiagramProps } from "../../lib/scene";
+import { chipWidth } from "../../lib/kit";
+import { loadContent } from "../../lib/content";
+import { href } from "../../lib/url";
+
+type Props = DiagramProps;
+const { caps, scene } = Astro.props;
+if (scene.views?.length) throw new Error("Identity: expected no views");
+if (scene.panels?.length) throw new Error("Identity: a grid of cells, not panels");
+
+const TITLE_Y = 30;
+// a cell's 20px display title as a term trigger, with its Arabic name arOff past the (i)
+function title(slug: string, cx: number, arOff: number) {
+  const c = cap(caps, slug);
+  const t = titleTrigger(c.translit, cx, TITLE_Y);
+  return { c, cx, y: TITLE_Y, ...t, ar: { x: f(t.info.cx + arOff), y: TITLE_Y } };
+}
+
+// the scene both cells link on to (built before this one)
+const { scenes } = await loadContent();
+const unknown = scenes.find((s) => s.division === "al-mardud" && s.id === "unknown");
+if (!unknown) throw new Error("Identity: no unknown scene to link to");
+const unknownHref = href(`${unknown.division}/${unknown.id}/`);
+// where it sits, from the scenes' order, for Link A's accessible name (its visible text already names it)
+const unknownPlace = unknown.order === scene.order + 1 ? "the next scene" : unknown.order > scene.order ? "a later scene" : "an earlier scene";
+const LINK_Y = 366;
+
+// ---- cell A: many names, one man (§5.35) ----
+const jahala = title("jahala", 180, 44);
+const ONE = { x: 215, y: 172, k: 0.9 };
+const START_K = 0.6;
+const ONE_H = 22 * ONE.k;
+// the names, as the translation gives them, each with where its faint figure starts (above the chip): his name
+// in full; after his grandfather; another name; after his son, the three kunyas
+const FULL = "Muḥammad ibn al-Sāʾib ibn Bishr al-Kalbī";
+const KUNYAS = ["Abū al-Naḍr", "Abū Saʿīd", "Abū Hishām"];
+const K_GAP = 12, K_Y = 252;
+let kx = f(215 - (KUNYAS.reduce((s, t) => s + chipWidth(t), 0) + K_GAP * (KUNYAS.length - 1)) / 2);
+const kunyas = KUNYAS.map((text) => {
+  const w = chipWidth(text);
+  const c = { text, x: kx, y: K_Y, w, cx: f(kx + w / 2) };
+  kx = f(kx + w + K_GAP);
+  return c;
+});
+const SIDE_Y = 172;
+const NAMES = [
+  { text: FULL, cx: 215, y: 110 },
+  { text: "Muḥammad ibn Bishr", cx: 100, y: SIDE_Y },
+  { text: "Ḥammād ibn al-Sāʾib", cx: 330, y: SIDE_Y },
+  ...kunyas.map((k) => ({ text: k.text, cx: k.cx, y: k.y })),
+].map((n) => {
+  const w = chipWidth(n.text);
+  // the faint figure stands just above its chip; it slides by (dx, dy) to the one man. The kunyas' start a little
+  // lower, clear of the side names' small labels above them.
+  const sx = n.cx, sy = n.y - (n.y === K_Y ? 26 : 34);
+  return { ...n, w, x: f(n.cx - w / 2), dx: f(sx - ONE.x), dy: f(sy - ONE.y) };
+});
+// the ties from the one man to each of his names, drawn once he stands alone. The ones below start under his
+// Labels-mode name.
+const BELOW = f(ONE.y + ONE_H + 20);
+const TIES = [
+  `M${ONE.x} ${f(ONE.y - ONE_H - 4)} V${NAMES[0].y + 12}`,
+  `M${f(ONE.x - 24)} ${SIDE_Y} H${f(NAMES[1].x + NAMES[1].w + 4)}`,
+  `M${f(ONE.x + 24)} ${SIDE_Y} H${f(NAMES[2].x - 4)}`,
+  ...kunyas.map((k) => `M${ONE.x} ${BELOW} L${k.cx} ${K_Y - 12}`),
+];
+
+// ---- cell B: few take from him (§5.35), and what follows (§5.36) ----
+const wuhdan = title("wuhdan", 175, 50);
+const B_TOP = 116, B_BOT = 198;
+const TK = 0.8, SK = 0.6, MK = 0.5;
+const L_X = 110, R_X = 320;
+// each arrow starts below its narrator's Labels-mode name (y + 22k + 18), so none runs through one
+const under = (y: number, k: number) => f(y + 22 * k + 18);
+const above = (y: number, k: number) => f(y - 22 * k - 4);
+const MANY = [-45, -15, 15, 45].map((dx) => R_X + dx);
+const CAP_Y = 250;
+const BOOKS_Y = 318;
+const BOOKS = ["Muslim", "al-Ḥasan ibn Sufyān"];
+let bx = 32;
+const books = BOOKS.map((text) => {
+  const w = chipWidth(text);
+  const b = { text, w, glyph: bx, x: f(bx + 12), after: f(bx + 12 + w) };
+  bx = f(bx + 12 + w + 18);
+  return b;
+});
+const OTHERS_X = f(books[books.length - 1].after + 8);
+---
+<div class="cells identity">
+  <svg id="cell-many-names" viewBox="0 0 430 380" role="group" aria-label={`Jahāla, being unknown: many names, taken for a group, though he is one. ${FULL} was also named after his grandfather, Muḥammad ibn Bishr; by another name, Ḥammād ibn al-Sāʾib; and after his son, Abū al-Naḍr, Abū Saʿīd and Abū Hishām, until he was taken for a group of narrators. Any name, lineage, title, occupation, description or ancestry can do it: known by one, cited by another, he is taken for someone else.`}>
+    <Defs />
+    <TermTitle c={jahala.c} x={jahala.cx} y={jahala.y} hit={jahala.hit} info={jahala.info} ar={jahala.ar} />
+    <text class="lbl" x="215" y="56">many names, taken for a group, though he is one</text>
+
+    {/* the start state: a faint figure over each name, sliding to where the one man stands and fading as he
+        appears, behind the names it passes. At rest (and with reduced motion) they are not shown. */}
+    <g aria-hidden="true">
+      {NAMES.map((n) => (
+        <g class="merge" style={`--dx:${n.dx}px;--dy:${n.dy}px`}>
+          <Narrator x={ONE.x} y={ONE.y} k={START_K} {...FIG.majhul} />
+        </g>
+      ))}
+    </g>
+
+    {/* the ties, behind the names and the figure */}
+    {TIES.map((d) => <path class="tie" d={d} />)}
+    {NAMES.map((n) => <Chip x={n.x} y={n.y} text={n.text} w={n.w} />)}
+    <text class="lbl sm" x={NAMES[1].cx} y={SIDE_Y + 26}>after his grandfather</text>
+    <text class="lbl sm" x={NAMES[2].cx} y={SIDE_Y + 26}>another name</text>
+    <text class="lbl sm" x="215" y={K_Y + 26}>after his son</text>
+
+    <g class="one">
+      <Narrator x={ONE.x} y={ONE.y} k={ONE.k} {...FIG.majhul} label={KIND_NAME.majhul} />
+    </g>
+
+    <text class="lbl sm" x="215" y="306">name, lineage, title, occupation, description or ancestry:</text>
+    <text class="lbl sm" x="215" y="322">known by one, cited by another, he is taken for someone else</text>
+    <a class="xlink" href={unknownHref} aria-label={`what follows: ${unknown.title} (${unknownPlace})`}>
+      <text class="rp" x="215" text-anchor="middle" y={LINK_Y}><tspan>what follows: </tspan><tspan class="xu">{unknown.title}</tspan><tspan dx="5" aria-hidden="true">→</tspan></text>
+    </a>
+  </svg>
+
+  <svg id="cell-one-student" viewBox="0 0 430 380" role="group" aria-label="al-Wuḥdān, an illustration: he narrates rarely, so few take from him. On one side only one narrates from him; on the other, for contrast, many narrate from another narrator. Books of al-wuḥdān list men from whom only one narrates, even when he is named; Muslim, al-Ḥasan ibn Sufyān and others compiled them. If only one narrates from him he is majhūl al-ʿayn; if two or more do, but no one vouches for him, mastūr.">
+    <TermTitle c={wuhdan.c} x={wuhdan.cx} y={wuhdan.y} hit={wuhdan.hit} info={wuhdan.info} ar={wuhdan.ar} />
+    <text class="lbl" x="215" y="56">he narrates rarely, so few take from him</text>
+    <text class="lbl sm" x="215" y="74">an illustration: the book names no example</text>
+
+    <Arrow x1={L_X} y1={under(B_TOP, TK)} x2={L_X} y2={above(B_BOT, SK)} />
+    <Narrator x={L_X} y={B_TOP} k={TK} {...FIG.majhul} label={KIND_NAME.majhul} />
+    <Narrator x={L_X} y={B_BOT} k={SK} {...FIG.later} label={KIND_NAME.later} />
+    <text class="lbl" x={L_X} y={CAP_Y}>only one narrates from him</text>
+
+    {/* the contrast, faint child by child so the Labels-mode name stays full strength */}
+    <g class="faint">
+      {MANY.map((x) => <Arrow x1={R_X} y1={under(B_TOP, TK)} x2={x} y2={above(B_BOT, MK)} bend={(x - R_X) / 6} />)}
+      <Narrator x={R_X} y={B_TOP} k={TK} {...FIG.later} {...RELIABLE} label={KIND_NAME.later} />
+      {MANY.map((x) => <Narrator x={x} y={B_BOT} k={MK} {...FIG.later} />)}
+    </g>
+    <text class="lbl" x={R_X} y={CAP_Y}>many narrate from him</text>
+
+    <text class="layer" x="20" y="280">Books of al-wuḥdān</text>
+    <text class="lbl start sm" x="20" y="297">men from whom only one narrates, even when he is named</text>
+    {books.map((b) => (
+      <>
+        <Glyph kind="book" cx={b.glyph} cy={BOOKS_Y} r={7} />
+        <Chip x={b.x} y={BOOKS_Y} text={b.text} w={b.w} />
+      </>
+    ))}
+    <text class="lbl start sm" x={OTHERS_X} y={BOOKS_Y + 4}>and others</text>
+    <text class="lbl sm" x="215" y="344">only one: majhūl al-ʿayn · two or more, no one vouches: mastūr</text>
+    <a class="xlink" href={unknownHref} aria-label={`who narrates from him decides his kind (scene: ${unknown.title})`}>
+      <text class="rp" x="215" text-anchor="middle" y={LINK_Y}><tspan class="xu">who narrates from him decides his kind</tspan><tspan dx="5" aria-hidden="true">→</tspan></text>
+    </a>
+  </svg>
+</div>
+<style>
+  /* the grid's 1px gaps show its background, drawing var(--rule) lines between the cells (as Names) */
+  .cells{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--rule)}
+  .cells svg{background:var(--surface)}
+  @media (max-width:640px) and (orientation:portrait){.cells{grid-template-columns:1fr}}
+  .identity .layer{text-anchor:start}
+  /* cell A: the ties from the one man to his names */
+  .tie{fill:none;stroke:var(--line);stroke-width:1.2;stroke-dasharray:3 3}
+  /* cell B: the contrast, faint child by child so its Labels-mode name stays full strength */
+  .faint > :global(*){opacity:.5}
+  .faint > :global(.mode-label){opacity:1}
+  /* motion: each resting style is the end state, and each animation runs from its start state. The six faint
+     figures rest hidden; they start over their names and slide to the one man, fading as he fades in. */
+  .merge{opacity:0;animation:identity-merge 1.6s ease-in-out .8s both}
+  @keyframes identity-merge{from{opacity:.6;transform:translate(var(--dx),var(--dy))}75%{opacity:.6}to{opacity:0;transform:none}}
+  .one{animation:identity-one .5s ease-out 2s both}
+  @keyframes identity-one{from{opacity:0}}
+  .tie{animation:identity-one .5s ease-out 2.3s both}
+</style>

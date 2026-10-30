@@ -1,0 +1,229 @@
+---
+// "Does his belief count against him?" (phase 3 al-Mardūd design §10): open sin (§5.23, §5.26) and innovation
+// (§5.23, §5.37), in three panels of one 780-wide row, so it carousels in portrait:
+//   1  open sin in deeds or words, a weak narrator (cracked seal), above sin in belief, a reliable narrator with a
+//      wordless belief tag; lying is a kind of open sin, listed on its own (a link to "Did he lie?")
+//   2  a decision path for a belief that amounts to disbelief
+//   3  a decision path for a belief short of it
+// The "Other views" switch (§5.37) redraws panels 2 and 3 only: each view has its own path group per panel
+// (data-view-show), so Ibn Ḥajar's questions, the "unless he allows lying" question, or a straight run to Rejected.
+// The groups outside the default view are built with class="off"; view swaps are instant (design §18). Panel 1 and
+// the two triggers are the same in every view. The rest of §5.37's opinions are in Read as text (design §10.5).
+// No Arabic report wording. Motion: the path arrows flow, top to bottom, the direction of the reasoning; nothing
+// else moves, so with motion.css stopping every animation the scene is as drawn.
+import Defs from "../svg/Defs.astro";
+import Narrator from "../svg/Narrator.astro";
+import Arrow from "../svg/Arrow.astro";
+import Chip from "../svg/Chip.astro";
+import Decision from "../svg/Decision.astro";
+import Pill from "../svg/Pill.astro";
+import TermTitle from "../svg/TermTitle.astro";
+import { FIG, KIND_NAME, RELIABLE } from "../svg/figures";
+import { f, rowTrigger } from "../svg/geom";
+import { cap, type DiagramProps } from "../../lib/scene";
+import { chipWidth, pillWidth } from "../../lib/kit";
+import { loadContent } from "../../lib/content";
+import { href } from "../../lib/url";
+
+type Props = DiagramProps;
+const { caps, scene } = Astro.props;
+
+const W = 780, H = 490;
+const VIEW_IDS = ["ibn-hajar", "unless-lying", "reject"];
+if ((scene.views ?? []).map((v) => v.id).join() !== VIEW_IDS.join()) throw new Error(`Innovation: expected views ${VIEW_IDS.join(", ")}`);
+const PANELS = scene.panels ?? [];
+if (PANELS.length !== 3) throw new Error("Innovation: expected three panels");
+
+// a left-aligned 13px row title as a term trigger; rowTrigger doesn't know about panels, so check here that the hit
+// area sits wholly inside panel 1, or the portrait carousel would cut it
+function row(slug: string, x: number, y: number) {
+  const c = cap(caps, slug);
+  const t = rowTrigger(c.translit, x, y);
+  const p = PANELS[0];
+  if (t.hit.x < p.x0 || t.hit.x + t.hit.w > p.x1) throw new Error(`Innovation: ${slug} trigger leaves its panel`);
+  return { c, x, y, ...t };
+}
+
+// lying, the first cause, is a kind of open sin listed on its own: it links to its scene
+const { scenes } = await loadContent();
+const lying = scenes.find((s) => s.division === "al-mardud" && s.id === "lying");
+if (!lying) throw new Error("Innovation: no lying scene to link to");
+
+// ---- panel 1: open sin, in deeds and in belief ----
+const FK = 0.8;
+const fisq = row("fisq", 20, 34);
+const SIN_Y = 106;
+const bida = row("bida", 20, 268);
+const BELIEF_Y = 334;
+// the head of a figure centred on (x, y), scale k: Narrator draws it at (20, 11) in its 40x44 space, 22 above centre
+const headAt = (x: number, y: number, k: number) => ({ x, y: f(y - 11 * k) });
+const head = headAt(56, BELIEF_Y, FK);
+// the belief tag: a small wordless speech-bubble shape up and to the right of his head, its tail pointing at him
+const TAG = { x: f(head.x + 8), y: f(head.y - 26), w: 22, h: 14, r: 4 };
+const beliefTag = `M${TAG.x + TAG.r} ${TAG.y} H${TAG.x + TAG.w - TAG.r} Q${TAG.x + TAG.w} ${TAG.y} ${TAG.x + TAG.w} ${TAG.y + TAG.r} V${TAG.y + TAG.h - TAG.r} Q${TAG.x + TAG.w} ${TAG.y + TAG.h} ${TAG.x + TAG.w - TAG.r} ${TAG.y + TAG.h} H${TAG.x + 9} L${TAG.x + 1} ${TAG.y + TAG.h + 7} L${TAG.x + 4} ${TAG.y + TAG.h} Q${TAG.x} ${TAG.y + TAG.h} ${TAG.x} ${TAG.y + TAG.h - TAG.r} V${TAG.y + TAG.r} Q${TAG.x} ${TAG.y} ${TAG.x + TAG.r} ${TAG.y} Z`;
+
+// ---- panels 2 and 3: the decision paths ----
+const START = "an innovator";
+const startW = chipWidth(START);
+const CHIP_Y = 80;
+const P2 = 390, P3 = 650;
+// the verdict pills, kept so each can be checked against its panel's edges
+const PILLS: [number, string, number][] = [];
+const pill = (x: number, text: string, panel: number) => (PILLS.push([x, text, panel]), x);
+
+// Ibn Ḥajar, panel 2: one question; yes runs down-right to Rejected, no down-left to the careful-and-pious test
+const D2 = { cx: P2, cy: 160, w: 230, h: 104 };
+const D2_YES = pill(462, "Rejected", 1), D2_NO = pill(340, "Accepted", 1);
+// Ibn Ḥajar, panel 3: two questions in a column; each yes runs down-right to Rejected
+const D3A = { cx: P3, cy: 140, w: 170, h: 64 };
+const D3B = { cx: P3, cy: 260, w: 170, h: 64 };
+const D3_YES = pill(735, "Rejected", 2);
+pill(P3, "Accepted", 2);
+// unless he allows lying: the same single question in both panels
+const LIE = { cy: 160, w: 190, h: 80 };
+const LIE_YES = 72, LIE_NO = -50;
+for (const cx of [P2, P3]) {
+  pill(cx + LIE_YES, "Rejected", cx === P2 ? 1 : 2);
+  pill(cx + LIE_NO, "Accepted", cx === P2 ? 1 : 2);
+}
+for (const [x, text, i] of PILLS) {
+  const p = PANELS[i];
+  const half = pillWidth(text) / 2;
+  if (x - half < p.x0 + 4 || x + half > p.x1 - 4) throw new Error(`Innovation: the ${text} pill at ${x} leaves its panel`);
+}
+// a point on a decision's lower-right edge, t of the way from its right tip to its bottom tip
+const lowerRight = (d: { cx: number; cy: number; w: number; h: number }, t = 0.5) => ({ x: f(d.cx + (d.w / 2) * (1 - t)), y: f(d.cy + (d.h / 2) * t) });
+const d2yes = lowerRight(D2);
+const d3aYes = lowerRight(D3A);
+const d3bYes = lowerRight(D3B);
+
+// the view tags: a rounded tag over a panel, dashed for an opinion the book gives as "it is said"
+const TAG_W = 216;
+---
+<svg viewBox={`0 0 ${W} ${H}`} class="innovation" role="group" aria-label="Three panels. Fisq, open sin in deeds or words that falls short of disbelief, is the fifth cause of criticism; lying is a kind of it, listed on its own and first because it harms this field the most. Sin in belief is bidʿa, innovation, the ninth cause: a belief against what is established from the Prophet ﷺ, held through a misreading, not out of defiance. It is of two kinds. The first amounts to disbelief. Not every such belief rejects him, since every sect calls its opponents heretics: Ibn Ḥajar rejects only one who denies a mutawātir matter known for certain or holds its opposite; one who is careful and pious is accepted. For one whose belief falls short of it, he is rejected if he calls others to it, the most correct view, or if he narrates what supports it, the preferred view of the majority; otherwise he is accepted. Ibn Ḥibbān's claim that all agree to accept one who does not call to it, without that detail, went too far. The Other views switch redraws the two paths for the opinions that accept either kind unless he allows lying, and for rejecting both. The view note above describes the current view.">
+  <Defs />
+  <line class="divider" x1="260" x2="260" y1="12" y2={H - 12} />
+  <line class="divider" x1="520" x2="520" y1="12" y2={H - 12} />
+
+  {/* ---- panel 1: open sin, in deeds or words and in belief ---- */}
+  <TermTitle c={fisq.c} x={fisq.x} y={fisq.y} cls="rt" hit={fisq.hit} info={fisq.info} ar={{ x: f(fisq.info.cx + 28), y: fisq.y, size: "sm" }} />
+  <text class="lbl start sm" x="20" y="52">the fifth cause · in deeds or words</text>
+  <Narrator x={56} y={SIN_Y} k={FK} {...FIG.weak} label={KIND_NAME.weak} />
+  <text class="lbl start sm" x="90" y="96">open sin, in what he does</text>
+  <text class="lbl start sm" x="90" y="110">or says, that falls short</text>
+  <text class="lbl start sm" x="90" y="124">of disbelief</text>
+  <text class="lbl start sm" x="20" y="164">lying is a kind of it, listed on its own</text>
+  <text class="lbl start sm" x="20" y="178">and first: it harms this field the most</text>
+  <a class="xlink" href={href(`${lying.division}/${lying.id}/`)}>
+    <text class="rp" x="20" y="198"><tspan class="xu">{lying.title}</tspan><tspan dx="5" aria-hidden="true">→</tspan></text>
+  </a>
+
+  <Arrow x1={56} y1={212} x2={56} y2={248} />
+  <text class="lbl start sm" x="68" y="234">in belief: explained later</text>
+
+  <TermTitle c={bida.c} x={bida.x} y={bida.y} cls="rt" hit={bida.hit} info={bida.info} ar={{ x: f(bida.info.cx + 30), y: bida.y, size: "sm" }} />
+  <text class="lbl start sm" x="20" y="286">the ninth cause · in belief</text>
+  <Narrator x={56} y={BELIEF_Y} k={FK} {...FIG.later} {...RELIABLE} label={KIND_NAME.later} />
+  <path class="belief" d={beliefTag} aria-hidden="true" />
+  <text class="lbl start sm" x="96" y="330">a belief against what is</text>
+  <text class="lbl start sm" x="96" y="344">established from the</text>
+  <text class="lbl start sm" x="96" y="358">Prophet ﷺ</text>
+  <text class="lbl start sm" x="20" y="392">held through a misreading,</text>
+  <text class="lbl start sm" x="20" y="406">not out of defiance</text>
+  <text class="lbl" x="130" y="446">two kinds, by how far it goes</text>
+  <path class="fork" d="M30 460 H252" marker-end="url(#ah)" />
+
+  {/* ---- panels 2 and 3: the headings and the start chips, the same in every view ---- */}
+  <text class="colhead" x={P2} y="30">Amounts to disbelief</text>
+  <text class="lbl sm" x={P2} y="48">his belief leads to disbelief</text>
+  <text class="colhead" x={P3} y="30">Short of disbelief</text>
+  <text class="lbl sm" x={P3} y="48">his belief stops short of it</text>
+  {[P2, P3].map((cx) => <Chip x={f(cx - startW / 2)} y={CHIP_Y} text={START} w={startW} />)}
+
+  {/* ---- Ibn Ḥajar ---- */}
+  <g data-view-show="ibn-hajar">
+    {/* panel 2: one who denies what is known for certain, or holds its opposite */}
+    <Arrow x1={P2} y1={CHIP_Y + 11} x2={P2} y2={D2.cy - D2.h / 2 - 3} />
+    <Arrow x1={d2yes.x} y1={d2yes.y + 2} x2={D2_YES} y2={247} bend={8} />
+    <Arrow x1={P2 - 6} y1={D2.cy + D2.h / 2 + 2} x2={D2_NO + 6} y2={250} />
+    <Decision cx={D2.cx} cy={D2.cy} w={D2.w} h={D2.h} lines={["denies a mutawātir matter", "known for certain, or", "holds its opposite?"]} />
+    <text class="lbl yn start" x={D2_YES + 6} y="222">yes</text>
+    <text class="lbl yn" x={D2_NO + 14} y="232" style="text-anchor:end">no</text>
+    <Pill x={D2_YES} y={262} state="reject" text="Rejected" />
+    <text class="lbl sm" x={D2_NO} y="266">if he is careful in what</text>
+    <text class="lbl sm" x={D2_NO} y="280">he reports, and pious</text>
+    <Pill x={D2_NO} y={306} state="accept" text="Accepted" />
+    <rect class="vtag" x={P2 - TAG_W / 2} y="340" width={TAG_W} height="22" rx="11" />
+    <text class="vtag-t" x={P2} y="355">Ibn Ḥajar: the trusted opinion</text>
+    <text class="lbl sm" x={P2} y="386">not every such belief rejects him:</text>
+    <text class="lbl sm" x={P2} y="400">every sect calls its opponents</text>
+    <text class="lbl sm" x={P2} y="414">heretics, some even disbelievers</text>
+
+    {/* panel 3: calling others to it, then narrating what supports it */}
+    <Arrow x1={P3} y1={CHIP_Y + 11} x2={P3} y2={D3A.cy - D3A.h / 2 - 3} />
+    <Arrow x1={d3aYes.x} y1={d3aYes.y + 2} x2={D3_YES} y2={187} bend={6} />
+    <Arrow x1={P3} y1={D3A.cy + D3A.h / 2 + 2} x2={P3} y2={D3B.cy - D3B.h / 2 - 3} />
+    <Arrow x1={d3bYes.x} y1={d3bYes.y + 2} x2={D3_YES} y2={307} bend={6} />
+    <Arrow x1={P3} y1={D3B.cy + D3B.h / 2 + 2} x2={P3} y2={337} />
+    <Decision cx={D3A.cx} cy={D3A.cy} w={D3A.w} h={D3A.h} lines={["calls others", "to it?"]} />
+    <text class="lbl yn start" x={D3_YES - 18} y="166" style="text-anchor:end">yes</text>
+    <text class="lbl yn start" x={P3 + 8} y="206">no</text>
+    <Decision cx={D3B.cx} cy={D3B.cy} w={D3B.w} h={D3B.h} lines={["narrates what", "supports it?"]} />
+    <text class="lbl yn start" x={D3_YES - 18} y="286" style="text-anchor:end">yes</text>
+    <text class="lbl yn start" x={P3 + 8} y="320">no</text>
+    <Pill x={D3_YES} y={200} state="reject" text="Rejected" />
+    <text class="lbl sm" x={D3_YES} y="226">the most</text>
+    <text class="lbl sm" x={D3_YES} y="239">correct view</text>
+    <Pill x={D3_YES} y={320} state="reject" text="Rejected" />
+    <text class="lbl sm" x={D3_YES} y="346">the majority's</text>
+    <text class="lbl sm" x={D3_YES} y="359">preferred view</text>
+    <Pill x={P3} y={350} state="accept" text="Accepted" />
+    <text class="lbl sm" x={P3} y="392">one who calls to it may bend</text>
+    <text class="lbl sm" x={P3} y="406">reports to fit his belief</text>
+    <text class="lbl sm" x={P3} y="434">Ibn Ḥibbān claimed all agree to</text>
+    <text class="lbl sm" x={P3} y="448">accept one who doesn't call to it,</text>
+    <text class="lbl sm" x={P3} y="462">with no more detail: too far</text>
+  </g>
+
+  {/* ---- unless he allows lying: one question, the same for both kinds ---- */}
+  <g class="off" data-view-show="unless-lying">
+    {[P2, P3].map((cx, i) => (
+      <>
+        <Arrow x1={cx} y1={CHIP_Y + 11} x2={cx} y2={LIE.cy - LIE.h / 2 - 3} />
+        <Arrow x1={f(cx + LIE.w / 4)} y1={LIE.cy + LIE.h / 4 + 2} x2={cx + LIE_YES} y2={247} bend={6} />
+        <Arrow x1={cx - 6} y1={LIE.cy + LIE.h / 2 + 2} x2={cx + LIE_NO + 6} y2={247} />
+        <Decision cx={cx} cy={LIE.cy} w={LIE.w} h={LIE.h} lines={["holds lying", "allowed for", "his view?"]} />
+        <text class="lbl yn start" x={cx + LIE_YES + 6} y="222">yes</text>
+        <text class="lbl yn" x={cx + LIE_NO + 14} y="226" style="text-anchor:end">no</text>
+        <Pill x={cx + LIE_YES} y={262} state="reject" text="Rejected" />
+        <Pill x={cx + LIE_NO} y={262} state="accept" text="Accepted" />
+        <rect class="vtag dashed" x={cx - TAG_W / 2} y="300" width={TAG_W} height="22" rx="11" />
+        <text class="vtag-t" x={cx} y="315">{i === 0 ? "it is said" : "it is also said"}</text>
+        <text class="lbl sm" x={cx} y="346">{i === 0 ? "of this kind" : "of this kind too"}</text>
+      </>
+    ))}
+  </g>
+
+  {/* ---- reject: straight to Rejected; the majority on the first kind, "it is said" on the second ---- */}
+  <g class="off" data-view-show="reject">
+    {[P2, P3].map((cx) => <Arrow x1={cx} y1={CHIP_Y + 11} x2={cx} y2={185} />)}
+    {[P2, P3].map((cx) => <Pill x={cx} y={200} state="reject" text="Rejected" />)}
+    <rect class="vtag" x={P2 - TAG_W / 2} y="236" width={TAG_W} height="22" rx="11" />
+    <text class="vtag-t" x={P2} y="251">the majority</text>
+    <text class="lbl sm" x={P2} y="282">Ibn Ḥajar: not every such</text>
+    <text class="lbl sm" x={P2} y="296">belief rejects him</text>
+    <rect class="vtag dashed" x={P3 - TAG_W / 2} y="236" width={TAG_W} height="22" rx="11" />
+    <text class="vtag-t" x={P3} y="251">it is said: rejected outright</text>
+    <text class="lbl sm" x={P3} y="282">Ibn Ḥajar: far-fetched, for then</text>
+    <text class="lbl sm" x={P3} y="296">even a report one who is no</text>
+    <text class="lbl sm" x={P3} y="310">innovator shares would be rejected</text>
+  </g>
+</svg>
+<style>
+  .yn{font-size:11px}
+  .belief{fill:color-mix(in srgb,var(--pause) 22%,var(--surface));stroke:var(--pause);stroke-width:1.3;stroke-linejoin:round}
+  .fork{fill:none;stroke:var(--line);stroke-width:1.5}
+  .vtag{fill:color-mix(in srgb,var(--pause) 12%,var(--surface));stroke:var(--pause);stroke-width:1.4}
+  .vtag.dashed{stroke-dasharray:4 3}
+  .vtag-t{fill:color-mix(in srgb,var(--pause) 65%,var(--fg));font:700 11.5px var(--f-body);text-anchor:middle}
+</style>

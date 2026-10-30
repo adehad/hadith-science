@@ -169,7 +169,7 @@ const modeLabel = KIND_NAME.later;
     ))}
     {rungs.slice(0, 3).map((r) => (
       <>
-        {r.n > 1 && <text class="rg" x={B_X0} y={r.top + 16}>less than that</text>}
+        {r.n > 1 && <text class="rg on-gold" x={B_X0} y={r.top + 16}>less than that</text>}
         {r.links.map((l) => <Arrow x1={l.x1 + 2} y1={r.cy} x2={l.x2 - 3} y2={r.cy} />)}
         {r.chips.map((c) => <Chip x={c.x} y={r.cy} text={c.text} w={c.w} companion={COMPANIONS.has(c.text)} />)}
         <Gauge x={GAUGE.x} y={r.top + 22} w={GAUGE.w} fill={r.gauge} h={10} />
@@ -263,6 +263,8 @@ const modeLabel = KIND_NAME.later;
   @media (max-width:640px) and (orientation:portrait){.cells{grid-template-columns:1fr}}
   .rg{fill:var(--muted);font:600 11.5px var(--f-body)}
   .rg.strong{fill:var(--fg)}
+  /* --muted falls under 4.5:1 on the darker gold rungs in dark mode; this mix passes on every rung in both themes */
+  .rg.on-gold{fill:color-mix(in srgb,var(--fg) 85%,var(--surface))}
   .gloss{pointer-events:none}
   .ch{fill:var(--fg);font:700 12px var(--f-body);text-anchor:middle}
   .rungno{fill:var(--fg);font:700 15px var(--f-display);text-anchor:middle}

@@ -2,7 +2,8 @@
 // aria-current, ←/→ on the focused scroller move by a panel, and window.nuzhah.reveal centres the carousel on an
 // element (the term landing, popover.ts). Scroll-snap does the snapping; outside portrait nothing scrolls, so
 // all of this is inert there.
-const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
+import { motionAllowed } from "../lib/motion";
+
 // the same query as Carousel.astro's CSS
 const portrait = matchMedia("(max-width: 640px) and (orientation: portrait)");
 
@@ -47,7 +48,7 @@ document.querySelectorAll<HTMLElement>(".carousel").forEach((car) => {
   const go = (i: number) => {
     target = Math.max(0, Math.min(snaps.length - 1, i));
     const s = snaps[target];
-    scroller.scrollTo({ left: scroller.scrollLeft + offsetTo(scroller, s), behavior: reducedMotion.matches ? "auto" : "smooth" });
+    scroller.scrollTo({ left: scroller.scrollLeft + offsetTo(scroller, s), behavior: motionAllowed() ? "smooth" : "auto" });
   };
   const mark = () => {
     const n = nearest();

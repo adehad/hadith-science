@@ -1,0 +1,257 @@
+---
+// "Why is a report rejected?" (phase 3 al-Mardūd design §2): the division's overview, the two grounds of §5.17 as
+// two cells, each its own 430x600 SVG in an HTML grid (the Names pattern): side by side on desktop, one column in
+// portrait (spec §5).
+//   A  Saqṭ, omission: three mini chains, each with its drop at one of the three places §5.17 names (the
+//      collector's end, after the Successor, elsewhere), linking to "Where does the chain break?"; under them the
+//      plain drop and the hidden drop of §5.21, each a box of lifespan bars, linking to the breaks and hidden scenes
+//   B  Ṭaʿn, criticism: the ten causes of §5.23 as a ladder in the book's order, gravest first, with a wedge beside
+//      it that shows order only. Each rung is a link to the scene where its cause is a term, resolved from the
+//      terms and scenes collections at build time, so a renamed scene fails the build rather than ship a 404.
+//      Rungs 3–5 share a bracket: their reports are munkar for some (§5.26), linking to "Who outweighs whom?"
+// The ordinals are the book's own count (design §18); there are no integrity or accuracy tags, and the footer says
+// why. No views (design §2.5). No Arabic report wording.
+// Motion: cell A's arrows flow and its ghosts blink; cell B's rungs fade in from the top, once, one after another.
+// The resting style is the end state, so with motion.css stopping every animation every rung is shown.
+import Defs from "../svg/Defs.astro";
+import Moon from "../svg/Moon.astro";
+import Narrator from "../svg/Narrator.astro";
+import Arrow from "../svg/Arrow.astro";
+import Chip from "../svg/Chip.astro";
+import Glyph from "../svg/Glyph.astro";
+import Bracket from "../svg/Bracket.astro";
+import Lifespan from "../svg/Lifespan.astro";
+import TermTitle from "../svg/TermTitle.astro";
+import { FIG, KIND_NAME, RELIABLE, type Kind } from "../svg/figures";
+import { f, titleTrigger } from "../svg/geom";
+import { cap, type DiagramProps } from "../../lib/scene";
+import { stepFill } from "../../lib/staircase";
+import { chipWidth } from "../../lib/kit";
+import { loadContent } from "../../lib/content";
+import { href } from "../../lib/url";
+
+type Props = DiagramProps;
+const { caps, scene } = Astro.props;
+if (scene.views?.length) throw new Error("Causes: expected no views");
+if (scene.panels?.length) throw new Error("Causes: a grid of cells, not panels");
+
+const { scenes, terms } = await loadContent();
+// a scene this one links to, by id; throws so a renamed or missing scene fails the build
+function sceneById(id: string) {
+  const s = scenes.find((x) => x.id === id);
+  if (!s) throw new Error(`Causes: no scene ${id} to link to`);
+  return { title: s.title, path: href(`${s.division}/${s.id}/`) };
+}
+const breaks = sceneById("breaks");
+const hidden = sceneById("hidden");
+const opposition = sceneById("opposition");
+
+const TITLE_Y = 30, SUB_Y = 52;
+// a cell's 20px display title as a term trigger, with its Arabic name arOff past the (i)
+function title(slug: string, cx: number, arOff: number) {
+  const c = cap(caps, slug);
+  const t = titleTrigger(c.translit, cx, TITLE_Y);
+  return { c, cx, ...t, ar: { x: f(t.info.cx + arOff), y: TITLE_Y } };
+}
+
+// ---- cell A: omission (§5.17, §5.21) ----
+const saqt = title("saqt", 190, 40);
+const MOON_Y = 88, MOON_K = 0.4;
+const K = 0.5, HALF = 22 * K;
+const ROWS = [134, 194, 254, 314];
+const COLLECTOR_Y = 362;
+const COLLECTOR_W = chipWidth("collector");
+// an arrow starts below its narrator's Labels-mode name (y + 22k + 14), so none runs through one
+const FROM_MOON = f(MOON_Y + 24 * MOON_K + 4);
+const under = (y: number) => f(y + HALF + 18);
+// [centre, a figure per row from the Companion down, the caption's two lines]
+const CHAINS: { x: number; kinds: Kind[]; where: string; names: string }[] = [
+  { x: 80, kinds: ["sahabi", "tabii", "later", "ghost"], where: "at the collector's end", names: "muʿallaq" },
+  { x: 215, kinds: ["ghost", "tabii", "later", "later"], where: "after the Successor", names: "mursal" },
+  { x: 350, kinds: ["sahabi", "tabii", "ghost", "later"], where: "elsewhere", names: "muʿḍal, munqaṭiʿ" },
+];
+const chains = CHAINS.map((ch) => {
+  // each figure, then the collector, is joined to the last one above it that isn't a ghost: a skip arrow when a
+  // ghost was jumped (as Chain draws a drop)
+  // A skip arrow bows wide to the left, clear of the ghost's Labels-mode "Missing"; one that skips to the collector
+  // lands on the chip's upper-left shoulder, below the name, and so needs less bow
+  const arrows: { x1: number; y1: number; x2: number; y2: number; skip: boolean; bend: number }[] = [];
+  let from = FROM_MOON, jumped = false;
+  const stops = [...ch.kinds.map((k, i) => ({ k, y: ROWS[i] })), { k: "collector" as const, y: COLLECTOR_Y }];
+  for (const s of stops) {
+    if (s.k === "ghost") { jumped = true; continue; }
+    const coll = s.k === "collector";
+    const x1 = jumped ? ch.x - 2 : ch.x;
+    if (jumped && coll) arrows.push({ x1, y1: from, x2: f(ch.x - COLLECTOR_W / 2 + 4), y2: COLLECTOR_Y - 12, skip: true, bend: -10 });
+    else arrows.push({ x1, y1: from, x2: x1, y2: coll ? COLLECTOR_Y - 13 : f(s.y - HALF - 3), skip: jumped, bend: jumped ? -80 : 0 });
+    from = s.k === "collector" ? from : under(s.y);
+    jumped = false;
+  }
+  return { ...ch, arrows, label: `${ch.where}: ${ch.names} (scene: ${breaks.title})` };
+});
+const CAP_Y = 390;
+// the two boxes of §5.21: plain to see, and hidden
+const BOX_Y = 424, BOX_H = 166, BOX_W = 194;
+const BOXES = [
+  {
+    x: 14, glyph: "clock" as const, head: "Plain to see",
+    // two lives that don't overlap
+    bars: [[30, 92], [112, 190]] as [number, number][],
+    lines: ["they were not of one time,", "or they never met: records of", "births, deaths, study and", "travel show it"],
+    link: breaks,
+  },
+  {
+    x: 222, glyph: "lens" as const, head: "Hidden",
+    // two lives that do
+    bars: [[238, 340], [282, 396]] as [number, number][],
+    lines: ["he doesn't name the one he", "heard it from; only expert", "imams who know a ḥadīth's", "routes can find it"],
+    link: hidden,
+  },
+];
+
+// ---- cell B: criticism, the ten causes (§5.23) and what each yields (§5.24–5.38) ----
+const tan = title("tan", 185, 38);
+const R_Y0 = 80, R_H = 40, R_GAP = 4, R_X0 = 32, R_X1 = 424;
+const TXT_X = 62;
+// a link's lines are separate <text>s, so each but the last ends in a space: axe reads the visible text as their
+// concatenation, and the accessible name must contain it (WCAG 2.5.3)
+// the munkar bracket stands in front of rungs 3–5, whose links stop short of it
+const BRK_X = 298;
+// [cause term, what its report is called; empty where the munkar bracket says it]
+const CAUSES: [string, string][] = [
+  ["kadhib", "its report is mawḍūʿ"],
+  ["tuhma-bil-kadhib", "its report is matrūk"],
+  ["fuhsh-al-ghalat", ""],
+  ["ghafla", ""],
+  ["fisq", ""],
+  ["wahm", "muʿallal, when close study of the chains finds it"],
+  ["mukhalafa", "mudraj, maqlūb, al-mazīd, muḍṭarib, muṣaḥḥaf, muḥarraf"],
+  ["jahala", "mubham, majhūl al-ʿayn, mastūr"],
+  ["bida", "accepted or not, by the kind of innovation"],
+  ["su-al-hifz", "for life: shādhdh, for some; later: mukhtaliṭ"],
+];
+const rungs = CAUSES.map(([slug, yields], i) => {
+  const t = terms.find((x) => x.id === slug);
+  if (!t) throw new Error(`Causes: no term ${slug}`);
+  // the scene where the cause is a term; it must exist, in this division
+  const s = scenes.find((x) => x.division === t.division && x.id === t.scene);
+  if (!s) throw new Error(`Causes: the ${slug} rung has no scene to link to`);
+  if (!s.captions.some((c) => c.term === slug)) throw new Error(`Causes: ${s.id} doesn't caption ${slug}`);
+  const top = R_Y0 + i * (R_H + R_GAP);
+  const en = t.en.charAt(0).toLowerCase() + t.en.slice(1);
+  const munkar = !yields;
+  return {
+    n: i + 1, top, fill: stepFill(i * 0.75), translit: t.translit, en, yields,
+    // the whole rung is the link, short of the bracket on rungs 3–5
+    end: munkar ? BRK_X - 8 : R_X1,
+    path: href(`${s.division}/${s.id}/#${slug}`),
+    label: `${t.translit} · ${en}${yields ? `: ${yields}` : ""} (scene: ${s.title})`,
+    delay: i * 80,
+  };
+});
+const M_TOP = rungs[2].top, M_BOT = rungs[4].top + R_H;
+const R_END = rungs[rungs.length - 1].top + R_H;
+---
+<div class="cells causes">
+  <svg id="cell-omission" viewBox="0 0 430 600" role="group" aria-label={`Saqṭ, omission: a narrator missing from the chain. Three chains from the Prophet ﷺ, each missing one narrator: at the collector's end, as in muʿallaq; after the Successor, as in mursal; or elsewhere, as in muʿḍal and munqaṭiʿ. The drop may be plain to see, when the two were not of one time or never met, which records of births, deaths, study and travel show; or hidden, when the narrator doesn't name the one he heard it from, and only expert imams who know a ḥadīth's routes can find it.`}>
+    <Defs />
+    <TermTitle c={saqt.c} x={saqt.cx} y={TITLE_Y} hit={saqt.hit} info={saqt.info} ar={saqt.ar} />
+    <text class="lbl" x="215" y={SUB_Y}>omission: a narrator missing from the chain</text>
+
+    {chains.map((ch) => (
+      <>
+        <Moon cx={ch.x} cy={MOON_Y} k={MOON_K} />
+        {/* arrows first, so the names' surface halo sits over any arrow that passes behind them */}
+        {ch.arrows.map((a) => <Arrow x1={a.x1} y1={a.y1} x2={a.x2} y2={a.y2} variant={a.skip ? "skip" : "flow"} bend={a.bend} />)}
+        {ch.kinds.map((k, i) => (
+          <Narrator x={ch.x} y={ROWS[i]} k={K} {...FIG[k]} {...(k === "ghost" ? {} : RELIABLE)} label={KIND_NAME[k]} />
+        ))}
+        <Chip x={f(ch.x - COLLECTOR_W / 2)} y={COLLECTOR_Y} text="collector" />
+        <a class="xlink" href={breaks.path} aria-label={ch.label}>
+          <text class="lbl sm" x={ch.x} y={CAP_Y}>{ch.where}{" "}</text>
+          <text class="rp" x={ch.x} text-anchor="middle" y={CAP_Y + 16}><tspan class="xu">{ch.names}</tspan><tspan dx="4" aria-hidden="true">→</tspan></text>
+        </a>
+      </>
+    ))}
+
+    {BOXES.map((b) => (
+      <>
+        <rect class="box" x={b.x} y={BOX_Y} width={BOX_W} height={BOX_H} rx="8" />
+        <Glyph kind={b.glyph} cx={b.x + 18} cy={BOX_Y + 20} r={7} />
+        <text class="layer" x={b.x + 32} y={BOX_Y + 24}>{b.head}</text>
+        {b.bars.map(([x0, x1], j) => <Lifespan x0={x0} x1={x1} y={BOX_Y + 42 + j * 14} />)}
+        {b.lines.map((t, j) => <text class="lbl start sm" x={b.x + 14} y={BOX_Y + 84 + j * 15}>{t}</text>)}
+        <a class="xlink" href={b.link.path} aria-label={`${b.link.title} (the ${b.head.toLowerCase()} drop)`}>
+          <text class="rp" x={b.x + BOX_W / 2} text-anchor="middle" y={BOX_Y + BOX_H - 14}><tspan class="xu">{b.link.title}</tspan><tspan dx="4" aria-hidden="true">→</tspan></text>
+        </a>
+      </>
+    ))}
+  </svg>
+
+  <svg id="cell-criticism" viewBox="0 0 430 600" role="group" aria-label="Ṭaʿn, criticism: the ten causes, from the gravest down, each linking to the scene that draws it. Five concern integrity and five accuracy; Ibn Ḥajar doesn't sort them, but orders all ten by gravity.">
+    <TermTitle c={tan.c} x={tan.cx} y={TITLE_Y} hit={tan.hit} info={tan.info} ar={tan.ar} />
+    <text class="lbl" x="215" y={SUB_Y}>criticism: ten causes, from the gravest down</text>
+
+    {/* the wedge shows order only: no ticks, no numbers */}
+    <g aria-hidden="true">
+      <path class="wedge" d={`M6 ${R_Y0} H22 L14 ${R_END} Z`} />
+    </g>
+    <text class="lbl start sm" x="4" y={R_Y0 - 8}>graver</text>
+    <text class="lbl start sm" x="4" y={R_END + 16}>lighter</text>
+
+    <g class="rungs">
+      {rungs.map((r) => (
+        <>
+          <g class="rung-g" style={`animation-delay:${r.delay}ms`}>
+            <rect class="rung" x={R_X0} y={r.top} width={R_X1 - R_X0} height={R_H} rx="4" style={`fill:${r.fill}`} />
+            {/* the book's own count (§5.23–5.38) */}
+            <text class="rungno" x={R_X0 + 15} y={r.top + 25}>{r.n}</text>
+            <a class="xlink" href={r.path} aria-label={r.label}>
+              <rect class="hit" x={R_X0 + 26} y={r.top} width={r.end - R_X0 - 26} height={R_H} />
+              <text class="rc" x={TXT_X} y={r.yields ? r.top + 17 : r.top + 25}><tspan class="xu"><tspan class="ct">{r.translit}</tspan> · {r.en}</tspan>{" "}</text>
+              {r.yields && <text class="lbl start sm" x={TXT_X} y={r.top + 33}>{r.yields}</text>}
+              <text class="rp" x={r.end - 10} y={r.top + 25} text-anchor="end" aria-hidden="true">→</text>
+            </a>
+          </g>
+          {/* rungs 3–5: munkar, for those who don't require going against others (§5.26). Emitted right after rung 5,
+              so its link comes after rung 5's in the tab order; it paints over rungs 3–5, and no later rung reaches it */}
+          {r.n === 5 && (
+            <>
+              <Bracket vertical x={BRK_X} y0={M_TOP + 4} y1={M_BOT - 4} ticks="left" />
+              <a class="xlink" href={opposition.path} aria-label={`munkar, for those who don't require going against others (scene: ${opposition.title})`}>
+                <text class="lbl start sm munkar-lbl" x={BRK_X + 8} y={M_TOP + 40}>munkar, for those{" "}</text>
+                <text class="lbl start sm munkar-lbl" x={BRK_X + 8} y={M_TOP + 54}>who don't require{" "}</text>
+                <text class="lbl start sm munkar-lbl" x={BRK_X + 8} y={M_TOP + 68}>going against{" "}</text>
+                <text class="rp" x={BRK_X + 8} y={M_TOP + 84}><tspan class="xu">others</tspan><tspan dx="4" aria-hidden="true">→</tspan></text>
+              </a>
+            </>
+          )}
+        </>
+      ))}
+    </g>
+
+    <text class="lbl sm" x="215" y="560">five concern integrity and five accuracy; Ibn Ḥajar</text>
+    <text class="lbl sm" x="215" y="575">doesn't sort them, but orders all ten by gravity</text>
+  </svg>
+</div>
+<style>
+  /* the grid's 1px gaps show its background, drawing var(--rule) lines between the cells (as Names) */
+  .cells{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--rule)}
+  .cells svg{background:var(--surface)}
+  @media (max-width:640px) and (orientation:portrait){.cells{grid-template-columns:1fr}}
+  .causes .layer{text-anchor:start}
+  .box{fill:none;stroke:var(--rule);stroke-width:1.4}
+  .wedge{fill:color-mix(in srgb,var(--gold-a) 55%,var(--surface));stroke:var(--gold-a);stroke-width:1}
+  .rung{stroke:var(--rule)}
+  .rungno{fill:var(--fg);font:700 13px var(--f-display);text-anchor:middle}
+  .rc{fill:var(--fg);font:600 12px var(--f-body)}
+  .rc .ct{font-weight:700;font-size:13px}
+  .hit{fill:transparent}
+  /* text on the gold rungs: the .lbl surface halo would draw blobs on the fill, and --muted falls under 4.5:1 on the
+     darker rungs in dark mode, so no halo and a mix of --fg that passes on rung 1 in both themes */
+  .rung-g .lbl,.munkar-lbl{stroke:none;fill:color-mix(in srgb,var(--fg) 85%,var(--surface))}
+  .xlink:is(:hover,:focus-visible) :is(.lbl,.munkar-lbl){fill:var(--gold-a)}
+  /* motion: the resting style is the end state; each rung fades in from the top, once */
+  .rung-g{animation:causes-in .2s ease-out both}
+  @keyframes causes-in{from{opacity:0}}
+</style>

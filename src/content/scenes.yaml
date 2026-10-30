@@ -141,10 +141,29 @@
     - title: The Intentions report
       section: §5.5
       note: "Some who hold that a sound report must be at least ʿazīz answer the case of the Intentions report this way: ʿUmar told it from the pulpit before the Companions, who would have questioned it had they not known it. Ibn Ḥajar replies that their silence proves nothing, and that even granting this for ʿUmar, it does not hold for what follows: ʿAlqama alone narrates it from ʿUmar, then Muḥammad ibn Ibrāhīm alone from ʿAlqama, then Yaḥyā ibn Saʿīd alone from Muḥammad, by the sound route the ḥadīth masters know. Supporting chains have appeared, but they cannot be counted. Ibn Rushayd adds that its place as the first report in al-Bukhārī's Ṣaḥīḥ is enough to refute the claim that being ʿazīz was al-Bukhārī's condition."
+- id: causes
+  division: al-mardud
+  moons: [0, 1]
+  order: 1
+  title: Why is a report rejected?
+  eyebrow: Rejected reports, the two grounds · §5.17, §5.21, §5.23
+  lede: A report is rejected for one of two things. A narrator has dropped out of its chain, or a narrator in it is open to a charge. Ibn Ḥajar names ten charges, and lists them from the gravest down rather than sorting them by kind.
+  source: §5.17 Saqṭ and ṭaʿn, §5.21 Plain and hidden drops, §5.23 The ten causes, §5.24–5.38 What each cause yields
+  diagram: Causes
+  width: 860
+  captions:
+    - term: saqt
+      note: "A narrator missing from the chain: one of the two grounds for rejecting a report. The drop may be at the collector's end of the chain, by his own act; at the far end, after the Successor; or elsewhere. It may be plain to all, when the two never met, as records of birth, death, study and travel show; or hidden, found only by experts who know a ḥadīth's routes (§5.17, §5.21)."
+    - term: tan
+      note: "The other ground: a charge against a narrator, touching his religion or his accuracy. Five causes concern integrity and five accuracy, but Ibn Ḥajar doesn't sort them, so all ten run from the gravest down: lying about the Prophet ﷺ, being accused of it, gross errors, negligence, open sin, mistaken impressions, going against the reliable, being unknown, innovation and poor memory (§5.17, §5.23)."
+  extra:
+    - title: What each cause yields
+      section: §5.24–5.38
+      note: "Lying about the Prophet ﷺ makes a report mawḍūʿ, and being accused of lying makes it matrūk. Gross errors, negligence and open sin make it munkar, for those who don't require going against others. A mistaken impression found by close study and gathering the chains makes it muʿallal. Going against the reliable gives mudraj, maqlūb, al-mazīd, muḍṭarib, muṣaḥḥaf and muḥarraf. Being unknown covers the mubham, majhūl al-ʿayn and mastūr narrator. An innovator is accepted or not by the kind of his innovation. Poor memory for life is shādhdh, for some ḥadīth scholars; poor memory that comes on later is mukhtaliṭ."
 - id: breaks
   division: al-mardud
   moons: [0]
-  order: 1
+  order: 2
   title: Where does the chain break?
   eyebrow: Rejected for a break in the chain · §5.18–5.20
   lede: All four lose narrators from the chain. What tells them apart is where the gap sits and how many links are missing one after another.
@@ -178,10 +197,201 @@
     - { id: muallaq, label: Muʿallaq, x0: 215, x1: 415 }
     - { id: mudal, label: Muʿḍal, x0: 415, x1: 615 }
     - { id: munqati, label: Munqaṭiʿ, x0: 615, x1: 820 }
+- id: hidden
+  division: al-mardud
+  moons: [0]
+  order: 3
+  title: Did he hear it from him?
+  eyebrow: Rejected for a hidden drop · §5.21–5.22
+  lede: Some drops are hidden. The narrator cites someone he could have heard from, in words that allow a meeting without claiming he heard. Whether the two are known to have met decides the name. It is tadlīs if they met, and a hidden mursal if they lived at the same time but no meeting is known.
+  source: §5.21 Mudallas, §5.22 Mursal khafī
+  diagram: Hidden
+  width: 780
+  captions:
+    - term: mudallas
+      note: "A hidden drop, found only by expert imams who know a ḥadīth's routes. The narrator does not name the one he heard it from, and cites someone above him in words of delivery that leave a meeting possible, such as ʿan (from) or qāla (he said). The name comes from dalas, the mixing of darkness: both involve concealment. In Ibn Ḥajar's usage, tadlīs is from someone he is known to have met (§5.21–5.22)."
+    - term: mudallis
+      note: "The narrator who conceals in this way. Had he used words of certainty for what he did not hear, he would be classed a liar. When it is proven that a reliable narrator has done this, his report is not accepted until he makes clear that he heard it, on the most correct opinion (§5.21)."
+    - term: mursal-khafi
+      note: "A narrator reports from a contemporary he is not known to have met, with someone missing between them. That they never met is known from the narrator's own word or a versed imam's firm statement. An extra narrator in some versions is not enough, since it may be an addition, so no firm ruling follows from it. al-Khaṭīb compiled a book on this (§5.22)."
+  views:
+    - id: ibn-hajar
+      label: "Ibn Ḥajar: they met"
+      scholars: §5.22; with al-Shāfiʿī, Abū Bakr al-Bazzār and al-Khaṭīb
+      note: "Tadlīs is only from someone the narrator is known to have met. If they lived at the same time and no meeting is known, it is a hidden mursal. The two differ, and the correct opinion keeps them apart. Ibn Ḥajar calls requiring a meeting the trusted opinion."
+    - id: contemporary
+      label: "Some: living at the same time"
+      scholars: "“Whoever has added”, §5.22"
+      note: "Some add to the definition of tadlīs “being a contemporary even if they have not met”. That brings the hidden mursal inside tadlīs too. Ibn Ḥajar answers that the mukhaḍramūn would then be mudallis, yet the ḥadīth scholars agree that their reports from the Prophet ﷺ are irsāl."
+  panels:
+    - { id: met, label: They met, x0: 0, x1: 260 }
+    - { id: never-met, label: Never known to meet, x0: 260, x1: 520 }
+    - { id: test, label: Lived in his time, x0: 520, x1: 780 }
+  extra:
+    - title: The mukhaḍramūn
+      section: §5.22
+      note: "Ibn Ḥajar's evidence that tadlīs needs a known meeting, not just a shared lifetime. The people of knowledge in ḥadīth agree that the reports of the mukhaḍramūn, such as Abū ʿUthmān al-Nahdī and Qays ibn Abī Ḥāzim, from the Prophet ﷺ are irsāl, not tadlīs. They certainly lived in his time, but it is not known whether they met him. If living at the same time were enough for tadlīs, they would be mudallis. al-Shāfiʿī and Abū Bakr al-Bazzār also require a meeting, and al-Khaṭīb's al-Kifāya stipulates it. Ibn Ḥajar calls this the trusted opinion."
+- id: lying
+  division: al-mardud
+  moons: [1]
+  order: 4
+  title: Did he lie?
+  eyebrow: Rejected for lying · §5.23–5.25
+  lede: The gravest charge is lying about the Prophet ﷺ, and a report from such a narrator is called fabricated. Next comes being suspected of lying, which makes a report abandoned. A forgery is judged on overwhelming evidence, not certainty, because even a liar sometimes tells the truth.
+  source: §5.23 Kadhib and tuhma bi-l-kadhib, §5.24 Mawḍūʿ, §5.25 Matrūk
+  diagram: Lying
+  width: 780
+  captions:
+    - term: kadhib
+      note: "The gravest of the ten causes of criticism, which the book sets out from the worst downwards: the narrator lies in a Prophetic report, deliberately narrating from the Prophet ﷺ what he did not say. Open sin is the wider charge, but lying is named on its own because in this field it is the graver charge. A report from such a narrator is the first kind of rejected report, mawḍūʿ (§5.23–5.24)."
+    - term: tuhma-bil-kadhib
+      note: "Suspicion of lying, less grave than lying itself. It arises when a ḥadīth is reported by him alone and goes against known principles, or when he is known to lie in his everyday speech, though no lie of his in Prophetic reports is proven. A report from such a narrator is the second kind of rejected report, matrūk (§5.23, §5.25)."
+    - term: matruk
+      note: "The second kind of rejected report, following the order of the ten causes: one whose narrator is accused of lying. The grounds of the accusation are those given among the causes: only he reports it and it goes against known principles, or he lies in everyday speech though no lie of his in ḥadīth is proven (§5.23, §5.25)."
+    - term: mawdu
+      note: "The first kind of rejected report: its narrator lied about the Prophet ﷺ. It is judged on overwhelming evidence, not certainty, since even a liar sometimes tells the truth, and only scholars of wide knowledge and insight can judge it. Signs include the forger's admission, the narrator's state at the time, and a text clashing past reconciling with the Qurʾan, mutawātir sunna, firm consensus or common sense (§5.24)."
+  panels:
+    - { id: charges, label: Two charges, x0: 0, x1: 260 }
+    - { id: signs, label: How a forgery is known, x0: 260, x1: 520 }
+    - { id: sources, label: Where it comes from, x0: 520, x1: 780 }
+  extra:
+    - title: Two forgers caught in the act
+      section: §5.24
+      note: "The narrator's state can give a forgery away. When the question of whether al-Ḥasan heard from Abū Hurayra came up before Maʾmūn ibn Aḥmad, he at once recited a chain to the Prophet ﷺ saying that he had. Ghiyāth ibn Ibrāhīm came in on al-Mahdī while he was playing with his pigeons, and at once recited a chain to the Prophet ﷺ allowing contests in archery, camel racing and horse racing, adding the words “and pigeon racing” himself. al-Mahdī knew he had lied for his sake, and ordered the pigeons killed."
+    - title: A forger's confession
+      section: §5.24
+      note: "Sometimes a forgery is known from the forger's own admission. Ibn Daqīq al-ʿĪd said the confession is not taken as certain, since he may be lying in it. Some understood him to mean it is not acted on at all, but Ibn Ḥajar says he only denied certainty, and a ruling can rest on overwhelming evidence. Otherwise no one could be punished on a confession to murder or adultery, since they too might be lying."
+    - title: Where forged words come from, and why
+      section: §5.24
+      note: "A forger may invent the words himself, or take the words of others, such as some of the pious predecessors, the ancient sages or biblical sources, or take a report with a weak chain and invent a sound chain for it so that it spreads. Forgers act from an absence of religion, like the zindīqs; from ignorance, like some worshippers; from loyalty to a school; to please leaders; or to win fame with something rare. All of it is forbidden by consensus. Some of the Karrāmiyya and Ṣūfīs are reported to allow lying to encourage good and warn against evil; Ibn Ḥajar calls this a mistake born of ignorance, since that too is part of the Law. Deliberately lying about the Prophet ﷺ is a major sin, and al-Juwaynī went so far as to call the deliberate forger a disbeliever. Narrating a forged report is forbidden unless one makes its forgery clear, as Muslim's report from the Prophet ﷺ warns."
+- id: slips
+  division: al-mardud
+  moons: [1]
+  order: 5
+  title: Did he keep it right?
+  eyebrow: Rejected for mistakes · §5.23, §5.26–5.27, §5.38
+  lede: Some charges are about how well a narrator keeps what he reports. He may make many glaring mistakes, be careless, or report on a mistaken impression that only gathering the routes will show. His memory may be poor all his life, or fail later, so that what he told before is accepted only when it can be told apart.
+  source: §5.23 Fuḥsh al-ghalaṭ, ghafla and wahm, §5.26 Munkar, §5.27 Muʿallal, §5.38 Sūʾ al-ḥifẓ and mukhtaliṭ
+  diagram: Slips
+  width: 780
+  captions:
+    - term: fuhsh-al-ghalat
+      note: "The third of the ten causes of criticism: the narrator's mistakes are gross, which means many. For those who do not make going against others a condition of munkar, his report is munkar, and so are the reports of the fourth and the fifth: the one whose carelessness is excessive and the one whose sin is open (§5.23, §5.26)."
+    - term: ghafla
+      note: "The fourth cause: a naive carelessness about accuracy in what he passes on. When it is excessive, his report is munkar for those who do not make going against others a condition of munkar (§5.23, §5.26)."
+    - term: wahm
+      note: "The sixth cause: the narrator reports on a mistaken impression. When indications reveal it, such as joining up a mursal or broken chain, or slipping one ḥadīth into another, found by close study and gathering the routes, the report is muʿallal. Ibn Ḥajar names this one because it needs the longest explanation (§5.23, §5.27)."
+    - term: muallal
+      note: "A report whose hidden mistake shows only by close study and gathering its routes, one of the subtlest kinds. Only a few with keen understanding, vast memory and full knowledge of narrators' ranks, chains and texts have spoken on it, such as ʿAlī ibn al-Madīnī, Aḥmad, al-Bukhārī, Abū Zurʿa and al-Dāraquṭnī. Like a money-changer judging false coins, the expert may not always show his proof (§5.27)."
+    - term: su-al-hifz
+      note: "The tenth cause: the narrator's mistakes outweigh what he gets right. It is of two kinds. If it stays with him in every state, some ḥadīth scholars call his report shādhdh. If it comes on him later, he is mukhtaliṭ (§5.23, §5.38)."
+    - term: mukhtalit
+      note: "Poor memory that came on later: through old age, the loss of his sight, or the burning or loss of the books he relied on, so that he fell back on a memory that had weakened. What he narrated before is accepted when it can be told apart; what cannot is held back, as is any case that can't be settled. Only a study of those who took from him shows which is which (§5.38)."
+  panels:
+    - { id: errors, label: Errors and carelessness, x0: 0, x1: 260 }
+    - { id: defect, label: A hidden defect, x0: 260, x1: 520 }
+    - { id: memory, label: Poor memory, x0: 520, x1: 780 }
+  extra:
+    - title: The hidden-defect picture
+      section: §5.27
+      note: "The book gives no example of a muʿallal report, so the middle panel is an illustration. One unnamed chain runs from the Prophet ﷺ through a Companion and a Successor, which looks connected. Gathering the other routes shows each of them going from the Successor straight to the Prophet ﷺ, with no Companion between: the narrator has joined up a mursal, one of the indications §5.27 names. The book names two more of the few who spoke on it, whose names in the translation are under query; they are left out of the panel until a ruling."
+- id: changes
+  division: al-mardud
+  moons: [1]
+  order: 6
+  title: What changed in the telling?
+  eyebrow: Rejected for going against the reliable · §5.28–5.32
+  lede: The seventh charge is going against reliable narrators, and what the narrator changed gives the report its name. He may run chains or words together, put names or words the wrong way round, add a narrator, change a narrator with no way to choose between the versions, or change letters while the word keeps its outline.
+  source: §5.23 Mukhālafa, §5.28 Mudraj, §5.29 Maqlūb, §5.30 al-Mazīd fī muttaṣil al-asānīd, §5.31 Muḍṭarib, §5.32 Muṣaḥḥaf and muḥarraf
+  diagram: Changes
+  width: 860
+  captions:
+    - term: mukhalafa
+      note: "The seventh cause of criticism: the narrator goes against the reliable narrators. What he changed names the report: how a chain is put together, or words slipped into a text (mudraj); one thing put before another (maqlūb); an added narrator (al-mazīd); a narrator changed, with no way to choose (muḍṭarib); or letters changed, the outline kept (muṣaḥḥaf, muḥarraf) (§5.23, §5.28–5.32)."
+    - term: mudraj
+      note: "Going against the reliable by changing how a chain is put together, or by slipping into a text words not part of it, without saying so. An insertion is known from a fuller version setting it apart, from a statement by the narrator or a versed imam, or because the Prophet ﷺ could not have said it. al-Khaṭīb wrote a book on it, which Ibn Ḥajar summarised and added to, twice over or more (§5.28)."
+    - term: mudraj-al-isnad
+      note: "Four kinds. Several chains of one ḥadīth are merged into one without saying so. Part of a text held through another chain is told with the first, or a part heard indirectly is told without the go-between. Two texts with two chains are told with one, or one gets words from the other. Or a narrator reads a chain, is distracted and speaks for himself, which a listener takes as its text (§5.28)."
+    - term: mudraj-al-matn
+      note: "Words that are not part of a text come into it: at its start, in its middle, or, most often, at its end, by joining one sentence to the next. Or the words of a Companion, or of someone after him, are merged into the words of the Prophet ﷺ without making that clear (§5.28)."
+    - term: maqlub
+      note: "Going against the reliable by putting first what comes later. In names: Murra ibn Kaʿb given as Kaʿb ibn Murra, since one's name is the other's father's; al-Khaṭīb's Rāfiʿ al-irtiyāb is on this. In a text: in Abū Hurayra's report in Muslim of the seven whom Allah will shade, a narrator mixed up the hands; in the two Ṣaḥīḥs, the left hand does not know what the right has spent (§5.29)."
+    - term: mazid
+      note: "Going against the reliable by adding a narrator inside a chain, when the version without him is more reliable. Its condition is that hearing is stated plainly at the place of the addition. If it is not, if that link is told with ʿan, for example, the version with the addition is preferred (§5.30)."
+    - term: mudtarib
+      note: "Versions change a narrator, and there is no way to prefer one. It is usually in the chain and sometimes in the text, though a ḥadīth master rarely calls a report muḍṭarib for its text alone. A change made on purpose to test someone, as with al-Bukhārī and al-ʿUqaylī, is allowed if it is not left standing; made for rarity, it is a kind of forgery; made by mistake, it is maqlūb or muʿallal (§5.31)."
+    - term: musahhaf
+      note: "Going against the reliable by changing a letter or letters while the word keeps its outline: if the change is in the dots, it is muṣaḥḥaf. Knowing it matters; al-ʿAskarī, al-Dāraquṭnī and others compiled books on it. It is most often in the text, and sometimes in the names in the chains (§5.32)."
+    - term: muharraf
+      note: "The same kind of change, a letter or letters changed while the word keeps its outline, but in its vowelling rather than its dots. Like muṣaḥḥaf, it is most often in the text and sometimes in the names in the chains (§5.32)."
+  extra:
+    - title: The illustrations
+      section: §5.28–5.32
+      note: "The book gives examples only for maqlūb: Murra ibn Kaʿb, and the hands in Abū Hurayra's report. For mudraj, al-mazīd, muḍṭarib, muṣaḥḥaf and muḥarraf it names none, so those cells are illustrations: unnamed chains, blank text cards and single letter shapes, not real reports. One undotted letter outline is read as different letters by the dots below or above it, and is voiced differently by a fatḥa, ḍamma or kasra."
+- id: wording
+  division: al-mardud
+  moons: [1]
+  order: 7
+  title: May the words be changed?
+  eyebrow: Changing the words on purpose, and rare words · §5.33–5.34
+  lede: On the correct opinion, a report's words may be changed on purpose, by cutting it short or putting it in other words, only by a scholar who knows how words carry meaning. Even then the exact words are better. Where a word is rare, the books on rare words explain it.
+  source: §5.33 Ikhtiṣār al-ḥadīth and al-riwāya bi-l-maʿnā, §5.34 Gharīb al-ḥadīth
+  diagram: Wording
+  width: 780
+  captions:
+    - term: ikhtisar-al-hadith
+      note: "Cutting part of a report. On the correct opinion, only a scholar who knows what words signify may change a text on purpose; most allow shortening on that condition. The expert drops only what has no tie to the rest, so the meaning holds and the two parts stand like two reports, or the kept part points to the dropped one. One who does not know may drop what matters, such as an exception (§5.33)."
+    - term: riwaya-bil-mana
+      note: "Telling a report in other words of the same meaning. The dispute is well known; most allow it to a scholar who knows how words carry meaning. Their strongest proof: all agree an expert may put the Law into another language, so other Arabic words are allowed all the more. Still, the exact words are without doubt better; al-Qāḍī ʿIyāḍ wished the practice would stop (§5.33)."
+    - term: gharib-al-hadith
+      note: "When a word is unclear because it is rare, the books on rare words explain it: Abū ʿUbayd al-Qāsim ibn Sallām's, unarranged until Ibn Qudāma put it in letter order; Abū ʿUbayd al-Harawī's, the most complete; al-Zamakhsharī's al-Fāʾiq; and Ibn al-Athīr's al-Nihāya, the easiest to consult. A common word in a special sense needs the books on the meanings of reports and on difficult reports (§5.34)."
+  views:
+    - id: most
+      label: Most scholars
+      scholars: Most scholars, and Ibn Ḥajar, §5.33
+      note: "Most scholars allow it; on the correct opinion, Ibn Ḥajar says, only a scholar who knows how words carry meaning may do it. Their strongest proof: all agree an expert may put the Law into another language, so other Arabic words are allowed all the more."
+    - id: single-words
+      label: "Some: single words only"
+      scholars: "“It is said”, §5.33"
+      note: "Some, whom the book doesn't name, allow it for single words, not for whole sentences."
+    - id: knows-wording
+      label: "Some: if he knows the words"
+      scholars: "“It is also said”, §5.33"
+      note: "Others, again unnamed, allow it to one who knows the original words, so that he can go back to them."
+    - id: forgot
+      label: "Some: if he has forgotten them"
+      scholars: "“It is said”, §5.33"
+      note: "Others, again unnamed, allow it only to one who memorised the report and then forgot its words while its meaning stayed firm in his mind. He may tell it by meaning to state a ruling, unlike one who still knows its wording."
+  panels:
+    - { id: shortening, label: Cutting it short, x0: 0, x1: 260 }
+    - { id: by-meaning, label: In other words, x0: 260, x1: 520 }
+    - { id: rare, label: Rare words, x0: 520, x1: 780 }
+- id: identity
+  division: al-mardud
+  moons: [1]
+  order: 8
+  title: Why is he unknown?
+  eyebrow: Rejected for a narrator who is unknown, the causes · §5.35
+  lede: The eighth charge is that a narrator is unknown, and Ibn Ḥajar gives two causes. A man with many names, cited by one he is not known by, is taken for someone else; and a man who narrates rarely has few who take from him.
+  source: §5.35 Jahāla and al-wuḥdān, §5.36 Majhūl al-ʿayn and mastūr
+  diagram: Identity
+  width: 860
+  captions:
+    - term: jahala
+      note: "The eighth cause of criticism: the narrator's state is unknown. One cause: he has many references, such as name, lineage, title, occupation, description or ancestry; known by one, he is cited by another and taken for someone else. Muḥammad ibn al-Sāʾib ibn Bishr al-Kalbī was also called Muḥammad ibn Bishr, Ḥammād ibn al-Sāʾib, Abū al-Naḍr, Abū Saʿīd and Abū Hishām, and taken for a group (§5.35)."
+    - term: wuhdan
+      note: "The other cause of being unknown: the narrator narrates rarely, so few take from him. Scholars compiled books of al-wuḥdān: narrators from whom only one person narrates, even when he is named. Muslim and al-Ḥasan ibn Sufyān were among those who compiled them. Who narrates from him then sets which kind of unknown he is (§5.35–5.36)."
+  extra:
+    - title: Books on men with many names
+      section: §5.35
+      note: "Scholars have written on narrators with many names. al-Khaṭīb al-Baghdādī did it excellently in al-Mūḍiḥ, and before him ʿAbd al-Ghanī and then al-Ṣūrī wrote on it. One who does not know that the names belong to one man will not notice it."
+    - title: The illustration
+      section: §5.35
+      note: "The book gives an example only for many names: al-Kalbī. It names no narrator with a single student, so the second cell is an illustration: unnamed figures, one narrator with a single student and, beside him for contrast, one with many. The kinds of unknown narrator that follow, majhūl al-ʿayn and mastūr, are drawn in Who is this narrator?"
 - id: unknown
   division: al-mardud
   moons: [1]
-  order: 2
+  order: 9
   title: Who is this narrator?
   eyebrow: Rejected for doubt about a narrator · §5.35–5.36
   lede: Both chains are unbroken, but in each one narrator cannot be checked. One is never named; the other is named, but too little is known of him.
@@ -200,6 +410,45 @@
   panels:
     - { id: mubham, label: Mubham, x0: 0, x1: 480 }
     - { id: majhul, label: Majhūl, x0: 480, x1: 820 }
+- id: innovation
+  division: al-mardud
+  moons: [1]
+  order: 10
+  title: Does his belief count against him?
+  eyebrow: Rejected for open sin, and sometimes for innovation · §5.23, §5.37
+  lede: Open sin in deeds or words is the fifth charge. Innovation is the ninth, a belief against what is established from the Prophet ﷺ, held through a misreading rather than out of defiance. Whether an innovator's report is accepted depends on how far his belief goes, on whether he calls others to it, and on what he narrates.
+  source: §5.23 Fisq, §5.37 Bidʿa
+  diagram: Innovation
+  width: 780
+  captions:
+    - term: fisq
+      note: "The fifth cause of criticism: open sin, in deeds or words, that does not reach disbelief. Lying is a kind of it, but is listed on its own, and first, because it harms this field the most. For those who don't make going against others a condition of munkar, the report of one whose sin is plain is munkar. Sin in belief is explained later, as innovation (§5.23, §5.26)."
+    - term: bida
+      note: "The ninth cause: a belief against what is established from the Prophet ﷺ, held through a misreading, not out of defiance. If it amounts to disbelief, Ibn Ḥajar rejects only one who denies a mutawātir matter known for certain, or holds its opposite. If not, the most correct view accepts him unless he calls others to it, and the majority reject what he narrates in support of it (§5.23, §5.37)."
+  views:
+    - id: ibn-hajar
+      label: Ibn Ḥajar
+      scholars: Ibn Ḥajar, §5.37
+      note: "If the belief amounts to disbelief, the trusted opinion, he says, rejects only one who denies a mutawātir matter known for certain in the religion, or holds its opposite; one who is careful in what he reports, and pious, is accepted. If it falls short of disbelief, he is accepted unless he calls others to it (the most correct view) or narrates what supports it (the preferred view of the majority)."
+    - id: unless-lying
+      label: Unless he allows lying
+      scholars: "“It is said”, of both kinds, §5.37"
+      note: "Some, whom the book doesn't name, accept an innovator of either kind unless he holds that lying is allowed in support of his view. The book reports this once for each kind."
+    - id: reject
+      label: Reject
+      scholars: "The majority, of the first kind; “It is said”, of the second, §5.37"
+      note: "This view joins two positions the book reports apart. The majority do not accept one whose belief amounts to disbelief. Only some, again unnamed, reject the second kind outright too, and Ibn Ḥajar calls that far-fetched."
+  panels:
+    - { id: sin, label: Open sin, x0: 0, x1: 260 }
+    - { id: disbelief, label: Amounts to disbelief, x0: 260, x1: 520 }
+    - { id: short, label: Short of disbelief, x0: 520, x1: 780 }
+  extra:
+    - title: The other opinions
+      section: §5.37
+      note: "On belief that amounts to disbelief, the majority do not accept him; it is also said he is accepted outright, and it is said he is accepted if he does not hold lying allowed in support of his view. Ibn Ḥajar answers that not every such report is rejected: every sect claims its opponents are heretics, and some call them disbelievers, so taken generally that would make every sect disbelievers. On belief short of disbelief, it is said he is rejected outright, which Ibn Ḥajar calls far-fetched: the usual reason, that narrating from him promotes his belief, would reject even a report that one who is no innovator shares. It is also said he is accepted unless he holds lying allowed, and it is said he is accepted if he does not call others to it, the most correct view. Ibn Ḥibbān went too far in claiming that all agree to accept one who does not call to it, without further detail."
+    - title: al-Jūzajānī
+      section: §5.37
+      note: "Most accept an innovator who does not call others to his belief, but if he narrates what strengthens it, the preferred view of the majority rejects it. al-Jūzajānī, the shaykh of Abū Dāwūd, made this clear: describing a narrator who turns away from the truth, he said that if such a man is truthful and his ḥadīth is not munkar, nothing stops us accepting it, so long as he does not openly call to his belief. Ibn Ḥajar calls this strong: an innovator's report is rejected when its text seems to support his belief, even if he does not call to it openly."
 - id: delivery
   division: siyagh-al-ada
   moons: [0, 1, 2]

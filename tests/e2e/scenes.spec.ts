@@ -4,7 +4,8 @@ import { readFileSync } from "node:fs";
 import { parse } from "yaml";
 
 // scene pages (phase 2): term landings, views, the portrait carousel, Key/Labels mode, scene navigation
-const index = JSON.parse(readFileSync("dist/terms-index.json", "utf8")) as Record<string, string>;
+// the snapshot of dist this run serves (playwright.config.ts)
+const index = JSON.parse(readFileSync(`${process.env.E2E_DIST ?? "dist"}/terms-index.json`, "utf8")) as Record<string, string>;
 // built terms point at a scene; pending ones at their glossary entry
 const built = Object.entries(index)
   .filter(([, path]) => !path.startsWith("terms/"))
@@ -35,9 +36,17 @@ async function expectLanded(page: Page, slug: string, scene: string) {
   await expect(trigger(page, slug)).toBeInViewport();
 }
 
+// /?slug redirects once slugquery.ts has fetched the terms index. It swallows a failed fetch and stays on the map, so
+// check the fetch here: a failure then names the index instead of timing out on the URL
+async function gotoQuery(page: Page, slug: string) {
+  const index = page.waitForResponse((r) => new URL(r.url()).pathname.endsWith("/terms-index.json"));
+  await page.goto(`/?${slug}`);
+  expect((await index).status(), "terms-index.json").toBe(200);
+}
+
 test("every scene term is counted", () => {
   expect(built.length).toBeGreaterThanOrEqual(30);
-  expect(panelScenes.size).toBe(10);
+  expect(panelScenes.size).toBe(15);
 });
 
 test.describe("landing, desktop", () => {
@@ -48,7 +57,7 @@ test.describe("landing, desktop", () => {
       await expectLanded(page, slug, scene);
     });
     test(`/?${slug} lands on ${scene}`, async ({ page }) => {
-      await page.goto(`/?${slug}`);
+      await gotoQuery(page, slug);
       await expectLanded(page, slug, scene);
     });
   }
@@ -58,7 +67,7 @@ test.describe("landing, portrait carousel", () => {
   test.use({ viewport: PORTRAIT });
   for (const { slug, scene } of built.filter((b) => panelScenes.has(b.scene))) {
     test(`/?${slug} lands inside the carousel on ${scene}`, async ({ page }) => {
-      await page.goto(`/?${slug}`);
+      await gotoQuery(page, slug);
       await expectLanded(page, slug, scene);
       // the carousel has been scrolled so the whole trigger sits inside the visible part of the scroller
       const scroller = page.locator(".carousel .scroller");
@@ -237,6 +246,120 @@ test.describe("views", () => {
     expect(await at("nazari-only")).toBe(true);
   });
 
+  test("hidden: the contemporary view counts the hidden mursal as tadlīs and swaps panel 3's verdict", async ({ page }) => {
+    await page.goto("/al-mardud/hidden/");
+    const part = (id: string) => page.locator(`svg [data-view-show="${id}"]`);
+    await expect(part("ibn-hajar")).toContainText("irsāl, not tadlīs");
+    for (const g of await part("contemporary").all()) await expect(g).toBeHidden();
+    await page.locator('.views button[data-v="contemporary"]').click();
+    await expect(page).toHaveURL(/[?&]view=contemporary\b/);
+    await expect(page.locator('.views button[data-v="contemporary"]')).toHaveAttribute("aria-pressed", "true");
+    await expect(part("contemporary").filter({ hasText: "counted as tadlīs too" })).toBeVisible();
+    await expect(part("contemporary").filter({ hasText: "then mudallis" })).toBeVisible();
+    await expect(part("ibn-hajar")).toBeHidden();
+    await expect(page.locator('.views [data-view-show="contemporary"]')).toContainText("being a contemporary even if they have not met");
+    // every term renders in both views
+    for (const slug of ["mudallas", "mudallis", "mursal-khafi"]) await expect(trigger(page, slug)).toBeVisible();
+    // the legend names the concealer's figure
+    await expect(page.locator(".legend")).toContainText("Conceals (mudallis)");
+    await expectNoAxeViolations(page);
+  });
+
+  test("hidden: opening mursal khafī from ?view=contemporary keeps that view", async ({ page }) => {
+    await page.goto("/al-mardud/hidden/?view=contemporary#mursal-khafi");
+    await expect(trigger(page, "mursal-khafi")).toHaveAttribute("aria-expanded", "true");
+    await expect(page).toHaveURL(/[?&]view=contemporary\b/);
+    await expect(page.locator('.views button[data-v="contemporary"]')).toHaveAttribute("aria-pressed", "true");
+  });
+
+  test("wording: each of the four views swaps panel 2's tag and output card, and every term stays", async ({ page }) => {
+    await page.goto("/al-mardud/wording/");
+    // no narrator figures: no legend and no Key/Labels switch
+    await expect(page.locator(".legend")).toHaveCount(0);
+    await expect(page.locator(".viewtoggle")).toHaveCount(0);
+    const part = (id: string) => page.locator(`svg [data-view-show~="${id}"]`);
+    const TAGS: Record<string, string> = {
+      most: "most scholars allow it",
+      "single-words": "single words, not sentences",
+      "knows-wording": "he can go back to the words",
+      forgot: "the words forgotten, the meaning kept",
+    };
+    const ids = Object.keys(TAGS);
+    for (const id of ids) {
+      if (id !== "most") {
+        await page.locator(`.views button[data-v="${id}"]`).click();
+        await expect(page).toHaveURL(new RegExp(`[?&]view=${id}\\b`));
+      }
+      await expect(page.locator(`.views button[data-v="${id}"]`)).toHaveAttribute("aria-pressed", "true");
+      await expect(page.locator(`svg [data-view-show="${id}"]`, { hasText: TAGS[id] })).toBeVisible();
+      for (const other of ids.filter((x) => x !== id)) await expect(page.locator(`svg [data-view-show="${other}"]`, { hasText: TAGS[other] })).toBeHidden();
+      // single words changes one word of the output card; the other views change them all
+      await expect(page.locator("svg .nw:visible .word.changed")).toHaveCount(id === "single-words" ? 1 : 5);
+      // knows the words draws the way back to them; forgotten fades the original words
+      await expect(page.locator("svg path.ret")).toBeVisible({ visible: id === "knows-wording" });
+      await expect(part("forgot").locator(".word.lost").first()).toBeVisible({ visible: id === "forgot" });
+      for (const slug of ["ikhtisar-al-hadith", "riwaya-bil-mana", "gharib-al-hadith"]) await expect(trigger(page, slug)).toBeVisible();
+      await expectNoAxeViolations(page);
+    }
+    // each "it is said" view note says the book doesn't name who holds it, once: in the note, not again in the
+    // scholars field
+    for (const id of ["single-words", "knows-wording", "forgot"]) expect((await page.locator(`.views [data-view-show="${id}"]`).textContent())!.match(/unnamed|doesn't name/gi)).toHaveLength(1);
+    await expect(page.locator('.views [data-view-show="most"]')).toContainText("on the correct opinion, Ibn Ḥajar says");
+  });
+
+  test("wording: opening al-riwāya bi-l-maʿnā from ?view=forgot keeps that view", async ({ page }) => {
+    await page.goto("/al-mardud/wording/?view=forgot#riwaya-bil-mana");
+    await expect(trigger(page, "riwaya-bil-mana")).toHaveAttribute("aria-expanded", "true");
+    await expect(page).toHaveURL(/[?&]view=forgot\b/);
+    await expect(page.locator('.views button[data-v="forgot"]')).toHaveAttribute("aria-pressed", "true");
+  });
+
+  test("innovation: each of the three views redraws both decision paths; panel 1 and both terms stay", async ({ page }) => {
+    await page.goto("/al-mardud/innovation/");
+    const part = (id: string) => page.locator(`svg [data-view-show="${id}"]`);
+    const svg = page.locator("svg.innovation");
+    // what each view's path group must show, in panels 2 and 3 together
+    const PATHS: Record<string, { questions: string[]; tags: string[]; rejected: number; accepted: number }> = {
+      "ibn-hajar": { questions: ["denies a mutawātir matter", "calls others", "narrates what"], tags: ["Ibn Ḥajar: the trusted opinion"], rejected: 3, accepted: 2 },
+      "unless-lying": { questions: ["holds lying"], tags: ["it is said", "it is also said"], rejected: 2, accepted: 2 },
+      reject: { questions: [], tags: ["the majority", "it is said: rejected outright"], rejected: 2, accepted: 0 },
+    };
+    const ids = Object.keys(PATHS);
+    for (const id of ids) {
+      if (id !== "ibn-hajar") {
+        await page.locator(`.views button[data-v="${id}"]`).click();
+        await expect(page).toHaveURL(new RegExp(`[?&]view=${id}\\b`));
+      }
+      await expect(page.locator(`.views button[data-v="${id}"]`)).toHaveAttribute("aria-pressed", "true");
+      await expect(part(id)).toBeVisible();
+      for (const other of ids.filter((x) => x !== id)) await expect(part(other)).toBeHidden();
+      for (const q of PATHS[id].questions) await expect(svg.locator(".decision:visible", { hasText: q }).first()).toBeVisible();
+      await expect(svg.locator(".decision:visible")).toHaveCount(id === "ibn-hajar" ? 3 : id === "unless-lying" ? 2 : 0);
+      for (const t of PATHS[id].tags) await expect(part(id).locator(".vtag-t", { hasText: new RegExp(`^${t}$`) })).toBeVisible();
+      await expect(svg.locator(".pill.reject:visible")).toHaveCount(PATHS[id].rejected);
+      await expect(svg.locator(".pill.accept:visible")).toHaveCount(PATHS[id].accepted);
+      // both start chips, panel 1 and both triggers are the same in every view
+      await expect(svg.locator(".chip:visible")).toHaveCount(2);
+      for (const slug of ["fisq", "bida"]) await expect(trigger(page, slug)).toBeVisible();
+      await expect(svg.locator("a.xlink")).toHaveAttribute("href", /\/al-mardud\/lying\/$/);
+      await expectNoAxeViolations(page);
+    }
+    // the reject view says it joins the majority's position on the first kind to a minority one on the second
+    await expect(page.locator('.views [data-view-show="reject"]')).toContainText("joins two positions");
+    await expect(page.locator('.views [data-view-show="reject"]')).toContainText("The majority, of the first kind; “It is said”, of the second");
+    await expect(page.locator('.views [data-view-show="unless-lying"]')).toContainText("doesn't name");
+    // the figures: the open sinner is weak, the innovator a plain narrator
+    await expect(page.locator(".legend")).toContainText("Weak");
+    await expect(page.locator(".legend")).toContainText("Later narrator");
+  });
+
+  test("innovation: opening bidʿa from ?view=reject keeps that view", async ({ page }) => {
+    await page.goto("/al-mardud/innovation/?view=reject#bida");
+    await expect(trigger(page, "bida")).toHaveAttribute("aria-expanded", "true");
+    await expect(page).toHaveURL(/[?&]view=reject\b/);
+    await expect(page.locator('.views button[data-v="reject"]')).toHaveAttribute("aria-pressed", "true");
+  });
+
   test("accept-all swaps the clash branch's Weigh them for Accepted; the scales stay", async ({ page }) => {
     await page.goto("/al-maqbul/opposition/");
     const branch = (id: string) => page.locator(`svg [data-view-show="${id}"]`);
@@ -281,11 +404,11 @@ test.describe("carousel", () => {
   });
 });
 
-// the Names pattern: the names, grades and report scenes are all grids of cells
+// the Names pattern: the names, grades, report, changes, identity and causes scenes are all grids of cells
 test.describe("names grid", () => {
   const lefts = (page: Page) => page.locator(".cells > svg").evaluateAll((els) => els.map((e) => Math.round(e.getBoundingClientRect().left)));
 
-  for (const path of ["/al-asma/names/", "/al-maqbul/grades/", "/adad-al-turuq/report/"]) {
+  for (const path of ["/al-asma/names/", "/al-maqbul/grades/", "/adad-al-turuq/report/", "/al-mardud/changes/", "/al-mardud/identity/", "/al-mardud/causes/"]) {
     test(`portrait: ${path} stacks its cells in one column`, async ({ page }) => {
       await page.setViewportSize(PORTRAIT);
       await page.goto(path);
@@ -319,9 +442,42 @@ test("Key and Labels modes swap the legend for labels, and the choice survives a
   await expectNoAxeViolations(page);
 });
 
-test("scene prev/next: breaks leads on to unknown", async ({ page }) => {
+test("scene prev/next: causes opens the division and leads on to breaks", async ({ page }) => {
+  await page.goto("/al-mardud/causes/");
+  await expect(page.locator('.pn a[rel="prev"]')).toHaveCount(0);
+  await expect(page.locator('.pn a[rel="next"]')).toHaveAttribute("href", /\/al-mardud\/breaks\/$/);
   await page.goto("/al-mardud/breaks/");
+  await expect(page.locator('.pn a[rel="prev"]')).toHaveAttribute("href", /\/al-mardud\/causes\/$/);
+});
+
+test("scene prev/next: breaks leads on to hidden, hidden to lying, lying to slips, slips to changes, changes to wording, wording to identity, identity to unknown, and unknown to innovation, the last", async ({ page }) => {
+  await page.goto("/al-mardud/breaks/");
+  await expect(page.locator('.pn a[rel="next"]')).toHaveAttribute("href", /\/al-mardud\/hidden\/$/);
+  await page.goto("/al-mardud/hidden/");
+  await expect(page.locator('.pn a[rel="prev"]')).toHaveAttribute("href", /\/al-mardud\/breaks\/$/);
+  await expect(page.locator('.pn a[rel="next"]')).toHaveAttribute("href", /\/al-mardud\/lying\/$/);
+  await page.goto("/al-mardud/lying/");
+  await expect(page.locator('.pn a[rel="prev"]')).toHaveAttribute("href", /\/al-mardud\/hidden\/$/);
+  await expect(page.locator('.pn a[rel="next"]')).toHaveAttribute("href", /\/al-mardud\/slips\/$/);
+  await page.goto("/al-mardud/slips/");
+  await expect(page.locator('.pn a[rel="prev"]')).toHaveAttribute("href", /\/al-mardud\/lying\/$/);
+  await expect(page.locator('.pn a[rel="next"]')).toHaveAttribute("href", /\/al-mardud\/changes\/$/);
+  await page.goto("/al-mardud/changes/");
+  await expect(page.locator('.pn a[rel="prev"]')).toHaveAttribute("href", /\/al-mardud\/slips\/$/);
+  await expect(page.locator('.pn a[rel="next"]')).toHaveAttribute("href", /\/al-mardud\/wording\/$/);
+  await page.goto("/al-mardud/wording/");
+  await expect(page.locator('.pn a[rel="prev"]')).toHaveAttribute("href", /\/al-mardud\/changes\/$/);
+  await expect(page.locator('.pn a[rel="next"]')).toHaveAttribute("href", /\/al-mardud\/identity\/$/);
+  await page.goto("/al-mardud/identity/");
+  await expect(page.locator('.pn a[rel="prev"]')).toHaveAttribute("href", /\/al-mardud\/wording\/$/);
   await expect(page.locator('.pn a[rel="next"]')).toHaveAttribute("href", /\/al-mardud\/unknown\/$/);
+  await page.goto("/al-mardud/unknown/");
+  await expect(page.locator('.pn a[rel="prev"]')).toHaveAttribute("href", /\/al-mardud\/identity\/$/);
+  await expect(page.locator('.pn a[rel="next"]')).toHaveAttribute("href", /\/al-mardud\/innovation\/$/);
+  await page.goto("/al-mardud/innovation/");
+  await expect(page.locator('.pn a[rel="prev"]')).toHaveAttribute("href", /\/al-mardud\/unknown\/$/);
+  // the division's last scene
+  await expect(page.locator('.pn a[rel="next"]')).toHaveCount(0);
 });
 
 test("scene prev/next: the report scene opens its division and leads on to routes", async ({ page }) => {
@@ -381,10 +537,183 @@ test("lone: a legend and the Key/Labels switch, and every term visible", async (
   await expectNoAxeViolations(page);
 });
 
+test("lying: the legend names the liar and the suspect, and every term is visible", async ({ page }) => {
+  await page.goto("/al-mardud/lying/");
+  await expect(page.locator(".legend")).toContainText("Liar (kadhdhāb)");
+  await expect(page.locator(".legend")).toContainText("Suspected of lying");
+  await expect(page.locator(".viewtoggle")).toHaveCount(1);
+  await expect(page.locator(".views")).toHaveCount(0);
+  for (const slug of ["kadhib", "tuhma-bil-kadhib", "matruk", "mawdu"]) await expect(trigger(page, slug)).toBeVisible();
+  // the only report words are the translation's English fragments, the added words marked
+  await expect(page.locator("svg .matn .added")).toHaveText("“and pigeon racing”");
+  await expectNoAxeViolations(page);
+});
+
+test("slips: the legend names the faded head, every term is visible, and munkar and shādhdh link to their scene", async ({ page }) => {
+  await page.goto("/al-mardud/slips/");
+  await expect(page.locator(".legend")).toContainText("Memory failed (mukhtaliṭ)");
+  await expect(page.locator(".viewtoggle")).toHaveCount(1);
+  await expect(page.locator(".views")).toHaveCount(0);
+  for (const slug of ["fuhsh-al-ghalat", "ghafla", "wahm", "muallal", "su-al-hifz", "mukhtalit"]) await expect(trigger(page, slug)).toBeVisible();
+  // munkar and shādhdh are plain links to Who outweighs whom?, never triggers (design §18)
+  const links = page.locator("svg.slips a.xlink");
+  await expect(links.filter({ hasText: "munkar" })).toHaveAttribute("href", /\/al-maqbul\/opposition\/$/);
+  await expect(links.filter({ hasText: "shādhdh" })).toHaveAttribute("href", /\/al-maqbul\/opposition\/$/);
+  // the muʿallal chain is an illustration, and the two names under a translation query are left out
+  await expect(page.locator("svg.slips")).toContainText("an illustration: the book names no example");
+  await expect(page.locator("svg.slips .chip")).toHaveCount(5);
+  await expectNoAxeViolations(page);
+});
+
 test("sorting: no legend or Key/Labels switch, since it draws no narrators", async ({ page }) => {
   await page.goto("/adad-al-turuq/sorting/");
   await expect(page.locator(".legend")).toHaveCount(0);
   await expect(page.locator(".viewtoggle")).toHaveCount(0);
   for (const slug of ["ahad", "mustafid", "maqbul", "mardud"]) await expect(trigger(page, slug)).toBeVisible();
   await expectNoAxeViolations(page);
+});
+
+test("changes: the legend, every term visible, the illustrations labelled and the hands quoted as the translation has them", async ({ page }) => {
+  await page.setViewportSize(DESKTOP);
+  await page.goto("/al-mardud/changes/");
+  await expect(page.locator(".legend")).toHaveCount(1);
+  await expect(page.locator(".viewtoggle")).toHaveCount(1);
+  await expect(page.locator(".views")).toHaveCount(0);
+  for (const slug of ["mukhalafa", "mudraj", "mudraj-al-isnad", "mudraj-al-matn", "maqlub", "mazid", "mudtarib", "musahhaf", "muharraf"]) await expect(trigger(page, slug)).toBeVisible();
+  // only maqlūb has an example in the book; the other four form cells say they are illustrations (design §18)
+  await expect(page.locator(".changes svg", { hasText: "an illustration: the book names no example" })).toHaveCount(4);
+  // the two text cards read, in source order (WCAG 1.3.2), as short fragments of the translation's English (design
+  // §7.3): the slip, then the version of both Ṣaḥīḥs
+  const cards = await page.locator("#cell-maqlub text.mw").allTextContents();
+  expect(cards.join(" ")).toBe("“…the right hand … what the left …” “…the left hand … what the right …”");
+  await expectNoAxeViolations(page);
+});
+
+test("changes: each answer in the sorter jumps to its cell, and the cross-links reach their scenes", async ({ page }) => {
+  await page.setViewportSize(PORTRAIT);
+  await page.goto("/al-mardud/changes/");
+  const jumps = page.locator("#cell-sorter a.jump");
+  await expect(jumps).toHaveCount(5);
+  for (const id of ["cell-mudraj", "cell-maqlub", "cell-mazid", "cell-mudtarib", "cell-letters"]) {
+    await page.locator(`#cell-sorter a[href="#${id}"]`).click();
+    await expect(page).toHaveURL(new RegExp(`#${id}$`));
+    await expect(page.locator(`#${id}`)).toBeInViewport();
+    // a jump is not a term landing: no popover opens
+    await expect(page.locator("#term-pop")).toBeHidden();
+  }
+  await expect(page.locator("#cell-mazid a.xlink")).toHaveAttribute("href", /\/al-mardud\/hidden\/$/);
+  await expect(page.locator("#cell-mudtarib a.xlink", { hasText: "Did he lie?" })).toHaveAttribute("href", /\/al-mardud\/lying\/$/);
+  await expect(page.locator("#cell-mudtarib a.xlink", { hasText: "muʿallal" })).toHaveAttribute("href", /\/al-mardud\/slips\/$/);
+  await expect(page.locator("#cell-mudtarib a.jump")).toHaveAttribute("href", "#cell-maqlub");
+});
+
+test("hidden: the extra-narrator link lands on al-mazīd in What changed in the telling?", async ({ page }) => {
+  await page.setViewportSize(DESKTOP);
+  await page.goto("/al-mardud/hidden/");
+  const link = page.locator('svg.hidden-scene a.xlink[href*="/changes/"]');
+  await expect(link).toHaveAttribute("href", /\/al-mardud\/changes\/#mazid$/);
+  await expect(link).toContainText("What changed in the telling?");
+  await link.click();
+  await expectLanded(page, "mazid", "al-mardud/changes/");
+});
+
+test("identity: the legend, both terms visible, the illustration labelled and al-Kalbī's names as the translation gives them", async ({ page }) => {
+  await page.setViewportSize(DESKTOP);
+  await page.goto("/al-mardud/identity/");
+  await expect(page.locator(".legend")).toHaveCount(1);
+  await expect(page.locator(".viewtoggle")).toHaveCount(1);
+  await expect(page.locator(".views")).toHaveCount(0);
+  for (const slug of ["jahala", "wuhdan"]) await expect(trigger(page, slug)).toBeVisible();
+  // the book names no narrator with a single student (design §18)
+  await expect(page.locator("#cell-one-student")).toContainText("an illustration: the book names no example");
+  await expect(page.locator("#cell-many-names")).not.toContainText("illustration");
+  expect(await page.locator("#cell-many-names .chip text").allTextContents()).toEqual([
+    "Muḥammad ibn al-Sāʾib ibn Bishr al-Kalbī", "Muḥammad ibn Bishr", "Ḥammād ibn al-Sāʾib", "Abū al-Naḍr", "Abū Saʿīd", "Abū Hishām",
+  ]);
+  await expectNoAxeViolations(page);
+});
+
+test("slips: the open sinner's line links on to Does his belief count against him?, now that it exists", async ({ page }) => {
+  await page.goto("/al-mardud/slips/");
+  const a = page.locator("svg.slips a.xlink", { hasText: "and so is the open sinner's" });
+  await expect(a).toHaveAttribute("href", /\/al-mardud\/innovation\/$/);
+  expect((await a.getAttribute("aria-label"))!.startsWith("and so is the open sinner's")).toBe(true);
+  await a.click();
+  await expect(page).toHaveURL(/\/al-mardud\/innovation\/$/);
+  await expect(page.locator("h1")).toHaveText("Does his belief count against him?");
+});
+
+test("identity: both cells link on to Who is this narrator?, named by their visible text", async ({ page }) => {
+  await page.setViewportSize(PORTRAIT);
+  await page.goto("/al-mardud/identity/");
+  const links = page.locator(".identity a.xlink");
+  await expect(links).toHaveCount(2);
+  for (const [cell, text] of [["cell-many-names", "what follows: Who is this narrator?"], ["cell-one-student", "who narrates from him decides his kind"]]) {
+    const a = page.locator(`#${cell} a.xlink`);
+    await expect(a).toHaveAttribute("href", /\/al-mardud\/unknown\/$/);
+    expect((await a.getAttribute("aria-label"))!.startsWith(text)).toBe(true);
+    // the arrow is decoration, left out of the visible text the label must start with
+    await expect(a.locator('tspan[aria-hidden="true"]')).toHaveText("→");
+  }
+  await page.locator("#cell-one-student a.xlink").click();
+  await expect(page).toHaveURL(/\/al-mardud\/unknown\/$/);
+  await expect(page.locator("h1")).toHaveText("Who is this narrator?");
+});
+
+// the ten causes of §5.23 in the book's order, gravest first, and the scene each one's term lives on
+const CAUSES: [string, string][] = [
+  ["Kadhib", "lying"], ["Tuhma bi-l-kadhib", "lying"], ["Fuḥsh al-ghalaṭ", "slips"], ["Ghafla", "slips"], ["Fisq", "innovation"],
+  ["Wahm", "slips"], ["Mukhālafa", "changes"], ["Jahāla", "identity"], ["Bidʿa", "innovation"], ["Sūʾ al-ḥifẓ", "slips"],
+];
+
+test("causes: the ladder gives the ten causes in the book's order, each rung named by its visible text and linking to a built scene", async ({ page }) => {
+  await page.setViewportSize(DESKTOP);
+  await page.goto("/al-mardud/causes/");
+  const rungs = page.locator("#cell-criticism .rung-g a.xlink");
+  await expect(rungs).toHaveCount(CAUSES.length);
+  for (let i = 0; i < CAUSES.length; i++) {
+    const [name, sceneId] = CAUSES[i];
+    const a = rungs.nth(i);
+    const visible = (await a.locator("text.rc").textContent())!.trim();
+    expect(visible.startsWith(name)).toBe(true);
+    expect((await a.getAttribute("aria-label"))!.startsWith(visible)).toBe(true);
+    await expect(a.locator('text[aria-hidden="true"]')).toHaveText("→");
+    const url = (await a.getAttribute("href"))!;
+    expect(url).toMatch(new RegExp(`/al-mardud/${sceneId}/#[a-z-]+$`));
+    expect((await page.request.get(url.split("#")[0])).status()).toBe(200);
+  }
+  // the other links: the three chain captions and the plain-drop box to breaks, the hidden box to hidden, munkar to
+  // opposition; each named first by the whole of its visible text, less the arrow decoration (WCAG 2.5.3). Both are
+  // compared without punctuation, so a label's "a: b" matches the text's two lines "a" and "b"
+  const norm = (s: string) => s.replace("→", "").replace(/\p{P}/gu, " ").replace(/\s+/g, " ").trim();
+  for (const a of await page.locator(".causes a.xlink").all()) {
+    const label = await a.getAttribute("aria-label");
+    expect(label, "every causes link has a label").toBeTruthy();
+    const text = norm((await a.textContent())!);
+    expect(norm(label!).startsWith(text), `"${label}" starts with "${text}"`).toBe(true);
+    expect((await page.request.get((await a.getAttribute("href"))!.split("#")[0])).status()).toBe(200);
+  }
+  await expect(page.locator('#cell-omission a.xlink[href$="/al-mardud/breaks/"]')).toHaveCount(4);
+  await expect(page.locator('#cell-omission a.xlink[href$="/al-mardud/hidden/"]')).toHaveCount(1);
+  await expect(page.locator('#cell-criticism a.xlink[href$="/al-maqbul/opposition/"]')).toHaveCount(1);
+});
+
+test("causes: a click on each rung lands on its cause in the scene that draws it", async ({ page }) => {
+  await page.setViewportSize(DESKTOP);
+  for (let i = 0; i < CAUSES.length; i++) {
+    await page.goto("/al-mardud/causes/");
+    await page.locator("#cell-criticism .rung-g a.xlink").nth(i).click();
+    await expect(page).toHaveURL(new RegExp(`/al-mardud/${CAUSES[i][1]}/#`));
+    await expect(page.locator("h1")).toBeVisible();
+  }
+});
+
+test("causes: the legend, both terms visible, and the integrity and accuracy split left untagged", async ({ page }) => {
+  await page.setViewportSize(DESKTOP);
+  await page.goto("/al-mardud/causes/");
+  await expect(page.locator(".legend")).toBeVisible();
+  for (const slug of ["saqt", "tan"]) await expect(trigger(page, slug)).toBeVisible();
+  await expect(page.locator("#cell-criticism")).toContainText("doesn't sort them");
+  // one ghost Narrator group per chain (each draws its head and body as two .n.ghost shapes)
+  await expect(page.locator("#cell-omission g:has(> .n.ghost)")).toHaveCount(3);
 });

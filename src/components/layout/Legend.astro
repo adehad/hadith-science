@@ -13,7 +13,7 @@ interface Props {
   /** which entries to show, in this order; defaults to all of them */
   kinds?: LegendKind[];
 }
-const ALL: LegendKind[] = ["moon", "sahabi", "tabii", "later", "majhul", "mubham", "weak", "ghost"];
+const ALL: LegendKind[] = ["moon", "sahabi", "tabii", "later", "majhul", "mubham", "weak", "mudallis", "liar", "accused", "mukhtalit", "ghost"];
 const { kinds = ALL } = Astro.props;
 
 // FIG is the same figure for each kind as Chain.astro draws, so the key matches the diagram
@@ -24,6 +24,10 @@ const LABEL: Record<Kind, string> = {
   majhul: "Unknown (majhūl)",
   mubham: "Unnamed (mubham)",
   weak: "Weak (ḍaʿīf)",
+  mudallis: "Conceals (mudallis)",
+  liar: "Liar (kadhdhāb)",
+  accused: "Suspected of lying",
+  mukhtalit: "Memory failed (mukhtaliṭ)",
   ghost: "Missing link",
 };
 const K = 0.6;
