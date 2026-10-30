@@ -795,6 +795,7 @@
   def: "Reaching a collector's own teacher by a route that bypasses the collector, often with fewer links."
   section: "§5.46"
   division: lataif-al-isnad
+  scene: meeting
 - id: badal
   translit: Badal
   ar: بَدَلٌ
@@ -802,13 +803,15 @@
   def: "Reaching the teacher of a collector's teacher by another route, so a different link stands in for the usual one."
   section: "§5.46"
   division: lataif-al-isnad
+  scene: meeting
 - id: musawah
-  translit: Musāwāt
+  translit: Musāwāh
   ar: مُسَاوَاةٌ
   en: Equal count
   def: "Our chain to the Prophet ﷺ has as many links as a collector's own chain for that hadith."
   section: "§5.47"
   division: lataif-al-isnad
+  scene: meeting
 - id: musafaha
   translit: Muṣāfaḥa
   ar: مُصَافَحَةٌ
@@ -816,6 +819,7 @@
   def: "Our chain matches the count of a collector's student, as if we had met the collector and shaken his hand."
   section: "§5.47"
   division: lataif-al-isnad
+  scene: meeting
 - id: nuzul
   translit: Nuzūl
   ar: نُزُولٌ

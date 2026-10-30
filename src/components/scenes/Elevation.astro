@@ -25,6 +25,7 @@ import Pill from "../svg/Pill.astro";
 import Scale from "../svg/Scale.astro";
 import TermTitle from "../svg/TermTitle.astro";
 import ViewTag from "../svg/ViewTag.astro";
+import XLink from "../svg/XLink.astro";
 import { FIG, KIND_NAME, RELIABLE } from "../svg/figures";
 import { SUBT_TRIGGER, f, rowTrigger, titleTrigger } from "../svg/geom";
 import { cap, type DiagramProps } from "../../lib/scene";
@@ -155,6 +156,8 @@ const MANY = discRow(4, PAN_R, 14).map((cx) => ({ cx, cy: PAN_Y - 5, r: 6 }));
   <text class="lbl sm" x={P1C} y={446}>each ring is a narrator, and each</text>
   <text class="lbl sm" x={P1C} y={460}>might slip: fewer links, fewer slips</text>
   <text class="lbl sm" x={P2} y={490}>an illustration: the book names no example</text>
+  {/* its kinds have a scene of their own */}
+  <XLink to="lataif-al-isnad/meeting" text="its four kinds" x={P2 - 45} y={404} anchor="middle" />
 
   {/* ---- panel 3: three short routes ---- */}
   {ROWS.map((r) => (

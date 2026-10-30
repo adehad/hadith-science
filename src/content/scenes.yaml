@@ -481,6 +481,25 @@
     - { id: absolute, label: Nearer the Prophet ﷺ, x0: 0, x1: 260 }
     - { id: relative, label: Nearer a great imam, x0: 260, x1: 520 }
     - { id: better, label: Is shorter always better?, x0: 520, x1: 780 }
+- id: meeting
+  division: lataif-al-isnad
+  moons: [0]
+  order: 2
+  title: Where does our route meet theirs?
+  eyebrow: Features of the chain, kinds of relative elevation · §5.46–5.47
+  lede: A later narrator compares his own route with a great compiler's. He may reach the compiler's shaykh, or that shaykh's shaykh, without passing through the compiler; or his count of narrators may equal the compiler's, or the compiler's student's.
+  source: §5.46 Muwāfaqa and badal, §5.47 Musāwāh and muṣāfaḥa
+  diagram: Meeting
+  width: 860
+  captions:
+    - term: muwafaqa
+      note: "A kind of relative elevation: reaching a compiler's shaykh by a route that does not pass through the compiler. al-Bukhārī reports a ḥadīth from Qutayba from Mālik. Through al-Bukhārī there are eight between us and Qutayba; through Abū al-ʿAbbās al-Sarrāj from Qutayba, seven. So we meet al-Bukhārī at his own shaykh, by a shorter route (§5.46)."
+    - term: badal
+      note: "Also a kind of relative elevation: reaching the shaykh of the compiler's shaykh in the same way. In the book's example the same chain comes by another route to al-Qaʿnabī from Mālik, so al-Qaʿnabī stands in Qutayba's place. Both names are mostly used when the route is also shorter, but are used without that too (§5.46)."
+    - term: musawah
+      note: "A kind of relative elevation: the count of narrators from us to the end of our chain equals that in a compiler's chain. al-Nasāʾī reports a ḥadīth with eleven people between him and the Prophet ﷺ; the same ḥadīth reaches us by another chain with eleven between us and him. So we equal al-Nasāʾī in number, by a chain that is not his (§5.47)."
+    - term: musafaha
+      note: "A kind of relative elevation: our count equals that of the compiler's student. It is named after the handshake that two people usually exchange when they meet: in this form we have all but met al-Nasāʾī, so it is as if we had shaken his hand (§5.47)."
 - id: peers
   division: lataif-al-isnad
   moons: [1]
