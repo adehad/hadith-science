@@ -704,3 +704,33 @@
     - title: The contagion reports
       section: §5.15
       note: "Ibn al-Ṣalāḥ harmonised the pair this way: illnesses do not infect by their nature, but Allah has made mixing with the ill a cause of a healthy person falling ill, which sometimes does not happen, as with other causes. Ibn Ḥajar prefers to keep the Prophet's ﷺ denial general. When someone said that a sick camel mixes with healthy camels and they fall ill, the Prophet ﷺ asked, “Then who infected the first?”: Allah began the illness in the second as He did in the first. The order to flee from the leper closes the way to a wrong belief, so that someone who mixes with the ill and falls ill does not think contagion caused it. al-Shāfiʿī wrote a book on this type, Ikhtilāf al-ḥadīth, and Ibn Qutayba, al-Ṭaḥāwī and others wrote after him."
+
+# Muntahā al-isnād (phase 3 design docs/superpowers/specs/2026-10-29-phase-3-muntaha-design.md)
+- id: ends
+  division: muntaha-al-isnad
+  moons: [0, 1, 2]
+  order: 1
+  title: Where does the chain end?
+  eyebrow: Where the chain ends, and the names it gives · §5.40–5.43
+  lede: A chain leads to the words of a report, and the report is named by whose words they are. If they are the Prophet's ﷺ, it is raised; if a Companion's, stopped; if a Successor's or someone later's, cut off. The names say where the words stop, not whether the chain is whole.
+  source: §5.40 Marfūʿ, §5.41 Mawqūf, §5.42 Maqṭūʿ, §5.43 The names, and athar
+  diagram: Ends
+  width: 780
+  captions:
+    - term: marfu
+      note: "A report whose chain ends at the Prophet ﷺ: his sayings, his acts or his silent approval, whether the wording says so outright or only implies it. It is marfūʿ whether its chain is connected or not, and whether the Companion heard it from him or through someone. The isnād is the path to the matn, and the matn the words where it ends (§5.40, §5.43)."
+    - term: mawquf
+      note: "A report whose chain ends at a Companion: his own sayings, acts or silent approval, known from the wording much as for the Prophet ﷺ, though not every form carries over. Said bare, mawqūf means stopped at a Companion; for someone later one may say it is mawqūf on him, naming him (§5.41, §5.43)."
+    - term: maqtu
+      note: "A report whose chain ends at a Successor, or at someone after him, such as the Followers of the Successors and those later still; the name is the same for all of them. It describes the matn, where the words stop. Munqaṭiʿ describes the isnād, a break in it; some scholars used one for the other, against correct usage (§5.43)."
+    - term: athar
+      note: "The last two kinds, the mawqūf and the maqṭūʿ, share a further name: athar. A report stopped at a Companion and one cut off at a Successor or later are both called athar (§5.43)."
+  panels:
+    - id: raised
+      label: Raised
+      x0: 0
+      x1: 260
+    - id: stopped
+      label: Stopped and cut off
+      x0: 260
+      x1: 780

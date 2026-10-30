@@ -26,6 +26,7 @@ import Changes from "../../components/scenes/Changes.astro";
 import Wording from "../../components/scenes/Wording.astro";
 import Identity from "../../components/scenes/Identity.astro";
 import Innovation from "../../components/scenes/Innovation.astro";
+import Ends from "../../components/scenes/Ends.astro";
 import { loadContent } from "../../lib/content";
 import { captionsFor, neighbours, type DiagramProps } from "../../lib/scene";
 import { href } from "../../lib/url";
@@ -48,7 +49,7 @@ Astro.locals.panels = scene.panels;
 
 // each scene task adds its diagram here; import only components that exist
 // typed by the props every diagram takes, so a misnamed or missing prop fails astro check
-const DIAGRAMS: Partial<Record<Diagram, (p: DiagramProps) => any>> = { Routes, Breaks, Causes, Unknown, Delivery, Names, Grades, Opposition, Support, ActedOn, Report, Sorting, Knowledge, Lone, Hidden, Lying, Slips, Changes, Wording, Identity, Innovation };
+const DIAGRAMS: Partial<Record<Diagram, (p: DiagramProps) => any>> = { Routes, Breaks, Causes, Unknown, Delivery, Names, Grades, Opposition, Support, ActedOn, Report, Sorting, Knowledge, Lone, Hidden, Lying, Slips, Changes, Wording, Identity, Innovation, Ends };
 const D = DIAGRAMS[scene.diagram];
 if (!D) throw new Error(`no diagram component for ${scene.diagram}`);
 
@@ -84,6 +85,7 @@ const LEGEND: Partial<Record<Diagram, LegendKind[]>> = {
   Identity: ["later", "majhul"],
   // the open sinner is the weak figure (cracked seal); the innovator beside his belief tag is a plain narrator
   Innovation: ["later", "weak"],
+  Ends: ["moon", "sahabi", "tabii", "later", "ghost"],
   // ActedOn, Sorting and Wording draw no narrator figures, so they have no legend and no Key/Labels switch (phase 3
   // designs §1)
 };

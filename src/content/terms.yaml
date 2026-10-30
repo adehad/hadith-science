@@ -697,6 +697,7 @@
   def: "A report that ends at the Prophet ﷺ: his words, acts or silent approval, stated or implied, whether the chain is connected or not."
   section: "§5.40"
   division: muntaha-al-isnad
+  scene: ends
 - id: marfu-hukmi
   translit: Marfūʿ ḥukman
   ar: مَرْفُوعٌ حُكْمًا
@@ -732,6 +733,7 @@
   def: "A report that ends at a Companion."
   section: "§5.43"
   division: muntaha-al-isnad
+  scene: ends
 - id: maqtu
   translit: Maqṭūʿ
   ar: مَقْطُوعٌ
@@ -739,6 +741,7 @@
   def: "A report that ends at a Successor or someone later. Not to be confused with munqaṭiʿ, which describes the chain."
   section: "§5.43"
   division: muntaha-al-isnad
+  scene: ends
 - id: athar
   translit: Athar
   ar: أَثَرٌ
@@ -746,6 +749,7 @@
   def: "A shared name for mawqūf and maqṭūʿ reports."
   section: "§5.43"
   division: muntaha-al-isnad
+  scene: ends
 - id: musnad
   translit: Musnad
   ar: مُسْنَدٌ
