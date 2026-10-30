@@ -31,6 +31,7 @@ import Raised from "../../components/scenes/Raised.astro";
 import Companions from "../../components/scenes/Companions.astro";
 import Connected from "../../components/scenes/Connected.astro";
 import Peers from "../../components/scenes/Peers.astro";
+import Doubts from "../../components/scenes/Doubts.astro";
 import { loadContent } from "../../lib/content";
 import { captionsFor, neighbours, type DiagramProps } from "../../lib/scene";
 import { href } from "../../lib/url";
@@ -53,7 +54,7 @@ Astro.locals.panels = scene.panels;
 
 // each scene task adds its diagram here; import only components that exist
 // typed by the props every diagram takes, so a misnamed or missing prop fails astro check
-const DIAGRAMS: Partial<Record<Diagram, (p: DiagramProps) => any>> = { Routes, Breaks, Causes, Unknown, Delivery, Names, Grades, Opposition, Support, ActedOn, Report, Sorting, Knowledge, Lone, Hidden, Lying, Slips, Changes, Wording, Identity, Innovation, Ends, Raised, Companions, Connected, Peers };
+const DIAGRAMS: Partial<Record<Diagram, (p: DiagramProps) => any>> = { Routes, Breaks, Causes, Unknown, Delivery, Names, Grades, Opposition, Support, ActedOn, Report, Sorting, Knowledge, Lone, Hidden, Lying, Slips, Changes, Wording, Identity, Innovation, Ends, Raised, Companions, Connected, Peers, Doubts };
 const D = DIAGRAMS[scene.diagram];
 if (!D) throw new Error(`no diagram component for ${scene.diagram}`);
 
@@ -95,6 +96,8 @@ const LEGEND: Partial<Record<Diagram, LegendKind[]>> = {
   Connected: ["moon", "sahabi", "tabii", "later", "mudallis", "ghost"],
   // height is seniority: father and son, Companion and Successor, a family chain from the Prophet ﷺ
   Peers: ["moon", "sahabi", "tabii", "later"],
+  // Ibn Wahb, the two Aḥmads and al-Bukhārī are reliable later narrators; the Suhayl chain starts from a Companion
+  Doubts: ["moon", "sahabi", "tabii", "later"],
   // ActedOn, Sorting and Wording draw no narrator figures, so they have no legend and no Key/Labels switch (phase 3
   // designs §1)
 };

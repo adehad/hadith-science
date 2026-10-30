@@ -1,0 +1,187 @@
+---
+// "Does the doubt harm it?" (phase 3 lataif design §6): two doubts about the link between a narrator and his shaykh
+// (§5.52–5.53), in three panels of one 780-wide row, so it carousels in portrait:
+//   1  muhmal: al-Bukhārī's "Aḥmad", with no more said, from Ibn Wahb, splits into the two reliable men he may be
+//      (Aḥmad ibn Ṣāliḥ, Aḥmad ibn ʿĪsā), so no harm is done; then a second example, the unspecified "Muḥammad";
+//      then, set apart from the examples, the general fallback when two can't be told apart; and links to the
+//      neighbouring terms (muttafiq wa-muftariq, mubham)
+//   2  the shaykh denies it outright: one of the two lied, unknown which; the report is rejected, neither man harmed
+//   3  the shaykh does not remember: accepted on the most correct opinion; under it the Suhayl case (§5.53), where
+//      Suhayl came to narrate his own report back from Rabīʿa, a loop in the chain
+// The "Other views" switch changes panel 3 only: under "not-accepted" the verdict is "not accepted", the shaykh and
+// student are tagged core and periphery (the translation's words), and Ibn Ḥajar's answer replaces the reason.
+// Groups outside the default view are built with class="off". The speech bubbles quote a few English words exactly as the translation has them; no Arabic
+// report wording (design §16). Abū Hurayra and Abū Ṣāliḥ are a Companion and a Successor from general knowledge.
+// Motion: the one "Aḥmad" gives way to two men, once; the arrows flow, the loop too; the cross pops in. The resting
+// style is the end state, so with motion.css stopping every animation the two men and the cross are shown.
+import Defs from "../svg/Defs.astro";
+import Moon from "../svg/Moon.astro";
+import Narrator from "../svg/Narrator.astro";
+import Arrow from "../svg/Arrow.astro";
+import Pill from "../svg/Pill.astro";
+import Chip from "../svg/Chip.astro";
+import Matn from "../svg/Matn.astro";
+import Glyph from "../svg/Glyph.astro";
+import SpeechBubble from "../svg/SpeechBubble.astro";
+import TermTitle from "../svg/TermTitle.astro";
+import ViewTag from "../svg/ViewTag.astro";
+import XLink from "../svg/XLink.astro";
+import { FIG, KIND_NAME, RELIABLE, type Kind } from "../svg/figures";
+import { SUBT_TRIGGER, titleTrigger } from "../svg/geom";
+import { cap, type DiagramProps } from "../../lib/scene";
+import { chipWidth } from "../../lib/kit";
+
+type Props = DiagramProps;
+const { caps, scene } = Astro.props;
+
+const W = 780, H = 572;
+const VIEW_IDS = ["most-correct", "not-accepted"];
+if ((scene.views ?? []).map((v) => v.id).join() !== VIEW_IDS.join()) throw new Error(`Doubts: expected views ${VIEW_IDS.join(", ")}`);
+const PANELS = scene.panels ?? [];
+if (PANELS.length !== 3) throw new Error("Doubts: expected three panels");
+const [P1, P2, P3] = PANELS.map((p) => (p.x0 + p.x1) / 2);
+
+const TITLE_Y = 30, SUB_Y = 50;
+const K = 0.7, HALF = 22 * K;
+const fig = (k: Kind) => ({ ...FIG[k], ...RELIABLE });
+
+function title(slug: string, cx: number) {
+  const c = cap(caps, slug);
+  return { c, cx, ...titleTrigger(c.translit, cx, TITLE_Y, SUBT_TRIGGER) };
+}
+const muhmal = title("muhmal", P1);
+const forgot = title("man-haddatha-wa-nasiya", P2);
+
+// ---- panel 1: one name, two men ----
+const WAHB_Y = 96, AH_Y = 180, BUK_Y = 276;
+const SPLIT = 46; // how far each candidate stands from the middle
+const CANDS = [
+  { dx: -SPLIT, lines: ["Aḥmad ibn", "Ṣāliḥ"] },
+  { dx: SPLIT, lines: ["Aḥmad ibn", "ʿĪsā"] },
+];
+const MUH = ["ibn Salām", "ibn Yaḥyā al-Dhuhlī"];
+const MUH_GAP = 8, MUH_Y = 384;
+const muhW = MUH.map((t) => chipWidth(t));
+const muhX0 = P1 - (muhW[0] + MUH_GAP + muhW[1]) / 2;
+
+// ---- panels 2 and 3: a shaykh over his student, the report under them ----
+const SH = { x2: P2 - 80, x3: P3 - 60, y: 120 };
+const ST_Y = 214;
+const CARD = { w: 170, h: 32, y: 250 };
+
+// ---- panel 3: the Suhayl loop (§5.53) ----
+const LOOP_Y = 458, LK = 0.5, LHALF = 22 * LK;
+const ROW = [
+  { x: 586, kind: "sahabi" as Kind, name: "Abū Hurayra" },
+  { x: 648, kind: "tabii" as Kind, name: "Abū Ṣāliḥ" },
+  { x: 710, kind: "later" as Kind, name: "Suhayl" },
+];
+const MOON = { x: 545, k: 0.35 };
+const RABIA = { x: 710, y: 514 }, DARA = { x: 640, y: 514 };
+---
+<svg viewBox={`0 0 ${W} ${H}`} class="doubts" role="group" aria-label="Three panels on doubts about a narrator's shaykh. Muhmal: al-Bukhārī reports from an Aḥmad, with no more said, from Ibn Wahb; he is Aḥmad ibn Ṣāliḥ or Aḥmad ibn ʿĪsā, and since both are reliable it does no harm. So too an unspecified Muḥammad, ibn Salām or ibn Yaḥyā al-Dhuhlī. When the two can't be told apart, scholars turn to outside signs and the weight of evidence. Man ḥaddatha wa-nasiya: a shaykh who says I did not report this denies it outright; one of the two lied, we can't say which, and the report is rejected, but neither is discredited. A shaykh who says I do not remember: the report is accepted on the most correct opinion, since he may have forgotten. So Suhayl, told that Rabīʿa had his report from him, came to narrate it from Rabīʿa, from himself, from his father, from Abū Hurayra.">
+  <Defs />
+  <line class="divider" x1={PANELS[1].x0} x2={PANELS[1].x0} y1="12" y2={H - 12} />
+  <line class="divider" x1={PANELS[2].x0} x2={PANELS[2].x0} y1="12" y2={H - 12} />
+
+  {/* ---- titles ---- */}
+  <TermTitle c={muhmal.c} x={muhmal.cx} y={TITLE_Y} cls="subt" hit={muhmal.hit} info={muhmal.info} />
+  <text class="lbl" x={P1} y={SUB_Y}>one name, two men</text>
+  <TermTitle c={forgot.c} x={forgot.cx} y={TITLE_Y} cls="subt" hit={forgot.hit} info={forgot.info} />
+  <text class="lbl" x={P2} y={SUB_Y}>the shaykh denies it outright</text>
+  <text class="subt" x={P3} y={TITLE_Y}>He does not recall</text>
+  <text class="lbl" x={P3} y={SUB_Y}>the shaykh is unsure</text>
+
+  {/* ---- panel 1: which Aḥmad? ---- */}
+  <Narrator x={P1} y={WAHB_Y} k={K} {...fig("later")} label={KIND_NAME.later} />
+  <text class="nm" x={P1 + 20} y={WAHB_Y + 4}>Ibn Wahb</text>
+  {CANDS.map((c) => <Arrow x1={P1 + c.dx * 0.25} y1={WAHB_Y + HALF + 18} x2={P1 + c.dx} y2={AH_Y - HALF - 4} />)}
+  <text class="lbl sm" x={P1} y={AH_Y - HALF - 12}>“Aḥmad”, no more said</text>
+  {/* the one name gives way to the two men it may be */}
+  <g class="one m-enter" style="--from-o:1;--dur:.5s;--d:.5s" aria-hidden="true">
+    <Narrator x={P1} y={AH_Y} k={K} {...fig("later")} />
+  </g>
+  {CANDS.map((c) => (
+    <g class="m-enter" style={`--from-xy:${-c.dx}px 0px;--dur:.5s;--d:.6s`}>
+      <Narrator x={P1 + c.dx} y={AH_Y} k={K} {...fig("later")} />
+      {c.lines.map((t, j) => <text class="nm mid" x={P1 + c.dx} y={AH_Y + HALF + 15 + j * 13}>{t}</text>)}
+    </g>
+  ))}
+  <text class="lbl sm" x={P1} y={AH_Y + 4}>or</text>
+  {CANDS.map((c) => <Arrow x1={P1 + c.dx} y1={AH_Y + HALF + 34} x2={P1 + c.dx * 0.25} y2={BUK_Y - HALF - 4} />)}
+  <Narrator x={P1} y={BUK_Y} k={K} {...fig("later")} />
+  <text class="nm" x={P1 + 20} y={BUK_Y + 4}>al-Bukhārī</text>
+  <Pill x={P1} y={BUK_Y + 46} state="accept" text="No harm: both are reliable" />
+  <text class="lbl sm" x={P1} y={MUH_Y - 20}>another: an unspecified “Muḥammad”</text>
+  <Chip x={muhX0} y={MUH_Y} text={MUH[0]} />
+  <Chip x={muhX0 + muhW[0] + MUH_GAP} y={MUH_Y} text={MUH[1]} />
+  <text class="lbl sm" x={P1} y={MUH_Y + 50}>in general, if the two can't be told</text>
+  <text class="lbl sm" x={P1} y={MUH_Y + 64}>apart: outside signs, weight of evidence</text>
+  <XLink to="al-asma/names#muttafiq-wa-muftariq" lead="its opposite: " text="Who is who?" x={P1} y={H - 42} anchor="middle" />
+  <XLink to="al-mardud/unknown#mubham" lead="no name at all: " text="Who is this narrator?" x={P1} y={H - 22} anchor="middle" />
+
+  {/* ---- panel 2: he denies it outright ---- */}
+  <Arrow x1={SH.x2} y1={SH.y + HALF + 18} x2={SH.x2} y2={ST_Y - HALF - 4} />
+  <Narrator x={SH.x2} y={SH.y} k={K} {...fig("later")} label="shaykh" />
+  <SpeechBubble x={SH.x2} y={SH.y} en="I did not report this" />
+  <Narrator x={SH.x2} y={ST_Y} k={K} {...fig("later")} label="student" />
+  <text class="lbl start" x={SH.x2 + 22} y={ST_Y - 2}>his student</text>
+  <text class="lbl start" x={SH.x2 + 22} y={ST_Y + 13}>reports it from him</text>
+  <Matn x={P2 - CARD.w / 2} y={CARD.y + 30} w={CARD.w} h={CARD.h} lines={["the report"]} inactive />
+  <g class="m-enter" style="--d:.5s;--from-s:1.6">
+    <Glyph kind="cross" cx={P2 + CARD.w / 2 - 14} cy={CARD.y + 30 + CARD.h / 2} r={6} />
+  </g>
+  <Pill x={P2} y={CARD.y + 90} state="reject" text="Rejected" />
+  <text class="lbl" x={P2} y={CARD.y + 130}>one of the two lied,</text>
+  <text class="lbl" x={P2} y={CARD.y + 146}>but we can't say which</text>
+  <text class="lbl" x={P2} y={CARD.y + 176}>neither man is</text>
+  <text class="lbl" x={P2} y={CARD.y + 192}>discredited by it</text>
+
+  {/* ---- panel 3: he does not recall ---- */}
+  <Arrow x1={SH.x3} y1={SH.y + HALF + 18} x2={SH.x3} y2={ST_Y - HALF - 4} />
+  <Narrator x={SH.x3} y={SH.y} k={K} {...fig("later")} label="shaykh" />
+  <SpeechBubble x={SH.x3} y={SH.y} en="I do not remember" />
+  <Narrator x={SH.x3} y={ST_Y} k={K} {...fig("later")} label="student" />
+  <text class="lbl start" x={SH.x3 + 22} y={ST_Y - 2}>his student</text>
+  <text class="lbl start" x={SH.x3 + 22} y={ST_Y + 13}>reports it from him</text>
+  <Matn x={P3 - CARD.w / 2} y={CARD.y + 30} w={CARD.w} h={CARD.h} lines={["the report"]} />
+  <g data-view-show="most-correct">
+    <Pill x={P3} y={CARD.y + 90} state="accept" text="Accepted" />
+    <ViewTag cx={P3} y={CARD.y + 110} w={210} text="Ibn Ḥajar: the most correct opinion" />
+    <text class="lbl sm" x={P3} y={CARD.y + 150}>he may have forgotten;</text>
+    <text class="lbl sm" x={P3} y={CARD.y + 164}>affirming comes before denying</text>
+  </g>
+  <g class="off" data-view-show="not-accepted">
+    <Pill x={P3} y={CARD.y + 90} state="reject" text="Not accepted" />
+    <ViewTag cx={P3} y={CARD.y + 110} w={130} text="it is also said" dashed />
+    <text class="lbl sm end" x={SH.x3 - 18} y={SH.y + 4}>core</text>
+    <text class="lbl sm end" x={SH.x3 - 18} y={ST_Y + 4}>periphery</text>
+    <text class="lbl sm" x={P3} y={CARD.y + 150}>Ibn Ḥajar: a witness to a</text>
+    <text class="lbl sm" x={P3} y={CARD.y + 164}>witness is a different case</text>
+  </g>
+
+  {/* ---- panel 3: the Suhayl loop ---- */}
+  <Moon cx={MOON.x} cy={LOOP_Y} k={MOON.k} />
+  <Arrow x1={MOON.x + 24 * MOON.k + 2} y1={LOOP_Y} x2={ROW[0].x - LHALF - 4} y2={LOOP_Y} />
+  {ROW.slice(1).map((r, i) => <Arrow x1={ROW[i].x + LHALF + 3} y1={LOOP_Y} x2={r.x - LHALF - 4} y2={LOOP_Y} />)}
+  {ROW.map((r) => (
+    <>
+      <Narrator x={r.x} y={LOOP_Y} k={LK} {...fig(r.kind)} />
+      <text class="lbl sm" x={r.x} y={LOOP_Y + LHALF + 13}>{r.name}</text>
+    </>
+  ))}
+  <Arrow x1={RABIA.x - 4} y1={LOOP_Y + LHALF + 20} x2={RABIA.x - 4} y2={RABIA.y - LHALF - 4} />
+  {/* Suhayl came to narrate it back from Rabīʿa: the loop */}
+  <Arrow x1={RABIA.x + LHALF + 3} y1={RABIA.y - 4} x2={ROW[2].x + LHALF + 3} y2={LOOP_Y + 4} bend={34} />
+  <Narrator x={RABIA.x} y={RABIA.y} k={LK} {...fig("later")} />
+  <text class="lbl sm start" x={RABIA.x - 34} y={RABIA.y + LHALF + 13}>Rabīʿa</text>
+  <Arrow x1={RABIA.x - LHALF - 3} y1={RABIA.y} x2={DARA.x + LHALF + 4} y2={DARA.y} />
+  <Narrator x={DARA.x} y={DARA.y} k={LK} {...fig("later")} />
+  <text class="lbl sm end" x={DARA.x - LHALF - 4} y={DARA.y + 4}>al-Darāwardī</text>
+  <text class="lbl sm" x={P3 - 10} y={H - 14}>Suhayl, later: “Rabīʿa informed me”</text>
+</svg>
+<style>
+  .lbl.end{text-anchor:end}
+  .nm.mid{text-anchor:middle}
+  .one{opacity:0}
+</style>

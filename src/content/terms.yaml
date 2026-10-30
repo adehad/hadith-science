@@ -866,6 +866,7 @@
   def: "A narrator named only as, say, ‘Aḥmad’ when two of his teachers share that name. Harmless if both are reliable."
   section: "§5.52"
   division: lataif-al-isnad
+  scene: doubts
 - id: man-haddatha-wa-nasiya
   translit: Man ḥaddatha wa-nasiya
   ar: مَنْ حَدَّثَ وَنَسِيَ
@@ -873,6 +874,7 @@
   def: "A teacher denies a report passed on from him. A flat denial sinks the report without discrediting either; ‘I don't recall’ leaves it accepted."
   section: "§5.53"
   division: lataif-al-isnad
+  scene: doubts
 - id: musalsal
   translit: Musalsal
   ar: مُسَلْسَلٌ

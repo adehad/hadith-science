@@ -473,6 +473,38 @@
     - { id: mutual, label: Each from the other, x0: 260, x1: 520 }
     - { id: seniors, label: Senior from junior, x0: 520, x1: 780 }
     - { id: fathers, label: Son from father, x0: 780, x1: 1040 }
+- id: doubts
+  division: lataif-al-isnad
+  moons: [2]
+  order: 5
+  title: Does the doubt harm it?
+  eyebrow: Features of the chain, doubts about the shaykh · §5.52–5.53
+  lede: Two doubts can touch the link between a narrator and his shaykh. The shaykh's name may fit two men, or the shaykh himself may deny the report. Whether the report survives depends on the men, and on what exactly the shaykh says.
+  source: §5.52 Muhmal, §5.53 Man ḥaddatha wa-nasiya
+  diagram: Doubts
+  width: 780
+  captions:
+    - term: muhmal
+      note: "A narrator reports from two men who share a name, a father's or grandfather's name, or a nisba, and nothing tells them apart. If both are reliable, it does no harm. al-Bukhārī reports from an “Aḥmad”, with no more said, from Ibn Wahb: Aḥmad ibn Ṣāliḥ or Aḥmad ibn ʿĪsā. When the two can't be told apart, scholars turn to outside signs and the weight of evidence (§5.52)."
+    - term: man-haddatha-wa-nasiya
+      note: "A shaykh denies a report passed on from him. If he denies it outright, saying he lied or that he did not report it, one of the two has lied, though we can't say which; the report is rejected, but neither man is discredited by it. If he says only that he does not remember it, the report is accepted on the most correct opinion, since he may have forgotten (§5.53)."
+  views:
+    - id: most-correct
+      label: "Ibn Ḥajar: accepted"
+      scholars: The most correct opinion, §5.53
+      note: "When the shaykh says only that he does not remember, the report is accepted, since he may have forgotten. The student's trustworthiness means he is truthful, and the shaykh's not knowing does not cancel that: affirming comes before denying. al-Dāraquṭnī's book on those who narrated and forgot supports this."
+    - id: not-accepted
+      label: "Some: not accepted"
+      scholars: "“It is also said”, §5.53"
+      note: "Some say it is not accepted: the student is the periphery and the shaykh the core, and as the periphery follows the core in affirming a report, so it should in denying it, as with a witness to a witness. Ibn Ḥajar answers that the cases differ: a witness's witness is not heard when the first witness can testify, while narration is."
+  panels:
+    - { id: muhmal, label: One name, two men, x0: 0, x1: 260 }
+    - { id: denied, label: He denies it, x0: 260, x1: 520 }
+    - { id: forgot, label: He does not recall, x0: 520, x1: 780 }
+  extra:
+    - title: The Suhayl case
+      section: §5.53
+      note: "al-Dāraquṭnī wrote a book on those who narrated and forgot, with many cases that support accepting the report: narrators who no longer recalled a ḥadīth, and came to narrate it from those they had told it to. So Suhayl ibn Abī Ṣāliḥ had a report from his father, from Abū Hurayra, in the story of the testimony and the oath. al-Darāwardī heard it from Rabīʿa, from Suhayl; when he asked Suhayl, Suhayl did not know it, and was told that Rabīʿa had it from him. Afterwards Suhayl would say that Rabīʿa informed him that he had told it to him, from his father."
 - id: delivery
   division: siyagh-al-ada
   moons: [0, 1, 2]
