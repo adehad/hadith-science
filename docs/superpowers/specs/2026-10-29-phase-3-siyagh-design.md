@@ -394,7 +394,7 @@ Measured after writing, in Unicode code points, against the 400 working cap (zod
 |---|---|---|---|
 | `LicenceCard.astro` | `x, y, w, fields: { label, value?, slot? }[], h?` | 3, 4 | A rounded card with a seal at its lower right and up to three `label: value` rows; `slot` draws a blinking empty box for a missing value (spec §3.2's sign for anything missing). Decorative frame; its text is real text. |
 | `Glyph` + `letter` | as the other kinds | 3 | An envelope, drawn, no text glyph. `Delivery.astro`'s own `modeIcon` letter is left as it is (not redesigned). |
-| `Narrator` `outline` | boolean | 4 | The body and head in a dashed `--line` stroke, no fill, no scroll, no seal: not yet born. Not the ghost (red, a dropped link). |
+| `Narrator` `variant: "unborn"` | replaces the `ghost` boolean with one `variant`, "ghost" or "unborn" | 4 | The body and head in a dashed grey stroke, no fill, no scroll, no seal: not yet born. Not the ghost (red, a dropped link). |
 | `figures.ts` | `unborn`, `KIND_NAME` "Not yet born" | 4 | Legend entry follows automatically. Not added to `/narrators/`. |
 
 Everything else is reused (§1).
@@ -506,3 +506,14 @@ Each has options, sketches and a recommendation in the review JSON. In short:
 - **Owner's annotations:** only "used" rows. p.343's letter story stays a proposal.
 - **Translation slips:** all five rows go to `notes/translation-queries.md`; the site uses the wording given.
 - **Delivery's imlāʾ overflow:** unchanged in this phase.
+
+### Deviations in the build
+
+The built scenes follow this design except as below. None changes a ruling or adds content beyond the translation.
+
+- **`heard`:** panel 4 has no gold "met" knot; its card shows two overlapping lifespans with a blinking "?" (same time, no known meeting), so the scene's motion is the flowing arrows and the blink. Panel 1 carries "an illustration: the book names no example". The chosen-view tag reads "the chosen view", with "ʿAlī ibn al-Madīnī, al-Bukhārī and others" under it. Height 480.
+- **`permission`:** panel 1's teacher and student name themselves in Labels mode ("Teacher", "Student"), replacing the plain words there, so the routes smoke finds Labels-mode names on this figure scene. The second rung's sub-line reads "below that, above the next"; panel 2 ends "ranked as the book ranks them". The `sending` view's "counted" is the dashed `Pill state="support"`. Height 470.
+- **`licence`:** the stops sit at x = 36 + 60i. Stops 5–7 are in-page links to their cells. The attribution tag in cell C reads "some say: valid". al-Khaṭīb's verdicts are the dashed `Pill state="support"` "allowed".
+- **`permission`, panel 4:** the later scholars' tick for "ḥadīth written out" is inferred. §5.55 says only that the later scholars use mukātaba for written permission, as against the earlier scholars, and the label under the columns says "too" for that reason.
+- **`licence`, cell A, after review:** stop 1 is solid (everyone counts it), stops 2–4, 6 and 7 hollow (al-Khaṭīb counts them, Ibn Ḥajar does not), stop 5 red and dashed (no one counts it). One bracket under stops 2–4 links "to all: ijāza ʿāmma"; the ranking's "specified permission" links to ijāza muʿayyana. The heading reads "Ranked (§5.58)", and only the loose-forms row credits Ibn al-Ṣalāḥ. The jump links have the shared `jump` class; `.cells svg` carries the jump's `scroll-margin-top` for Changes and Licence alike.
+- **Kit:** `LicenceCard` also takes `dashed`; a card with no fields is 40 tall with two rule lines. `Narrator` takes one `variant?: "ghost" | "unborn"` in place of the `ghost` and `outline` booleans.
