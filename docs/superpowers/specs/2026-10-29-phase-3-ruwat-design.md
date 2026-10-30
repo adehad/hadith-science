@@ -823,3 +823,14 @@ The owner asked for development to continue during review, so the interim option
 - **Links to unbuilt divisions:** plain text.
 - **Owner's annotations:** only "used" rows. **Translation slips:** all go to `notes/translation-queries.md`.
 - **Names (division 7):** unchanged.
+
+### Deviations in the build
+
+All six scenes are built on `design-ruwat` with the interim options above. They follow this design except as below; none changes a ruling or adds content beyond the translation.
+
+- **`generations`:** the three titles are 15px sub-titles with the Arabic centred under them, and the scene is 460 tall. Panel 1's columns are 14..104 and 118..250, with each band's label at its top left and Anas ibn Mālik on the right edge of the first two bands, tied to his name chip. Panel 1 ends in plain text; only panel 2 links to *Did he hear it from him?*. Panel 2's bubble is labelled "an illustration: the book quotes no claim".
+- **`ranks`:** the rung fills step from 26% to 6% of gold (praise) or the gap colour (criticism), so `--fg` text keeps its contrast; the Arabic names sit after each rung's (i). The superlative tags are dashed chips at the rung's top right. Cell A ends with the three states and "at both ends of the scale the words are superlatives".
+- **`verdicts`:** each panel title has its Arabic under it, and the scene is 490 tall. The seal is drawn by laying a reliable (panel 1) or weak (panel 2) figure over the first one as it enters. Panel 1's pill and tag, and panel 3's second scale, are view groups; the groups the `two` and `criticism-first` views leave alone are shared with the default (`data-view-show="ibn-hajar criticism-first"` and `"ibn-hajar two"`). The scales inside view groups have no tip animation, so a switch replays nothing.
+- **`aliases`:** cells are 430 × 320, with each term's Arabic under its title. Cell B shows al-Aʿmash without a gloss (the translation gives none). Cell C links to *Who is who?*; cell B to *Why is he unknown?*. Cells G and H have plain titles and are `role="img"`, as the Names worked example is.
+- **`study`:** cells are 430 × 340, with all six titles at 20px and their Arabic under them. Cell B's child, register and tick stand for "attendance recorded".
+- **`books`:** the sorter is titled "How is it arranged?". Cell F carries no "illustration" line, since its scholars are the book's own.

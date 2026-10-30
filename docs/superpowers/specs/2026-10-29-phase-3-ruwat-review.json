@@ -14,7 +14,8 @@
       "blocked_by": [
         "q1",
         "q2"
-      ]
+      ],
+      "built_with_interim": true
     },
     {
       "id": "ranks",
@@ -36,7 +37,8 @@
         "q3",
         "q4",
         "q5"
-      ]
+      ],
+      "built_with_interim": true
     },
     {
       "id": "verdicts",
@@ -49,7 +51,8 @@
       "summary": "Three panels: one critic adds a seal, one cracks a seal, and two balance scales for praise against criticism, with three views from §5.64.",
       "blocked_by": [
         "q6"
-      ]
+      ],
+      "built_with_interim": true
     },
     {
       "id": "aliases",
@@ -66,7 +69,8 @@
       "blocked_by": [
         "q7",
         "q8"
-      ]
+      ],
+      "built_with_interim": true
     },
     {
       "id": "study",
@@ -83,7 +87,8 @@
       "blocked_by": [
         "q9",
         "q10"
-      ]
+      ],
+      "built_with_interim": true
     },
     {
       "id": "books",
@@ -98,7 +103,8 @@
       "summary": "Six cells: a sorter by how a book is arranged, then musnad, chapters, hidden flaws, indexes, and the reasons behind a ḥadīth.",
       "blocked_by": [
         "q11"
-      ]
+      ],
+      "built_with_interim": true
     }
   ],
   "questions": [

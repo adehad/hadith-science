@@ -63,3 +63,17 @@ Page numbers are the PDF's, as the `=====PAGE` markers in `source/nuzhah.txt` nu
 | §5.58 (p.358) | "Likewise [permission is required] for the ijāza majhūl" (and for maʿdūm and the conditional) | The sense is that these are likewise not counted, as ijāza ʿāmma is not. The site says "does not count" | |
 | §5.58 (p.358) | "I give permission to you and whoever you bore" | Likely "whoever is born to you". The site says so | |
 | §5.58 (p.359) | "The attached [form of permission] has been used too, by Abū Bakr ibn Abī Khaythama" | "Attached" likely renders muʿallaqa, the permission hung on a wish. The site reads it so | |
+| §5.63 (p.377) | "ilayhi al-muntahā fī al-tathabbut (he is the last word in dependency)" | Tathabbut is firmness or precision. The site keeps `terms.yaml`'s "the last word in reliability". | |
+| §5.63 (p.377–378) | "fīhi maqāl" among the mildest words and again with ḍaʿīf | One is likely misplaced; the owner's p.377 highlight reads it as the mildest. The site shows it there only. | |
+| §5.63 (p.377) | "known … for his lewdness" | Fisq: the site says "open sin", as al-Mardūd does. | |
+| §5.64 (p.386) | "The agent in this field" | Likely "the one who takes on this task". The site avoids "agent". | |
+| §5.65 (p.396) | "his father is Bakar; and his shaykh is Anṣārī" | Likely "he is Bakrī, and his shaykh Anṣārī". Not used. | |
+| §5.65 (p.398) | "Ibn Aḥmad ibn Abī Ṭabarānī" | The owner's highlight: ibn Ayyūb al-Ṭabarānī. | |
+| §5.65 (p.398) | "Muslim ibn Ibrāhīm al-Farādīsī" | The owner's highlight: al-Farāhīdī. | |
+| §5.65 (p.398) | "Muslim ibn al-Ḥujjāj" | The owner's highlight: al-Ḥajjāj. | |
+| §5.65 (p.398) | "Yaḥyā ibn Abī Ibn Kathīr" | The owner's highlight: Yaḥyā ibn Abī Kathīr. | |
+| §5.65 (p.398) | "the solitary names" | The books listed are lists of narrators, so likely al-asmāʾ al-mujarrada. The site says "books on the narrators". | |
+| §5.65 (p.400) | Sandar, "the mawlā of Zinbāʿ al-Judhāmī, who has companionship and narrations" | Whose companionship? The Arabic likely gives it to Sandar. The site leaves it out until a ruling. | |
+| §5.65 | "the nasab" | Here the nisba. The site says nisba. | |
+| §5.67 (p.406) | "It is necessary to seek permission from the shaykh" | Likely "an ijāza from the one who makes them hear is needed". The site leaves it out until a ruling. | |
+| §5.71 (p.422) | "Ibn Daqīq al-ʿYd" | Spelling: al-ʿĪd. | |
