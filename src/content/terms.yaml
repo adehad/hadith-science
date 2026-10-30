@@ -1135,6 +1135,7 @@
   def: "Faulting a narrator's integrity or accuracy. Taken only from a reliable, informed critic, never from one driven by prejudice."
   section: "§5.64"
   division: marifat-al-ruwat
+  scene: verdicts
 - id: tadil
   translit: Taʿdīl
   ar: تَعْدِيلٌ
@@ -1142,6 +1143,7 @@
   def: "Declaring a narrator reliable. One informed critic is enough, since it works like a verdict rather than testimony."
   section: "§5.64"
   division: marifat-al-ruwat
+  scene: verdicts
 - id: maratib-al-jarh
   translit: Marātib al-jarḥ
   ar: مَرَاتِبُ الْجَرْحِ
@@ -1229,6 +1231,7 @@
   def: "Criticism whose reason an expert states. It outweighs praise; unexplained criticism cannot unseat a narrator already shown to be upright."
   section: "§5.64"
   division: marifat-al-ruwat
+  scene: verdicts
 - id: kunya
   translit: Kunya
   ar: كُنْيَةٌ

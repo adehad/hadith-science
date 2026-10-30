@@ -1122,3 +1122,44 @@
       note: "The rank after the worst: dajjāl, waḍḍāʿ (a great forger) and kadhdhāb (a great liar). These forms exaggerate too, but they rank below the superlatives (§5.63)."
     - term: akdhab-al-nas
       note: "The worst rank of criticism, a superlative (afʿal) that exaggerates: the greatest of people in lying, or calling him the last word in fabrication, or the pillar of lying (§5.63)."
+- id: verdicts
+  division: marifat-al-ruwat
+  moons: [1]
+  order: 3
+  title: Whose verdict counts?
+  eyebrow: Knowing the narrators, the rules of praise and criticism · §5.63–5.64
+  lede: Praise and criticism are taken only from a critic who is reliable and knows their grounds. One such critic is enough, because his word is a ruling, not testimony. When they disagree, criticism wins only if it is explained, unless he was never accredited.
+  source: §5.63 The narrator's three states, §5.64 Taʿdīl, jarḥ and jarḥ mufassar
+  diagram: Verdicts
+  width: 780
+  captions:
+    - term: tadil
+      note: "Accrediting is accepted from one who knows its grounds, not from one who goes by outward appearance without study. One such critic is enough, on the most authentic opinion: accrediting is a ruling, which needs no number, unlike testimony, given before a judge. Even when he passes on another's verdict, it seems no number is needed (§5.64)."
+    - term: jarh
+      note: "Criticism, like praise, is taken only from one who is reliable and well informed, not from one who is prejudiced and faults a narrator's ḥadīth with what does not warrant rejection. Prejudice may come from bad character or corrupt motives, which the early critics were mostly free of, or from a difference in creed, which alone should not count against him (§5.64)."
+    - term: jarh-mufassar
+      note: "Criticism comes before praise only when it is explained, by one who knows the grounds; unexplained criticism cannot unseat one whose integrity is proven. If no one ever accredited him, brief criticism from an expert is accepted, since his state is unknown and acting on it is better than ignoring it; Ibn al-Ṣalāḥ inclined to pause there (§5.64)."
+  views:
+    - id: ibn-hajar
+      label: Ibn Ḥajar
+      scholars: "Ibn Ḥajar, “the most authentic opinion”, §5.64"
+      note: "One informed critic is enough to accredit a narrator, since accrediting is a ruling. Criticism comes before praise only when it is explained by one who knows the grounds."
+    - id: two
+      label: "Some: two critics"
+      scholars: "“Those who specify…”, §5.64"
+      note: "Accrediting is accepted only from two, as testimony requires. Ibn Ḥajar answers that accrediting is a ruling, which needs no number, while testimony is given before a judge."
+    - id: criticism-first
+      label: "A group: criticism always first"
+      scholars: "“A group [of scholars] have said…”, §5.64"
+      note: "Criticism comes before praise unconditionally, explained or not. Ibn Ḥajar answers that unexplained criticism cannot unseat one whose integrity is proven."
+  panels:
+    - { id: accrediting, label: Accrediting, x0: 0, x1: 260 }
+    - { id: discrediting, label: Discrediting, x0: 260, x1: 520 }
+    - { id: disagree, label: When they disagree, x0: 520, x1: 780 }
+  extra:
+    - title: The narrator's three states
+      section: §5.63
+      note: "A narrator is known for his integrity, known for open sin, or nothing is known of him. Knowing which, and then the ranks of praise and criticism, matters, because critics sometimes fault a man with something that does not mean rejecting all his reports."
+    - title: Two warnings
+      section: §5.64
+      note: "al-Dhahabī, a master of judging men, said that two scholars of this field never agreed to call a weak narrator reliable, or a reliable one weak; so al-Nasāʾī would not abandon a man's ḥadīth until all of them rejected him. The critic must beware of carelessness either way: accrediting without care affirms what is not so, and he risks being counted among those who pass on a ḥadīth they think false; discrediting without care brands an innocent Muslim with a mark that stays with him forever."

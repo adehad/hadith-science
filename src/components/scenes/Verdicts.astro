@@ -1,0 +1,152 @@
+---
+// "Whose verdict counts?" (phase 3 Maʿrifat al-ruwāt design §5): the rules of praise and criticism (§5.63–5.64), in
+// three panels of one 780-wide row, so it carousels in portrait. The figure language already has a sign for being
+// vouched for, the seal (spec §3.2), so the two acts are drawn as what they do to it:
+//   1  accrediting: one critic who knows the grounds fills an empty seal slot; one is enough, a ruling, not the two
+//      witnesses testimony needs before a judge; not from one who goes by appearances
+//   2  discrediting: the critic cracks a seal; not from the prejudiced, whose two sources §5.64 names
+//   3  when they disagree: explained criticism outweighs praise; unexplained criticism doesn't unseat proven
+//      integrity; brief criticism of one never accredited is accepted, where Ibn al-Ṣalāḥ inclined to pause
+// The "Other views" switch (§5.64) changes panel 1 (some require two critics, as in testimony) or panel 3's second
+// scale (a group put criticism first unconditionally), through data-view-show groups built with class="off". The
+// scales inside those groups are drawn without their tip animation, so a view switch replays nothing (views.spec V4).
+// No Arabic beyond the term names. Motion: the arrows flow; panel 1's seal fills and panel 2's cracks once; the first
+// scale tips once. The resting style is the end state, so with motion.css stopping every animation it is as drawn.
+import Defs from "../svg/Defs.astro";
+import Narrator from "../svg/Narrator.astro";
+import Arrow from "../svg/Arrow.astro";
+import Glyph from "../svg/Glyph.astro";
+import Pill from "../svg/Pill.astro";
+import Scale from "../svg/Scale.astro";
+import TermTitle from "../svg/TermTitle.astro";
+import ViewTag from "../svg/ViewTag.astro";
+import XLink from "../svg/XLink.astro";
+import { FIG, KIND_NAME, RELIABLE } from "../svg/figures";
+import { titleTrigger } from "../svg/geom";
+import { cap, type DiagramProps } from "../../lib/scene";
+import { loadContent } from "../../lib/content";
+
+type Props = DiagramProps;
+const { caps, scene } = Astro.props;
+const W = 780, H = 490;
+const VIEW_IDS = ["ibn-hajar", "two", "criticism-first"];
+if ((scene.views ?? []).map((v) => v.id).join() !== VIEW_IDS.join()) throw new Error(`Verdicts: expected views ${VIEW_IDS.join(", ")}`);
+if ((scene.panels ?? []).length !== 3) throw new Error("Verdicts: expected three panels");
+
+const { scenes } = await loadContent();
+const innovation = scenes.find((s) => s.id === "innovation");
+if (!innovation) throw new Error("Verdicts: no innovation scene to link to");
+
+// a panel's 20px title as a term trigger, its Arabic name centred under it
+const TITLE_Y = 30, SUB_Y = 74;
+function title(slug: string, cx: number) {
+  const c = cap(caps, slug);
+  return { c, cx, ...titleTrigger(c.translit, cx, TITLE_Y), ar: { x: cx, y: TITLE_Y + 22, size: "sm" as const } };
+}
+const tadil = title("tadil", 122);
+const jarh = title("jarh", 382);
+const mufassar = title("jarh-mufassar", 642);
+
+const FY = 134, FK = 0.8;
+const P1 = { critic: 50, subject: 196 }, P2 = { critic: 310, subject: 456 };
+const TAG_W = 230;
+---
+<svg viewBox={`0 0 ${W} ${H}`} class="verdicts" role="group" aria-label="Three panels. Taʿdīl, accrediting, adds the seal: a critic who knows its grounds vouches for a narrator. One such critic is enough, on the most authentic opinion, since accrediting is a ruling, not testimony, which needs two witnesses before a judge; it is not taken from one who goes by appearances, and even passing on another's verdict seems to need no number. Jarḥ, criticism, cracks the seal: it is not taken from one who is prejudiced, whether from bad character or corrupt motives, rare in the early critics, or from a difference in creed, which alone should not count against him. Jarḥ mufassar, explained criticism: when praise and criticism meet, criticism explained by one who knows the grounds outweighs praise, but unexplained criticism does not unseat one whose integrity is proven. Brief criticism from an expert of one no one ever accredited is accepted, since his state is unknown; Ibn al-Ṣalāḥ inclined to pause there. The Other views switch shows those who require two critics, and the group that puts criticism first unconditionally.">
+  <Defs />
+  <line class="divider" x1="260" x2="260" y1="12" y2={H - 12} />
+  <line class="divider" x1="520" x2="520" y1="12" y2={H - 12} />
+
+  {/* ---- panel 1: accrediting adds the seal ---- */}
+  <TermTitle c={tadil.c} x={tadil.cx} y={TITLE_Y} hit={tadil.hit} info={tadil.info} ar={tadil.ar} />
+  <text class="lbl sm" x="130" y={SUB_Y}>adding the seal</text>
+  <Narrator x={P1.critic} y={FY} k={FK} {...FIG.later} {...RELIABLE} label="Critic" />
+  <Glyph kind="lens" cx={P1.critic + 30} cy={FY - 16} r={9} />
+  <Arrow x1={P1.critic + 30} y1={FY} x2={P1.subject - 26} y2={FY} />
+  <Narrator x={P1.subject} y={FY} k={FK} {...FIG.majhul} />
+  <g class="seal m-enter"><Narrator x={P1.subject} y={FY} k={FK} {...FIG.later} {...RELIABLE} label={KIND_NAME.later} /></g>
+  <text class="lbl sm" x={P1.critic + 30} y={FY + 46}>knows the grounds</text>
+
+  <g data-view-show="ibn-hajar criticism-first">
+    <Pill x={122} y={206} state="accept" text="one is enough" />
+    <text class="lbl sm" x="122" y="234">a ruling, which needs no number</text>
+  </g>
+  <g class="off" data-view-show="two">
+    <Pill x={122} y={206} state="pause" text="two are needed" />
+    <text class="lbl sm" x="122" y="234">as testimony needs two</text>
+  </g>
+
+  <g class="faint">
+    <Narrator x={44} y={286} k={0.55} {...FIG.later} {...RELIABLE} />
+    <Narrator x={78} y={286} k={0.55} {...FIG.later} {...RELIABLE} />
+  </g>
+  <text class="lbl sm" x="62" y="318">testimony: two</text>
+  <text class="lbl sm" x="62" y="332">witnesses, before</text>
+  <text class="lbl sm" x="62" y="346">a judge</text>
+  <Narrator x={186} y={286} k={0.55} {...FIG.later} />
+  <Glyph kind="cross" cx={204} cy={272} r={7} />
+  <text class="lbl sm" x="186" y="318">not from one who</text>
+  <text class="lbl sm" x="186" y="332">goes by appearances</text>
+  <text class="lbl sm" x="130" y="384">passing on another's verdict:</text>
+  <text class="lbl sm" x="130" y="398">it seems no number is needed either</text>
+  <g data-view-show="ibn-hajar criticism-first">
+    <ViewTag cx={130} y={426} w={TAG_W} text="Ibn Ḥajar: the most authentic opinion" />
+  </g>
+  <g class="off" data-view-show="two">
+    <ViewTag cx={130} y={426} w={TAG_W} text="some: like testimony" dashed />
+  </g>
+
+  {/* ---- panel 2: discrediting cracks it ---- */}
+  <TermTitle c={jarh.c} x={jarh.cx} y={TITLE_Y} hit={jarh.hit} info={jarh.info} ar={jarh.ar} />
+  <text class="lbl sm" x="390" y={SUB_Y}>cracking the seal</text>
+  <Narrator x={P2.critic} y={FY} k={FK} {...FIG.later} {...RELIABLE} label="Critic" />
+  <Glyph kind="lens" cx={P2.critic + 30} cy={FY - 16} r={9} />
+  <Arrow x1={P2.critic + 30} y1={FY} x2={P2.subject - 26} y2={FY} />
+  <Narrator x={P2.subject} y={FY} k={FK} {...FIG.later} {...RELIABLE} />
+  <g class="seal m-enter"><Narrator x={P2.subject} y={FY} k={FK} {...FIG.weak} label={KIND_NAME.weak} /></g>
+  <text class="lbl sm" x={P2.critic + 30} y={FY + 46}>reliable, well informed</text>
+  <text class="layer" x="280" y="214">Not from</text>
+  <Narrator x={298} y={252} k={0.6} {...FIG.later} />
+  <Glyph kind="cross" cx={316} cy={238} r={7} />
+  <text class="lbl start sm" x="330" y="248">one who is prejudiced, faulting</text>
+  <text class="lbl start sm" x="330" y="262">what does not warrant it</text>
+  <text class="lbl start sm" x="280" y="304">prejudice from bad character or corrupt</text>
+  <text class="lbl start sm" x="280" y="318">motives: the early critics were mostly free of it</text>
+  <text class="lbl start sm" x="280" y="346">or from a difference in creed, which alone</text>
+  <text class="lbl start sm" x="280" y="360">should not count against him:</text>
+  <XLink to={`${innovation.division}/${innovation.id}`} text={innovation.title} x={280} y={380} />
+
+  {/* ---- panel 3: when they disagree ---- */}
+  <TermTitle c={mufassar.c} x={mufassar.cx} y={TITLE_Y} hit={mufassar.hit} info={mufassar.info} ar={mufassar.ar} />
+  <text class="lbl sm" x="650" y={SUB_Y}>when praise and criticism meet</text>
+  <Scale x={650} y={104} w={130} tilt={8} left={1} right={2} pw={52} stand={50} />
+  <text class="lbl sm" x="585" y="176">praise</text>
+  <text class="lbl sm" x="715" y="176">explained</text>
+  <text class="lbl sm" x="650" y="196">by one who knows the grounds: it outweighs</text>
+
+  <g class="still" data-view-show="ibn-hajar two">
+    <Scale x={650} y={226} w={130} tilt={-8} left={2} right={1} pw={52} stand={50} />
+    <text class="lbl sm" x="585" y="298">proven integrity</text>
+    <text class="lbl sm" x="715" y="298">unexplained</text>
+    <text class="lbl sm" x="650" y="318">unexplained criticism doesn't unseat him</text>
+  </g>
+  <g class="still off" data-view-show="criticism-first">
+    <Scale x={650} y={226} w={130} tilt={8} left={1} right={2} pw={52} stand={50} />
+    <text class="lbl sm" x="585" y="298">praise</text>
+    <text class="lbl sm" x="715" y="298">any criticism</text>
+    <ViewTag cx={650} y={306} w={TAG_W} text="a group: criticism always first" dashed />
+  </g>
+
+  <text class="layer" x="540" y="362">Never accredited</text>
+  <Narrator x={556} y={404} k={0.6} {...FIG.majhul} label={KIND_NAME.majhul} />
+  <text class="lbl start sm" x="580" y="394">brief criticism, from an expert:</text>
+  <text class="lbl start sm" x="580" y="408">his state is unknown</text>
+  <Pill x={590} y={462} state="accept" text="accepted" />
+  <ViewTag cx={706} y={451} w={136} text="Ibn al-Ṣalāḥ: pause" dashed />
+</svg>
+<style>
+  .verdicts .layer{text-anchor:start}
+  .faint > :global(*){opacity:.5}
+  .seal{--d:.8s;--dur:.5s}
+  /* the scales inside view groups rest at their tilt with no tip, so showing a group replays nothing */
+  .still :global(*){animation:none !important}
+</style>
