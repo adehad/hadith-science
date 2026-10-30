@@ -33,6 +33,9 @@ jobs:
       - run: bun run test:dist
       - run: bun run test:e2e
       # README screenshots are not a test: regenerate them on a manual run and keep the PNGs as an artifact
+      # the animated README screenshots are assembled with ffmpeg
+      - if: ${{ github.event_name == 'workflow_dispatch' }}
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
       - if: ${{ github.event_name == 'workflow_dispatch' }}
         run: bun run screenshots
       - if: ${{ github.event_name == 'workflow_dispatch' }}

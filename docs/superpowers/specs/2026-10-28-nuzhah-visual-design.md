@@ -395,7 +395,9 @@ Content and drawing are separate:
   - With reduced motion emulated, a scene runs no animations, CSS or SMIL, and every scene rests where its motion ends. The starfield canvas and the planet positions are also unchanged after one second, because they are drawn with `requestAnimationFrame` and `getAnimations()` doesn't see them.
   - Built HTML contains no internal link that bypasses the base path. Checked by building with `BASE=/hadith-science/` and crawling, including the `/t/` refresh and canonical URLs, the `terms-index.json` fetch URL and `404.html`.
 - **README screenshots:**
-  - A separate Playwright project captures the map and each scene (desktop and mobile, light and dark) into `docs/screenshots/`.
+  - A separate Playwright project captures one picture per concept into `docs/screenshots/`, light theme only: the figure key, eight scenes cropped to their title and diagram, a scene with a term's popover open, and a scene on a phone showing the carousel.
+  - The map, the routes scene and the opposition scene are animated PNGs. Their frames are shot at fixed times (CSS animations and SMIL are paused and stepped, and the map's `requestAnimationFrame` runs on a stepped clock) and assembled by ffmpeg. The map is split on the diagonal, light theme top-left and dark bottom-right.
+  - `Math.random` is seeded and the browser rasters in software, so an unchanged build gives byte-identical files.
   - `bun run screenshots` refreshes them locally and they are committed by hand. CI runs the project only on demand (`workflow_dispatch`).
   - They are documentation, not visual-regression baselines.
 - **Copyright guard:**

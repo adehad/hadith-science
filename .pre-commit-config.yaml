@@ -13,6 +13,11 @@ repos:
       - id: check-yaml
         files: .*\.(yaml|yml)$
       - id: check-added-large-files
+        exclude: ^docs/screenshots/
+      # the README's animated PNGs may be up to 1.5 MB each
+      - id: check-added-large-files
+        files: ^docs/screenshots/
+        args: [--maxkb=1536]
   - repo: https://github.com/codespell-project/codespell
     rev: v2.4.1
     hooks:
