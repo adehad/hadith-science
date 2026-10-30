@@ -6,12 +6,15 @@
 //                   narration, so it can't be read as transmission (phase 3 design §7)
 //   elided          a grey dotted line, not animated and with no head: the chain goes on but the book doesn't
 //                   give it ("not shown", not "missing"; phase 3 design §4.3)
+//   implied         a gold arrow in short dashes (2 4, not flow's 6 6, so not told apart by colour alone) that flow:
+//                   counted as from the Prophet ﷺ by implication, though not
+//                   said outright (phase 3 Muntahā al-isnād design §3.2, §7); neither narration nor a gap
 // bend pushes the curve sideways. Needs <Defs /> on the page for the #ah / #ahg / #ahl markers; the classes
 // live in styles/svg.css.
-interface Props { x1: number; y1: number; x2: number; y2: number; skip?: boolean; bend?: number; variant?: "flow" | "skip" | "lift" | "elided" }
+interface Props { x1: number; y1: number; x2: number; y2: number; skip?: boolean; bend?: number; variant?: "flow" | "skip" | "lift" | "elided" | "implied" }
 const { x1, y1, x2, y2, skip = false, bend = 0 } = Astro.props;
 const variant = Astro.props.variant ?? (skip ? "skip" : "flow");
-const MARKER = { flow: "ah", skip: "ahg", lift: "ahl", elided: undefined } as const;
+const MARKER = { flow: "ah", skip: "ahg", lift: "ahl", elided: undefined, implied: "ahi" } as const;
 const marker = MARKER[variant];
 const mx = (x1 + x2) / 2 + bend;
 const my = (y1 + y2) / 2;

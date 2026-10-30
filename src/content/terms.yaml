@@ -697,6 +697,7 @@
   def: "A report that ends at the Prophet ﷺ: his words, acts or silent approval, stated or implied, whether the chain is connected or not."
   section: "§5.40"
   division: muntaha-al-isnad
+  scene: ends
 - id: marfu-hukmi
   translit: Marfūʿ ḥukman
   ar: مَرْفُوعٌ حُكْمًا
@@ -704,6 +705,7 @@
   def: "A Companion's words that reasoning could not produce, like news of the unseen, or a phrase like ‘it is the sunna’, count as from the Prophet ﷺ."
   section: "§5.40"
   division: muntaha-al-isnad
+  scene: raised
 - id: sahabi
   translit: Ṣaḥābī
   ar: صَحَابِيٌّ
@@ -711,6 +713,7 @@
   def: "Someone who met the Prophet ﷺ believing in him and died a Muslim, even if he left Islam for a time in between."
   section: "§5.41"
   division: muntaha-al-isnad
+  scene: companions
 - id: tabii
   translit: Tābiʿī
   ar: تَابِعِيٌّ
@@ -718,6 +721,7 @@
   def: "Someone who met a Companion while believing in the Prophet ﷺ and died a Muslim."
   section: "§5.42"
   division: muntaha-al-isnad
+  scene: companions
 - id: mukhadram
   translit: Mukhaḍram
   ar: مُخَضْرَمٌ
@@ -725,6 +729,7 @@
   def: "Someone who lived before Islam and into it but never saw the Prophet ﷺ. Ibn Ḥajar counts them as senior Successors."
   section: "§5.42"
   division: muntaha-al-isnad
+  scene: companions
 - id: mawquf
   translit: Mawqūf
   ar: مَوْقُوفٌ
@@ -732,6 +737,7 @@
   def: "A report that ends at a Companion."
   section: "§5.43"
   division: muntaha-al-isnad
+  scene: ends
 - id: maqtu
   translit: Maqṭūʿ
   ar: مَقْطُوعٌ
@@ -739,6 +745,7 @@
   def: "A report that ends at a Successor or someone later. Not to be confused with munqaṭiʿ, which describes the chain."
   section: "§5.43"
   division: muntaha-al-isnad
+  scene: ends
 - id: athar
   translit: Athar
   ar: أَثَرٌ
@@ -746,6 +753,7 @@
   def: "A shared name for mawqūf and maqṭūʿ reports."
   section: "§5.43"
   division: muntaha-al-isnad
+  scene: ends
 - id: musnad
   translit: Musnad
   ar: مُسْنَدٌ
@@ -753,6 +761,7 @@
   def: "A report a Companion raises to the Prophet ﷺ through a chain that looks connected."
   section: "§5.44"
   division: muntaha-al-isnad
+  scene: connected
 
 # 5. Laṭāʾif al-isnād (§5.45–5.54)
 - id: uluww

@@ -704,3 +704,157 @@
     - title: The contagion reports
       section: §5.15
       note: "Ibn al-Ṣalāḥ harmonised the pair this way: illnesses do not infect by their nature, but Allah has made mixing with the ill a cause of a healthy person falling ill, which sometimes does not happen, as with other causes. Ibn Ḥajar prefers to keep the Prophet's ﷺ denial general. When someone said that a sick camel mixes with healthy camels and they fall ill, the Prophet ﷺ asked, “Then who infected the first?”: Allah began the illness in the second as He did in the first. The order to flee from the leper closes the way to a wrong belief, so that someone who mixes with the ill and falls ill does not think contagion caused it. al-Shāfiʿī wrote a book on this type, Ikhtilāf al-ḥadīth, and Ibn Qutayba, al-Ṭaḥāwī and others wrote after him."
+
+# Muntahā al-isnād (phase 3 design docs/superpowers/specs/2026-10-29-phase-3-muntaha-design.md)
+- id: ends
+  division: muntaha-al-isnad
+  moons: [0, 1, 2]
+  order: 1
+  title: Where does the chain end?
+  eyebrow: Where the chain ends, and the names it gives · §5.40–5.43
+  lede: A chain leads to the words of a report, and the report is named by whose words they are. If they are the Prophet's ﷺ, it is raised; if a Companion's, stopped; if a Successor's or someone later's, cut off. The names say where the words stop, not whether the chain is whole.
+  source: §5.40 Marfūʿ, §5.41 Mawqūf, §5.42 Maqṭūʿ, §5.43 The names, and athar
+  diagram: Ends
+  width: 780
+  captions:
+    - term: marfu
+      note: "A report whose chain ends at the Prophet ﷺ: his sayings, his acts or his silent approval, whether the wording says so outright or only implies it. It is marfūʿ whether its chain is connected or not, and whether the Companion heard it from him or through someone. The isnād is the path to the matn, and the matn the words where it ends (§5.40, §5.43)."
+    - term: mawquf
+      note: "A report whose chain ends at a Companion: his own sayings, acts or silent approval, known from the wording much as for the Prophet ﷺ, though not every form carries over. Said bare, mawqūf means stopped at a Companion; for someone later one may say it is mawqūf on him, naming him (§5.41, §5.43)."
+    - term: maqtu
+      note: "A report whose chain ends at a Successor, or at someone after him, such as the Followers of the Successors and those later still; the name is the same for all of them. It describes the matn, where the words stop. Munqaṭiʿ describes the isnād, a break in it; some scholars used one for the other, against correct usage (§5.43)."
+    - term: athar
+      note: "The last two kinds, the mawqūf and the maqṭūʿ, share a further name: athar. A report stopped at a Companion and one cut off at a Successor or later are both called athar (§5.43)."
+  panels:
+    - id: raised
+      label: Raised
+      x0: 0
+      x1: 260
+    - id: stopped
+      label: Stopped and cut off
+      x0: 260
+      x1: 780
+- id: raised
+  division: muntaha-al-isnad
+  moons: [0]
+  order: 2
+  title: Is it from the Prophet ﷺ?
+  eyebrow: Raised to the Prophet ﷺ, outright or by implication · §5.40
+  lede: A report is raised when its words are from the Prophet ﷺ, his sayings, acts or approval. The Companion may say so outright, or say something that can only have come from him. Ibn Ḥajar gives the forms that count, and answers those who doubt some of them.
+  source: §5.40 Marfūʿ, outright and implied
+  diagram: Raised
+  width: 860
+  captions:
+    - term: marfu-hukmi
+      note: "A Companion who does not take from the biblical reports says what reasoning can't reach and no word's meaning explains: past events like creation and the prophets, future ones like the trials and the Day of Judgement, or a deed's set reward or punishment. Someone must have told him, and only the Prophet ﷺ could have, so it counts as if he said “the Messenger of Allah ﷺ said” (§5.40)."
+  views:
+    - id: most
+      label: "Ibn Ḥajar and most: raised"
+      scholars: §5.40; Ibn ʿAbd al-Barr reports a consensus
+      note: "When a Companion says “from the sunna is…”, or “we were ordered” or “prohibited”, it counts as raised. The sunna meant is the Prophet's ﷺ, as Sālim told Ibn Shihāb; one under a leader who says “I have been ordered” means by the leader. Ibn Ḥajar calls the claim of consensus contentious, since al-Shāfiʿī has two opinions."
+    - id: not-raised
+      label: "Some: not raised"
+      scholars: "Abū Bakr al-Ṣayrafī, Abū Bakr al-Rāzī, Ibn Ḥazm; a group, on “we were ordered”, §5.40"
+      note: "Sunna is said of others besides the Prophet ﷺ, so “from the sunna” need not mean his; an order could be the Qurʾan's, the consensus's, a caliph's or a derived ruling's. Ibn Ḥajar answers that these readings are far-fetched, or only possibilities, and the Companions were sure before they spoke."
+  extra:
+    - title: The book's examples
+      section: §5.40
+      note: "Outright: the Companion says he heard the Messenger of Allah ﷺ say something, saw him do it, or did it in his presence without objection. Implied, of an act: al-Shāfiʿī on ʿAlī's eclipse prayer with more than one bowing in each unit, which he could not have reached by his own thinking. Implied, of approval: the Companions say they used to do something in his time; Jābir and Abū Saʿīd argued that a practice was allowed because they did it while the Qurʾan was being revealed, and it would have forbidden it. Of a ruling: ʿAmmār called fasting the day of doubt disobedience to Abū al-Qāsim ﷺ."
+    - title: Words that point to him
+      section: §5.40
+      note: "A Successor may say of a Companion that he raises the ḥadīth, narrates it, ascribes it or makes it reach the Prophet ﷺ (yarfaʿ, yarwī, yanmī, riwāya, yablughu bih, rawā). Sometimes the speaker is left out altogether, as in Ibn Sīrīn's reports from Abū Hurayra; al-Khaṭīb suggests this was the usage of Baṣra. Why not name him? From piety and caution: Abū Qilāba said he could have said that Anas raised his report, but it is better to keep the Companion's own words."
+- id: companions
+  division: muntaha-al-isnad
+  moons: [1, 2]
+  order: 3
+  title: Who met whom?
+  eyebrow: The Companion, the Successor and those between · §5.41–5.42
+  lede: A chain may stop at a Companion or a Successor, so Ibn Ḥajar defines both. A Companion met the Prophet ﷺ believing in him and died a Muslim; a Successor met a Companion in the same way. Those who lived before Islam and into it without seeing him are counted with the senior Successors.
+  source: §5.41 The Companions, §5.42 The Successors and the mukhaḍramūn
+  diagram: Companions
+  width: 1040
+  captions:
+    - term: sahabi
+      note: "One who met the Prophet ﷺ believing in him and died a Muslim, even if he left Islam in between, on the most correct opinion. Meeting is wider than sitting or walking with him, even without words; Ibn Ḥajar says met, not saw, so blind Companions like Ibn Umm Maktūm count. Rank differs with length of company, but all share the honour (§5.41)."
+    - term: tabii
+      note: "One who met a Companion on the same terms: believing in the Prophet ﷺ and dying a Muslim. Only faith in the Companion is not asked, since that belongs to the Prophet ﷺ alone. This is the chosen opinion, against those who add long company with the Companion, a sound hearing from him, or a further condition (§5.42)."
+    - term: mukhadram
+      note: "Those who lived before Islam and into it but never saw the Prophet ﷺ. Whether they are Companions or Successors is disputed. Ibn ʿAbd al-Barr seemed to count them as Companions, but said he listed them to cover the whole first generation. The correct opinion makes them the senior Successors, whether or not one became Muslim in his lifetime, like al-Najāshī (§5.42)."
+  views:
+    - id: ibn-hajar
+      label: "Ibn Ḥajar: senior Successors"
+      scholars: §5.42, the correct opinion
+      note: "The mukhaḍramūn are the senior Successors, whether or not one of them is known to have become Muslim in the Prophet's ﷺ lifetime, like al-Najāshī."
+    - id: among-companions
+      label: "Some: among the Companions"
+      scholars: ʿIyāḍ and others, of Ibn ʿAbd al-Barr, §5.42
+      note: "Ibn ʿAbd al-Barr seemed to place them among the Companions, and ʿIyāḍ and others said he did so outright. Ibn Ḥajar doubts it: Ibn ʿAbd al-Barr said in his introduction that he named them to cover all who lived in the first generation."
+  panels:
+    - id: companion
+      label: The Companion
+      x0: 0
+      x1: 260
+    - id: known
+      label: How it is known
+      x0: 260
+      x1: 520
+    - id: successor
+      label: The Successor
+      x0: 520
+      x1: 780
+    - id: mukhadram
+      label: Between two eras
+      x0: 780
+      x1: 1040
+  extra:
+    - title: The definition, part by part
+      section: §5.41
+      note: "Meeting is the genus. Believing leaves out those who met him as disbelievers; in him, those who believed only in an earlier prophet; died a Muslim, those who left Islam after meeting him and died so, like Ibn Khaṭal. Whether one who met him believing before his mission, knowing he would be sent, and died before it, counts is disputed. al-Ashʿath ibn Qays left Islam, was brought to Abū Bakr a prisoner, returned to Islam and married his sister; no one denied him Companionship or left his ḥadīth out of the musnads."
+    - title: How Companionship is known
+      section: §5.41
+      note: "By mutawātir report, by its being widely known, by another Companion or a reliable Successor saying so, or by his own claim when it is plausible; a group of ḥadīth scholars hesitate over the last, since it is like a man saying “I am credible”."
+    - title: Two notes
+      section: §5.41
+      note: "One who kept long company with him, fought beside him or died under his command ranks above one who met him briefly or saw him as a child, though all share the honour. A Companion who did not hear from him narrates mursal, though he is a Companion."
+    - title: The Night of Ascension
+      section: §5.42
+      note: "If it were proven that all the people of the earth were shown to him on that night, the mukhaḍramūn would count among those who believed in him in his lifetime, since he saw them."
+- id: connected
+  division: muntaha-al-isnad
+  moons: [3]
+  order: 4
+  title: Does it look connected?
+  eyebrow: The musnad report · §5.44
+  lede: When a ḥadīth master calls a report musnad, he means a Companion raised it to the Prophet ﷺ through a chain that looks connected. A hidden gap doesn't stop it being musnad; a gap that shows, or a chain that stops short of him, does. Two other scholars used the word differently.
+  source: §5.44 Musnad
+  diagram: Connected
+  width: 860
+  captions:
+    - term: musnad
+      note: "As a ḥadīth master says “a musnad ḥadīth”: a report a Companion raises to the Prophet ﷺ by a chain that looks connected. One a Successor raises is mursal; one raised from below him, muʿḍal or muʿallaq. A hidden break, like a mudallis's ʿan or a contemporary not known to have met, doesn't undo it: the imams compiled musnads of such chains. al-Ḥākim agrees (§5.44)."
+  views:
+    - id: ibn-hajar
+      label: "Ibn Ḥajar: raised, and looks connected"
+      scholars: §5.44; with al-Ḥākim
+      note: "A musnad is raised by a Companion to the Prophet ﷺ through a chain that looks connected. A report connected only as far as a Companion is not musnad, and nor is a raised report whose gap shows."
+    - id: khatib
+      label: "al-Khaṭīb: connected"
+      scholars: al-Khaṭīb al-Baghdādī, §5.44
+      note: "Musnad means connected. So a mawqūf with a connected chain is musnad too, though al-Khaṭīb says the usage is rare."
+    - id: ibn-abd-al-barr
+      label: "Ibn ʿAbd al-Barr: raised"
+      scholars: Ibn ʿAbd al-Barr, §5.44
+      note: "Musnad means marfūʿ, whether or not the chain is connected, so the mursal, the muʿḍal and the munqaṭiʿ would be musnad when their text is raised. Ibn Ḥajar calls this far-fetched, and says no one else holds it."
+  panels:
+    - id: looks-connected
+      label: Looks connected
+      x0: 0
+      x1: 344
+    - id: gap-shows
+      label: A gap shows
+      x0: 344
+      x1: 688
+    - id: stops
+      label: Stops at a Companion
+      x0: 688
+      x1: 860

@@ -46,6 +46,9 @@ svg .arrowhead.pause{fill:var(--pause)}
 /* a grade raised by support (phase 3): thick, gold, solid and still, so it never reads as narration */
 svg .lift{fill:none;stroke:var(--gold-a);stroke-width:5;stroke-linecap:round}
 svg .arrowhead.gold{fill:var(--gold-a)}
+/* counted as from the Prophet ﷺ by implication (Raised): gold, in short dashes (2 4) unlike narration's 6 6, so it
+   is told apart by its pattern as well as its colour; its dashes flow like narration's */
+svg .implied{fill:none;stroke:var(--gold-a);stroke-width:2;stroke-dasharray:2 4;stroke-linecap:round;animation:flow 1.6s linear infinite}
 /* a chain that goes on, but that the book doesn't give (phase 3): grey, dotted, still */
 svg .elided{fill:none;stroke:var(--muted);stroke-width:1.6;stroke-dasharray:.1 5;stroke-linecap:round}
 /* kind names under figures show only in Labels mode (spec §3.5); without JS data-mode is unset, so Key */

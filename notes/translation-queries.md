@@ -43,3 +43,10 @@ Page numbers are the PDF's, as the `=====PAGE` markers in `source/nuzhah.txt` nu
 | §5.37 (p.260) | "the report of the agent is accepted in general, except…" | "Agent" seems not to stand in the Arabic here. The site avoids it | |
 | §5.37 (p.260) | "al-Jūzajānī, the shaykh of Abū Dāwūd … as well as al-Nasāʾī in his book Maʿrifat al-ʿilal" | Likely "the shaykh of Abū Dāwūd and al-Nasāʾī, in his book Maʿrifat al-rijāl". The site credits al-Jūzajānī only, as the shaykh of Abū Dāwūd, and names no book | |
 | §5.37 (p.260) | "Ibrāhīm Yaʿqūb al-Jurzjānī" | Likely Ibrāhīm ibn Yaʿqūb al-Jūzajānī. Spelling only | |
+| §5.40 (p.279) | "the matn is the dialogue at which the isnād terminates" | Likely kalām, "the words". The site says "the words" | |
+| §5.40 (p.280) | "has no reference to an ambiguous word or commentary of a rare word" | Likely "no bearing on explaining a word or a rare term". The site says "not a word's meaning" | |
+| §5.40 (p.282) | "Amongst the possible words [of delivery]" | Likely "among the forms that may carry it". The site says "set phrases" | |
+| §5.41 (p.297) | "ʿAbd Allāh ibn Jaḥsh" among those who died out of Islam | Usually ʿUbayd Allāh ibn Jaḥsh. The site names only Ibn Khaṭal until a ruling | |
+| §5.41 (p.299) | "the dispersed and famous nature of this fact" | Likely istifāḍa and shuhra. The site says "widely known" | |
+| §5.42 (p.308) | "the condition of acknowledgement" | Possibly tamyīz, discernment. The site says "a further condition" | |
+| §5.44 (p.314) | "that which is in reality continuous [though looks otherwise] will also be included" | The bracket contradicts the line before. Likely "all the more so what is truly connected". The site leaves the bracket's sense out | |

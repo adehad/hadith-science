@@ -1,0 +1,139 @@
+---
+// "Where does the chain end?" (phase 3 Muntahā al-isnād design §2): a report is named by whose words it carries
+// (§5.40–5.43). Three chains side by side, rows lined up by generation, in one 780-wide row that carousels in two
+// panels (the second wide enough to hold the athar bracket and its trigger):
+//   1  marfūʿ: the chain reaches the Prophet ﷺ; a ghost in it says the name holds whether it is connected or not
+//   2  mawqūf: it stops at a Companion
+//   3  maqṭūʿ: it stops at a Successor, or someone later
+// Each text card hangs from the person whose words they are, as in "What is a report?", and that person sits on a
+// soft gold halo (the Lone scene's). A bracket under the last two names them athar; a footer tells maqṭūʿ from
+// munqaṭiʿ, with a link to the break.
+// No views. No Arabic report wording: the cards say whose words they are, not what they say.
+// Motion: the arrows flow, the ghost blinks, and the halos fade in left to right, once. The resting style is the end
+// state, so with motion.css stopping every animation the halos show and nothing blinks.
+import Defs from "../svg/Defs.astro";
+import Moon from "../svg/Moon.astro";
+import Narrator from "../svg/Narrator.astro";
+import Arrow from "../svg/Arrow.astro";
+import Chip from "../svg/Chip.astro";
+import Matn from "../svg/Matn.astro";
+import Bracket from "../svg/Bracket.astro";
+import TermTitle from "../svg/TermTitle.astro";
+import XLink from "../svg/XLink.astro";
+import { FIG, KIND_NAME, RELIABLE, type Kind } from "../svg/figures";
+import { SUBT_TRIGGER, f, titleTrigger } from "../svg/geom";
+import { cap, type DiagramProps } from "../../lib/scene";
+import { chipWidth, stagger } from "../../lib/kit";
+
+type Props = DiagramProps;
+const { caps, scene } = Astro.props;
+if (scene.views?.length) throw new Error("Ends: expected no views");
+if ((scene.panels ?? []).length !== 2) throw new Error("Ends: expected two panels");
+
+const W = 780, H = 540;
+const TITLE_Y = 30, SUB_Y = 48;
+// the text cards, then the rows: moon, Companion, Successor, later narrator, collector
+const CARD = { y: 60, w: 180, h: 44 };
+const MOON_Y = 150, MOON_K = 0.5, MOON_R = 24 * MOON_K;
+const ROWS = [214, 278, 342];
+const COLL_Y = 410;
+const K = 0.75, HALF = 22 * K;
+
+// extra widens the estimate for wide letters (the M and w of Mawqūf), as in Unknown
+function title(slug: string, cx: number, extra = 0) {
+  const c = cap(caps, slug);
+  return { c, cx, ...titleTrigger(c.translit, cx, TITLE_Y, { ...SUBT_TRIGGER, extra }) };
+}
+
+// each column: its title term, card lines, whether the moon heads it, and the figure in each row (null: none)
+type Col = { slug: string; cx: number; card: string[]; moon: boolean; rows: (Kind | null)[]; empty: [number, string][] };
+const COLS: Col[] = [
+  { slug: "marfu", cx: 130, card: ["his words, acts", "or approval"], moon: true, rows: ["sahabi", "ghost", "later"], empty: [] },
+  { slug: "mawquf", cx: 390, card: ["a Companion's words,", "acts or approval"], moon: false, rows: ["sahabi", "tabii", "later"], empty: [[MOON_Y, "not raised"]] },
+  { slug: "maqtu", cx: 650, card: ["a Successor's,", "or a later one's"], moon: false, rows: [null, "tabii", "later"], empty: [[MOON_Y, "not raised"], [ROWS[0], "no Companion"]] },
+];
+
+const cols = COLS.map((col, i) => {
+  const t = title(col.slug, col.cx, col.slug === "mawquf" ? 5 : 0);
+  // the top of the chain: the moon, or the first figure
+  const topRow = col.moon ? -1 : col.rows.findIndex((r) => r !== null);
+  const topY = topRow < 0 ? MOON_Y : ROWS[topRow];
+  const tieTo = topRow < 0 ? MOON_Y - MOON_R - 2 : topY - HALF - 8;
+  // the arrows down the chain: each figure from the previous one that isn't a ghost, a skip arrow over a ghost
+  const arrows: { x1: number; y1: number; x2: number; y2: number; variant: "flow" | "skip"; bend: number }[] = [];
+  let prevY = topY, prevRow = topRow, jumped = false;
+  col.rows.forEach((kind, r) => {
+    if (kind === null || r === topRow) return;
+    if (kind === "ghost") { jumped = true; return; }
+    {
+      const from = prevRow < 0 ? MOON_Y + MOON_R + 3 : prevY + HALF + (jumped ? 20 : 4);
+      arrows.push(jumped
+        ? { x1: col.cx - 4, y1: from, x2: col.cx - 4, y2: ROWS[r] - HALF - 4, variant: "skip", bend: -60 }
+        : { x1: col.cx, y1: from, x2: col.cx, y2: ROWS[r] - HALF - 4, variant: "flow", bend: 0 });
+    }
+    prevY = ROWS[r]; prevRow = r; jumped = false;
+  });
+  arrows.push({ x1: col.cx, y1: prevY + HALF + 18, x2: col.cx, y2: COLL_Y - 14, variant: "flow", bend: 0 });
+  return { ...col, t, topRow, topY, tieTo, arrows, d: stagger(i, { start: 0.3, step: 0.3 }) };
+});
+
+const COLL = "collector";
+const collW = chipWidth(COLL);
+
+// the athar bracket under the last two chains, its trigger centred in the second panel
+const BRK = { x0: 330, x1: 710, y: 438 };
+const athar = (() => {
+  const c = cap(caps, "athar");
+  const y = 464;
+  return { c, cx: 520, y, ...titleTrigger(c.translit, 520, y, SUBT_TRIGGER) };
+})();
+---
+<svg viewBox={`0 0 ${W} ${H}`} class="ends-scene" role="group" aria-label="Three chains side by side, each ending at a different person, with the text card hanging from him. Marfūʿ: the chain reaches the Prophet ﷺ; its words are his sayings, acts or approval, and it is marfūʿ whether its chain is connected or not, so a gap in it doesn't change the name. Mawqūf: the chain stops at a Companion, and the words are his. Maqṭūʿ: it stops at a Successor, or someone later. The last two are both called athar. Maqṭūʿ names where the words stop; munqaṭiʿ, a break in the chain.">
+  <Defs />
+  <line class="divider" x1="260" x2="260" y1="12" y2={H - 12} />
+
+  {/* ---- halos, under the figures: where each chain ends ---- */}
+  {cols.map((c) => c.topRow < 0
+    ? <circle class="end m-enter" cx={c.cx} cy={MOON_Y} r={MOON_R + 10} style={`--d:${c.d}`} />
+    : <rect class="end m-enter" x={c.cx - 26} y={c.topY - 27} width="52" height="46" rx="9" style={`--d:${c.d}`} />)}
+
+  {cols.map((c) => (
+    <>
+      <TermTitle c={c.t.c} x={c.cx} y={TITLE_Y} cls="subt" hit={c.t.hit} info={c.t.info} />
+      <text class="lbl sm" x={c.cx} y={SUB_Y}>{c.t.c.en.toLowerCase()}</text>
+      <line class="tie" x1={c.cx} x2={c.cx} y1={CARD.y + CARD.h} y2={c.tieTo} />
+      <Matn x={c.cx - CARD.w / 2} y={CARD.y} w={CARD.w} h={CARD.h} lines={c.card} />
+      {c.empty.map(([y, t]) => <text class="lbl sm start" x={c.cx + 10} y={y + 4}>{t}</text>)}
+      {c.arrows.map((a) => <Arrow x1={a.x1} y1={a.y1} x2={a.x2} y2={a.y2} bend={a.bend} variant={a.variant} />)}
+      {c.moon && <Moon cx={c.cx} cy={MOON_Y} k={MOON_K} />}
+      {c.rows.map((kind, r) => kind && (
+        <Narrator x={c.cx} y={ROWS[r]} k={K} {...FIG[kind]} {...(kind === "ghost" ? {} : RELIABLE)} label={KIND_NAME[kind]} />
+      ))}
+      <Chip x={f(c.cx - collW / 2)} y={COLL_Y} text={COLL} />
+    </>
+  ))}
+
+  {/* ---- column 3: or someone later ---- */}
+  <text class="lbl sm start" x="684" y="274">a Successor,</text>
+  <text class="lbl sm start" x="684" y="288">or anyone later</text>
+
+  {/* ---- column 1: connected or not ---- */}
+  <text class="lbl gap sm start" x="148" y="282">a gap</text>
+  <text class="lbl" x="130" y="452">raised, whether</text>
+  <text class="lbl" x="130" y="467">its chain is</text>
+  <text class="lbl" x="130" y="482">connected or not</text>
+
+  {/* ---- athar ---- */}
+  <Bracket x0={BRK.x0} x1={BRK.x1} y={BRK.y} ticks="up" />
+  <TermTitle c={athar.c} x={athar.cx} y={athar.y} cls="subt" hit={athar.hit} info={athar.info} />
+  <text class="lbl sm" x="520" y="482">the last two share this name</text>
+
+  {/* ---- maqṭūʿ is not munqaṭiʿ ---- */}
+  <text class="lbl sm" x="520" y="508">maqṭūʿ names where the words stop; munqaṭiʿ, a break in the chain:</text>
+  <XLink to="al-mardud/breaks#munqati" text="Where does the chain break?" x={520} y={526} anchor="middle" />
+</svg>
+<style>
+  /* where each chain ends: decoration only, the titles and cards carry the meaning */
+  .end{fill:var(--halo);stroke:var(--halo-edge);stroke-width:1;--dur:.3s}
+  .tie{stroke:var(--gold-a);stroke-width:1.6}
+</style>
