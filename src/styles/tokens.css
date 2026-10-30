@@ -25,7 +25,7 @@
   --on-gold:color-mix(in srgb,var(--fg) 85%,var(--surface));
   /* a soft gold halo behind a figure that matters (Lone's lone links, the end of a chain in Ends and Connected), and its edge */
   --halo:color-mix(in srgb,var(--gold-b) 26%,var(--surface)); --halo-edge:color-mix(in srgb,var(--gold-a) 45%,var(--surface));
-  /* the edge of a gold-washed band, tab or town (Maʿrifat al-ruwāt scenes): gold softened towards the page */
+  /* the edge of a gold card, band, tab or town, and the fill of a gold wedge: gold softened towards the page */
   --gold-edge:color-mix(in srgb,var(--gold-a) 55%,var(--surface));
   --f-display:"Fraunces Variable",Georgia,"Amiri",serif; --f-body:"Source Sans 3 Variable","Amiri",system-ui,sans-serif; --f-ar:"Amiri","Times New Roman",serif;
 }
