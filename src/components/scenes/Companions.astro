@@ -1,0 +1,216 @@
+---
+// "Who met whom?" (phase 3 Muntahā al-isnād design §4): the Companion, the Successor and the mukhaḍram (§5.41–5.42),
+// in four panels of one 1040-wide row, so it carousels in portrait:
+//   1  the Companion's definition as a path of gates (met him, believing, in him, died a Muslim), each "no" turning
+//      aside; Ibn Ḥajar builds it as a genus and three differentiae
+//   2  how Companionship is known, the ranks among them (an illustration, no measure), and the Companion who did not
+//      hear from him, who narrates mursal
+//   3  the Successor's gates: the same path from a Companion, the "in him" gate struck out, and the extra conditions
+//      others add, crossed
+//   4  the mukhaḍram between two eras: his life spans both and overlaps the Prophet's ﷺ without a meeting; he stands
+//      at the head of the Successors. The "Other views" switch (§5.42) slides him up into the Companions' row.
+// Names only as the translation gives them; the apostate it calls ʿAbd Allāh ibn Jaḥsh is left out pending a ruling
+// (design §13). No Arabic report wording.
+// Motion: the "no" arrows draw in gate by gate, once, and the "?" blinks; the view switch slides the mukhaḍram. The
+// resting style is the end state, so with motion.css stopping every animation everything is drawn and still.
+import Defs from "../svg/Defs.astro";
+import Moon from "../svg/Moon.astro";
+import Narrator from "../svg/Narrator.astro";
+import Arrow from "../svg/Arrow.astro";
+import Chip from "../svg/Chip.astro";
+import Decision from "../svg/Decision.astro";
+import Glyph from "../svg/Glyph.astro";
+import Lifespan from "../svg/Lifespan.astro";
+import ViewTag from "../svg/ViewTag.astro";
+import TermTitle from "../svg/TermTitle.astro";
+import XLink from "../svg/XLink.astro";
+import { FIG, KIND_NAME, RELIABLE } from "../svg/figures";
+import { SUBT_TRIGGER, f, titleTrigger } from "../svg/geom";
+import { cap, type DiagramProps } from "../../lib/scene";
+import { chipWidth, spanOverlap, stagger } from "../../lib/kit";
+import { viewAttrs } from "../../lib/views";
+
+type Props = DiagramProps;
+const { caps, scene } = Astro.props;
+const VIEW_IDS = ["ibn-hajar", "among-companions"] as const;
+if ((scene.views ?? []).map((v) => v.id).join() !== VIEW_IDS.join()) throw new Error(`Companions: expected views ${VIEW_IDS.join(", ")}`);
+if ((scene.panels ?? []).length !== 4) throw new Error("Companions: expected four panels");
+const off = (v: string) => v !== VIEW_IDS[0];
+
+const W = 1040, H = 560;
+const TITLE_Y = 30;
+function title(slug: string, cx: number, extra = 0) {
+  const c = cap(caps, slug);
+  return { c, cx, ...titleTrigger(c.translit, cx, TITLE_Y, { ...SUBT_TRIGGER, extra }) };
+}
+const sahabi = title("sahabi", 130);
+const tabii = title("tabii", 650);
+const mukhadram = title("mukhadram", 902, 8);
+
+// ---- the gates (panels 1 and 3) ----
+const GATE = { w: 116, h: 44, ys: [100, 168, 236, 304] };
+const OUT_X = 22; // from the gate's right corner to its "no" card
+type Gate = { lines: string[]; no?: string[]; struck?: string[] };
+function gates(cx: number, list: Gate[], start: number, w = GATE.w) {
+  return list.map((g, i) => {
+    const y = GATE.ys[i];
+    const right = cx + w / 2;
+    return { ...g, cx, y, w, small: w > GATE.w, right, card: { x: right + OUT_X, y }, d: stagger(i, { start, step: 0.25 }) };
+  });
+}
+const G1 = gates(92, [
+  { lines: ["met him?"], no: ["never met", "him"] },
+  { lines: ["believing?"], no: ["a disbeliever"] },
+  { lines: ["in him?"], no: ["followed only", "an earlier one"] },
+  { lines: ["died a", "Muslim?"], no: ["died outside", "Islam"] },
+], 0.4);
+const G3 = gates(600, [
+  { lines: ["met a", "Companion?"], no: ["never met", "one"] },
+  { lines: ["believing in", "the Prophet ﷺ?"], no: ["not a believer"] },
+  { lines: ["in him?"], struck: ["not asked: that", "is for him ﷺ alone"] },
+  { lines: ["died a", "Muslim?"], no: ["died outside", "Islam"] },
+], 0.6, 132);
+const FIG_Y = 374, FIG_K = 0.8;
+
+// ---- panel 2: how it is known ----
+const KNOWN = ["a mutawātir report", "being widely known", "another Companion's word", "a reliable Successor's word", "his own claim, if plausible"];
+const known = KNOWN.map((text, i) => {
+  const w = chipWidth(text);
+  return { text, w, x: f(390 - w / 2), y: 76 + i * 26, dashed: i === KNOWN.length - 1 };
+});
+
+// ---- panel 4: two eras ----
+const ERA = { x0: 790, mid: 892, x1: 1030, y: 56, h: 58 };
+const LIFE = { prophet: [852, 972] as [number, number], him: [806, 1010] as [number, number] };
+const LB1 = 82, LB2 = 100;
+const meet = spanOverlap(LIFE.prophet, LIFE.him);
+if (!meet) throw new Error("Companions: the two lives must overlap");
+const ROW_C = 196, ROW_S = 290;
+const MK = { x: 980, k: 0.8 };
+const mkMove = viewAttrs({ v: { "ibn-hajar": "translate(0px, 0px)", "among-companions": `translate(0px, ${ROW_C - ROW_S}px)` } }, VIEW_IDS);
+const NAJ = "al-Najāshī: Muslim in his time";
+const najW = chipWidth(NAJ);
+---
+<svg viewBox={`0 0 ${W} ${H}`} class="companions-scene" role="group" aria-label="Four panels. Ṣaḥābī: a path of four questions. Did he meet the Prophet ﷺ, believing, in him, and die a Muslim? A no at any step means he is not a Companion: never met him, a disbeliever, one who followed only an earlier prophet, or one who died outside Islam. Meeting, not seeing, so the blind count, like Ibn Umm Maktūm; one who left Islam in between and returned stays a Companion, like al-Ashʿath ibn Qays; one who met him believing before his mission and died before it is disputed. How it is known: by a mutawātir report, by being widely known, by another Companion's or a reliable Successor's word, or by his own plausible claim, which some ask to study. They differ in rank by their time with him, but all share the honour; one who did not hear from him narrates mursal. Tābiʿī: the same path from a Companion, except that faith in the Companion is not asked; long company and a sound hearing are not required. Mukhaḍram: he lived before Islam and into it, overlapping the Prophet's ﷺ life, but never saw him. Ibn Ḥajar puts him at the head of the Successors, as with al-Najāshī, who became Muslim in his time.">
+  <Defs />
+  <line class="divider" x1="260" x2="260" y1="12" y2={H - 12} />
+  <line class="divider" x1="520" x2="520" y1="12" y2={H - 12} />
+  <line class="divider" x1="780" x2="780" y1="12" y2={H - 12} />
+
+  {/* ---- titles ---- */}
+  <TermTitle c={sahabi.c} x={sahabi.cx} y={TITLE_Y} cls="subt" hit={sahabi.hit} info={sahabi.info} />
+  <text class="subt" x="390" y={TITLE_Y}>How it is known</text>
+  <TermTitle c={tabii.c} x={tabii.cx} y={TITLE_Y} cls="subt" hit={tabii.hit} info={tabii.info} />
+  <TermTitle c={mukhadram.c} x={mukhadram.cx} y={TITLE_Y} cls="subt" hit={mukhadram.hit} info={mukhadram.info} />
+
+  {/* ---- panels 1 and 3: the gates ---- */}
+  <Moon cx={92} cy={50} k={0.38} />
+  <path class="go" d={`M92 61 V${GATE.ys[0] - GATE.h / 2 - 3}`} marker-end="url(#ah)" />
+  <Narrator x={600} y={48} k={0.5} {...FIG.sahabi} {...RELIABLE} label={KIND_NAME.sahabi} />
+  <path class="go" d={`M600 62 V${GATE.ys[0] - GATE.h / 2 - 3}`} marker-end="url(#ah)" />
+  {[G1, G3].map((list) => list.map((g, i) => (
+    <>
+      {i < list.length - 1
+        ? <path class="go" d={`M${g.cx} ${g.y + GATE.h / 2} V${GATE.ys[i + 1] - GATE.h / 2 - 3}`} marker-end="url(#ah)" />
+        : <path class="go" d={`M${g.cx} ${g.y + GATE.h / 2} V${FIG_Y - 22 * FIG_K - 6}`} marker-end="url(#ah)" />}
+      {g.struck ? (
+        <>
+          <g class:list={["struck", { small: g.small }]}><Decision cx={g.cx} cy={g.y} w={g.w} h={GATE.h} lines={g.lines} /></g>
+          <line class="strike" x1={g.cx - 30} y1={g.y + 10} x2={g.cx + 30} y2={g.y - 10} />
+          {g.struck.map((t, j) => <text class="lbl sm start" x={g.right + 8} y={g.y - 2 + j * 13}>{t}</text>)}
+        </>
+      ) : (
+        <>
+          <g class:list={[{ small: g.small }]}><Decision cx={g.cx} cy={g.y} w={g.w} h={GATE.h} lines={g.lines} /></g>
+          <path class="go no m-draw" pathLength="1" d={`M${g.right + 2} ${g.y} H${g.card.x - 4}`} style={`--d:${g.d}`} />
+          <text class="lbl sm yn" x={g.right + 11} y={g.y - 5}>no</text>
+          <Glyph kind="cross" cx={g.card.x + 5} cy={g.y} r={6} />
+          {g.no!.map((t, j) => <text class="lbl sm start" x={g.card.x + 14} y={g.y + 4 + (j - (g.no!.length - 1) / 2) * 13}>{t}</text>)}
+        </>
+      )}
+    </>
+  )))}
+  <Narrator x={92} y={FIG_Y} k={FIG_K} {...FIG.sahabi} {...RELIABLE} label={KIND_NAME.sahabi} />
+  <text class="lbl sm start" x="124" y="366">even if he left Islam</text>
+  <text class="lbl sm start" x="124" y="380">in between and returned:</text>
+  <text class="lbl sm start" x="124" y="394">al-Ashʿath ibn Qays</text>
+  <text class="lbl sm" x="130" y="446">met, not saw: so the blind count,</text>
+  <text class="lbl sm" x="130" y="460">like Ibn Umm Maktūm</text>
+  <text class="q" x="40" y="500" aria-hidden="true">?</text>
+  <text class="lbl sm start" x="54" y="494">met him believing before his</text>
+  <text class="lbl sm start" x="54" y="508">mission, and died before it:</text>
+  <text class="lbl sm start" x="54" y="522">disputed</text>
+
+  <Narrator x={600} y={FIG_Y} k={FIG_K} {...FIG.tabii} {...RELIABLE} label={KIND_NAME.tabii} />
+  <text class="layer" x="536" y="434">Not required</text>
+  <g class="dashed">
+    <Chip x={556} y={456} text="long company" />
+    <Chip x={556} y={482} text="a sound hearing from him" />
+  </g>
+  <Glyph kind="cross" cx={542} cy={456} r={6} />
+  <Glyph kind="cross" cx={542} cy={482} r={6} />
+  <text class="lbl sm" x="650" y="512">or a further condition:</text>
+  <text class="lbl sm" x="650" y="526">the chosen opinion asks none</text>
+
+  {/* ---- panel 2: how it is known ---- */}
+  {known.map((k) => <Chip x={k.x} y={k.y} text={k.text} dashed={k.dashed} />)}
+  <text class="lbl sm" x="390" y="212">some ask for study of the last</text>
+  <text class="layer" x="276" y="238">Not all equal</text>
+  <Lifespan x0={284} x1={420} y={258} name="long" />
+  <Lifespan x0={284} x1={316} y={276} name="brief" />
+  <text class="lbl sm" x="390" y="300">an illustration: time with him</text>
+  <text class="lbl" x="390" y="318">all share the honour</text>
+  <Moon cx={300} cy={358} k={0.38} />
+  <Arrow x1={296} y1={372} x2={296} y2={430 - 22 * 0.6 - 4} bend={-22} variant="skip" />
+  <Narrator x={300} y={430} k={0.6} {...FIG.sahabi} {...RELIABLE} label={KIND_NAME.sahabi} />
+  <text class="lbl sm start" x="330" y="398">a Companion who did not</text>
+  <text class="lbl sm start" x="330" y="412">hear from him himself</text>
+  <XLink to="al-mardud/breaks#mursal" lead="narrates " text="mursal" x={330} y={432} />
+
+  {/* ---- panel 4: two eras ---- */}
+  <rect class="era" x={ERA.x0} y={ERA.y} width={ERA.mid - ERA.x0} height={ERA.h} />
+  <rect class="era islam" x={ERA.mid} y={ERA.y} width={ERA.x1 - ERA.mid} height={ERA.h} />
+  <text class="lbl sm" x={(ERA.x0 + ERA.mid) / 2} y={ERA.y + 14}>before Islam</text>
+  <text class="lbl sm" x={(ERA.mid + ERA.x1) / 2} y={ERA.y + 14}>Islam</text>
+  <Moon cx={LIFE.prophet[0] - 10} cy={LB1} k={0.25} />
+  <Lifespan x0={LIFE.prophet[0]} x1={LIFE.prophet[1]} y={LB1} tone="moon" />
+  <Lifespan x0={LIFE.him[0]} x1={LIFE.him[1]} y={LB2} />
+  <text class="q" x={meet.mid} y={(LB1 + LB2) / 2 + 5} aria-hidden="true">?</text>
+  <text class="lbl sm" x="910" y="132">he lived in both, but never saw him</text>
+
+  <text class="layer" x="790" y="160">Companions</text>
+  <line class="rule" x1="790" x2="1030" y1="166" y2="166" />
+  <Narrator x={850} y={ROW_C} k={0.6} {...FIG.sahabi} {...RELIABLE} label={KIND_NAME.sahabi} />
+  <text class="layer" x="790" y="254">Successors</text>
+  <line class="rule" x1="790" x2="1030" y1="260" y2="260" />
+  <Narrator x={850} y={ROW_S} k={0.6} {...FIG.tabii} {...RELIABLE} label={KIND_NAME.tabii} />
+  <g class="mk" {...mkMove}>
+    <Narrator x={MK.x} y={ROW_S} k={MK.k} {...FIG.tabii} {...RELIABLE} />
+    {/* always shown, Key mode too, so he can be told from the reference Successor; it moves with him */}
+    <text class="lbl sm" x={MK.x} y={ROW_S + 22 * MK.k + 14}>mukhaḍram</text>
+  </g>
+  <g class:list={[{ off: off("ibn-hajar") }]} data-view-show="ibn-hajar">
+    <ViewTag cx={910} y={344} w={176} text="Ibn Ḥajar: senior Successors" />
+  </g>
+  <g class:list={[{ off: off("among-companions") }]} data-view-show="among-companions">
+    <ViewTag cx={910} y={344} w={176} text="some: among the Companions" dashed />
+  </g>
+  <Chip x={f(910 - najW / 2)} y={396} text={NAJ} />
+  <text class="lbl sm" x="910" y="422">but he never met him</text>
+  <text class="lbl sm" x="910" y="460">Abū ʿUthmān and Qays: irsāl from him</text>
+  <XLink to="al-mardud/hidden" text="Did he hear it from him?" x={910} y={480} anchor="middle" />
+</svg>
+<style>
+  .go{fill:none;stroke:var(--line);stroke-width:1.6}
+  .no{--dur:.3s}
+  .yn{text-anchor:middle}
+  .struck :global(path){stroke-dasharray:4 3}
+  .strike{stroke:var(--gap);stroke-width:1.8;stroke-linecap:round}
+  .dashed :global(rect){stroke-dasharray:4 3}
+  .q{fill:var(--gap);font:700 15px var(--f-body);text-anchor:middle;stroke:var(--surface);stroke-width:3px;paint-order:stroke;animation:blink 2.4s ease-in-out infinite}
+  .era{fill:color-mix(in srgb,var(--rule) 45%,var(--surface))}
+  .era.islam{fill:color-mix(in srgb,var(--ok) 12%,var(--surface))}
+  .mk{transition:transform .6s ease}
+  /* the Successor's gates hold longer questions, so their face is a size smaller */
+  .small :global(.decision text){font-size:10px}
+</style>

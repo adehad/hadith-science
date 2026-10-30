@@ -713,6 +713,7 @@
   def: "Someone who met the Prophet ﷺ believing in him and died a Muslim, even if he left Islam for a time in between."
   section: "§5.41"
   division: muntaha-al-isnad
+  scene: companions
 - id: tabii
   translit: Tābiʿī
   ar: تَابِعِيٌّ
@@ -720,6 +721,7 @@
   def: "Someone who met a Companion while believing in the Prophet ﷺ and died a Muslim."
   section: "§5.42"
   division: muntaha-al-isnad
+  scene: companions
 - id: mukhadram
   translit: Mukhaḍram
   ar: مُخَضْرَمٌ
@@ -727,6 +729,7 @@
   def: "Someone who lived before Islam and into it but never saw the Prophet ﷺ. Ibn Ḥajar counts them as senior Successors."
   section: "§5.42"
   division: muntaha-al-isnad
+  scene: companions
 - id: mawquf
   translit: Mawqūf
   ar: مَوْقُوفٌ

@@ -763,3 +763,59 @@
     - title: Words that point to him
       section: §5.40
       note: "A Successor may say of a Companion that he raises the ḥadīth, narrates it, ascribes it or makes it reach the Prophet ﷺ (yarfaʿ, yarwī, yanmī, riwāya, yablughu bih, rawā). Sometimes the speaker is left out altogether, as in Ibn Sīrīn's reports from Abū Hurayra; al-Khaṭīb suggests this was the usage of Baṣra. Why not name him? From piety and caution: Abū Qilāba said he could have said that Anas raised his report, but it is better to keep the Companion's own words."
+- id: companions
+  division: muntaha-al-isnad
+  moons: [1, 2]
+  order: 3
+  title: Who met whom?
+  eyebrow: The Companion, the Successor and those between · §5.41–5.42
+  lede: A chain may stop at a Companion or a Successor, so Ibn Ḥajar defines both. A Companion met the Prophet ﷺ believing in him and died a Muslim; a Successor met a Companion in the same way. Those who lived before Islam and into it without seeing him are counted with the senior Successors.
+  source: §5.41 The Companions, §5.42 The Successors and the mukhaḍramūn
+  diagram: Companions
+  width: 1040
+  captions:
+    - term: sahabi
+      note: "One who met the Prophet ﷺ believing in him and died a Muslim, even if he left Islam in between, on the most correct opinion. Meeting is wider than sitting or walking with him, even without words; Ibn Ḥajar says met, not saw, so blind Companions like Ibn Umm Maktūm count. Rank differs with length of company, but all share the honour (§5.41)."
+    - term: tabii
+      note: "One who met a Companion on the same terms: believing in the Prophet ﷺ and dying a Muslim. Only faith in the Companion is not asked, since that belongs to the Prophet ﷺ alone. This is the chosen opinion, against those who add long company with the Companion, a sound hearing from him, or a further condition (§5.42)."
+    - term: mukhadram
+      note: "Those who lived before Islam and into it but never saw the Prophet ﷺ. Whether they are Companions or Successors is disputed. Ibn ʿAbd al-Barr seemed to count them as Companions, but said he listed them to cover the whole first generation. The correct opinion makes them the senior Successors, whether or not one became Muslim in his lifetime, like al-Najāshī (§5.42)."
+  views:
+    - id: ibn-hajar
+      label: "Ibn Ḥajar: senior Successors"
+      scholars: §5.42, the correct opinion
+      note: "The mukhaḍramūn are the senior Successors, whether or not one of them is known to have become Muslim in the Prophet's ﷺ lifetime, like al-Najāshī."
+    - id: among-companions
+      label: "Some: among the Companions"
+      scholars: ʿIyāḍ and others, of Ibn ʿAbd al-Barr, §5.42
+      note: "Ibn ʿAbd al-Barr seemed to place them among the Companions, and ʿIyāḍ and others said he did so outright. Ibn Ḥajar doubts it: Ibn ʿAbd al-Barr said in his introduction that he named them to cover all who lived in the first generation."
+  panels:
+    - id: companion
+      label: The Companion
+      x0: 0
+      x1: 260
+    - id: known
+      label: How it is known
+      x0: 260
+      x1: 520
+    - id: successor
+      label: The Successor
+      x0: 520
+      x1: 780
+    - id: mukhadram
+      label: Between two eras
+      x0: 780
+      x1: 1040
+  extra:
+    - title: The definition, part by part
+      section: §5.41
+      note: "Meeting is the genus. Believing leaves out those who met him as disbelievers; in him, those who believed only in an earlier prophet; died a Muslim, those who left Islam after meeting him and died so, like Ibn Khaṭal. Whether one who met him believing before his mission, knowing he would be sent, and died before it, counts is disputed. al-Ashʿath ibn Qays left Islam, was brought to Abū Bakr a prisoner, returned to Islam and married his sister; no one denied him Companionship or left his ḥadīth out of the musnads."
+    - title: How Companionship is known
+      section: §5.41
+      note: "By mutawātir report, by its being widely known, by another Companion or a reliable Successor saying so, or by his own claim when it is plausible; a group of ḥadīth scholars hesitate over the last, since it is like a man saying “I am credible”."
+    - title: Two notes
+      section: §5.41
+      note: "One who kept long company with him, fought beside him or died under his command ranks above one who met him briefly or saw him as a child, though all share the honour. A Companion who did not hear from him narrates mursal, though he is a Companion."
+    - title: The Night of Ascension
+      section: §5.42
+      note: "If it were proven that all the people of the earth were shown to him on that night, the mukhaḍramūn would count among those who believed in him in his lifetime, since he saw them."
