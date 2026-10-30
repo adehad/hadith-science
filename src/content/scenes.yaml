@@ -1066,3 +1066,28 @@
       label: Stops at a Companion
       x0: 688
       x1: 860
+- id: generations
+  division: marifat-al-ruwat
+  moons: [0]
+  order: 1
+  title: When and where did he live?
+  eyebrow: Knowing the narrators, generations, dates and homelands · §5.62
+  lede: A ḥadīth master needs to know which generation each narrator belongs to, when he was born and died, and where he lived. These keep two men from being confused, expose a false claim to have met someone, and help uncover a concealed drop.
+  source: §5.62 Ṭabaqa, al-mawālīd wa-l-wafayāt, al-buldān wa-l-awṭān
+  diagram: Generations
+  width: 780
+  captions:
+    - term: tabaqa
+      note: "A group of narrators alike in age and in the shaykhs they met. Knowing it guards against confusion, helps expose tadlīs, and shows what an ʿanʿana really means. One man may belong to two: Anas ibn Mālik is counted by his companionship in the generation of the Ten, and by his youth in the one after. Ibn Saʿd's book is the most comprehensive (§5.62)."
+    - term: mawalid-wa-wafayat
+      note: "Narrators' dates of birth and death. With them the truth comes out when someone claims to have met a man he never met (§5.62)."
+    - term: awtan
+      note: "Narrators' towns and lands. Knowing them keeps apart two similar names whose bearers differ in where they belong (§5.62)."
+  panels:
+    - { id: generation, label: Generations, x0: 0, x1: 260 }
+    - { id: dates, label: Births and deaths, x0: 260, x1: 520 }
+    - { id: homelands, label: Homelands, x0: 520, x1: 780 }
+  extra:
+    - title: Grouping the Companions and the Successors
+      section: §5.62
+      note: "Whoever looks only at companionship makes all the Companions one generation, as Ibn Ḥibbān and others did. Whoever adds other factors, such as when they accepted Islam, or their part in the great events or the Migration, makes them many generations, as Muḥammad ibn Saʿd al-Baghdādī did. The Successors are the same: by taking from some Companions they are one generation, for Ibn Ḥibbān; by whom they met, several, for Ibn Saʿd. Each way has its reason. In the diagram, panel 1 sets the two ways side by side; the bands' figures are not particular Companions, and the speech bubble in panel 2 is an illustration, not a quoted claim."

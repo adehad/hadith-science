@@ -37,6 +37,7 @@ import Peers from "../../components/scenes/Peers.astro";
 import Doubts from "../../components/scenes/Doubts.astro";
 import Elevation from "../../components/scenes/Elevation.astro";
 import Meeting from "../../components/scenes/Meeting.astro";
+import Generations from "../../components/scenes/Generations.astro";
 import { loadContent } from "../../lib/content";
 import { captionsFor, neighbours, type DiagramProps } from "../../lib/scene";
 import { href } from "../../lib/url";
@@ -59,7 +60,7 @@ Astro.locals.panels = scene.panels;
 
 // each scene task adds its diagram here; import only components that exist
 // typed by the props every diagram takes, so a misnamed or missing prop fails astro check
-const DIAGRAMS: Partial<Record<Diagram, (p: DiagramProps) => any>> = { Routes, Breaks, Causes, Unknown, Delivery, Names, Grades, Opposition, Support, ActedOn, Report, Sorting, Knowledge, Lone, Hidden, Lying, Slips, Changes, Wording, Identity, Innovation, Ends, Raised, Companions, Connected, Peers, Doubts, Elevation, Meeting, Heard, Permission, Licence };
+const DIAGRAMS: Partial<Record<Diagram, (p: DiagramProps) => any>> = { Routes, Breaks, Causes, Unknown, Delivery, Names, Grades, Opposition, Support, ActedOn, Report, Sorting, Knowledge, Lone, Hidden, Lying, Slips, Changes, Wording, Identity, Innovation, Ends, Raised, Companions, Connected, Peers, Doubts, Elevation, Meeting, Heard, Permission, Licence, Generations };
 const D = DIAGRAMS[scene.diagram];
 if (!D) throw new Error(`no diagram component for ${scene.diagram}`);
 
@@ -113,6 +114,8 @@ const LEGEND: Partial<Record<Diagram, LegendKind[]>> = {
   Permission: ["later"],
   // the living man in cell C is a later narrator; the one not yet born is a dashed outline
   Licence: ["later", "unborn"],
+  // the Companions in both groupings and Anas ibn Mālik; the claimant and the two men of panel 3 are plain narrators
+  Generations: ["sahabi", "later"],
   // ActedOn, Sorting and Wording draw no narrator figures, so they have no legend and no Key/Labels switch (phase 3
   // designs §1)
 };

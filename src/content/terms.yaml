@@ -1111,6 +1111,7 @@
   def: "A group of narrators close in age and in the teachers they met. Knowing it prevents confusion and helps expose concealment."
   section: "§5.62"
   division: marifat-al-ruwat
+  scene: generations
 - id: mawalid-wa-wafayat
   translit: al-Mawālīd wa-l-wafayāt
   ar: الْمَوَالِيدُ وَالْوَفَيَاتُ
@@ -1118,6 +1119,7 @@
   def: "Narrators' birth and death dates, which expose false claims to have met someone."
   section: "§5.62"
   division: marifat-al-ruwat
+  scene: generations
 - id: awtan
   translit: al-Buldān wa-l-awṭān
   ar: الْبُلْدَانُ وَالْأَوْطَانُ
@@ -1125,6 +1127,7 @@
   def: "Narrators' towns and lands, which keep apart two similar names from different places."
   section: "§5.62"
   division: marifat-al-ruwat
+  scene: generations
 - id: jarh
   translit: Jarḥ
   ar: جَرْحٌ
